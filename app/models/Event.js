@@ -13,7 +13,7 @@ var permanentEventSchema = mongoose.Schema({
     location: String,
     price: Double,
     capacity: Integer,
-    datetime: Date
+    timing: Date
 
 });
 
