@@ -6,7 +6,6 @@ var regularEventSchema = mongoose.Schema({
    location: String, 
    price: Double,
    capacity: Integer,
-   booking: [String], //to be changes to booking or removed altogether
    datetime: Date
 
 }); 
