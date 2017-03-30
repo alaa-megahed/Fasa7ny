@@ -5,18 +5,19 @@ var SpecialEvent   = require('mongoose').model('SpecialEvent');
 exports.book_event = function (req,res) 
 {
 	var form     = req.body; 
-    //var event_id = req.params.event_id; // pass event id in url 
-	var	event_id = "58dd5efa27b262ff6a68bd4d"; //for testing
+//  var event_id = req.params.event_id; // pass event id in url 
+	var	event_id = "58dd5efa27b262ff6a68bd4d"; //for testing this is already from the database
 
-	//var date    = new Date().toJSON().slice(0,10).replace(/-/g,'/');
-	var booking = new Booking({
-	
+//	var date  = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+	var booking = new Booking
+	({
 		booking_date : new Date(),
 	    count        : form.count, 
 	    event_id	 : event_id
-	    // booker       = session.user._id	//get business user id from session?
+//	    booker       : session.user._id	//get business user id from session?
 	});	
-	//need to check capacity and available before saving 
+
+//	need to check capacity and available before saving 
 	booking.save(function(err,booking)
 	{
 		if(err)
@@ -33,19 +34,15 @@ exports.book_event = function (req,res)
 		            console.log(err);
 		        }
 		    );
-
-
+		    PermanentEvent.findByIdAndUpdate(event_id,{$push: {"bookings": booking} },{safe: true, upsert: true, new : true},
+		        function(err, model) 
+		        {
+		            console.log(err);
+		        }
+		    );
 		}
 
 	});	
-
-	// SpecialEvent.findById(event_id,function(err,event)
-	// {
-	// 	if(err)
-	// 		console.log(err);
-	// 	else
-	// 		console.log("after findByIdAndUpdate "+event);
-	// });
 
 	res.send("khalaweess");
 }
