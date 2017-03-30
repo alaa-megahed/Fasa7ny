@@ -3,13 +3,14 @@ var mongoose = require('mongoose'),
 
 var BookingSchema = new Schema({
     booking_date : Date,
-    count        : {type: Number, default: 1},                 // how many people
+    count        : {type: Number, default: 1}, // how many people
     booker       :
     {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'RegisteredUser' 
     },
-    event_id     : String
+    event_id     : String,
+    
     //payment goes here
 
 });

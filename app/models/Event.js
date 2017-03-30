@@ -18,10 +18,20 @@ var permanentEventSchema = mongoose.Schema({
     available: Number,
     repition_type: Number, // to be changes to repition_pattern
     timing: [Date],
-    images: [String]
+    images: [String],
+    business_id  :
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Business' 
+    },
+    bookings :
+    [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Booking',
+        default: []
+    }]
 
 });
-
 
 /**Special events are events that are not made available permanently by the business
     They don't have to be repeated
@@ -35,13 +45,24 @@ var specialEventSchema = mongoose.Schema({
     capacity: Number,
     available: Number,
     timing: Date,
-    images: [String]
+    images: [String],
+    business_id  :
+    {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Business' 
+    },
+    bookings :
+    [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Booking',
+        default: [] 
+    }]
 });
 
 
 //creating models
-var SpecialEvent = mongoose.model("specialEvent", specialEventSchema);
-var PermanentEvent = mongoose.model("permanentEvent", permanentEventSchema);
+var SpecialEvent   = mongoose.model("SpecialEvent", specialEventSchema);
+var PermanentEvent = mongoose.model("PermanentEvent", permanentEventSchema);
 
 
 //exporting models
