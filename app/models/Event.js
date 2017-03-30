@@ -41,5 +41,7 @@ var PermanentEvent = mongoose.model("permanentEvent", permanentEventSchema);
 
 
 //exporting models
-module.exports = PermanentEvent;  
-module.exports = SpecialEvent;
+module.exports = {
+    PermanentEvent: PermanentEvent,
+    SpecialEvent: SpecialEvent
+};
