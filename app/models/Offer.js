@@ -18,5 +18,5 @@ var offerSchema = new Schema({
   images: [String]
 });
 
-var Offer = mongoose.model("Offer", offerSchema);
-module.exports = Offer
+var offer = mongoose.model("Offer", offerSchema);
+module.exports = offer
