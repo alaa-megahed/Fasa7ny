@@ -5,6 +5,8 @@ var mongoose = require('mongoose');
 /**
  * PermanentEvent is an event that is available at any given point in time as an essential part of the business's 
  * operation
+ * They can be events that are held on a weekly, monthly, annual basis, or held at arbitrary times. 
+ * repition_type accounts for which pattern the business follows
  */
 
 var permanentEventSchema = mongoose.Schema({
@@ -13,14 +15,14 @@ var permanentEventSchema = mongoose.Schema({
     location: String,
     price: Double,
     capacity: Integer,
-    timing: Date
+    repition_type: Integer,
+    timings: [Date]
 
 });
 
 
 /**Special events are events that are not made available permanently by the business 
- * They can be events that are held on a weekly, monthly, annual basis, or held at arbitrary times. 
- * repition_type accounts for which pattern the business follows
+ * 
  */
 
 var specialEventSchema = mongoose.Schema({
@@ -28,9 +30,8 @@ var specialEventSchema = mongoose.Schema({
     description: String,
     location: String,
     price: Double,
-    capacity: Integer,
-    repition_type: Integer, // to be changes to repition_pattern 
-    timing: [Date]
+    capacity: Integer, 
+    timing: Date
 
 });
 
