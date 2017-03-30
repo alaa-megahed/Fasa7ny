@@ -1,14 +1,13 @@
-
 var mongoose = require('mongoose'),
     Schema   = mongoose.Schema;
-    Booker   = mongoose.model('Registered_User'); //Name of registered user schema
 
 var BookingSchema = new Schema({
     booking_date : Date,
+    count        : {type: Number, default: 1},                 // how many people
     booker       :
     {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Booker' 
+        ref: 'RegisteredUser' 
     },
     event_id     : String
     //payment goes here

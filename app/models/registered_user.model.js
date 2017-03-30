@@ -1,4 +1,3 @@
-
 var mongoose = require('mongoose'),
     Schema   = mongoose.Schema;
 
@@ -17,4 +16,4 @@ var RegisteredUserSchema = new Schema({
 });
 
 var RegisteredUser = mongoose.model('RegisteredUser', RegisteredUserSchema);
-module.exports = Registered_User;
+module.exports = RegisteredUser;
