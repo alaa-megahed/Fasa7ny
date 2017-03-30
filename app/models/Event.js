@@ -16,7 +16,7 @@ var permanentEventSchema = mongoose.Schema({
     price: SchemaTypes.Double,
     capacity: Number,
     available: Number,
-    repition_type: Integer, // to be changes to repition_pattern 
+    repition_type: Number, // to be changes to repition_pattern 
     timing: [Date],
     images: [String]
 
