@@ -1,11 +1,13 @@
 var mongoose = require('mongoose'),
      Schema   = mongoose.Schema;
 
+var SchemaTypes = mongoose.Schema.Types;
+
 var offerSchema = new Schema({
   type 			 	: String,
   value       : SchemaTypes.Double,
   details		 	: String,
-  start_date : { type: Date, default: Date.now }
+  start_date : { type: Date, default: Date.now },
   expiration_date	: Date,
   notify_subscribers: Boolean, //boolean or int?
   business:
@@ -17,4 +19,4 @@ var offerSchema = new Schema({
 });
 
 var offer = mongoose.model("Offer", offerSchema);
-module.exports = Offer
+module.exports = offer
