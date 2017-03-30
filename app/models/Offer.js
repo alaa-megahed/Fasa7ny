@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var offerSchema = new Schema({
   type 			 	: String,
-  value       : Number,
+  value       : SchemaTypes.Double,
   details		 	: String,
   start_date : { type: Date, default: Date.now }
   expiration_date	: Date,

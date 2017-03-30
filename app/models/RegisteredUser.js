@@ -8,7 +8,7 @@ var RegisteredUserSchema = new Schema({
     password   : String,
     email      : String,
     phone      : String,
-    age        : Number,
+    birthdate  : Date,
     address    : String,  //url string or x and y doubles?
     gender     : String,
     profilePic : String

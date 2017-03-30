@@ -11,8 +11,8 @@ var BuinessSchema = new Schema({
     description   : String,
     merchant_ID   : String,
     category      :[String], //or int? can be in more than one category
-    location      : { Lat: Number, Lng: Number },  
-    average_rating: Number,
+    location      : { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },  
+    average_rating: SchemaTypes.Double,
     public        : 
     {
         type: int, default:0
