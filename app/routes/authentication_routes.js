@@ -1,12 +1,15 @@
 
+let AuthController = require('../controllers/AuthController');
+var express = require('express'),
+	passport = require('passport'),
+	router = express.Router();
+
 module.exports = function(app, passport) {
 
 	// =============================
 	// 			HOME PAGE 
 	// =============================
-	app.get('/', function(req, res) {
-		// res.render('index.ejs'); 
-	});
+	app.get('/', );
 
 	// =============================
 	// 			LOGIN 
@@ -47,6 +50,7 @@ module.exports = function(app, passport) {
 	// =====================================
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
+
 	app.get('/profile', isLoggedIn, function(req, res) {
 		if(req.user.user_type == 1)       // regular user
 		{
@@ -77,6 +81,8 @@ module.exports = function(app, passport) {
 	});
 };
 
+
+// helper methods
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
 
