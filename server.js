@@ -11,6 +11,19 @@ var mongoose = require('./config/mongoose');
 
 
 
+require('./config/passport')(passport); // pass passport for configuration
+
+/**
+	App Configuration
+ */
+app.use(express.cookieParser()); // read cookies (needed for auth)
+app.use(express.bodyParser()); // get information from html forms
+// required for passport
+app.use(express.session({ secret: 'farfeshnyyabeblawy' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
 
 
 
