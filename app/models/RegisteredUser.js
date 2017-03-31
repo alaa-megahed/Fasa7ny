@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
-Schema   = mongoose.Schema;
-
+    Schema   = mongoose.Schema,
+    bcrypt   = require('bcrypt-nodejs');
 
 var RegisteredUserSchema = new Schema({
     local:
@@ -27,6 +27,18 @@ var RegisteredUserSchema = new Schema({
     profilePic : String
 
 });
+
+
+// generating a hash
+userSchema.methods.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+userSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.local.password);
+};
+
 
 var RegisteredUser = mongoose.model('RegisteredUser', RegisteredUserSchema);
 module.exports = RegisteredUser;

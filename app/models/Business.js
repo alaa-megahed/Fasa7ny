@@ -1,5 +1,6 @@
 var mongoose      = require('mongoose'),
-    Schema        = mongoose.Schema;
+    Schema        = mongoose.Schema,
+    bcrypt   = require('bcrypt-nodejs');
 
 require('mongoose-double')(mongoose);
 var SchemaTypes = mongoose.Schema.Types;
@@ -34,9 +35,22 @@ var BusinessSchema = new Schema({
     },
     payment_methods: [String], //or int?
     subscribers    : [{type: mongoose.Schema.Types.ObjectId, ref:'RegisteredUser',default: []}], //whenever user subscribes to business, add him to this list.
-    images        :[String]
+    images         :[String]
 
 });
+
+
+
+// generating a hash
+userSchema.methods.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+userSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.local.password);
+};
+
 
 var Business = mongoose.model('Business', BusinessSchema);
 module.exports = Business;

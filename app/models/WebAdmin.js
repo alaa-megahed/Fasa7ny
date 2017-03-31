@@ -1,8 +1,8 @@
 var mongoose = require('mongoose'),
-    Schema   = mongoose.Schema;
-
+    Schema   = mongoose.Schema,
+    bcrypt   = require('bcrypt-nodejs');
 var WebAdminSchema = new Schema({ 
-    local:
+    local     :
     {
         username: 
         {
@@ -18,6 +18,18 @@ var WebAdminSchema = new Schema({
     },
     userType   : {type: Number, default: 3}
 });   
+
+
+// generating a hash
+userSchema.methods.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+userSchema.methods.validPassword = function(password) {
+    return bcrypt.compareSync(password, this.local.password);
+};
+
 
 var WebAdmin = mongoose.model('WebAdmin', WebAdminSchema);
 module.exports = WebAdmin;     
