@@ -7,7 +7,7 @@ var BookingSchema = new Schema({
     booker       :
     {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'RegisteredUser' 
+        ref: 'RegisteredUser'
     },
     event_id     : String
     //payment goes here

@@ -19,6 +19,9 @@ var permanentEventSchema = mongoose.Schema({
     repition_type: Number, // to be changes to repition_pattern
     timing: [Date],
     images: [String]
+    //add ref to business
+    //list of bookings def []
+
 
 });
 
