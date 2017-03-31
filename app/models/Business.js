@@ -20,7 +20,7 @@ var BusinessSchema = new Schema({
             required : true
         }    
     }, 
-    
+    userType   : {type: Number, default: 2},
     email         : String,
     phones        :[String],
     description   : String,

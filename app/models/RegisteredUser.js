@@ -17,7 +17,7 @@ var RegisteredUserSchema = new Schema({
             required : true
         }    
     }, 
-    
+    userType   : {type: Number, default: 1},
     name       : String,
     email      : String,
     phone      : String,
@@ -25,7 +25,7 @@ var RegisteredUserSchema = new Schema({
     address    : String,  //url string or x and y doubles?
     gender     : String,
     profilePic : String
-    
+
 });
 
 var RegisteredUser = mongoose.model('RegisteredUser', RegisteredUserSchema);

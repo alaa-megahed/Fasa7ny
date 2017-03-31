@@ -15,7 +15,8 @@ var WebAdminSchema = new Schema({
             type : String,
             required : true
         }    
-    }
+    },
+    userType   : {type: Number, default: 3}
 });   
 
 var WebAdmin = mongoose.model('WebAdmin', WebAdminSchema);
