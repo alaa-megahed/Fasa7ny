@@ -6,24 +6,6 @@ var RegisteredUser = mongoose.model('RegisteredUser');
 var passport = require('passport');
 
 
-
-// var event_ = new Events
-// {
-//   name = "lollapalozza"
-// }
-//
-// event_.save();
-//
-// var eventocc = new EventOcc(
-// {
-//   available : 20
-// });
-//
-// eventocc.save();
-//
-
-
-
 exports.regUserAddBooking = function(req, res, next) {
 
   // if(req.user)
@@ -33,7 +15,7 @@ exports.regUserAddBooking = function(req, res, next) {
     var booking = new Booking(
       {
         count        : req.body.count,
-        booker       : req.body.id, //change to req.user.id after serialization
+        booker       : req.user.id, //change to req.user.id after serialization
         event_id     : req.body.event,
         booking_date : date
       });
@@ -42,7 +24,7 @@ exports.regUserAddBooking = function(req, res, next) {
         if (!err) {
 
           //finds registered user and adds this event to his/her list of bookings
-            RegisteredUser.findOne({_id:req.body.id}, function(err, user){
+            RegisteredUser.findOne({_id:req.user.id}, function(err, user){
               if(err)
                 throw err;
 
@@ -82,7 +64,7 @@ exports.regUserViewBookings = function(req,res,next){
   // if(req.user)
   // {
     //change to req.user.id l8r
-    RegisteredUser.findOne({_id:req.body.id}).populate('bookings').exec(function(err, bookings){
+    RegisteredUser.findOne({_id:req.user.id}).populate('bookings').exec(function(err, bookings){
         console.log(bookings);
 
         res.send(bookings);
