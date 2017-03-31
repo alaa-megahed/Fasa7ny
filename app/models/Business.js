@@ -10,6 +10,7 @@ var BusinessSchema = new Schema({
     password      : String,
     email         : String,
     phones        :[String],
+    name: String,
     description   : String,
     merchant_ID   : String,
     category      :[String], //or int? can be in more than one category
@@ -24,6 +25,13 @@ var BusinessSchema = new Schema({
     images        :[String]
 
 });
+
+//created a text index on the desired fields
+BusinessSchema.index({
+    name: "text",
+    location: "text",
+    description: "text"
+}); 
 
 var Business = mongoose.model('Business', BusinessSchema);
 module.exports = Business;
