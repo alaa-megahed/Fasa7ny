@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 
 var RegisteredUserSchema = new Schema({
-    name       : String,  
+    name       : String,
     username   : String,
     password   : String,
     email      : String,
@@ -11,8 +11,9 @@ var RegisteredUserSchema = new Schema({
     birthdate  : Date,
     address    : String,  //url string or x and y doubles?
     gender     : String,
-    profilePic : String
-      
+    profilePic : String,
+    bookings   : [{type: mongoose.Schema.Types.ObjectId, ref:'Booking',default: []}]
+
 });
 
 var RegisteredUser = mongoose.model('RegisteredUser', RegisteredUserSchema);

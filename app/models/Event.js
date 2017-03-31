@@ -18,7 +18,10 @@ var EventOccurrencesSchema = mongoose.Schema({
     time: String,
     available: Number,
     bookings : [{type: mongoose.Schema.Types.ObjectId,ref: 'Booking',default: [] }],
-    event : {type: mongoose.Schema.Types.ObjectId, ref:'Events'}
+<<<<<<< HEAD
+=======
+    event_ : {type: mongoose.Schema.Types.ObjectId, ref:'Events'}
+>>>>>>> reg_user_add_booking
 });
 
 //creating models
@@ -29,4 +32,8 @@ var EventOccurrences = mongoose.model("EventOccurrences", EventOccurrencesSchema
 module.exports = {
     Events: Events,
     EventOccurrences: EventOccurrences
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> reg_user_add_booking
