@@ -17,4 +17,6 @@ module.exports = function(app)
 
     app.post('/cancel_booking',booking.cancel_booking);
 
+    app.post('/view_event_bookings',booking.view_event_bookings);
+
 };

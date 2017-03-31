@@ -11,7 +11,6 @@ var mongoose = require('./config/mongoose'),
     app      = express();
 
 
-mongoose.Promise = require('bluebird');
 //requiring Schemas
 require('./app/models/Booking');
 require('./app/models/Business');
