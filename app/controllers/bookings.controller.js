@@ -103,11 +103,13 @@ exports.regUserDeleteBookings = function(req,res,next){
 
     Booking.findByIdAndRemove(req.body.booking, function(err,booking){
       if(err) throw err;
-      RegisteredUser.findByIdAndUpdate(req.body.id, {"$pull" : {bookings: req.body.booking}}, function(err,booking){
+      RegisteredUser.findByIdAndUpdate(req.body.id, {"$pull" : {bookings: req.body.booking}}, function(err,user){
         if(err) throw err;
       })
-      EventOcc.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.booking}}, function(err,booking){
+      EventOcc.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.booking}}, function(err,eve){
         if(err) throw err;
+        eve.available = eve.available + booking.count;
+        eve.save();
         res.send(booking);
       })
 
