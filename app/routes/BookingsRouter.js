@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 
 var express  = require('express');
 var app      = express();
@@ -13,7 +13,7 @@ module.exports = function(app)
     });
 
     //below belongs to business
-    
+
     app.post('/book_event', booking.book_event);
 
     app.post('/edit_booking',booking.edit_booking);
@@ -24,15 +24,12 @@ module.exports = function(app)
 
     //below belongs to RegisteredUser
 
-    app.post('/createRegUserBookings', bookings.regUserAddBooking);
+    app.post('/createRegUserBookings', booking.regUserAddBooking);
 
-    app.post('/viewRegUserBookings', bookings.regUserViewBookings);
+    app.post('/viewRegUserBookings', booking.regUserViewBookings);
 
-    app.post('/deleteRegUserBookings', bookings.regUserDeleteBookings);
+    app.post('/deleteRegUserBookings', booking.regUserDeleteBookings);
 
-    app.post('/editRegUserBookings', bookings.regUserEditBookings);
+    app.post('/editRegUserBookings', booking.regUserEditBookings);
 
 };
-=======
-
->>>>>>> reg_user_add_booking

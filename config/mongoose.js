@@ -12,9 +12,9 @@ var mongoose = require('mongoose'),
 
 
 module.exports = function() {
-<<<<<<< HEAD
+
     mongoose.Promise = global.Promise;
->>>>>>> reg_user_add_booking
+
     var db = mongoose.connect(config.db);
     return db;
 };

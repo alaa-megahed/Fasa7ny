@@ -19,7 +19,7 @@ require('./app/models/Offer');
 require('./app/models/RegisteredUser');
 require('./app/models/WebAdmin');
 
-require('./app/routes/routes.js')(app);
+require('./app/routes/BookingsRouter.js')(app);
 
 app.listen(config.port);
 
