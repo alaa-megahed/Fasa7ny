@@ -4,6 +4,8 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
 
 exports.book_event = function (req,res) 
 {
+   // if(req.user)
+  // {
 	var form     = req.body; 
 //  var event_id = req.params.event_id; 	   // pass event id in url 
 	var	event_id = "58de4bc1c6e6f2e13cc833e8"; // testing
@@ -14,7 +16,7 @@ exports.book_event = function (req,res)
 		booking_date : new Date(),
 	    count        : form.count, 
 	    event_id	 : event_id
-//	    booker       : session.user._id	//get business user id from session?
+//	    booker       : req.user.id	//get business user id from session?
 	});	
 
 	booking.save(function(err,booking)
@@ -47,10 +49,17 @@ exports.book_event = function (req,res)
 	});	
 
 	res.send("khalaweess");
+	// }
+  // else
+  // {
+  //   res.send("Please log in to add bookings");
+  // }
 }
 
 exports.edit_booking = function(req,res)
 {
+	 // if(req.user)
+  // {
 //	var bookingID    = req.params.id;        		//id of booking to be edited should be passed in the url or body
 	var bookingID    = "58de649c8d5ac33769863bc3"; 	//for testing
 	var new_date 	 = new Date(); 		
@@ -85,11 +94,19 @@ exports.edit_booking = function(req,res)
 			res.send("check database");
 		}	
 	});
+	res.send("khalaweess");
+	// }
+  // else
+  // {
+  //   res.send("Please log in to edit bookings");
+  // }
 
 }
 
 exports.cancel_booking = function(req,res)
 {
+	// if(req.user)
+  // {
 //	var bookingID = req.params.id;        //id of booking to be cancelled should be passed in the url or body
 //  var event_id  = req.params.id 		  //event_id of booking to be cancelled should be passed in the url or body or we need to findOne	
 	var bookingID = "58de5cbf9b286d30f8c1d9a0";  //for testing
@@ -120,11 +137,18 @@ exports.cancel_booking = function(req,res)
 
 	});
 
+// }
+  // else
+  // {
+  //   res.send("Please log in to cancel bookings");
+  // }
 
 }
 
 exports.view_event_bookings = function(req,res)
 {
+	// if(req.user)
+  // {
 
 //  var event_id  = req.params.id 		  		 //event_id  should be passed in the url or body 
 	var event_id  = "58de4bc1c6e6f2e13cc833e8";  //for testing
@@ -134,4 +158,9 @@ exports.view_event_bookings = function(req,res)
 		console.log(bookings);
 		res.send(bookings);
 	});
+	// }
+  // else
+  // {
+  //   res.send("Please log in to cancel bookings");
+  // }
 }
