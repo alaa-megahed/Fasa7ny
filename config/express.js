@@ -1,6 +1,7 @@
 var config = require('./config'),
     express = require('express'),
     bodyParser = require('body-parser'),
+    cookieParser = require('cookie-parser'),
     passport = require('passport'),
     flash = require('connect-flash'),
     session = require('express-session'),
@@ -16,7 +17,8 @@ module.exports = function() {
         extended: true
     }));
 
-
+    app.use(express.bodyParser()); // get information from html forms
+    app.use(express.cookieParser()); // read cookies (needed for auth)
 
     app.use(flash());
 
@@ -40,8 +42,10 @@ module.exports = function() {
 
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
+    require('./passport')(passport); // pass passport for configuration
 
     app.use( express.static("./uploads") );
+
   
 
     return app;
