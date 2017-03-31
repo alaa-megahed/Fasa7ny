@@ -75,6 +75,18 @@ let AuthController =
 		req.logout();
 		// res.redirect('/');
 	},
+
+	// =====================================
+	// 				FACEBOOK 
+	// =====================================
+	facebookLogin   : function(){passport.authenticate('facebook', { scope : 'email' });}
+	
+	facebookCallback: function(){passport.authenticate('facebook', {
+            						successRedirect : '/profile',
+            						failureRedirect : '/'
+       							   });
+								}
+
 }
 
 module.exports = AuthController;

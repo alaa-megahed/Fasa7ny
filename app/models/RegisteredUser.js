@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     bcrypt   = require('bcrypt-nodejs');
 
 var RegisteredUserSchema = new Schema({
-    local:
+    local    :
     {
         username: 
         {
@@ -16,6 +16,13 @@ var RegisteredUserSchema = new Schema({
             type : String,
             required : true
         }    
+    },
+    facebook   : 
+    {
+        id    : String,
+        token : String,
+        email : String,
+        name  : String
     }, 
     user_type  : {type: Number, default: 1},
     name       : String,
