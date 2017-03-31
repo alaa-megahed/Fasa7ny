@@ -101,7 +101,7 @@ exports.edit_booking = function(req,res)
 			res.send("check database");
 		}
 	});
-	res.send("khalaweess");
+	
 	// }
   // else
   // {
@@ -210,7 +210,7 @@ exports.regUserAddBooking = function(req, res, next) {
 
             //decreases capacity of event occurence and stores booking in event occurence's list of bookings
 
-             EventOcc.findOneAndUpdate({_id:req.body.event}, {"$push" : {"bookings": booking}}, function(err,eve){
+             EventOccurrences.findOneAndUpdate({_id:req.body.event}, {"$push" : {"bookings": booking}}, function(err,eve){
               eve.available = eve.available - req.body.count;
               eve.save();
                console.log(eve);
@@ -255,7 +255,7 @@ exports.regUserEditBookings = function(req,res,next){
   // if(req.user)
   // {
     Booking.findById(req.body.booking, function(err,booking){
-        EventOcc.findOne(booking.event_id, function(err, eve){
+        EventOccurrences.findOne(booking.event_id, function(err, eve){
           eve.available = eve.available + booking.count - req.body.count;
           eve.save();
           booking.count = req.body.count;
@@ -284,7 +284,7 @@ exports.regUserDeleteBookings = function(req,res,next){
       RegisteredUser.findByIdAndUpdate(req.body.id, {"$pull" : {bookings: req.body.booking}}, function(err,user){
         if(err) throw err;
       })
-      EventOcc.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.booking}}, function(err,eve){
+      EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.booking}}, function(err,eve){
         if(err) throw err;
         eve.available = eve.available + booking.count;
         eve.save();
