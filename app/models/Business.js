@@ -6,8 +6,21 @@ var SchemaTypes = mongoose.Schema.Types;
 
 
 var BusinessSchema = new Schema({
-    username      : String,
-    password      : String,
+    local:
+    {
+        username: 
+        {
+            type : String,
+            required : true,
+            unique : true
+        },
+        password: 
+        {
+            type : String,
+            required : true
+        }    
+    }, 
+    
     email         : String,
     phones        :[String],
     description   : String,
