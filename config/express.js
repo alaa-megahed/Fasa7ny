@@ -42,7 +42,8 @@ module.exports = function() {
 
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
-    require('./passport')(passport); // pass passport for configuration
+    require('./passport')(passport);                                 // pass passport for passport configuration
+    require('../app/routes/authentication_routes')(app, passport);   // authentication related routes
 
     app.use( express.static("./uploads") );
 

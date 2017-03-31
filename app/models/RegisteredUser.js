@@ -17,7 +17,7 @@ var RegisteredUserSchema = new Schema({
             required : true
         }    
     }, 
-    userType   : {type: Number, default: 1},
+    user_type  : {type: Number, default: 1},
     name       : String,
     email      : String,
     phone      : String,

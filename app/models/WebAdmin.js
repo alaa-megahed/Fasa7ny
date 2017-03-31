@@ -16,7 +16,7 @@ var WebAdminSchema = new Schema({
             required : true
         }    
     },
-    userType   : {type: Number, default: 3}
+    user_type : {type: Number, default: 3}
 });   
 
 
