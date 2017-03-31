@@ -95,6 +95,29 @@ exports.regUserViewBookings = function(req,res,next){
 
 };
 
+exports.regUserEditBookings = function(req,res,next){
+
+  // if(req.user)
+  // {
+    Booking.findById(req.body.booking, function(err,booking){
+        EventOcc.findOne(booking.event_id, function(err, eve){
+          eve.available = eve.available + booking.count - req.body.count;
+          eve.save();
+          booking.count = req.body.count;
+          booking.save();
+        })
+
+
+    } );
+
+    res.send("successful edit");
+  // }
+  // else
+  // {
+  //   res.send("Please log in to edit bookings");
+  // }
+
+}
 
 exports.regUserDeleteBookings = function(req,res,next){
 

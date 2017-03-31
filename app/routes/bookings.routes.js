@@ -10,7 +10,7 @@ module.exports = function(app,passport,multer) {
 
   app.post('/deleteRegUserBookings', bookings.regUserDeleteBookings);
 
-
+  app.post('/editRegUserBookings', bookings.regUserEditBookings);
 
 
 
