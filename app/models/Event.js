@@ -9,43 +9,71 @@ var SchemaTypes = mongoose.Schema.Types;
  * repition_type accounts for which pattern the business follows
  */
 
-var permanentEventSchema = mongoose.Schema({
-    name: String,
-    description: String,
-    location: String,
-    price: SchemaTypes.Double,
-    capacity: Number,
-    available: Number,
-    repition_type: Number, // to be changes to repition_pattern
-    timing: [Date],
-    images: [String]
+// var permanentEventSchema = mongoose.Schema({
+//     name: String,
+//     description: String,
+//     location: String,
+//     price: SchemaTypes.Double,
+//     capacity: Number,
+//     available: Number,
+//     repition_type: Number, // to be changes to repition_pattern
+//     timing: [Date],
+//     images: [String],
+//     business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'}
 
-});
+// });
 
 
 /**Special events are events that are not made available permanently by the business
     They don't have to be repeated
  */
 
-var specialEventSchema = mongoose.Schema({
+// var specialEventSchema = mongoose.Schema({
+//     name: String,
+//     description: String,
+//     location: String,
+//     price: SchemaTypes.Double,
+//     capacity: Number,
+//     available: Number,
+//     timing: Date,
+//     images: [String],
+//     business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'}
+
+// });
+
+var EventsSchema = mongoose.Schema({
     name: String,
     description: String,
     location: String,
     price: SchemaTypes.Double,
     capacity: Number,
+    image: [String],
+    repeated: String,
+    daysOff: [String],
+    business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'}
+});
+
+var EventOccurrencesSchema = mongoose.Schema({
+    day: Date,
+    time: String,
     available: Number,
-    timing: Date,
-    images: [String]
+    bookings : [{type: mongoose.Schema.Types.ObjectId,ref: 'Booking',default: [] }],
+    event : {type: mongoose.Schema.Types.ObjectId, ref:'Events'}
+
 });
 
 
+
+
+
+
 //creating models
-var SpecialEvent = mongoose.model("specialEvent", specialEventSchema);
-var PermanentEvent = mongoose.model("permanentEvent", permanentEventSchema);
+var Events = mongoose.model("Events", EventsSchema);
+var EventOccurrences = mongoose.model("EventOccurrences", EventOccurrencesSchema);
 
 
 //exporting models
 module.exports = {
-    PermanentEvent: PermanentEvent,
-    SpecialEvent: SpecialEvent
+    Events: Events,
+    EventOccurrences: EventOccurrences
 };
