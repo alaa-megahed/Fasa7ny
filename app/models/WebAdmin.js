@@ -1,9 +1,7 @@
 var mongoose = require('mongoose'),
     Schema   = mongoose.Schema,
     bcrypt   = require('bcrypt-nodejs');
-var WebAdminSchema = new Schema({ 
-    local     :
-    {
+var WebAdminSchema = new Schema({   
         username: 
         {
             type : String,
@@ -14,8 +12,7 @@ var WebAdminSchema = new Schema({
         {
             type : String,
             required : true
-        }    
-    },
+        },    
     user_type : {type: Number, default: 3}
 });   
 
@@ -27,7 +24,7 @@ WebAdminSchema.methods.generateHash = function(password) {
 
 // checking if password is valid
 WebAdminSchema.methods.validPassword = function(password) {
-    return bcrypt.compareSync(password, this.local.password);
+    return (bcrypt.compareSync(password, this.password));
 };
 
 
