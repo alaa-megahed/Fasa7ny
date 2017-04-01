@@ -1,5 +1,6 @@
 var config = require('./config'),
     express = require('express'),
+    http = require('http'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     passport = require('passport'),
@@ -17,8 +18,8 @@ module.exports = function() {
         extended: true
     }));
 
-    app.use(express.bodyParser()); // get information from html forms
-    app.use(express.cookieParser()); // read cookies (needed for auth)
+    // app.use(bodyParser()); // get information from html forms
+    app.use(cookieParser()); // read cookies (needed for auth)
 
     app.use(flash());
 
@@ -37,13 +38,15 @@ module.exports = function() {
 
 
 
-    app.set('views', './app/views');
+    app.set('views', './views');
     app.set('view engine', 'ejs');
 
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
+
     require('./passport')(passport);                                 // pass passport for passport configuration
-    require('../app/routes/authentication_routes');   // authentication related routes
+    var auth_routes = require('../app/routes/authentication_routes');                  // authentication related routes
+    app.use('/', auth_routes);
 
     app.use( express.static("./uploads") );
 

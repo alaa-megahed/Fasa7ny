@@ -8,13 +8,11 @@ var RegisteredUserSchema = new Schema({
         username: 
         {
             type : String,
-            required : true,
             unique : true
         },
         password: 
         {
             type : String,
-            required : true
         }    
     },
     facebook   : 
@@ -37,12 +35,12 @@ var RegisteredUserSchema = new Schema({
 
 
 // generating a hash
-userSchema.methods.generateHash = function(password) {
+RegisteredUserSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 // checking if password is valid
-userSchema.methods.validPassword = function(password) {
+RegisteredUserSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };
 

@@ -1,9 +1,10 @@
 
 let AuthController = require('../controllers/AuthController');
 var express = require('express'),
-	router = express.Router();
+	passport = require('passport'),
+    router = express.Router();
 
-
+var app = express();
 router.get('/', AuthController.home);
 
 router.get('/login', AuthController.getLogin);
@@ -18,7 +19,12 @@ router.get('/profile', AuthController.getProfile);
 
 router.get('/logout', AuthController.logout);	
 
-app.get('/auth/facebook', AuthController.facebookLogin);
+router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
 
-app.get('/auth/facebook/callback', AuthController.facebookCallback);
-        
+router.get('/auth/facebook/callback',passport.authenticate('facebook', {
+            						successRedirect : '/profile',
+            						failureRedirect : '/'
+       							   }));
+
+
+module.exports = router;        

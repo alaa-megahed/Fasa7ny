@@ -6,7 +6,7 @@ let AuthController =
 	// 			HOME PAGE 
 	// ============================
 	home: function(req, res) {
-		// res.render('index.ejs'); 
+		res.render('index.ejs'); 
 	},
 
 	// ============================
@@ -14,29 +14,26 @@ let AuthController =
 	// ============================
 	getLogin: function(req, res) {
 
-		// render the page and pass in any flash data if it exists
-		// res.render('login.ejs', { message: req.flash('loginMessage') });
+		res.render('login.ejs', { message: req.flash('loginMessage') });
 	},
 
 	postLogin: function(){passport.authenticate('local-login', {
-		// successRedirect : '/profile', // redirect to the secure profile section
-		// failureRedirect : '/login', // redirect back to the signup page if there is an error
-		// failureFlash : true // allow flash messages
+		successRedirect : '/profile', // redirect to the secure profile section
+		failureRedirect : '/login', // redirect back to the signup page if there is an error
+		failureFlash : true // allow flash messages
 	})},
 
 	// ============================
 	//           SIGNUP 
 	// ============================
 	getSignup: function(req, res) {
-
-		// render the page and pass in any flash data if it exists
-		// res.render('signup.ejs', { message: req.flash('signupMessage') });
+		res.render('signup.ejs', { message: req.flash('signupMessage') });
 	},
 
 	postSignup: function(){passport.authenticate('local-signup', {
-		// successRedirect : '/profile', // redirect to the secure profile section
-		// failureRedirect : '/signup', // redirect back to the signup page if there is an error
-		// failureFlash : true // allow flash messages
+		successRedirect : '/profile', // redirect to the secure profile section
+		failureRedirect : '/signup', // redirect back to the signup page if there is an error
+		failureFlash : true // allow flash messages
 	})},
 
 	// ============================
@@ -47,25 +44,25 @@ let AuthController =
 		{
 			if(req.user.user_type == 1)       // regular user
 			{
-			// res.render('user_profile.ejs', {
-			// user : req.user // get the user out of session and pass to template
-			// });
+			res.render('user_profile.ejs', {
+			user : req.user // get the user out of session and pass to template
+			});
 			}
 			else if(req.user.user_type == 2)  // business
 			{
-				// res.render('business_profile.ejs', {
-				// user : req.user // get the user out of session and pass to template
-				// });
+				res.render('business_profile.ejs', {
+				user : req.user // get the user out of session and pass to template
+				});
 			}
 			else if(req.user.user_type == 3)  // admin
 			{
-				// res.render('admin_profile.ejs', {
-				// user : req.user // get the user out of session and pass to template
-				// });
+				res.render('admin_profile.ejs', {
+				user : req.user // get the user out of session and pass to template
+				});
 			}	
 		}
 		else
-			// res.redirect('/');
+			res.redirect('/');
 	},
 
 	// =====================================
@@ -73,14 +70,13 @@ let AuthController =
 	// =====================================
 	logout: function(req, res) {
 		req.logout();
-		// res.redirect('/');
+		res.redirect('/');
 	},
 
 	// =====================================
 	// 				FACEBOOK 
 	// =====================================
-	facebookLogin   : function(){passport.authenticate('facebook', { scope : 'email' });}
-	
+	facebookLogin   : function(){passport.authenticate('facebook', { scope : 'email' });},
 	facebookCallback: function(){passport.authenticate('facebook', {
             						successRedirect : '/profile',
             						failureRedirect : '/'
