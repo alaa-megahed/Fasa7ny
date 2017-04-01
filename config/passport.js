@@ -38,6 +38,7 @@ module.exports = function(passport)
       },
       function(req, username, password, done) 
       {
+          var check = 0;
            // find a regular user whose username matches the username entered
            // we are checking to see if the user trying to login already exists
             User.findOne({ 'local.username' :  username }, function(err, user) 
@@ -51,47 +52,44 @@ module.exports = function(passport)
                     {
                       return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
                     } 
-                    else 
-                    {
-                         //repeate the same check on business usernames
-                         Business.findOne({ 'local.username' :  username }, function(err, user)
-                         {  
-                          if(err)
-                            return done(err);
-                          if(user){
-                            return done(null, false, req.flash('signupMessage', 'That username is already taken.')); 
-                          }
-                          else
-                          {
-                                // finnally check web admins usernames
-                                Admin.findOne({ 'local.username' :  username }, function(err, user)
-                                {
-                                    if(err)
-                                      return done(err);
-                                    if(user){
-                                      return done(null, false, req.flash('signupMessage', 'That username is already taken.')); 
-                                    }
-                                    else
-                                    {
-                                      // username entered is unique
-                                      var newUser            = new User();
-                                      // set the user's local credentials
-                                      newUser.local.username = username;
-                                      newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
-                                      // TODO: set other attributes
-                                      // save the user
-                                      newUser.save(function(err) {
-                                        if (err)
-                                          throw err;
-                                        return done(null, newUser);
-                                      });
-                                    }
+                   
+            });          
+            //repeate the same check on business usernames
+            Business.findOne({ 'local.username' :  username }, function(err, user)
+            {  
+              if(err)
+                return done(err);
+              if(user){
+                return done(null, false, req.flash('signupMessage', 'That username is already taken.')); 
+              }
+                      
+            });          
+            // finnally check web admins usernames
+            Admin.findOne({ 'local.username' :  username }, function(err, user)
+            {
+                if(err)
+                  return done(err);
+                if(user){
+                  return done(null, false, req.flash('signupMessage', 'That username is already taken.')); 
+                }
+                else
+                {
+                    // username entered is unique
+                    var newUser            = new User();
+                    // set the user's local credentials
+                    newUser.local.username = username;
+                    newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
+                    // TODO: set other attributes
+                    // save the user
+                    newUser.save(function(err) {
+                        if (err)
+                          throw err;
+                          return done(null, newUser);
+                    });
+                }
 
-                                });
-                           } 
-                       });
-                   }
-             });
+            });
+         
       })),
 
             
@@ -196,7 +194,8 @@ module.exports = function(passport)
             // set all of the facebook information in our user model
             newUser.facebook.id    = profile.id; // set the users facebook id                   
             newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
-            newUser.facebook.name  = profile.name.givenName + ' ' + profile.name.familyName; // look at the passport user profile to see how names are returned
+            newUser.facebook.name  = profile.displayName;
+            //.first_name + ' ' + profile.name.last_name; // look at the passport user profile to see how names are returned
             newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
 
             // save our user to the database
