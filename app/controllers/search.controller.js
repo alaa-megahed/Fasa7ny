@@ -10,8 +10,12 @@ SearchController = {
                 else
                     res.send(result);
             });
-    }
-    ,
+    },
+    // , searchRedirect: function(req, res) {
+    //     var keyword = req.body.keyword; 
+    //     req.session.formData = req.body; 
+    //     res.redirect(keyword); 
+    // },  
     /** Searches businesses by keyword inserted by user 
      * Filters by category, minimum rating, area 
      * Sorts by average_rating 
@@ -25,7 +29,7 @@ SearchController = {
         var query = Business.find(queryBody);
 
         if (sortBy !== 'udefined' && sortBy.length > 0) { //apply sort filter only if not empty 
-            var sortObj = {}; 
+            var sortObj = {};
             sortObj[sortBy] = -1;
             query.sort(sortObj);
 
@@ -50,19 +54,24 @@ helper = {
      * and returns the body of the query to be executed 
      */
     makeQuery: function (formData) {
-    
+
         var keyword = formData.keyword || ""; //text search index over name, description and area (no substring)
-        var category = formData.category || ""; 
+        var category = formData.category || "";
         var area = formData.area || "";
         var minRating = formData.minRating || "";
-       
+
         var query = {};
+
+        //match any substring with name, description or area to search keyword
         if (keyword.length > 0) {
-            query["$text"] = { $search: keyword };
+            query["$or"] = [
+                { name: new RegExp(keyword, 'i') },
+                { description: new RegExp(keyword, 'i') },
+                { area: new RegExp(keyword, 'i') }
+            ];
         }
-        /**
-         * This array could be changes to or, and or a combinaring of both 
-         */
+        
+        // add filters one by one, according to user input 
         var anding = [];
         if (category.length > 0) {
             anding.push({ category: new RegExp(category, 'i') });
@@ -71,9 +80,9 @@ helper = {
             anding.push({ area: new RegExp(area, 'i') });
         }
         if (minRating.length > 0) {
-            var minRatingFloat = parseFloat(minRating); 
-            console.log(minRatingFloat); 
-            anding.push({ average_rating: { $gte: minRatingFloat} });
+            var minRatingFloat = parseFloat(minRating);
+            console.log(minRatingFloat);
+            anding.push({ average_rating: { $gte: minRatingFloat } });
         }
         if (anding.length > 0) {
             query["$and"] = anding;
