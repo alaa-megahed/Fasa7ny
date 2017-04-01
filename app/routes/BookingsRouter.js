@@ -32,4 +32,7 @@ module.exports = function(app)
 
     app.post('/editRegUserBookings', booking.regUserEditBookings);
 
+    // rate     --> Laila
+    app.post('/rate', reg_users.rate);
+
 };
