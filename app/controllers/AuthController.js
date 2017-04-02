@@ -17,11 +17,11 @@ let AuthController =
 		res.render('login.ejs', { message: req.flash('loginMessage') });
 	},
 
-	postLogin: function(){passport.authenticate('local-login', {
-		successRedirect : '/profile', // redirect to the secure profile section
-		failureRedirect : '/login', // redirect back to the signup page if there is an error
-		failureFlash : true // allow flash messages
-	})},
+	postLogin: function(req, res){passport.authenticate('local-login', {
+		successRedirect : '/profile', 
+		failureRedirect : '/login', 
+		failureFlash : true 
+	})(req, res);},
 
 	// ============================
 	//           SIGNUP 
@@ -30,11 +30,11 @@ let AuthController =
 		res.render('signup.ejs', { message: req.flash('signupMessage') });
 	},
 
-	postSignup: function(){passport.authenticate('local-signup', {
-		successRedirect : '/profile', // redirect to the secure profile section
-		failureRedirect : '/signup', // redirect back to the signup page if there is an error
-		failureFlash : true // allow flash messages
-	})},
+	postSignup: function(req, res){passport.authenticate('local-signup', {
+		successRedirect : '/profile', 
+		failureRedirect : '/signup', 
+		failureFlash : true 
+	})(req, res);},
 
 	// ============================
 	// 	    PROFILE SECTION 
@@ -76,14 +76,26 @@ let AuthController =
 	// =====================================
 	// 				FACEBOOK 
 	// =====================================
-	facebookLogin   : function(){passport.authenticate('facebook', { scope : 'email' });},
-	facebookCallback: function(){passport.authenticate('facebook', {
+	facebookLogin   : function(req, res){
+		passport.authenticate('facebook', { scope : 'email' })(req, res);},
+
+	facebookCallback: function(req, res){
+		passport.authenticate('facebook', {
             						successRedirect : '/profile',
             						failureRedirect : '/'
-       							   });
-								}	
+       							   })(req, res);
+								},
+									
+	// =====================================
+	// 				GOOGLE 
+	// =====================================
+	googleLogin : function(req, res){
+		passport.authenticate('google', { scope : ['profile', 'email'] })(req, res);
+	},
 
-															
+	googleCallback: function(req, res){
+		passport.authenticate('google', { failureRedirect: '/', successRedirect :'http://localhost:8080/profile'})(req, res);
+	}	
 
 }
 

@@ -10,30 +10,26 @@ router.get('/', AuthController.home);
 
 router.get('/login', AuthController.getLogin);
 
-router.post('/login', passport.authenticate('local-login', {successRedirect : '/profile',failureRedirect : '/login', failureFlash : true }));
+router.post('/login', AuthController.postLogin);
 
 router.get('/signup', AuthController.getSignup);
 
-router.post('/signup', passport.authenticate('local-signup', {successRedirect : '/profile',failureRedirect : '/signup',failureFlash : true}));		
+router.post('/signup', AuthController.postSignup);		
 
 router.get('/profile', AuthController.getProfile);
 
 router.get('/logout', AuthController.logout);	
 
-router.get('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+router.get('/auth/facebook', AuthController.facebookLogin);
 
-router.get('/auth/facebook/callback',passport.authenticate('facebook', {successRedirect : '/profile',failureRedirect : '/'}));
+router.get('/auth/facebook/callback',AuthController.facebookCallback);
 
-router.get('/auth/google', passport.authenticate('google', { scope : ['profile', 'email'] }));
-
-// router.get('/auth/google/callback',passport.authenticate('google', {successRedirect : '/profile',failureRedirect : '/' }));
+router.get('/auth/google', AuthController.googleLogin);
                     
-router.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/' }),
-    function(req, res) {
- // absolute path
-        res.redirect('http://localhost:8080/profile');
-    });                    
+router.get('/auth/google/callback', AuthController.googleCallback);
+
+        
+                        
                   							   
 
 
