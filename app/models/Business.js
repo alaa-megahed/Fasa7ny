@@ -25,5 +25,15 @@ var BusinessSchema = new Schema({
 
 });
 
+// generating a hash
+BusinessSchema.methods.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+// checking if password is valid
+BusinessSchema.methods.validPassword = function(password) {
+    return (bcrypt.compareSync(password, this.password));
+};
+
 var Business = mongoose.model('Business', BusinessSchema);
 module.exports = Business;
