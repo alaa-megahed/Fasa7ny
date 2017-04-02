@@ -4,9 +4,6 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
 var RegisteredUser     = require('mongoose').model('RegisteredUser');
 
 
-
-
-
 //============================================<	BUSINESS>===========================================================
 
 exports.book_event = function (req,res)
@@ -21,7 +18,7 @@ exports.book_event = function (req,res)
 	var booking = new Booking
 	({
 		booking_date : new Date(),
-	    count        : form.count,
+	    count      : form.count,
 	    event_id	 : event_id
 //	    booker       : req.user.id	//get business user id from session?
 	});

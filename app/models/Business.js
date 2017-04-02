@@ -21,7 +21,7 @@ var BusinessSchema = new Schema({
     },
     payment_methods: [String], //or int?
     subscribers    : [{type: mongoose.Schema.Types.ObjectId, ref:'RegisteredUser',default: []}], //whenever user subscribes to business, add him to this list.
-    images        :[String]
+    images         : [String]
 
 });
 

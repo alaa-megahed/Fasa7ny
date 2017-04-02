@@ -9,7 +9,7 @@ var RegisteredUserSchema = new Schema({
     email      : String,
     phone      : String,
     birthdate  : Date,
-    address    : String,  //url string or x and y doubles?
+    address    : String,  
     gender     : String,
     profilePic : String,
     bookings   : [{type: mongoose.Schema.Types.ObjectId, ref:'Booking',default: []}]
