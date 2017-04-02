@@ -7,6 +7,8 @@ var SchemaTypes = mongoose.Schema.Types;
 
 
 var BusinessSchema = new Schema({
+    local         :
+    {   
         username: 
         {
             type : String,
@@ -17,8 +19,10 @@ var BusinessSchema = new Schema({
         {
             type : String,
             required : true
-        },    
-    user_type   : {type: Number, default: 2},
+        }
+    },    
+    user_type     : {type: Number, default: 2},
+    name          : String,
     email         : String,
     phones        :[String],
     description   : String,

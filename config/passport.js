@@ -1,6 +1,7 @@
        
 var LocalStrategy = require('passport-local').Strategy,
     FacebookStrategy = require('passport-facebook').Strategy,
+    GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
     User = require('../app/models/RegisteredUser'),
     Business = require('../app/models/Business'),
     Admin = require('../app/models/WebAdmin'),
@@ -38,51 +39,47 @@ module.exports = function(passport)
       },
       function(req, username, password, done) 
       {
-
-          var count = 0;
           var check = 0;
-           // find a regular user whose username matches the username entered
-           // we are checking to see if the user trying to login already exists
-            User.findOne({ 'local.username' :  username }, function(err, user) 
-            {
-                    console.log("user callback find" + count);
-                    count = count + 1;
-                    // if there are any errors, return the error
-                    if (err)
-                      return done(err);
 
-                    // check to see if theres already a user with that username
-                    if (user) 
-                    {
-                      return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
-                    } 
-                    else 
+          // check weather the username entered is unique
+          // search the registered users collection
+          User.findOne({ 'local.username' :  username }, function(err, user) 
+          {
+              if (err)
+                return done(err);
+              if (user) 
               {
-                  check++;
-                  if(check == 3)
-                    {
-                    // username entered is unique
-                    var newUser            = new User();
-                    // set the user's local credentials
-                    newUser.local.username = username;
-                    newUser.local.password = newUser.generateHash(password); // use the generateHash function in our user model
-                    // TODO: set other attributes
-                    // save the user
-                    newUser.save(function(err) {
+                return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
+              } 
+              else 
+              {
+                check++;
+                //if this is the third(last) check and no user found
+                if(check == 3)
+                {
+                    // username entered is unique 
+                      var newUser            = new User();
+                      newUser.local.username = username;
+                      newUser.local.password = newUser.generateHash(password);
+                      newUser.name           = req.body.name;
+                      newUser.email          = req.body.email;
+                      newUser.phone          = req.body.phone;
+                      newUser.birthdate      = req.body.birthdate;
+                      newUser.address        = req.body.address;
+                      newUser.gender         = req.body.gender;
+                      newUser.profilePic     = req.body.profilePic;
+                      // save the user
+                      newUser.save(function(err) {
                         if (err)
                           throw err;
-                          return done(null, newUser);
-                    });
-                }
-              }
-
-                   
-            });          
-            //repeate the same check on business usernames
-            Admin.findOne({ 'username' :  username }, function(err, user)
-            {  
-              console.log("business callback find" + count);
-                    count = count + 1;
+                        return done(null, newUser);
+                      });
+                  }
+               }    
+          });          
+          //repeate the same check on business usernames
+            Business.findOne({ 'local.username' :  username }, function(err, user)
+            {
               if(err)
                 return done(err);
               if(user){
@@ -91,59 +88,67 @@ module.exports = function(passport)
               else 
               {
                   check++;
+                  //if this is the third(last) check and no user found
                   if(check == 3)
-                    {
+                  {
                     // username entered is unique
-                    var newUser            = new User();
-                    // set the user's local credentials
-                    newUser.username = username;
-                    newUser.password = newUser.generateHash(password); // use the generateHash function in our user model
-                    // TODO: set other attributes
-                    // save the user
-                    newUser.save(function(err) {
+                      var newUser            = new User();
+                      newUser.local.username = username;
+                      newUser.local.password = newUser.generateHash(password);
+                      newUser.name           = req.body.name;
+                      newUser.email          = req.body.email;
+                      newUser.phone          = req.body.phone;
+                      newUser.birthdate      = req.body.birthdate;
+                      newUser.address        = req.body.address;
+                      newUser.gender         = req.body.gender;
+                      newUser.profilePic     = req.body.profilePic;
+                      // save the user
+                      newUser.save(function(err) {
                         if (err)
                           throw err;
                           return done(null, newUser);
-                    });
-                }
-              }
-                      
+                      });
+                  }
+              }       
             });          
             // finnally check web admins usernames
-            Business.findOne({ 'username' :  username }, function(err, user)
+            Admin.findOne({ 'local.username' :  username }, function(err, user)
             {
-              console.log("admin callback find" + count);
-                    count = count + 1;
                 if(err)
                   return done(err);
-                if(user){
+                if(user)
+                {
                   return done(null, false, req.flash('signupMessage', 'That username is already taken.')); 
                 }
                 else 
-              {
+                {
                   check++;
+                  //if this is the third(last) check and no user found
                   if(check == 3)
-                    {
+                  {
                     // username entered is unique
-                    var newUser            = new User();
-                    // set the user's local credentials
-                    newUser.username = username;
-                    newUser.password = newUser.generateHash(password); // use the generateHash function in our user model
-                    // TODO: set other attributes
-                    // save the user
-                    newUser.save(function(err) {
+                    
+                      var newUser            = new User();
+                      newUser.local.username = username;
+                      newUser.local.password = newUser.generateHash(password);
+                      newUser.name           = req.body.name;
+                      newUser.email          = req.body.email;
+                      newUser.phone          = req.body.phone;
+                      newUser.birthdate      = req.body.birthdate;
+                      newUser.address        = req.body.address;
+                      newUser.gender         = req.body.gender;
+                      newUser.profilePic     = req.body.profilePic;
+                      // save the user
+                      newUser.save(function(err) {
                         if (err)
                           throw err;
                           return done(null, newUser);
-                    });
-                }
+                      });
+                  }
               }         
             });
-            
-         
       })),
-
-            
+         
   //  ========================
   //        LOCAL LOGIN
   //  ========================
@@ -157,59 +162,58 @@ module.exports = function(passport)
     function(req, username, password, done) 
     { 
       var check = 0;
-      // find a user whose username is the same as the forms username
-      // we are checking to see if the user trying to login already exists
+      // find a user whose username matches the username entered
+      // search registered users collection 
       User.findOne({ 'local.username' :  username }, function(err, user) 
       {
-         // if there are any errors, return the error before anything else
          if (err)
             return done(err);
-         // if no user is found, check if the username entered belongs to business
          if (!user)
          {
             check++;
+            // if no user is found, and this is the third (last) check
             if(check == 3)
               return done(null, false, req.flash('loginMessage', 'No user found.')); 
          }
          else if (!user.validPassword(password))
-            return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
+            return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); 
 
-         // all is well, return successful user(regular user)
+         // all is well, return successful(regular user)
          else return done(null, user);
       });
-
-      Business.findOne({ 'username' :  username }, function(err, user)
+      //repeate the same check on business usernames
+      Business.findOne({ 'local.username' :  username }, function(err, user)
       {
         if (err)
           return done(err);
         if(!user)
         {
           check++;
+          // if no user is found, and this is the third (last) check
           if(check == 3)
             return done(null, false, req.flash('loginMessage', 'No user found.')); 
         } 
         else if (!user.validPassword(password))
-                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
-                // all is well, return successful user(Business)
+                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); 
+        // all is well, return successful user(Business)
         else 
-          {
-            console.log("business found successfully in passport");
+        {
+            // console.log("business found successfully in passport");
             return done(null, user);
-          }
+        }
       });
-                  // if no business is found, check if the username entered belongs to an admin
-      Admin.findOne({ 'username' :  username }, function(err, user)
+      // check if the username entered belongs to an admin
+      Admin.findOne({ 'local.username' :  username }, function(err, user)
       {
         if(err)
           return done(err);
         if(!user)
         {
           check++;
+           // if no user is found, and this is the third (last) check
           if(check == 3)
             return done(null, false, req.flash('loginMessage', 'No user found.'));   
         }
-          
-        // if the user is found but the password is wrong
         else if (!user.validPassword(password))
             return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
         // all is well, return successful user(Admin)
@@ -256,29 +260,72 @@ module.exports = function(passport)
          {
             // if there is no user found with that facebook id, create them
             var newUser = new User();
-
-            // set all of the facebook information in our user model
-            newUser.facebook.id    = profile.id; // set the users facebook id                   
-            newUser.facebook.token = token; // we will save the token that facebook provides to the user                    
-            newUser.facebook.name  = profile.displayName;
-            //.first_name + ' ' + profile.name.last_name; // look at the passport user profile to see how names are returned
-            newUser.facebook.email = profile.emails[0].value; // facebook can return multiple emails so we'll take the first
-
+            newUser.facebook.id    = profile.id; 
+            newUser.facebook.token = token; 
+            newUser.name           = profile.displayName;
+            newUser.email          = profile.emails[0].value;
+            newUser.gender         = profile.gender;
             // save our user to the database
             newUser.save(function(err) 
             {
               if (err)
                  throw err;
-
-              // if successful, return the new user
               return done(null, newUser);
             });
           }
-
     });
   });
-
  }));
+
+// ============================
+//          GOOGLE
+// ============================
+
+
+passport.use(new GoogleStrategy({
+
+        clientID        : configAuth.googleAuth.clientID,
+        clientSecret    : configAuth.googleAuth.clientSecret,
+        callbackURL     : configAuth.googleAuth.callbackURL,
+
+    },
+    function(token, refreshToken, profile, done) {
+
+        // make the code asynchronous
+        // User.findOne won't fire until we have all our data back from Google
+        process.nextTick(function() {
+
+            // try to find the user based on their google id
+            User.findOne({ 'google.id' : profile.id }, function(err, user) {
+                if (err)
+                    return done(err);
+
+                if (user) {
+
+                    // if a user is found, log them in
+                    return done(null, user);
+                } else {
+                    // if the user isnt in our database, create a new user
+                    var newUser          = new User();
+
+                    // set all of the relevant information
+                    newUser.google.id    = profile.id;
+                    newUser.google.token = token;
+                    newUser.name         = profile.displayName;
+                    newUser.email        = profile.emails[0].value; // pull the first email
+
+                    // save the user
+                    newUser.save(function(err) {
+                        if (err)
+                            throw err;
+                        return done(null, newUser);
+                    });
+                }
+            });
+        });
+
+    }));
+
 
 
 };

@@ -7,8 +7,7 @@ var RegisteredUserSchema = new Schema({
     {
         username: 
         {
-            type : String,
-            unique : true
+            type : String
         },
         password: 
         {
@@ -17,11 +16,14 @@ var RegisteredUserSchema = new Schema({
     },
     facebook   : 
     {
-        id    : String,
-        token : String,
-        email : String,
-        name  : String
+        id     : String,
+        token  : String,
     }, 
+    google     : 
+    {
+        id     : String,
+        token  : String,
+    },
     user_type  : {type: Number, default: 1},
     name       : String,
     email      : String,
@@ -34,7 +36,7 @@ var RegisteredUserSchema = new Schema({
 });
 
 
-// generating a hash
+// generating a hash (encrypted password)
 RegisteredUserSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };

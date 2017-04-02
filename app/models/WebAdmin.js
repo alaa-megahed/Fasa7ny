@@ -2,7 +2,9 @@ var mongoose = require('mongoose'),
     Schema   = mongoose.Schema,
     bcrypt   = require('bcrypt-nodejs');
 var WebAdminSchema = new Schema({   
-        username: 
+    local    :
+    {   
+    	username: 
         {
             type : String,
             required : true,
@@ -12,7 +14,8 @@ var WebAdminSchema = new Schema({
         {
             type : String,
             required : true
-        },    
+        }
+    },        
     user_type : {type: Number, default: 3}
 });   
 

@@ -14,6 +14,7 @@
 
 	<div class="page-header text-center">
 		<h1><span class="fa fa-anchor"></span> Profile Page</h1>
+		<strong>Admin Profile</strong>
 		<a href="/logout" class="btn btn-default btn-sm">Logout</a>
 	</div>
 
@@ -27,29 +28,13 @@
 					<p>
 						<strong>id</strong>: <%= user._id %><br>
 						<strong>username</strong>: <%= user.local.username %><br>
-						<strong>password</strong>: <%= user.local.password %>
-						<strong>Admin Profile</strong>
+						<strong>password</strong>: <%= user.local.password %>		
 					</p>
 
 			</div>
 		</div>
-
-		<!-- FACEBOOK INFORMATION -->
-		<div class="col-sm-6">
-			<div class="well">
-				<h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
-
-					<p>
-						<strong>id</strong>: <%= user.facebook.id %><br>
-						<strong>token</strong>: <%= user.facebook.token %><br>
-						<strong>email</strong>: <%= user.facebook.email %><br>
-						<strong>name</strong>: <%= user.facebook.name %>
-					</p>
-
-			</div>
-		</div>
-
-	</div>
+		<!-- <a href="/create-business" class="btn btn-default btn-sm">Add Business</a> -->
+		
 
 </div>
 </body>

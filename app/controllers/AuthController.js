@@ -81,7 +81,9 @@ let AuthController =
             						successRedirect : '/profile',
             						failureRedirect : '/'
        							   });
-								}
+								}	
+
+															
 
 }
 
