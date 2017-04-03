@@ -6,16 +6,22 @@ const nodemailer = require('nodemailer');
 
 
 exports.AddBusiness = function(req, res) {
+  var username = req.body.username;
 
   var generatedPassword = generator.generate({
     length: 10,
     numbers: true
 });
    var hashedPassword = generateHash(generatedPassword);
-
+      Business.findOne({ username: username}, function(err, user) {
+    if (err) { return next(err); }
+    if (business) {
+      res.send("user already exist");
+    }
+    else{
     var business = new Business(
       {
-    username      : req.body.username,
+    username      : username,
     password      : hashedPassword ,
     merchant_ID   : req.body.merchant_ID,
     category      : req.body.category
@@ -33,7 +39,7 @@ exports.AddBusiness = function(req, res) {
 
 
 // create reusable transporter object using the default SMTP transport
-let transporter = nodemailer.createTransport({
+/*let transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'fasa7ny.team@gmail',
@@ -58,27 +64,36 @@ transporter.sendMail(mailOptions, (error, info) => {
     console.log('Message %s sent: %s', info.messageId, info.response);
 });
 
-
+*/
+}
 };
 
 
 
 
-//i am not sure about attribute name deleted ? ,,, and business attribute name in offer
+//i am not sure about attribute name deleted ? ,,, and business attribute name in offer... check eno m3ndosh booking
 
 exports.WebAdminDeleteBusiness = function(req,res){
 
  
-      if (req.body.deleted){
-    Business.findByIdAndRemove(req.body._id, function(err,business){
+      
+    Business.findByIdAndRemove(req.params.username, function(err,business){
       if(err) throw err;
-    Offer.remove({business : req.body._id }, function(err) {
+    Offer.remove({business : req.params.username }, function(err) {
     if (err) throw err;
 })
-   Events.remove({business_id : req.body._id }, function(err) {
+   Events.remove({business_id : req.params.username }, function(err) {
     if (err) throw err;
 })  
 });
     res.send("Business Deleted Successfully");
-}
-    }
+};
+    
+
+
+
+  /*  exports.webAdminViewRequestedDelete = function(req,res){
+      Business.find({deleted : 1} , function(err,requests)
+        res.render('requestedDelete',requests);
+        )
+    }*/
