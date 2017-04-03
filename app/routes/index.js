@@ -1,4 +1,4 @@
-const routes = require('express').Router();
+const router = require('express').Router();
 const bookings = require('./bookings.routes');
 
-routes.use('/bookings', bookings);
+router.use('/bookings', bookings);
