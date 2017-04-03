@@ -19,9 +19,6 @@ require('./app/models/Offer');
 require('./app/models/RegisteredUser');
 require('./app/models/WebAdmin');
 
-var router = require('./app/routes/BookingsRouter.js');
-app.use(router); 
-
 app.listen(config.port);
 
 module.exports = app;

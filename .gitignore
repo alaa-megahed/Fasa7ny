@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *.log
 
 
@@ -6,3 +7,6 @@ npm-debug.log
 
 /config/secretDatabase.js
 /config/secretAuth.js
+=======
+/node_modules
+>>>>>>> search
