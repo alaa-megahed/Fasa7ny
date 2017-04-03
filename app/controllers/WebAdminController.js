@@ -77,12 +77,12 @@ exports.WebAdminDeleteBusiness = function(req,res){
 
  
       
-    Business.findByIdAndRemove(req.params.username, function(err,business){
+    Business.findByIdAndRemove(req.params.name, function(err,business){
       if(err) throw err;
-    Offer.remove({business : req.params.username }, function(err) {
+    Offer.remove({business : req.params.name }, function(err) {
     if (err) throw err;
 })
-   Events.remove({business_id : req.params.username }, function(err) {
+   Events.remove({business_id : req.params.name }, function(err) {
     if (err) throw err;
 })  
 });
