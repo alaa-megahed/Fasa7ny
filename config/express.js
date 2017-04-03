@@ -40,8 +40,11 @@ module.exports = function() {
 
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
-
+     
     app.use( express.static("./uploads") );
+
+    //app.use(require('./app/routes/WebAdminRouter.js'));
+
   
 
     return app;
