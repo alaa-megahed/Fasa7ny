@@ -4,7 +4,6 @@ var search = require('./search.routes.js');
 var business = require('./business.routes.js');
 
 
-// router.use('/search', search); 
 router.use('/search', search);  
 router.use('/business', business); 
 router.use('/contact', function(req, res) {
