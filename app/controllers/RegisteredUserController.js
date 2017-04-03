@@ -31,6 +31,8 @@ exports.subscribe = function(req,res)
 					console.log("Updating user-subscriptions & business-subscribers..");
 					business.subscribers.push(user_found);
 					business.save();
+					user_found.subscriptions.push(business);
+					user_found.save();
 					//Business.update({business_ID: businessID}, {$push: { subscribers: user_found }});
 				}
 				else {
@@ -51,7 +53,7 @@ exports.subscribe = function(req,res)
 
 exports.unsubscribe = function(req,res)
 {
-		var userID = req.body.id;              // from passport session
+	var userID = req.body.id;              // from passport session
     var businessID = req.body.business;        // from url parameters
     var subscribed_business;
     User.findOne({_id: userID}, function(err, user_found)
@@ -75,6 +77,8 @@ exports.unsubscribe = function(req,res)
 				console.log("Updating user-subscriptions & business-subscribers..");
 				business.subscribers.pull(user_found);
 				business.save();
+				user_found.subscriptions.pull(business);
+				user_found.save();
 			}
 			else {
 				console.log("User is not found.");
@@ -169,17 +173,23 @@ exports.average_rating = function(req,res)
 }
 
 
-/* exports.customize = function(req,res)    // --> still working on it
+exports.customize = function(req,res)
 {
-	var userID = req.user.id;              // from passport session
-    var businessID = req.params.id;        // from url parameters
+	var userID = req.body.id;              // from passport session
+    var businessID = req.body.business;        // from url parameters
 
-    Rating.find({business_ID: businessID}, {rating: true}).toArray(function(err, ratings) {
-		var sum = ratings.reduce((accumulator, current) => accumulator + current.rating, 0);
-		var avg = sum / ratings.length;
-		Business.update({business_ID: businessID}, {$set: { average_rating: avg }});
-		console.log(avg);
-    });
-
-
-} */
+	User.findOne({_id: userID}, function(err, user_found) 
+	{
+	    if(err) {
+			console.log("Error in findOne() of customize");
+			throw err;
+		}
+		if(!user_found) {
+			console.log("User not found.")
+		}
+		else {
+			console.log(user_found.bookings);
+			console.log(user_found.subscriptions);
+		}
+	});
+}
