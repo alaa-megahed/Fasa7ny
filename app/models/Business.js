@@ -29,15 +29,11 @@ var BusinessSchema = new Schema({
         type: Number, default: 0
     },
     payment_methods: [String], //or int?
-<<<<<<< HEAD
-    subscribers    : [{type: mongoose.Schema.Types.ObjectId, ref:'RegisteredUser',default: []}], //whenever user subscribes to business, add him to this list.
-    images         : [String]
-=======
+
     subscribers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'RegisteredUser', default: [] }], //whenever user subscribes to business, add him to this list.
     images: [String]
 
 });
->>>>>>> search
 
 //created a text index on the desired fields
 BusinessSchema.index({
