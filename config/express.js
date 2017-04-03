@@ -4,6 +4,8 @@ var config = require('./config'),
     passport = require('passport'),
     flash = require('connect-flash'),
     session = require('express-session'),
+    schedule = require('node-schedule'),
+    async = require('async');
     multer = require('multer');
 
 
@@ -29,23 +31,19 @@ module.exports = function() {
     app.use(passport.initialize());
     app.use(passport.session());
 
-
-
-
-
-
-
     app.set('views', './app/views');
     app.set('view engine', 'ejs');
 
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
-     
+
+    var routes = require('../app/routes');
+
+    app.use(routes); 
+
+    
+
     app.use( express.static("./uploads") );
-
-    //app.use(require('./app/routes/WebAdminRouter.js'));
-
-  
 
     return app;
 };

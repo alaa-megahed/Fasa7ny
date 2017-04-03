@@ -4,12 +4,21 @@ require('../app/models/Event');
 require('../app/models/Offer');
 require('../app/models/RegisteredUser');
 require('../app/models/WebAdmin');
+
+
 var mongoose = require('mongoose'),
     config = require('./config');
 
 
 
 module.exports = function() {
+<<<<<<< HEAD
+
+    mongoose.Promise = global.Promise;
+
+=======
+	mongoose.Promise = global.Promise;
+>>>>>>> events
     var db = mongoose.connect(config.db);
     return db;
 };

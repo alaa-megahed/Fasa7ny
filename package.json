@@ -2,19 +2,31 @@
   "name": "starter-node-angular",
   "main": "server.js",
   "dependencies": {
+<<<<<<< HEAD
+    "body-parser": "^1.17.1",
+=======
+    "async": "^2.2.0",
     "body-parser": "^1.4.3",
+>>>>>>> events
     "connect-flash": "^0.1.1",
     "ejs": "^2.5.6",
-    "express": "3.8",
+    "express": "^4.15.2",
     "express-session": "^1.15.1",
     "generate-password": "^1.3.0",
     "method-override": "~2.0.2",
     "mongoose": "^4.4.20",
+    "mongoose-double": "latest",
     "multer": "^1.3.0",
+<<<<<<< HEAD
     "nodemailer": "^3.1.8",
      "email-templates": "0.0.5",
+=======
+    "node-schedule": "^1.2.1",
+    "nodemon": "^1.11.0",
+>>>>>>> c30f30a2b75b76c0f2e6efc8407c14d24b4fb6c2
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "mongoose-double": "latest"
   }
 }
