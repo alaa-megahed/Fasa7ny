@@ -3,7 +3,7 @@ var Business = mongoose.model('Business');
 var Offer = mongoose.model('Offer');
 
 exports.GetOffers = function(req, res) {
-  var id = req.user._id;
+  var id = req.user.id;
 
   Offer.find({_id:id}, function(err, offers) {
     if(err) {
@@ -14,25 +14,9 @@ exports.GetOffers = function(req, res) {
   })
 };
 
-exports.RegisterBusiness = function(req, res) {
-  var s = req.body;
-  var newBusiness = new Business({
-    username:s.username,
-    password:s.password
-  });
-  newBusiness.save(function(err, business) {
-    if(err){
-      // res.send("cannot create business");
-    }else {
-      req.session.user = business;
-      // console.log(business);
-      res.send(business);
-    }
-  })
-};
 
 exports.createOffer = function(req, res) {
-  // var businessId = req.user._id;  //get _id from session
+  var businessId = req.user.id;  //get _id from session
   var s = req.body;
   var f = req.file;
 
@@ -79,9 +63,9 @@ exports.createOffer = function(req, res) {
 
 exports.updateOffer = function(req, res) {
   var s = req.body;
-  // var businessId = req.user._id; //session
-  // var id = req.query.id;
-  var id = s.id; //only for testing
+  var businessId = req.user.id; //session
+  var id = req.query.id;
+  // var id = s.id; //only for testing
   var f = req.file;
   // res.send(s);
   console.log(s);
@@ -246,22 +230,47 @@ exports.updateOffer = function(req, res) {
 
 exports.deleteOffer = function(req, res) {
   var id = req.query.id;
-  // var businessId = req.user._id;
+  var businessId = req.user.id;
   var businessId = req.query.Bid; //just for testing
-  Offer.remove({_id:id}, function(err) {
-    if(err) {
-      console.log("cannot delete offer");
-      res.send("cannot delete offer");
-    } else {
-      console.log("offer deleted");
-      // res.send("offer deleted");
-      Offer.find({business:businessId},function(err, myoffers) {
-        if(err) {
-          console.log("cannot get my offers");
-        } else {
-          res.send(myoffers);
-        }
-      })
+  Date d = new Date();
+  Offer.findOne({_id:id}, function(err, offer) {
+    if(err)
+    {
+      console.log("error in finding the offer");
+    }
+    else
+    {
+      if(d < offer.expiration_date)
+      {
+        console.log("are you sure you want to delete the offer before its expiration date?");
+      }
+      else
+      {
+        Offer.remove({_id:id}, function(err)
+        {
+          if(err)
+          {
+            console.log("cannot delete offer");
+            res.send("cannot delete offer");
+          }
+          else
+          {
+            console.log("offer deleted");
+            // res.send("offer deleted");
+            Offer.find({business:businessId},function(err, myoffers)
+            {
+              if(err)
+              {
+                console.log("cannot get my offers");
+              }
+               else
+              {
+                res.send(myoffers);
+              }
+            })
+          }
+        })
+      }
     }
   })
 };
