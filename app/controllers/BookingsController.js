@@ -17,10 +17,10 @@ exports.book_event = function (req,res)
 
 	var booking = new Booking
 	({
-		booking_date : new Date(),
-	    count      : form.count,
-	    event_id	 : event_id
-//	    booker       : req.user.id	//get business user id from session?
+		  booking_date : new Date(),
+	    count        : form.count,
+	    event_id	   : event_id
+//	  booker       : req.user.id	//get business user id from session?
 	});
 
 	booking.save(function(err,booking)
@@ -33,7 +33,7 @@ exports.book_event = function (req,res)
 		{
 			console.log("saved "+ booking);
 
-			EventOccurrences.findByIdAndUpdate(event_id,{$push: {"bookings": booking},},{safe: true, upsert: true, new : true},
+			EventOccurrences.findByIdAndUpdate(event_id,{$push: {"bookings": booking}},{safe: true, upsert: true, new : true},
 		        function(err, eventocc)
 		        {
 		        	if(err)
@@ -42,7 +42,7 @@ exports.book_event = function (req,res)
 		        	{
 		        		console.log(eventocc);
 		        		eventocc.available = eventocc.available - booking.count;
-		          		eventocc.save();
+		          	eventocc.save();
 
 		        	}
 		        }
@@ -65,7 +65,7 @@ exports.edit_booking = function(req,res)
 	 // if(req.user)
   // {
 //	var bookingID    = req.params.id;        		//id of booking to be edited should be passed in the url or body
-	var bookingID    = "58de649c8d5ac33769863bc3"; 	//for testing
+	var bookingID    = "58e14564de21c3446730b843"; 	//for testing
 	var new_date 	 = new Date();
 	var count 		 = req.body.count1;
 
