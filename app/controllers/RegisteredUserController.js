@@ -142,14 +142,6 @@ exports.average_rating = function(req,res)
 {
     var businessID = req.body.business;       // from url parameters
 
-    // Rating.find({business_ID: businessID}, {rating: true}, function(err, ratings) {
-		// 	console.log("ratings are " + ratings);
-    // 	var sum = ratings.reduce((accumulator, current) => accumulator + current.rating, 0);
-    // 	var avg = sum / ratings.length;
-    // 	Business.update({_id: businessID}, {$set: { average_rating: avg }});
-    // 	console.log(avg);
-    // });
-
 		Rating.find({}, function(err,ratings){ //this exists mainly to postpone the function
 			//console.log(ratings);
 			Rating.aggregate([
@@ -167,16 +159,12 @@ exports.average_rating = function(req,res)
 
 		 })
 
-
-
-
 }
 
 
 exports.customize = function(req,res)
 {
 	var userID = req.body.id;              // from passport session
-    var businessID = req.body.business;        // from url parameters
 
 	User.findOne({_id: userID}, function(err, user_found) 
 	{
