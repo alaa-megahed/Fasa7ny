@@ -10,8 +10,8 @@ var BusinessController = {
                 else
                     res.send(result);
             });
-    }, 
-    equestRemoval = function(req,res) {
+    },
+    equestRemoval: function(req,res) {
         // if(req.user){
         var id = req.query.id;
         Business.findByIdAndUpdate(id,{$set:{deleted:1}}, function(err,business){
@@ -24,6 +24,22 @@ var BusinessController = {
         // else{
         //  console.log('not logged in');
         // }
+    },
+    makePagePublic: function(req, res) {
+      var businessId = req.user.id;
+      // var businessId = req.query.id; //just for testing
+      Business.findByIdAndUpdate(
+        businessId,
+        {$set:{public:1}},
+        function(err) {
+          if(err) {
+            console.log("error in making page public");
+          } else {
+            console.log("Page public");
+          }
+        }
+      )
     }
+
 }
-module.exports = BusinessController; 
+module.exports = BusinessController;
