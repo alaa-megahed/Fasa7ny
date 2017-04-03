@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 var express = require('express');
 var router = express.Router();
 var search = require('./search.routes.js');
@@ -20,3 +21,9 @@ router.get('/', function (req, res) {
 });
 
 module.exports = router;
+=======
+const routes = require('express').Router();
+const bookings = require('./bookings.routes');
+
+routes.use('/bookings', bookings);
+>>>>>>> subscription

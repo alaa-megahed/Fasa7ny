@@ -35,7 +35,7 @@ module.exports = function() {
     app.set('view engine', 'ejs');
 
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
-    //require('../app/routes/users.server.routes.js')(app, passport, multer);
+        //require('../app/routes/users.server.routes.js')(app, passport, multer);
 
     var routes = require('../app/routes');
 

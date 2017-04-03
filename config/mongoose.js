@@ -4,6 +4,7 @@ require('../app/models/Event');
 require('../app/models/Offer');
 require('../app/models/RegisteredUser');
 require('../app/models/WebAdmin');
+require('../app/models/Rating');
 
 
 var mongoose = require('mongoose'),
@@ -12,13 +13,8 @@ var mongoose = require('mongoose'),
 
 
 module.exports = function() {
-<<<<<<< HEAD
 
     mongoose.Promise = global.Promise;
-
-=======
-	mongoose.Promise = global.Promise;
->>>>>>> events
     var db = mongoose.connect(config.db);
     return db;
 };
