@@ -1,8 +1,7 @@
 var express = require('express');
 //var app = express();
 var router = express.Router();
-var RegularEventController = require('../controllers/RegularEventController');
-var BusinessController = require('../controllers/BusinessController');
+var RegularEventController = require('../controllers/event.controller.js');
 
 
 
