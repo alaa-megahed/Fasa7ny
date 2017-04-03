@@ -12,7 +12,9 @@ var RegisteredUserSchema = new Schema({
         password: 
         {
             type : String,
-        }    
+        },
+        resetPasswordToken: String,
+        resetPasswordExpires: Date    
     },
     facebook   : 
     {

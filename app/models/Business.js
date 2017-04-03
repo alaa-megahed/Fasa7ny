@@ -19,7 +19,9 @@ var BusinessSchema = new Schema({
         {
             type : String,
             required : true
-        }
+        },
+        setPasswordToken: String,
+        resetPasswordExpires: Date 
     },    
     user_type     : {type: Number, default: 2},
     name          : String,

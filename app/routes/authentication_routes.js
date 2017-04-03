@@ -28,9 +28,13 @@ router.get('/auth/google', AuthController.googleLogin);
                     
 router.get('/auth/google/callback', AuthController.googleCallback);
 
-        
-                        
-                  							   
+router.get('/forgot',AuthController.getForgetPassword);        
+
+router.post('/forgot',AuthController.forgotPassword);        
+
+router.get('/reset/:token', AuthController.getReset);           
+
+router.post('/reset/:token',AuthController.postReset);                  							   
 
 
 module.exports = router;        

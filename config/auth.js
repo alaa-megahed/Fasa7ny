@@ -8,9 +8,16 @@ module.exports = {
 
 
     'googleAuth' : {
-        'clientID'      : '74183051400-lki08537kqb5bna90i3s81j1pbe1rjrc.apps.googleusercontent.com',
-        'clientSecret'  : 'rrOHKlFebsuSlk1f120L0rdn',
-        'callbackURL'   : 'http://localhost:8080/auth/google/callback'
+        'clientID'      : '892348516884-hq30gojsp03t2ge9ceff1mqt856bri1i.apps.googleusercontent.com',
+        'clientSecret'  : 'HSl010Xrnm3PFrsH2t0gONiF',
+        'callbackURL'   : 'http://localhost:8080/auth/google/callback',
+        'refreshToken'  : '1/I1HX0K1LpyG35lB81WQBQn0wqHYsBSTIpvcadwI6Q5E',
+        'accessToken'   : 'ya29.GlshBHx4W6MPStYebzAF6STazxk51KwGMLUvExx04OUXLXzsTqX611BzVxbDJOnMuURr75oUGNNpLkIw5sW5OwBAaYHiDhjFNSzhVPliDSHN0bjWmGDK6CyBvJW5'
+    },
+    'gmail'     : {
+        'user'          : 'fasa7ny.team@gmail.com',
+        'pass'          : 'fasa7ny8franshly'
     }
 
 };
+
