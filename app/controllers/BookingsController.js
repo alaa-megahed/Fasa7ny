@@ -109,8 +109,8 @@ exports.edit_booking = function(req,res)
 
 exports.cancel_booking = function(req,res)
 {
-	// if(req.user)
-  // {
+// if(req.user)
+// {
 //	var bookingID = req.params.id;        //id of booking to be cancelled should be passed in the url or body
 //  var event_id  = req.params.id 		  //event_id of booking to be cancelled should be passed in the url or body or we need to findOne
 	var bookingID = "58de5cbf9b286d30f8c1d9a0";  //for testing
