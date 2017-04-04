@@ -20,12 +20,12 @@ var WebAdminSchema = new Schema({
 });   
 
 
-// generating a hash
+// generating a hash (encrypted password)
 WebAdminSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
-// checking if password is valid
+// checking if (encrypted) password is valid
 WebAdminSchema.methods.validPassword = function(password) {
     return (bcrypt.compareSync(password, this.local.password));
 };

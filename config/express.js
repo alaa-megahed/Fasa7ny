@@ -6,6 +6,8 @@ var config = require('./config'),
     passport = require('passport'),
     flash = require('connect-flash'),
     session = require('express-session'),
+    schedule = require('node-schedule'),
+    async = require('async');
     multer = require('multer');
 
 
@@ -25,7 +27,7 @@ module.exports = function() {
 
     app.use(session({
         saveUninitialized: true,
-        resave: false,         // more secured, less convenience?
+        resave: false,        
         secret: 'OurSuperSecretCookieSecret'
     }));
 
@@ -34,23 +36,24 @@ module.exports = function() {
 
 
 
-
-
-
-
-    app.set('views', './views');
+    app.set('views', './app/views');
     app.set('view engine', 'ejs');
 
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
 
-    require('./passport')(passport);                                 // pass passport for passport configuration
-    var auth_routes = require('../app/routes/authentication_routes');                  // authentication related routes
+    var router = require('../app/routes');
+
+    app.use(router); 
+
+    
+
+    require('./passport')(passport);                                     // pass passport for passport configuration
+    var auth_routes = require('../app/routes/authentication_routes');    // authentication related routes
     app.use('/', auth_routes);
 
     app.use( express.static("./uploads") );
 
-  
 
     return app;
 };

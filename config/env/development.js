@@ -1,6 +1,6 @@
-var port = 8080;
+var port = 3000;
 
 module.exports = {
     port: port,
-    db: 'mongodb://localhost/fasa7ny'
+    db: 'mongodb://localhost:27017/fasa7ny'
 };

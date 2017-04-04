@@ -4,9 +4,12 @@ require('../app/models/Event');
 require('../app/models/Offer');
 require('../app/models/RegisteredUser');
 require('../app/models/WebAdmin');
+require('../app/models/Rating');
+require('../app/models/Review');
+
+
 var mongoose = require('mongoose'),
     config = require('./config');
-
 
 
 module.exports = function() {
