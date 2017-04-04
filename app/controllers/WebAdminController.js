@@ -156,24 +156,34 @@ exports.updateAvailableAdvertisements = function(req,res)
 {
   var rule = new schedule.RecurrenceRule();
   rule.dayOfWeek = [new schedule.Range(0,6)];
-//  rule.hour = 0;
-//  rule.minute = 0;
+  rule.hour = 00;
+  rule.minute = 00;
 
 
   var j = schedule.scheduleJob(rule, function()
   {
+    console.log("hell0");
     var d = new Date();
     Advertisement.find({}, function(err, ads)
     {
+      console.log(ads);
       for(var i = 0; i < ads.length; i++)
       {
-        if(ads[i].edate < d || ads[i].sdate < d)
+        if(ads[i].end_date < d || ads[i].start_date > d)
+        {
+          console.log("this has expired: " + ads[i]);
           ads[i].available = 0;
+          ads[i].save();
+        }
         else {
           ads[i].available = 1;
+          ads[i].save();
         }
       }
-      ads.save();
+
+
+      res.send("successful");
+
     })
   });
 
