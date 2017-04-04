@@ -2,14 +2,6 @@ var Booking  = require('mongoose').model('Booking');
 var Events   = require('mongoose').model('Events');
 var EventOccurrences   = require('mongoose').model('EventOccurrences');
 var RegisteredUser     = require('mongoose').model('RegisteredUser');
-
-
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> subscription
 //============================================<	BUSINESS>===========================================================
 
 exports.book_event = function (req,res)
@@ -23,17 +15,10 @@ exports.book_event = function (req,res)
 
 	var booking = new Booking
 	({
-<<<<<<< HEAD
 		  booking_date : new Date(),
 	    count        : form.count,
 	    event_id	   : event_id
 //	  booker       : req.user.id	//get business user id from session?
-=======
-		booking_date : new Date(),
-	    count        : form.count,
-	    event_id	 : event_id
-//	    booker       : req.user.id	//get business user id from session?
->>>>>>> subscription
 	});
 
 	booking.save(function(err,booking)
@@ -46,11 +31,8 @@ exports.book_event = function (req,res)
 		{
 			console.log("saved "+ booking);
 
-<<<<<<< HEAD
+
 			EventOccurrences.findByIdAndUpdate(event_id,{$push: {"bookings": booking}},{safe: true, upsert: true, new : true},
-=======
-			EventOccurrences.findByIdAndUpdate(event_id,{$push: {"bookings": booking},},{safe: true, upsert: true, new : true},
->>>>>>> subscription
 		        function(err, eventocc)
 		        {
 		        	if(err)
@@ -59,11 +41,7 @@ exports.book_event = function (req,res)
 		        	{
 		        		console.log(eventocc);
 		        		eventocc.available = eventocc.available - booking.count;
-<<<<<<< HEAD
 		          	eventocc.save();
-=======
-		          		eventocc.save();
->>>>>>> subscription
 
 		        	}
 		        }
@@ -86,11 +64,8 @@ exports.edit_booking = function(req,res)
 	 // if(req.user)
   // {
 //	var bookingID    = req.params.id;        		//id of booking to be edited should be passed in the url or body
-<<<<<<< HEAD
 	var bookingID    = "58e14564de21c3446730b843"; 	//for testing
-=======
-	var bookingID    = "58de649c8d5ac33769863bc3"; 	//for testing
->>>>>>> subscription
+
 	var new_date 	 = new Date();
 	var count 		 = req.body.count1;
 
