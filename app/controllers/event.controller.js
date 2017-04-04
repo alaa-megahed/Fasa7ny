@@ -2,7 +2,12 @@
 var Events = require('mongoose').model('Events');
 var EventOccurrences   = require('mongoose').model('EventOccurrences');
 
-
+/* This function creates an event. An event can have two types Once or Daily specified by "repeated". 
+The function creates an event and save it in the database. If it is Daily then 30 instances of event occurrences 
+will be created and saved in the database. Then I initialize a scheduling rule using node scheduler which adds a 
+single event occurence next month on a daily basis. 
+If the type is Once only one event occurrence is added.
+*/
 
 
 	exports.createEvent = function(req,res){
@@ -161,6 +166,7 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
 			
 		}
 
+/* A business can edit an event or an event occurrence based on the changed field. */		
 
 		exports.editEvent = function(req,res){
 			// if(req.user){
@@ -234,11 +240,12 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
 			
 
 		}
-
+		
+		/*A business can cancel an event with all its occurrences.*/
 
 		exports.cancelEvent = function(req,res){
 			// if(req.user){
-			var id = req.query.id;
+			var id = req.body.id;
 
 			Events.remove({_id:id}, function(err){
 				if(err) console.log('could not delete event');
@@ -251,16 +258,18 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
 			});
 
 			res.render('eventCreated.ejs');
-		}
+		// }
 		// else{
 		// 	console.log('not logged in');
 		// }
 
-		// }
+		 }
+
+		 /* Abusiness can cancel an event occurrence.*/
 
 		exports.cancelOccurrence = function(req,res){
 			// if(req.user){
-			var id = req.query.id;
+			var id = req.body.id;
 
 			EventOccurrences.remove({_id:id}, function(err){
 				if(err) console.log('could not delete occurrence');

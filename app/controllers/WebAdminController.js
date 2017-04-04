@@ -2,6 +2,9 @@ var WebAdmin = require('mongoose').model('WebAdmin');
 var Business = require('mongoose').model('Business');
 var generator = require('generate-password');
 var Events = require('mongoose').model('Events');
+var User = require('mongoose').model('RegisteredUser');
+var Review = require('mongoose').model('Review');
+var Reply   = require('mongoose').model('Reply');
 const nodemailer = require('nodemailer');
 
 
@@ -44,6 +47,21 @@ exports.AddBusiness = function (req, res) {
 
 }
 
+// exports.WebAdminDeleteUser = function(req,res){
+//     var username = req.body.username;
+//         User.remove({username:username}, function(err,user){
+//             if(err) res.send('could not remove user');
+//             else{
+//                 Review.remove({user:user}, function(err){
+//                     if(err) res.send('could not remove user');
+//                 });
+                
+
+//             }
+//         });
+
+// }
+
 
 
 
@@ -66,7 +84,7 @@ exports.WebAdminDeleteBusiness = function (req, res) {
         })
     });
     res.send("Business Deleted Successfully");
-};
+}
 
 
 

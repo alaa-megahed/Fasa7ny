@@ -15,9 +15,6 @@ var EventsSchema = mongoose.Schema({
 });
 
 
-
-
-
 var EventOccurrencesSchema = mongoose.Schema({
     day: Date,
     time: String,
@@ -36,8 +33,6 @@ var EventOccurrences = mongoose.model("EventOccurrences", EventOccurrencesSchema
 module.exports = {
     Events: Events,
     EventOccurrences: EventOccurrences
-
-
 
 };
 
