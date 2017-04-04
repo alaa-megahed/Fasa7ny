@@ -11,14 +11,20 @@ var EventsSchema = mongoose.Schema({
     repeated: String,
     daysOff: [String],
     business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'}
+
 });
+
+
+
+
 
 var EventOccurrencesSchema = mongoose.Schema({
     day: Date,
     time: String,
     available: Number,
     bookings : [{type: mongoose.Schema.Types.ObjectId,ref: 'Booking',default: [] }],
-    event_ : {type: mongoose.Schema.Types.ObjectId, ref:'Events'}
+    event : {type: mongoose.Schema.Types.ObjectId, ref:'Events'}
+
 
 });
 
@@ -31,4 +37,7 @@ module.exports = {
     Events: Events,
     EventOccurrences: EventOccurrences
 
+
+
 };
+

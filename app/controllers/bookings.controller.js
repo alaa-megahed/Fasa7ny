@@ -2,8 +2,6 @@ var Booking  = require('mongoose').model('Booking');
 var Events   = require('mongoose').model('Events');
 var EventOccurrences   = require('mongoose').model('EventOccurrences');
 var RegisteredUser     = require('mongoose').model('RegisteredUser');
-
-
 //============================================<	BUSINESS>===========================================================
 
 exports.book_event = function (req,res)
@@ -32,6 +30,7 @@ exports.book_event = function (req,res)
 		else
 		{
 			console.log("saved "+ booking);
+
 
 			EventOccurrences.findByIdAndUpdate(event_id,{$push: {"bookings": booking}},{safe: true, upsert: true, new : true},
 		        function(err, eventocc)
@@ -66,6 +65,7 @@ exports.edit_booking = function(req,res)
   // {
 //	var bookingID    = req.params.id;        		//id of booking to be edited should be passed in the url or body
 	var bookingID    = "58e14564de21c3446730b843"; 	//for testing
+
 	var new_date 	 = new Date();
 	var count 		 = req.body.count1;
 

@@ -1,9 +1,11 @@
+
+
 var express  = require('express');
 var app      = express();
 var path 	 = require('path');
 var router   = express.Router();
 
-var booking    = require('../controllers/BookingsController');
+var booking    = require('../controllers/bookings.controller');
 
 
 	router.get('/', function(req, res){
