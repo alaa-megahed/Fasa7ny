@@ -26,10 +26,6 @@ require('./app/models/WebAdmin');
 // require('./app/controllers/BusinessController');
 // require('./app/controllers/OffersController');
 
-app.listen(config.port);
-
-
-
 var router = require('./app/routes/RegisteredUserRouter.js');
 app.use(router);
 
