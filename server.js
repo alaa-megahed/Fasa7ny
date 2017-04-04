@@ -22,9 +22,8 @@ require('./app/models/Event');
 require('./app/models/Offer');
 require('./app/models/RegisteredUser');
 require('./app/models/WebAdmin');
-// require('./app/controllers/RegularEventController');
-// require('./app/controllers/BusinessController');
-// require('./app/controllers/OffersController');
+
+
 
 app.listen(config.port);
 
