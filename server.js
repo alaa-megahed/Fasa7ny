@@ -25,10 +25,6 @@ require('./app/models/WebAdmin');
 
 
 
-app.listen(config.port);
-
-
-
 var router = require('./app/routes/RegisteredUserRouter.js');
 app.use(router);
 
