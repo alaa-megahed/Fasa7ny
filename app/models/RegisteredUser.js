@@ -35,9 +35,9 @@ var RegisteredUserSchema = new Schema({
     birthdate  : Date,
     address    : String,  //url string or x and y doubles?
     gender     : String,
-    profilePic : String
-    bookings      : [{type: mongoose.Schema.Types.ObjectId, ref:'Booking',default: []}],
-    subscriptions : [{type: mongoose.Schema.Types.ObjectId, ref:'Business',default: []}]
+    profilePic : String,
+    bookings      : [{type: mongoose.Schema.Types.ObjectId, ref:'Booking', default: []}],
+    subscriptions : [{type: mongoose.Schema.Types.ObjectId, ref:'Business', default: []}]
 });
 
 
