@@ -98,7 +98,7 @@ exports.edit_booking = function(req,res)
 			res.send("check database");
 		}
 	});
-	
+
 	// }
   // else
   // {
@@ -175,7 +175,7 @@ exports.view_event_bookings = function(req,res)
 
 //============================================<	USER >===========================================================
 
-
+//Registered user adds new bookings
 exports.regUserAddBooking = function(req, res, next) {
 
   // if(req.user)
@@ -228,7 +228,7 @@ exports.regUserAddBooking = function(req, res, next) {
 
 };
 
-
+//Registered User Views Bookings
 exports.regUserViewBookings = function(req,res,next){
 
   // if(req.user)
@@ -247,6 +247,8 @@ exports.regUserViewBookings = function(req,res,next){
 
 };
 
+
+//Registered User adds bookings
 exports.regUserEditBookings = function(req,res,next){
 
   // if(req.user)
@@ -270,6 +272,8 @@ exports.regUserEditBookings = function(req,res,next){
   // }
 
 }
+
+//Registered User deletes  bookings
 
 exports.regUserDeleteBookings = function(req,res,next){
 

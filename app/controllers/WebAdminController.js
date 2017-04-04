@@ -2,6 +2,7 @@ var WebAdmin = require('mongoose').model('WebAdmin');
 var Business = require('mongoose').model('Business');
 var generator = require('generate-password');
 var Events = require('mongoose').model('Events');
+var Advertisement = require('mongoose').model('Advertisement');
 const nodemailer = require('nodemailer');
 
 
@@ -77,4 +78,112 @@ exports.webAdminViewRequestedDelete = function (req, res) {
 
     }
     );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//<=========================================================================ADVERTISEMENT=======================================================================>
+
+
+exports.addAdvertisement = function(req,res)
+{
+  var ad = new Advertisement(
+    {
+      image       : req.body.filename, //should be changed to req.file.filename
+      text        : req.body.text,
+      start_date  : req.body.sdate,
+      end_date    : req.body.edate
+    }
+  )
+
+  ad.save(function(err,ad){
+    if(err)
+      res.send("error saving advertisement");
+    else
+      res.send("successfully created advertisement");
+
+  });
+}
+
+
+
+
+
+exports.deleteAdvertisement = function(req,res)
+{
+      Advertisement.findByIdAndRemove(req.body.ad, function(err,ad)
+      {
+        if(err)
+          res.send("error deleting advertisement");
+        else {
+          res.send("successfully deleted advertisement");
+        }
+
+      });
+
+
+}
+
+
+
+
+exports.updateAvailableAdvertisements = function(req,res)
+{
+  var rule = new schedule.RecurrenceRule();
+  rule.dayOfWeek = [new schedule.Range(0,6)];
+//  rule.hour = 0;
+//  rule.minute = 0;
+
+
+  var j = schedule.scheduleJob(rule, function()
+  {
+    var d = new Date();
+    Advertisement.find({}, function(err, ads)
+    {
+      for(var i = 0; i < ads.length; i++)
+      {
+        if(ads[i].edate < d || ads[i].sdate < d)
+          ads[i].available = 0;
+        else {
+          ads[i].available = 1;
+        }
+      }
+      ads.save();
+    })
+  });
+
+
+}
+
+exports.viewAvailableAdvertisements = function(req,res)
+{
+  Advertisement.find({available : 1}, function(err, ads)
+  {
+    res.send(ads);
+  });
 }
