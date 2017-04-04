@@ -232,7 +232,7 @@ exports.deleteOffer = function(req, res) {
   var id = req.query.id;
   var businessId = req.user.id;
   var businessId = req.query.Bid; //just for testing
-  Date d = new Date();
+  var d = new Date();
   Offer.findOne({_id:id}, function(err, offer) {
     if(err)
     {
