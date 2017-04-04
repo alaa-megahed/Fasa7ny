@@ -25,7 +25,7 @@ module.exports = function() {
 
     app.use(session({
         saveUninitialized: true,
-        resave: true,
+        resave: false,         // more secured, less convenience?
         secret: 'OurSuperSecretCookieSecret'
     }));
 

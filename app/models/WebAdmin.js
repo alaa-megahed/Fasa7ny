@@ -15,8 +15,6 @@ var WebAdminSchema = new Schema({
             type : String,
             required : true
         },
-        setPasswordToken: String,
-        resetPasswordExpires: Date 
     },        
     user_type : {type: Number, default: 3}
 });   
@@ -29,7 +27,7 @@ WebAdminSchema.methods.generateHash = function(password) {
 
 // checking if password is valid
 WebAdminSchema.methods.validPassword = function(password) {
-    return (bcrypt.compareSync(password, this.password));
+    return (bcrypt.compareSync(password, this.local.password));
 };
 
 

@@ -1,7 +1,6 @@
 
 let AuthController = require('../controllers/AuthController');
 var express = require('express'),
-	passport = require('passport'),
     router = express.Router();
 
 var app = express();

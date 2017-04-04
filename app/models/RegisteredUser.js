@@ -20,11 +20,13 @@ var RegisteredUserSchema = new Schema({
     {
         id     : String,
         token  : String,
+        email  : String
     }, 
     google     : 
     {
         id     : String,
         token  : String,
+        email  : String
     },
     user_type  : {type: Number, default: 1},
     name       : String,
@@ -43,7 +45,7 @@ RegisteredUserSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
-// checking if password is valid
+// checking if (encrypted) password is valid
 RegisteredUserSchema.methods.validPassword = function(password) {
     return bcrypt.compareSync(password, this.local.password);
 };

@@ -20,7 +20,7 @@ var BusinessSchema = new Schema({
             type : String,
             required : true
         },
-        setPasswordToken: String,
+        resetPasswordToken: String,
         resetPasswordExpires: Date 
     },    
     user_type     : {type: Number, default: 2},
@@ -51,7 +51,7 @@ BusinessSchema.methods.generateHash = function(password) {
 
 // checking if password is valid
 BusinessSchema.methods.validPassword = function(password) {
-    return (bcrypt.compareSync(password, this.password));
+    return (bcrypt.compareSync(password, this.local.password));
 };
 
 

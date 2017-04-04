@@ -11,14 +11,14 @@ var passport = require('passport'),
 let AuthController = 
 {
 	// ============================
-	// 			HOME PAGE 
+	// 			   HOME PAGE 
 	// ============================
 	home: function(req, res) {
 		res.render('index.ejs'); 
 	},
 
 	// ============================
-	// 			LOGIN 
+	// 		    	LOGIN 
 	// ============================
 	getLogin: function(req, res) {
 
@@ -53,36 +53,40 @@ let AuthController =
 			if(req.user.user_type == 1)       // regular user
 			{
 			res.render('user_profile.ejs', {
-			user : req.user // get the user out of session and pass to template
+			user : req.user 
 			});
 			}
 			else if(req.user.user_type == 2)  // business
 			{
 				res.render('business_profile.ejs', {
-				user : req.user // get the user out of session and pass to template
+				user : req.user 
 				});
 			}
 			else if(req.user.user_type == 3)  // admin
 			{
 				res.render('admin_profile.ejs', {
-				user : req.user // get the user out of session and pass to template
+				user : req.user 
 				});
 			}	
 		}
 		else
+    {
 			res.redirect('/');
+    }
 	},
 
 	// =====================================
-	// 				LOGOUT 
+	// 				     LOGOUT 
 	// =====================================
 	logout: function(req, res) {
 		req.logout();
-		res.redirect('/');
+		req.session.destroy(function (err) {
+    res.redirect('/'); 
+  });
 	},
 
 	// =====================================
-	// 				FACEBOOK 
+	// 			     	FACEBOOK 
 	// =====================================
 	facebookLogin   : function(req, res){
 		passport.authenticate('facebook', { scope : 'email' })(req, res);},
@@ -95,7 +99,7 @@ let AuthController =
 								},
 									
 	// =====================================
-	// 				GOOGLE 
+	// 			      	GOOGLE 
 	// =====================================
 	googleLogin : function(req, res){
 		passport.authenticate('google', { scope : ['profile', 'email'] })(req, res);
@@ -118,29 +122,54 @@ let AuthController =
       	crypto.randomBytes(20, function(err, buf) {
         	var token = buf.toString('hex');
         	done(err, token);
-        	console.log("hena 1");
     	  });
    		},
     	function(token, done) {
+        var check = 0;
+        Business.findOne({ email: req.body.email }, function(err, business){
+              if(!business)
+              {
+                check++;
+                if(check == 2)
+                {
+                console.log('error', 'No account with that email address exists.');
+                return res.redirect('/forgot');
+                }
+              }
+              else
+               { 
+              business.local.resetPasswordToken = token;
+              business.local.resetPasswordExpires = Date.now() + 3600000;
+              business.save(function(err){
+                if(err)
+                  console.log(err);
+                done(err, token, business);
+              });
+            }
+        });  
       		User.findOne({ email: req.body.email }, function(err, user) {
         	if (!user) {
-          	console.log('error', 'No account with that email address exists.');
-          	return res.redirect('/forgot');
+            check++;
+            if(check == 2)
+            {
+              console.log('error', 'No account with that email address exists.');
+              return res.redirect('/forgot');
+            }
+                                           
         	}
-
+          else
+          {
         	user.local.resetPasswordToken = token;
         	user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-        	console.log("user"+user);
-        	console.log(user.local.resetPasswordToken );
-        	console.log(user.local.resetPasswordExpires);
-        	console.log("token"+token);
         	user.save(function(err) {
         		if(err)
         		console.log(err);
           	done(err, token, user);
         	});
-      		});
+          }
+      	});
     	},
+      
     	function(token, user, done) {
     		
     
@@ -184,36 +213,90 @@ let AuthController =
 	},
 
 	getReset: function(req, res) {
+    var check = 0;
+        Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
+        if(!business)
+        {
+          check++;
+          if(check == 2)
+          {
+          req.flash('error', 'Password reset token is invalid or has expired.');
+          return res.redirect('/forgot'); 
+          }
+        }
+        else
+        {
+          res.render('reset', {
+          user: req.user,
+          token: req.params.token
+          });
+        }
+      });
  	 User.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
    	 if (!user) {
-      req.flash('error', 'Password reset token is invalid or has expired.');
+      check++;
+      if(check == 2)
+      {
+        req.flash('error', 'Password reset token is invalid or has expired.');
       return res.redirect('/forgot');
+      }  
     	}
+      else
+      {
     	res.render('reset', {
       	user: req.user,
       	token: req.params.token
     	});
+    }
   	  });
 	},
 
 	postReset: function(req, res) {
   async.waterfall([
     function(done) {
+      var check = 0;
+          Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
+            if(!business)
+            {
+              check++;
+              if(check == 2)
+              {
+              console.log('error', 'Password reset token is invalid or has expired.');
+              return res.redirect('back');
+              }
+            }
+            else
+            {
+              business.local.password = business.generateHash(req.body.password);
+              business.local.resetPasswordToken = undefined;
+              business.local.resetPasswordExpires = undefined;
+              business.save(function(err, business){
+                 if(err)
+                    console.log(err);
+                 done(err, business);
+              });
+            }
+          });
       User.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
         if (!user) {
-          req.flash('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('back');
+          check++;
+              if(check == 2)
+              {
+              console.log('error', 'Password reset token is invalid or has expired.');
+              return res.redirect('back');
+              }
         }
-
-        user.password = req.body.password;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
-
-        user.save(function(err) {
-          req.logIn(user, function(err) {
+        else
+        {
+        user.local.password = user.generateHash(req.body.password);
+        user.local.resetPasswordToken = undefined;
+        user.local.resetPasswordExpires = undefined;
+        user.save(function(err,user) {
+            if(err)
+            console.log(err);
             done(err, user);
-          });
         });
+      }
       });
     },
    
@@ -245,7 +328,7 @@ let AuthController =
       });
     }
   ], function(err) {
-    res.redirect('/');
+    res.redirect('/login');
   });
 },
 

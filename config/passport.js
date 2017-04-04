@@ -6,7 +6,7 @@ var LocalStrategy = require('passport-local').Strategy,
     Business = require('../app/models/Business'),
     Admin = require('../app/models/WebAdmin'),
     configAuth = require('./auth');
-
+// using async waterfall ?
 
 module.exports = function(passport) 
 { 
@@ -21,7 +21,19 @@ module.exports = function(passport)
 
    passport.deserializeUser(function(id, done) {
          User.findById(id, function(err, user) {
-            done(err, user);
+            if(!user)
+            {
+              Business.findById(id, function(err, user){
+                if(!user)
+                {
+                    Admin.findById(id, function(err, user){
+                    done(err, user);
+                  });
+                }
+                else done(err, user);
+              });
+            }
+            else done(err, user);
           });
    });
 
@@ -181,11 +193,13 @@ module.exports = function(passport)
          // all is well, return successful(regular user)
          else return done(null, user);
       });
-      //repeate the same check on business usernames
+      // repeate the same check on business usernames
       Business.findOne({ 'local.username' :  username }, function(err, user)
       {
         if (err)
+        {
           return done(err);
+        }
         if(!user)
         {
           check++;
@@ -194,11 +208,12 @@ module.exports = function(passport)
             return done(null, false, req.flash('loginMessage', 'No user found.')); 
         } 
         else if (!user.validPassword(password))
-                return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); 
+        {
+          return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); 
+        }
         // all is well, return successful user(Business)
         else 
         {
-            // console.log("business found successfully in passport");
             return done(null, user);
         }
       });
@@ -263,7 +278,7 @@ module.exports = function(passport)
             newUser.facebook.id    = profile.id; 
             newUser.facebook.token = token; 
             newUser.name           = profile.displayName;
-            newUser.email          = profile.emails[0].value;
+            newUser.facebook.email = profile.emails[0].value;
             newUser.gender         = profile.gender;
             // save our user to the database
             newUser.save(function(err) 
@@ -312,7 +327,7 @@ passport.use(new GoogleStrategy({
                     newUser.google.id    = profile.id;
                     newUser.google.token = token;
                     newUser.name         = profile.displayName;
-                    newUser.email        = profile.emails[0].value; // pull the first email
+                    newUser.google.email = profile.emails[0].value; // pull the first email
 
                     // save the user
                     newUser.save(function(err) {
