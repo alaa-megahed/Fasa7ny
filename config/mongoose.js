@@ -12,13 +12,11 @@ var mongoose = require('mongoose'),
 
 
 module.exports = function() {
-<<<<<<< HEAD
+
 
     mongoose.Promise = global.Promise;
 
-=======
-	mongoose.Promise = global.Promise;
->>>>>>> events
+
     var db = mongoose.connect(config.db);
     return db;
 };
