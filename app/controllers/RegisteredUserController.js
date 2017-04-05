@@ -186,110 +186,110 @@ exports.customize = function(req,res)
 (the username must be unique,so if he used username that already exists the user
 will be notified), birthdate, phone, gender, address, email or profilePic.*/
 exports.editInformation = function(req, res) {
-	//if(req.user && req.user instanceof RegisteredUser) {
-	// var id = req.user.id;
-	var id = req.body.id; //just for testing
-	var s = req.body;
+	if(req.user && req.user instanceof RegisteredUser) {
+		var id = req.user.id;
+		// var id = req.body.id; //just for testing
+		// var s = req.body;
 
-	if(typeof s.name != "undefined" && s.name.length > 0) {
-		User.findByIdAndUpdate(id, {$set:{name:s.name}}, function(err, user) {
-			if(err) {
-				console.log("cannot update user's name");
-			} else {
-				console.log("user's name updated");
-				console.log(user);
-			}
-		});
-	}
-
-	if(typeof s.username != "undefined" && s.username.length > 0) {
-		User.findOne({username:s.username}, function(err, user) {
-			if(err) {
-				console.log("error in finding user having the same username");
-			} else {
-				if(!user) {
-					User.findByIdAndUpdate(id, {$set: {username:s.username}}, function(err, userupdated) {
-						if(err) {
-							console.log("error in updating user's username");
-						} else {
-							console.log("user's username updated");
-							console.log(userupdated);
-						}
-					})
+		if(typeof s.name != "undefined" && s.name.length > 0) {
+			User.findByIdAndUpdate(id, {$set:{name:s.name}}, function(err, user) {
+				if(err) {
+					console.log("cannot update user's name");
 				} else {
+					console.log("user's name updated");
 					console.log(user);
-					console.log("username already exists, choose another name");
 				}
-			}
-		})
-	}
+			});
+		}
 
-	if(typeof s.birthdate != "undefined") {
-		User.findByIdAndUpdate(id, {$set: {birthdate:new Date(s.birthdate)}}, function(err, user) {
-			if(err) {
-				console.log("cannot update user's birthdate");
-			} else {
-				console.log("user's birthdate updated");
-				console.log(user);
-			}
-		})
-	}
+		if(typeof s.username != "undefined" && s.username.length > 0) {
+			User.findOne({username:s.username}, function(err, user) {
+				if(err) {
+					console.log("error in finding user having the same username");
+				} else {
+					if(!user) {
+						User.findByIdAndUpdate(id, {$set: {username:s.username}}, function(err, userupdated) {
+							if(err) {
+								console.log("error in updating user's username");
+							} else {
+								console.log("user's username updated");
+								console.log(userupdated);
+							}
+						})
+					} else {
+						console.log(user);
+						console.log("username already exists, choose another name");
+					}
+				}
+			})
+		}
 
-	if(typeof s.phone != "undefined" && s.phone.length > 0) {
-		User.findByIdAndUpdate(id, {$set: {phone:s.phone}}, function(err, user) {
-			if(err) {
-				console.log("cannot update user's phone");
-			} else {
-				console.log("user's phone update");
-				console.log(user);
-			}
-		})
-	}
+		if(typeof s.birthdate != "undefined") {
+			User.findByIdAndUpdate(id, {$set: {birthdate:new Date(s.birthdate)}}, function(err, user) {
+				if(err) {
+					console.log("cannot update user's birthdate");
+				} else {
+					console.log("user's birthdate updated");
+					console.log(user);
+				}
+			})
+		}
 
-	if(typeof s.gender != "undefined" && s.gender.length > 0) {
-		User.findByIdAndUpdate(id, {$set: {gender: s.gender}}, function(err, user) {
-			if(err) {
-				console.log("cannot update user's gender");
-			} else {
-				console.log("user's gender updated");
-				console.log(user);
-			}
-		})
-	}
+		if(typeof s.phone != "undefined" && s.phone.length > 0) {
+			User.findByIdAndUpdate(id, {$set: {phone:s.phone}}, function(err, user) {
+				if(err) {
+					console.log("cannot update user's phone");
+				} else {
+					console.log("user's phone update");
+					console.log(user);
+				}
+			})
+		}
 
-	if(typeof s.address != "undefined" && s.address.length > 0) {
-		User.findByIdAndUpdate(id, {$set: {address:s.address}}, function(err, user) {
-			if(err) {
-				console.log("cannot update user's location");
-			}  else {
-				console.log("user's location updated");
-				console.log(user);
-			}
-		})
-	}
+		if(typeof s.gender != "undefined" && s.gender.length > 0) {
+			User.findByIdAndUpdate(id, {$set: {gender: s.gender}}, function(err, user) {
+				if(err) {
+					console.log("cannot update user's gender");
+				} else {
+					console.log("user's gender updated");
+					console.log(user);
+				}
+			})
+		}
 
-	if(typeof s.email != "undefined" && s.email.length > 0) {
-		User.findByIdAndUpdate(id,{$set: {email:s.email}}, function(err, user) {
-			if(err) {
-				console.log("cannot update user's email");
-			} else {
-				console.log("user's location updated");
-				console.log(user);
-			}
-		})
-	}
+		if(typeof s.address != "undefined" && s.address.length > 0) {
+			User.findByIdAndUpdate(id, {$set: {address:s.address}}, function(err, user) {
+				if(err) {
+					console.log("cannot update user's location");
+				}  else {
+					console.log("user's location updated");
+					console.log(user);
+				}
+			})
+		}
 
-	if(typeof f != "undefined") {
-		User.findByIdAndUpdate(id, {$set: {profilePic: f.filename}}, function(err, user) {
-			if(err){
-				console.log("cannot change user's profilePic");
-			} else {
-				console.log("user's profilePic updated");
-				console.log(user);
-			}
-		})
+		if(typeof s.email != "undefined" && s.email.length > 0) {
+			User.findByIdAndUpdate(id,{$set: {email:s.email}}, function(err, user) {
+				if(err) {
+					console.log("cannot update user's email");
+				} else {
+					console.log("user's location updated");
+					console.log(user);
+				}
+			})
+		}
+
+		if(typeof f != "undefined") {
+			User.findByIdAndUpdate(id, {$set: {profilePic: f.filename}}, function(err, user) {
+				if(err){
+					console.log("cannot change user's profilePic");
+				} else {
+					console.log("user's profilePic updated");
+					console.log(user);
+				}
+			})
+		}
 	}
-// }
 }
 
 
