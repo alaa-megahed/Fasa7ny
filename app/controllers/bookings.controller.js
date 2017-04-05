@@ -182,19 +182,11 @@ exports.regUserAddBooking = function(req, res, next) {
   {
 		if(req.user instanceof RegisteredUser)
 		{
-			if(!req.body.count || !req.body.event)
-			{
-				res.send("Please fill in all required elements.");
-				return;
-			}
-
-
-			if(isNaN(req.body.count))
-			{
-				res.send("Enter a number in the count field.");
-				return;
-			}
-
+			// if(!req.body.count || !req.body.event)
+			// {
+			// 	res.send("Please fill in all required elements.");
+			// 	return;
+			// }
 
 			var date = new Date();
 	    var booking = new Booking(
@@ -239,33 +231,29 @@ exports.regUserAddBooking = function(req, res, next) {
 										 res.send("Error saving booking. Please try again.");
 										 return;
 									 }
-									 else {
+									 else
+									 {
 										 user.bookings.push(booking);
 										 user.save();
 										 res.send("successful booking");
 										 return;
-										 }
+									 }
 
 								 });
-
 								}
 						 });
-
-
-
-
-
-
 	        }
 	        else
 					{
 						res.send("Error. Please try again.");
+						return;
 	        }
 	    });
 	  }
 		else
 		{
 			res.send("You are not a registered user");
+			return;
 		}
 
 
@@ -273,10 +261,13 @@ exports.regUserAddBooking = function(req, res, next) {
 	else
 	{
 		res.send("Please log in to book events");
+		return;
   }
 
 
 };
+
+
 
 //Registered user views booking using his/her id
 exports.regUserViewBookings = function(req,res,next){
@@ -288,25 +279,32 @@ exports.regUserViewBookings = function(req,res,next){
 			RegisteredUser.findOne({_id:req.user.id}).populate('bookings').exec(function(err, bookings)
 			{
 				if(err)
+				{
 					res.send("Error finding bookings");
+					return;
+				}
 				else
+				{
 					res.send(bookings.bookings);
-
-
+					return;
+				}
 	    });
 		}
 		else
 		{
 			res.send("You are not a registered user.");
+			return;
 		}
-
- }
+  }
  else
   {
     res.send("Please log in to view upcoming bookings.");
+		return;
   }
 
 };
+
+
 
 
 //Registered user can edit his/her bookings
@@ -337,35 +335,29 @@ exports.regUserEditBookings = function(req,res,next){
 								booking.save();
 								res.send("successful edit");
 							}
-
-
 						});
 					}
 					else
 					{
 						res.send("Not one of your bookings.");
 					}
-
-
 				}
-
-
 	    });
-
-
 		}
 		else
 		{
 			res.send("You are not a registered user.");
 		}
-
   }
   else
   {
     res.send("Please log in to edit bookings");
   }
-
 }
+
+
+
+
 
 //Registered User deletes bookings
 exports.regUserDeleteBookings = function(req,res,next){
@@ -376,32 +368,35 @@ exports.regUserDeleteBookings = function(req,res,next){
 		{
 			Booking.findByIdAndRemove(req.body.bookingD, function(err,booking)
 			{
-
 				if(err || !booking)
+				{
 					res.send("Error deleting booking. Please recheck information and try again.");
+					return;
+				}
 				else
 				{
 					if(booking.booker == req.user.id)
 					{
 						if(err) throw err;
-						RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.booking}}, function(err,user){
+						RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.booking}}, function(err,user)
+						{
 							if(err) throw err;
-						})
-						EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.booking}}, function(err,eve){
+						});
+						EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.booking}}, function(err,eve)
+						{
 							if(err) throw err;
 							eve.available = eve.available + booking.count;
 							eve.save();
 							res.send(booking);
-						})
+						});
 
 					}
 					else
 					{
 						res.send("Not one of your bookings.");
+						return;
 					}
 				}
-
-
 
 			});
 		}
