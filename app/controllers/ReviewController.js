@@ -3,13 +3,16 @@ var Business = mongoose.model('Business');
 var Review = mongoose.model('Review');
 var RegisteredUser = mongoose.model('RegisteredUser');
 var Reply = mongoose.model('Reply');
+var WebAdmin = mongoose.model('WebAdmin');
 
+/* a user can write a review about a certain business by creating the review
+ then pushing this review to the array of reviews of the business*/
 exports.writeReview = function(req, res) {
-  var businessId = req.query.id;
-  var id = req.user.id;
+  // var businessId = req.query.id;
+  // var id = req.user.id;
 
-  // var businessId = req.body.Bid;
-  // var id = req.body.id;
+  var businessId = "58e404b1ffdbba435dd6452c";
+  var id = req.body.id;
 
   var newReview = new Review({
     review : req.body.review,
@@ -48,11 +51,17 @@ exports.writeReview = function(req, res) {
   });
 }
 
+/*A user can upvote a review about a business. Any user can upvote only once,
+so when such user upvotes he will be added to the upvotes array of the review
+and the upvotes will be incremented.
+and also can change a downvote to upvote by removing the user from the downvotes
+array and decrementing the array then add such user to the upvotes array and
+the upvotes will be incremented*/
 exports.upvoteReview = function(req, res) {
-  var rev = req.query.review;
-  var id = req.user.id;
-  // var id = req.body.id;
-  // var rev = req.body.review;
+  // var rev = req.query.review;
+  // var id = req.user.id;
+  var id = req.body.id;
+  var rev = req.body.review;
 
   Review.findOne({_id: rev}, function(err, review) {
     if(err) {
@@ -90,7 +99,7 @@ exports.upvoteReview = function(req, res) {
               }
 
               if(flag == false) {
-                review.downvotes.pull(id);
+                // review.downvotes.pull(id);
 
                 Review.findByIdAndUpdate(rev, {$pull: {"downvotes" : id}},{safe:true, upsert: true, new:true},
                 function(err, newreview) {
@@ -121,11 +130,17 @@ exports.upvoteReview = function(req, res) {
   })
 }
 
+/*A user can downvote a review about a business. Any user can downvote only once,
+so when such user downvotes he will be added to the downvotes array of the
+review and the downvote will be incremented.
+and also can change the upvote to downvote by removing the user from the
+upvotes array and decrementing the array then add such user to the downvote
+array and the downvotes will be incremented*/
 exports.downvoteReview = function(req, res) {
-  var rev = req.query.review;
-  var id = req.user.id;
-  // var rev = req.body.review;
-  // var id = req.body.id;
+  // var rev = req.query.review;
+  // var id = req.user.id;
+  var rev = req.body.review;
+  var id = req.body.id;
 
   Review.findOne({_id: rev}, function(err, review) {
     if(err) {
@@ -192,9 +207,9 @@ exports.downvoteReview = function(req, res) {
     }
   })
 }
-
+/*view reviews of a certain business*/
 exports.viewReviews = function(req, res) {
-  var businessId = req.user.id;
+  var businessId = req.query.id;
   // var businessId = req.body.id;
 
   Review.find({business:businessId}, function(err, reviews) {
@@ -205,14 +220,16 @@ exports.viewReviews = function(req, res) {
     }
   })
 }
-
+/* A business or a RegisteredUser can reply to a review.
+First, we must check if the user who is replying a business or a RegisteredUser
+then add the reply to the replies array in the review */
 exports.replyReview = function(req, res) {
-  var id = req.user.id;
-  var r = req.body.reply;
-  var reviewId = req.query.id;  //req.params.
-  // var id = req.body.id;
+  // var id = req.user.id;
   // var r = req.body.reply;
-  // var reviewId = req.body.review;
+  // var reviewId = req.query.id;  //req.params.
+  var id = req.body.id;
+  var r = req.body.reply;
+  var reviewId = req.body.review;
 
   Business.findOne({_id:id}, function(err, business) {
     if(err) {
@@ -227,6 +244,7 @@ exports.replyReview = function(req, res) {
               reply:req.body.reply
             });
             newReply.user = user;
+            newReply.review = reviewId;
 
             newReply.save(function(err, reply) {
               if(err) {
@@ -253,6 +271,7 @@ exports.replyReview = function(req, res) {
               reply:req.body.reply
             });
             newReply.business = business;
+            newReply.review = reviewId;
 
             newReply.save(function(err, reply) {
               if(err) {
@@ -264,6 +283,54 @@ exports.replyReview = function(req, res) {
                     console.log("error in updating replies in the review");
                   } else {
                     console.log("reply by business added to the review");
+                  }
+                });
+              }
+            });
+          }
+        });
+      }
+    }
+  });
+}
+
+/* A webadmin can delete a review if it is inappropriate. So first we must
+if he is a webadmin because otherwise the review cannot be deleted.
+When the review is deleted, all the replies must be deleted as well as the
+review will be removed from the reviews array at the business */
+exports.deleteInappropriateReview = function(req, res) {
+  // var id = req.user.id; //WebAdmin's ID
+  // var review = req.query.review;
+
+  var id = req.body.id;
+  var r = req.body.review;
+
+  WebAdmin.findOne({_id:id}, function(err, webadmin) {
+    if(err) console.log("error in finding the admin to delete the review");
+    else {
+      if(!webadmin) {
+        console.log("you must be a webAdmin to delete the review");
+      } else {
+        Review.findOne({_id:r}, function(err, reviews){
+          if(err) {
+            console.log("error in finding the review to be deleted");
+          } else {
+            Review.remove({_id:r}, function(err) {
+              if(err) console.log("error in deleting the review");
+              else {
+                Reply.remove({review:r}, function(err) {
+                  if(err) console.log("error in deleting the replies of the review");
+                  else {
+                    console.log("replies deleted");
+
+                    Business.findByIdAndUpdate({_id:reviews.business}, {$pull:{reviews:r}},
+                    function(err,updatedBusiness) {
+                      if(err) console.log("error in removing the review from the business' reviews array");
+                      else {
+                        console.log("business updated");
+                        console.log(updatedBusiness);
+                      }
+                    });
                   }
                 });
               }

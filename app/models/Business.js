@@ -34,8 +34,8 @@ var BusinessSchema = new Schema({
     images        :[String],
     delete: {
         type: Number, default:0
-    }
-
+    },
+    reviews : [{type: mongoose.Schema.Types.ObjectId, ref:'Review',default: []}]
 });
 
 //created a text index on the desired fields

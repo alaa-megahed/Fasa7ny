@@ -9,5 +9,6 @@ router.post('/rate', user.addRating);
 router.post('/subscribe',user.subscribe);
 router.post('/unsubscribe',user.unsubscribe);
 router.post('/customize', user.customize);
+router.post('/editInfo', user.editInformation);
 
 module.exports = router;

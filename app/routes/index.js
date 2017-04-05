@@ -5,9 +5,10 @@ var business = require('./business.routes.js');
 var bookings = require('./bookings.routes');
 var reviews = require('./reviews.routes');
 var offers = require('./offers.routes');
+var event = require('./event.routes');
 
-
-router.use('/offers', offers); 
+router.use('/event', event);
+router.use('/offers', offers);
 router.use('/reviews', reviews);
 router.use('/bookings', bookings);
 router.use('/search', search);
@@ -20,4 +21,3 @@ router.get('/', function (req, res) {
 });
 
 module.exports = router;
-

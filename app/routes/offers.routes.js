@@ -6,6 +6,7 @@ var BusinessController = require('../controllers/business.controller');
 var upload = multer({ dest: 'public/uploads/' });
 
 //Offer routes
+router.get('/viewOffers', OffersController.viewOffers);
 router.post('/createOffer', upload.single('image'), OffersController.createOffer);
 router.post('/updateOffer', upload.single('image'), OffersController.updateOffer);
 router.get('/deleteOffer', OffersController.deleteOffer);
