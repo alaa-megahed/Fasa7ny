@@ -185,54 +185,57 @@ exports.updateOffer = function(req, res) {
               )
             }
 
-            if(typeof body.start_date != 'undefined' && body.start_date.length != 0) {
-              Offer.findByIdAndUpdate(
-                id,
-                {$set:{start_date:body.start_date}},
-                function(err, offer) {
-                  if(err){
-                    console.log("error in updating start_date");
-                    // res.send("error in updating start_date");
-                  }
-                  else {
-                    console.log("start_date updated");
-                    console.log(offer);
-                    // res.send(offer);
-                  }
-                }
-              )
+            var startdate = offer1.start_date;
+            var expirationdate = offer1.expiration_date;
+            var flag1 = false;
+            var flag2 = false;
+            if(typeof body.start_date != 'undefined' && body.start_date.length != 0)
+            {
+               startdate = new Date(body.start_date);
+               flag1 = true;
             }
 
-            if(typeof body.expiration_date != 'undefined' && body.expiration_date.length != 0) {
+            if(typeof body.expiration_date != "undefined" && body.expiration_date.length != 0)
+            {
+              expirationdate = new Date(body.expiration_date);
+              flag2 = true;
+            }
 
-              Offer.findOne({_id:id}, function(err, offer1) {
-                if(err) console.log("error in finding offer for updating the expiration_date");
-                else {
-                  var startdate = offer1.start_date;
-                  var expirationdate = new Date(body.expiration_date);
-
-                  if(startdate - expirationdate >= 0) {
-                    console.log("please add a valid expiration_date");
-                  } else {
-                    Offer.findByIdAndUpdate(
-                      id,
-                      {$set:{expiration_date:body.expiration_date}},
-                      function(err, offer) {
-                        if(err) {
-                          console.log("error in updating expiration_date");
-                          console.log(offer);
-                          console.log(body.expiration_date);
-                          // res.send("error in updating expiration_date");
-                        }
-                        else {
-                          console.log("expiration_date updated");
-                          console.log(offer);
-                          // res.send("offer");
-                        }
-                      });
-                  }
-                }
-              });
+            if(startdate - expirationdate >= 0) {
+              console.log("please add a valid start_date/ expiration_date");
+            } else {
+              if(flag1 == true) {
+                Offer.findByIdAndUpdate(
+                  id,
+                  {$set:{start_date:startdate}},
+                  function(err, offer) {
+                    if(err) {
+                      console.log("error in updating start_date");
+                      // res.send("error in updating expiration_date");
+                    }
+                    else {
+                      console.log("start_date updated");
+                      console.log(offer);
+                      // res.send("offer");
+                    }
+                  });
+              }
+              if(flag2 == true) {
+                Offer.findByIdAndUpdate(
+                  id,
+                  {$set:{expiration_date:expirationdate}},
+                  function(err, offer) {
+                    if(err) {
+                      console.log("error in updating expiration_date");
+                      // res.send("error in updating expiration_date");
+                    }
+                    else {
+                      console.log("expiration_date updated");
+                      console.log(offer);
+                      // res.send("offer");
+                    }
+                  });
+              }
             }
 
             if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length != 0) {
