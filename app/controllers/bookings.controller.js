@@ -1,168 +1,163 @@
 var Booking  = require('mongoose').model('Booking');
 var Events   = require('mongoose').model('Events');
-var EventOccurrences   = require('mongoose').model('EventOccurrences');
-var RegisteredUser     = require('mongoose').model('RegisteredUser');
-//============================================<	BUSINESS>===========================================================
+var EventOccurrences = require('mongoose').model('EventOccurrences');
+var RegisteredUser   = require('mongoose').model('RegisteredUser');
+
+
+//================  < BUSINESS BOOKINGS > ====================
 
 exports.book_event = function (req,res)
 {
-   // if(req.user)
-  // {
-	var form     = req.body;
-//  var event_id = req.params.event_id; 	   // pass event id in url
-	var	event_id = "58de4bc1c6e6f2e13cc833e8"; // testing
+  if(req.user && req.user instanceof Business)
+  {
+  var form     = req.body;               // Front-end will guarantee handling of empty form
+  var event_id = req.body.event_id;      // pass event id in body for now
 
+  var booking  = new Booking             //Create booking instance 
+  ({
+      booking_date : new Date(),
+      count        : form.count,
+      event_id     : event_id,
+      booker       : req.user.id  
+  });
 
-	var booking = new Booking
-	({
-		  booking_date : new Date(),
-	    count        : form.count,
-	    event_id	   : event_id
-//	  booker       : req.user.id	//get business user id from session?
-	});
+  booking.save(function(err,booking)
+  {
+    if(err)
+    {
+      res.send("error in business saving booking "+ booking);
+    }
+    else
+    {
+      console.log("saved "+ booking);
 
-	booking.save(function(err,booking)
-	{
-		if(err)
-		{
-			console.log("error in business saving booking "+booking);
-		}
-		else
-		{
-			console.log("saved "+ booking);
+      EventOccurrences.findByIdAndUpdate(event_id,{$push: {"bookings": booking}},{safe: true, upsert: true, new : true},
+            function(err, eventocc)
+            {
+              if(err)
+                console.log(err);
+              else
+              {
+                console.log(eventocc);
+                eventocc.available = eventocc.available - booking.count;
+                eventocc.save();
 
+              }
+            }
+        );
 
-			EventOccurrences.findByIdAndUpdate(event_id,{$push: {"bookings": booking}},{safe: true, upsert: true, new : true},
-		        function(err, eventocc)
-		        {
-		        	if(err)
-		            console.log(err);
-		        	else
-		        	{
-		        		console.log(eventocc);
-		        		eventocc.available = eventocc.available - booking.count;
-		          	eventocc.save();
+    }
+        res.send("Booked successfully");
+  });
 
-		        	}
-		        }
-		    );
-
-		}
-
-	});
-
-	res.send("khalaweess");
-	// }
-  // else
-  // {
-  //   res.send("Please log in to add bookings");
-  // }
+  }
+  else
+  {
+    res.send("Business not logged in");
+  }
 }
 
 exports.edit_booking = function(req,res)
 {
-	 // if(req.user)
-  // {
-//	var bookingID    = req.params.id;        		//id of booking to be edited should be passed in the url or body
-	var bookingID    = "58e14564de21c3446730b843"; 	//for testing
+  if(req.user && req.user instanceof Business)
+  {
+  var bookingID    = req.body.booking_id;           //id of booking to be edited should be passed in the url or body
+  var bookingID    = "58e14564de21c3446730b843";  //for testing
+  var new_date   = new Date();
+  var count      = req.body.count1;
 
-	var new_date 	 = new Date();
-	var count 		 = req.body.count1;
+  Booking.findByIdAndUpdate(bookingID,{$set:{'booking_date':new_date,'count':count}},
+  function(err,booking)
+  {
+    if(err)
+      console.log("error editing booking");
+    else
+    {
 
-	Booking.findByIdAndUpdate(bookingID,{$set:{'booking_date':new_date,'count':count}},
-	function(err,booking)
-	{
-		if(err)
-			console.log("error editing booking");
-		else
-		{
+      var old = booking.count;
+      booking.count = count;
 
-			var old = booking.count;
-			booking.count = count;
+      console.log("successfully edited "+count+" "+old);
 
-			console.log("successfully edited "+count+" "+old);
+      EventOccurrences.findById(booking.event_id, //{$set:{'count':count}
+          function(err,eventocc)
+          {
+              if(err)
+                console.log(err);
+              else
+              {
+                eventocc.available = eventocc.available -booking.count -(-old);
+                eventocc.save();
+                console.log(eventocc.available);
 
-			EventOccurrences.findById(booking.event_id, //{$set:{'count':count}
-		      function(err,eventocc)
-		      {
-		          if(err)
-		          	console.log(err);
-		          else
-		          {
-		          	eventocc.available = eventocc.available -booking.count -(-old);
-		          	eventocc.save();
-		          	console.log(eventocc.available);
-
-		          }
-		      });
-			res.send("check database");
-		}
-	});
-	
-	// }
-  // else
-  // {
-  //   res.send("Please log in to edit bookings");
-  // }
+              }
+          });
+      res.send("Edited booking successfully");
+    }
+  });
+  
+  }
+  else
+  {
+    res.send("Business not logged in");
+  }
 
 }
 
 exports.cancel_booking = function(req,res)
 {
-// if(req.user)
-// {
-//	var bookingID = req.params.id;        //id of booking to be cancelled should be passed in the url or body
-//  var event_id  = req.params.id 		  //event_id of booking to be cancelled should be passed in the url or body or we need to findOne
-	var bookingID = "58de5cbf9b286d30f8c1d9a0";  //for testing
-	var event_id  = "58de4bc1c6e6f2e13cc833e8";  //for testing
+   if(req.user && req.user instanceof Business)
+  {
+//  var bookingID = req.body.id;        //id of booking to be cancelled should be passed in the url or body
+//  var event_id  = req.body.id       //event_id of booking to be cancelled should be passed in the url or body or we need to findOne
 
-	Booking.findByIdAndRemove(bookingID,function(err,booking)
-	{
-		if(err)
-			console.log("error cancel booking");
-		else
-		{
-			console.log("successfully cancelled "+ booking);
+  Booking.findByIdAndRemove(bookingID,function(err,booking)
+  {
+    if(err)
+      console.log("error cancel booking");
+    else
+    {
+      console.log("successfully cancelled "+ booking);
 
-			EventOccurrences.findByIdAndUpdate(event_id,{ $pull: {bookings: bookingID}},
-		      function(err,eventocc)
-		      {
-		          if(err)
-		          	console.log(err);
-		          else
-		          {
-		          	eventocc.available = eventocc.available + booking.count;
-		          	eventocc.save();
-		          }
-		      });
+      EventOccurrences.findByIdAndUpdate(event_id,{ $pull: {bookings: bookingID}},
+          function(err,eventocc)
+          {
+              if(err)
+                console.log(err);
+              else
+              {
+                eventocc.available = eventocc.available + booking.count;
+                eventocc.save();
+              }
+          });
 
-			res.send('el mafrood deleted');
-		}
+      res.send('Deleted successfully');
+    }
 
-	});
+  });
 
-// }
-  // else
-  // {
-  //   res.send("Please log in to cancel bookings");
-  // }
+}
+  else
+  {
+    res.send("Business not logged in");
+  }
 
 }
 
 exports.view_event_bookings = function(req,res)
 {
-	// if(req.user)
+  // if(req.user)
   // {
 
-//  var event_id  = req.params.id 		  		 //event_id  should be passed in the url or body
-	var event_id  = "58de4bc1c6e6f2e13cc833e8";  //for testing
+//  var event_id  = req.params.id            //event_id  should be passed in the url or body
+  var event_id  = "58de4bc1c6e6f2e13cc833e8";  //for testing
 
-	EventOccurrences.findOne({_id:event_id}).populate('bookings').exec(function(err,bookings)
-	{
-		console.log(bookings);
-		res.send(bookings);
-	});
-	// }
+  EventOccurrences.findOne({_id:event_id}).populate('bookings').exec(function(err,bookings)
+  {
+    console.log(bookings);
+    res.send(bookings);
+  });
+  // }
   // else
   // {
   //   res.send("Please log in to cancel bookings");
@@ -173,7 +168,7 @@ exports.view_event_bookings = function(req,res)
 
 
 
-//============================================<	USER >===========================================================
+//=======================<  USER > ==============================
 
 
 exports.regUserAddBooking = function(req, res, next) {

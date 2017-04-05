@@ -1,9 +1,9 @@
 var passport = require('passport'),
-    async = require('async'),
-    crypto = require('crypto'),
+    async    = require('async'),
+    crypto   = require('crypto'),
     configAuth = require('../../config/auth'),
     User = require('../models/RegisteredUser'),
-    Business = require('../models/Business'),
+    Business   = require('../models/Business'),
     nodemailer = require("nodemailer"),
     configAuth = require('../../config/auth'),
     xoauth2 = require('xoauth2');
