@@ -4,10 +4,4 @@
 
 npm-debug.log
 /node_modules
-
-/config/secretDatabase.js
-<<<<<<< HEAD
-/config/secretAuth.js
-=======
-/config/secretAuth.js
->>>>>>> subscription
+/config/auth.js

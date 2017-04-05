@@ -8,15 +8,12 @@ require('../app/models/Rating');
 require('../app/models/Review');
 
 
-
 var mongoose = require('mongoose'),
     config = require('./config');
 
 
-
 module.exports = function() {
-
-    mongoose.Promise = global.Promise;
+	mongoose.Promise = global.Promise;
     var db = mongoose.connect(config.db);
     return db;
 };
