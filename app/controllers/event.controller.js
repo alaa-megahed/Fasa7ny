@@ -1,6 +1,10 @@
 
 var Events = require('mongoose').model('Events');
 var EventOccurrences   = require('mongoose').model('EventOccurrences');
+var Business = require('mongoose').model('Business');
+
+var async = require("async");
+var schedule = require('node-schedule');
 
 /* This function creates an event. An event can have two types Once or Daily specified by "repeated". 
 The function creates an event and save it in the database. If it is Daily then 30 instances of event occurrences 
@@ -12,19 +16,30 @@ If the type is Once only one event occurrence is added.
 
 	exports.createEvent = function(req,res){
 		
-		// if(req.user){
-		let event = new Events({
-			name:req.body.name,
-			description:req.body.description,
-			location:req.body.location,
-			price:req.body.price,
-			capacity:req.body.capacity,
-			repeated: req.body.repeat,
-			daysOff: req.body.day
+	if(req.user && req.user instanceof Business) {
+		var id = req.user.id;
+    	
+    	if(!req.body.name || !req.body.description || !req.body.location || !req.body.price || !req.body.capacity || !req.body.repeat) {
+        
+        res.send("Please add all information");
+
+        }
+        else {
+
+        	if(req.body.capacity > 0 && req.body.price > 0){
+			let event = new Events({
+				name:req.body.name,
+				description:req.body.description,
+				location:req.body.location,
+				price:req.body.price,
+				capacity:req.body.capacity,
+				repeated: req.body.repeat,
+				daysOff: req.body.day,
+				business_id: id
 
 			});
 
-			 if(typeof req.file == "undefined"){
+			if(typeof req.file == "undefined"){
                 event.image = " ";
             }
             else{
@@ -38,7 +53,7 @@ If the type is Once only one event occurrence is added.
                
             });
 
-             if(req.body.repeat == "Daily"){
+            if(req.body.repeat == "Daily"){
 
 				var now = new Date();
 				var arr = [];
@@ -47,18 +62,18 @@ If the type is Once only one event occurrence is added.
   					now.setDate(now.getDate() + 1);
   					var tflag = true;
 
-				for(l=0; l<req.body.day.length;l++){
-					var y = Number(req.body.day[l]);
+					for(l=0; l<req.body.day.length;l++){
+						var y = Number(req.body.day[l]);
 					
-					if(y == now.getDay()){
+						if(y == now.getDay()){
 						tflag = false;
+						}
+					}
+					if(tflag){
+						arr[i] = new Date(now);
+						i++;
 					}
 				}
-				if(tflag){
-					arr[i] = new Date(now);
-					i++;
-				}
-					}
 
 					
 
@@ -72,11 +87,11 @@ If the type is Once only one event occurrence is added.
     				event: event._id
   				});
   				occurrence.save(function(err,occurrence){
-   				 if(err) res.send(err.message);
+   				 	if(err) res.send(err.message);
     				
   				});
 				}, function (error) {
-  				if (error) res.json(500, {error: error});
+  					if (error) res.json(500, {error: error});
 				});
 
             	var rule = new schedule.RecurrenceRule();
@@ -111,18 +126,18 @@ If the type is Once only one event occurrence is added.
 				}
 
 				if(flag){
-				occurrence.save(function(err,occurrence){
-					if(err) res.send(err.message);
+					occurrence.save(function(err,occurrence){
+						if(err) res.send(err.message);
 					
-				});
-			}
+					});
+				}
 
 				});
 
-             }
+            }
 
 
-             if(req.body.repeat == "Once"){
+            if(req.body.repeat == "Once"){
              	
 
              	let occurrence = new EventOccurrences({
@@ -132,73 +147,164 @@ If the type is Once only one event occurrence is added.
 					event: event._id
 				});
 
-             		occurrence.save(function(err,occurrence){
+             	occurrence.save(function(err,occurrence){
 					if(err) res.send(err.message);
 					
 				});
 
 
-             }
+            }
 
 
 		
-		res.render('eventCreated.ejs');
+			res.send('Event created!');
+		}
+		else res.send('Incorrect input');
+		}
 	}
-// }
-	// else{
-	// 	console.log('not logged in');
-	// }
-	
+	else{
+		res.send('You are not a logged in business');
+	}
+	}
 
 		exports.getEvents = function(req,res){
-			Events.find({},function(err,events){
-				if(err) res.send(err.message);
-				else res.render('index',{events:events});
-			})
+			if(req.user && req.user instanceof Business){
+				Events.find({business_id:req.user.id},function(err,events){
+					if(err) res.send(err.message);
+					else if(!events) res.send('Something went wrong');
+					else res.send(events);
+				});
+			}
+			else{
+				res.send('You are not a logged in business');
+			}
 			
 		}
 
 		exports.getOccurrences = function(req,res){
-			EventOccurrences.find({},function(err,events){
-				if(err) res.send(err.message);
-				else res.render('index',{events:events});
-			})
+			if(req.user && req.user instanceof Business && typeof req.body.id != "undefined"){
+				EventOccurrences.find({event:req.body.id},function(err,events){
+					if(err) res.send(err.message);
+					if(!events) res.send('Something went wrong');
+					else res.send(events);
+				});
 			
-		}
+			}
+			else{
+				res.send('You are not a logged in business');
+			}
+		}	
 
 /* A business can edit an event or an event occurrence based on the changed field. */		
 
 		exports.editEvent = function(req,res){
-			// if(req.user){
+			 if(req.user && req.user instanceof Business && typeof req.body.id != "undefined"){
+
 			var id = req.body.id;
-			if(typeof req.body.name != "undefined" && req.body.name.length > 0){
+			var business_id = req.user.id;
+			Events.findById(id,function(err,event){
+				if(!event) res.send('Something went wrong');
+				else if(event.business_id == business_id){
+					if(typeof req.body.name != "undefined" && req.body.name.length > 0){
 				Events.findByIdAndUpdate(id,{$set:{name:req.body.name}}, function(err,event){
 					if(err) res.send('Could not update');
+					else if(!event) res.send('Something went wrong');
 					else res.send('name updated');
 				});
 			}
 			if(typeof req.body.location != "undefined" && req.body.location.length > 0){
 				Events.findByIdAndUpdate(id,{$set:{location:req.body.location}}, function(err,event){
 					if(err) res.send('Could not update');
+					else if(!event) res.send('Something went wrong');
 					else res.send('updated');
 				});
 			}
 			if(typeof req.body.price != "undefined" && req.body.price.length > 0){
 				Events.findByIdAndUpdate(id,{$set:{price:req.body.price}}, function(err,event){
 					if(err) res.send('Could not update');
+					else if(!event) res.send('Something went wrong');
 					else res.send('updated');
 				});
 			}
+			
 			if(typeof req.body.capacity != "undefined" && req.body.capacity.length > 0){
-				Events.findByIdAndUpdate(id,{$set:{capacity:req.body.capacity}}, function(err,event){
+
+				
+				Events.findById(id, function(err,event){
+
 					if(err) res.send('Could not update');
-					else res.send('updated');
+					else if(!event) res.send('Something went wrong');
+					else {
+						var oldCapacity = event.capacity;
+						if(oldCapacity < req.body.capacity)
+						{
+							
+							var difference = req.body.capacity - oldCapacity;
+							EventOccurrences.find({event:event._id}, function(err, eventOcc)
+							{
+								if(!eventOcc) res.send('Something went wrong');
+								
+								for(var i = 0; i < eventOcc.length; i++)
+								{
+									eventOcc[i].available += difference;
+									eventOcc[i].save();
+								}
+
+							});
+							event.capacity = req.body.capacity;
+							event.save();
+						  res.send("Successful editing of capacity");
+						}
+						else if( oldCapacity > req.body.capacity)
+						{
+
+							
+							var difference = oldCapacity - req.body.capacity;
+							EventOccurrences.find({event:event._id}, function(err, eventOcc)
+							{
+								if(!eventOcc) res.send('Something went wrong');
+								
+								var check = 0;
+								for(var i = 0; i < eventOcc.length &&  check == 0; i++)
+								{
+									if(eventOcc[i].available < difference)
+									{
+										check = 1;
+										res.send("Can not decrease capacity without cancelling extra bookings. Please cancel extra bookings.");
+									}
+
+								}
+
+								if(check == 0)
+								{
+									EventOccurrences.find({event:event._id}, function(err, eventOcc)
+									{
+										if(!eventOcc) res.send('Something went wrong');
+										for(var i = 0; i < eventOcc.length; i++)
+										{
+											eventOcc[i].available -= difference;
+											eventOcc[i].save();
+										}
+
+									});
+									event.capacity = req.body.capacity;
+									event.save();
+
+									res.send("Successful editing of capacity");
+								}
+
+							});
+						}
+						else res.send('Successful editing of capacity');
+					}
 				});
+
 			}
 
 			if(typeof req.body.description != "undefined" && req.body.description.length > 0){
 				Events.findByIdAndUpdate(id,{$set:{description:req.body.description}}, function(err,event){
 					if(err) res.send('Could not update');
+					else if(!event) res.send('Something went wrong');
 					else res.send('updated');
 				});
 			}
@@ -206,17 +312,20 @@ If the type is Once only one event occurrence is added.
 				if(typeof req.body.day != "undefined" && req.body.day.length > 0){
 				Events.findByIdAndUpdate(id,{$set:{daysOff:req.body.day}}, function(err,event){
 					if(err) res.send('Could not update');
-					else res.send('updated');
+					else if(!event) res.send('Something went wrong');
+					else res.send('Days off will change starting next month.');
 				});
 			}
 
 			if(typeof req.body.date != "undefined" && req.body.date.length > 0){
 				Events.findOne({_id:id},function(err,event){
 					if(err) res.send(err.message);
+					else if(!event) res.send('Something went wrong');
 					else{
 						if(event.repeated == "Once"){	
 							EventOccurrences.findOneAndUpdate({event:id},{$set:{day:req.body.date}},function(err,occurrence){
 								if(err) res.send('Could not update');
+								else if(!occurrence) res.send('Something went wrong');
 								else res.send('updated');
 							});		
 						}
@@ -233,10 +342,14 @@ If the type is Once only one event occurrence is added.
 				});
 
 			}
-		// }
-		// else{
-		// 	console.log('not logged in');
-		// }
+				}
+				else res.send('Can not edit this event!');
+			});
+			
+		}
+		else{
+			res.send('You are not a logged in business');
+		}
 			
 
 		}
@@ -244,43 +357,65 @@ If the type is Once only one event occurrence is added.
 		/*A business can cancel an event with all its occurrences.*/
 
 		exports.cancelEvent = function(req,res){
-			// if(req.user){
-			var id = req.body.id;
+			 if(req.user && req.user instanceof Business && typeof req.body.id != "undefined"){
+				var id = req.body.id;
+			var business_id = req.user.id;
+			Events.findById(id,function(err,event){
+				if(!event) res.send('Something went wrong');
+				if(event.business_id == business_id){
 
 			Events.remove({_id:id}, function(err){
-				if(err) console.log('could not delete event');
-				else console.log('event deleted');
+				if(err) res.sen('could not delete event');
+				else res.send('event deleted');
 			});
 
 			EventOccurrences.remove({event:id}, function(err){
-				if(err) console.log('could not delete occurrence');
-				else console.log('occurrence deleted');
+				if(err) res.send('could not delete occurrence');
+				else res.send('occurrence deleted');
 			});
 
-			res.render('eventCreated.ejs');
-		// }
-		// else{
-		// 	console.log('not logged in');
-		// }
+			res.send('Event cancelled');
+		}
+		else{
+			res.send('Can not cancel this event!');
+		}
+	});
+}
+		else{
+			res.send('You are not a logged in business');
+		}
 
 		 }
 
 		 /* Abusiness can cancel an event occurrence.*/
 
 		exports.cancelOccurrence = function(req,res){
-			// if(req.user){
-			var id = req.body.id;
+			 if(req.user && req.user instanceof Business && typeof req.body.id != "undefined"){
+				var occurrence_id = req.body.id;
+				var business_id = req.user.id;
+				EventOccurrences.findById(occurrence_id, function(err,occ){
+					if(!occ) res.send('Something went wrong');
 
-			EventOccurrences.remove({_id:id}, function(err){
-				if(err) console.log('could not delete occurrence');
-				else console.log('occurrence deleted');
-			});
+					Events.findById(occ.event,function(err,event){
+						if(!event) res.send('Something went wrong');
+						if(event.business_id == business_id){
 
-			res.render('eventCreated.ejs');
-		// }
-		// else{
-		// 	console.log('not logged in');
-		// }
+							EventOccurrences.remove({_id:occurrence_id}, function(err){
+								if(err) res.send('could not delete occurrence');
+								else res.send('occurrence deleted');
+							});
+
+							res.send('Occurrence cancelled');
+						}
+						else{
+								res.send('Can not cancel this occurrence');
+							}
+					});
+				});	
+			}
+			else{
+				res.send('You are not a logged in business');
+			}
 
 		}
 

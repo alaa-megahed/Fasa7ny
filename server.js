@@ -6,7 +6,18 @@ var mongoose = require('./config/mongoose'),
     db = mongoose(),
     app = express();
 
+//requiring Schemas
+require('./app/models/Booking');
+require('./app/models/Business');
+require('./app/models/Event');
+require('./app/models/Offer');
+require('./app/models/RegisteredUser');
+require('./app/models/WebAdmin');
 
+
+
+var router = require('./app/routes/index.js');
+app.use(router);
 
 
 
