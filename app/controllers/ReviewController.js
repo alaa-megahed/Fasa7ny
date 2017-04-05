@@ -242,7 +242,7 @@ exports.replyReview = function(req, res) {
     // var r = req.body.reply;
     // var reviewId = req.body.review;
 
-    if(req.user instanceOf Business) {
+    if(req.user instanceof Business) {
       var newReply = new Reply({
         reply:req.body.reply
       });
