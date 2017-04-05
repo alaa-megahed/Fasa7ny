@@ -10,5 +10,6 @@ var NotificationSchema = new Schema({
 
 });	
 
-var Notifications = mongoose.model('Notifications', NotificationsSchema);
+var Notifications = mongoose.model('Notifications', NotificationSchema);
 module.exports = Notifications;
+
