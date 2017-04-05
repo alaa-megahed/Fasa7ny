@@ -8,8 +8,8 @@ var offers = require('./offers.routes');
 var event = require('./event.routes');
 var auth = require('./auth.routes');
 
-
-router.use('/offers', offers); 
+router.use('/event', event);
+router.use('/offers', offers);
 router.use('/reviews', reviews);
 router.use('/bookings', bookings);
 router.use('/search', search);
@@ -24,4 +24,3 @@ router.get('/', function (req, res) {
 });
 
 module.exports = router;
-
