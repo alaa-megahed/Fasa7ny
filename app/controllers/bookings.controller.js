@@ -182,12 +182,6 @@ exports.regUserAddBooking = function(req, res, next) {
   {
 		if(req.user instanceof RegisteredUser)
 		{
-			// if(!req.body.count || !req.body.event)
-			// {
-			// 	res.send("Please fill in all required elements.");
-			// 	return;
-			// }
-
 			var date = new Date();
 	    var booking = new Booking(
 	      {
