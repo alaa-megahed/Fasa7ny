@@ -6,6 +6,7 @@ var bookings = require('./bookings.routes');
 var reviews = require('./reviews.routes');
 var offers = require('./offers.routes');
 var event = require('./event.routes');
+var auth = require('./auth.routes');
 
 
 router.use('/offers', offers); 
@@ -17,8 +18,9 @@ router.use('/event',event);
 router.use('/contact', function(req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
+router.use('/auth', auth);
 router.get('/', function (req, res) {
-    res.send("Hello");
+    res.render('index.ejs'); 
 });
 
 module.exports = router;

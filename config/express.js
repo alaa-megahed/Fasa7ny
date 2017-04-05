@@ -49,8 +49,7 @@ module.exports = function() {
     
 
     require('./passport')(passport);                                     // pass passport for passport configuration
-    var auth_routes = require('../app/routes/authentication_routes');    // authentication related routes
-    app.use('/', auth_routes);
+
 
     app.use( express.static("./uploads") );
 

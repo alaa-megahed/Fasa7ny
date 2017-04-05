@@ -1,54 +1,13 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
-	 <form method="post" action="eventCreated.ejs">
-	
-	Name <br> 
-	<input type="text" name="name" required></input><br>
-	Description <br>
-	<input type="text" name="description" required></input> <br>
-	Location <br> 
-	<input type="text" name="location"></input><br>
-	Price <br>
-	<input type="text" name="price" required></input> <br>
-	Capacity <br> 
-	<input type="text" name="capacity" required></input><br>
-	Date <br> 
-	<input type="date" name="date" required></input><br>
-	Timing<br>
-	<input type="text" name="timing" required></input><br>
-	Repeat<br>
-	<input type="text" name="repeat" required></input><br>
 
-	Days Off <br>
-	 <input type="checkbox" name="day" value="0"> Sunday<br>
-	 <input type="checkbox" name="day" value="1"> Monday<br>
-	 <input type="checkbox" name="day" value="2"> Tuesday<br>	
-	 <input type="checkbox" name="day" value="3"> Wednesday<br>
-	 <input type="checkbox" name="day" value="4"> Thursday<br>
-	 <input type="checkbox" name="day" value="5"> Friday<br>
-	 <input type="checkbox" name="day" value="6"> Saturday<br>
-	<input type="submit" name="create" value="Create Event"></input> <br><br><br>
-
-	 <% for(var i = 0; i<events.length; i++){ %>
-	 <a href="haga.ejs/?id=<%=events[i]._id%>"> <%= events[i]._id %></a><br>
-	
-	 	<% } %>
-
-</form> 
-	
 
 </body>
 </html>
-
+ -->
 
 <!-- HERE THE HOME PAGE FOR TESTING AUTHENTICATION -->
 
 
-<!-- <!doctype html>
+<!doctype html>
 <html>
 <head>
 	<title>Node Authentication</title>
@@ -66,8 +25,8 @@
 
 		<p>Login or Register with:</p>
 
-		<a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Local Login</a>
-		<a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Local Signup</a>
+		<a href="auth/login" class="btn btn-default"><span class="fa fa-user"></span> Local Login</a>
+		<a href="auth/signup" class="btn btn-default"><span class="fa fa-user"></span> Local Signup</a>
 		<p>Login or Register with:</p>
 
 		<a href="/auth/facebook" class="btn btn-primary"><span class="fa fa-facebook"></span> Facebook</a>
@@ -77,5 +36,5 @@
 
 </div>
 </body>
-</html> -->
+</html>
 

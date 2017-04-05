@@ -19,13 +19,13 @@ router.get('/profile', AuthController.getProfile);
 
 router.get('/logout', AuthController.logout);	
 
-router.get('/auth/facebook', AuthController.facebookLogin);
+router.get('/facebook', AuthController.facebookLogin);
 
-router.get('/auth/facebook/callback',AuthController.facebookCallback);
+router.get('/facebook/callback',AuthController.facebookCallback);
 
-router.get('/auth/google', AuthController.googleLogin);
+router.get('/google', AuthController.googleLogin);
                     
-router.get('/auth/google/callback', AuthController.googleCallback);
+router.get('/google/callback', AuthController.googleCallback);
 
 router.get('/forgot',AuthController.getForgetPassword);        
 

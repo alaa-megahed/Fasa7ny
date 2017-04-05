@@ -26,8 +26,8 @@ let AuthController =
 	},
 
 	postLogin: function(req, res){passport.authenticate('local-login', {
-		successRedirect : '/profile', 
-		failureRedirect : '/login', 
+		successRedirect : '/auth/profile', 
+		failureRedirect : '/auth/login', 
 		failureFlash : true 
 	})(req, res);},
 
@@ -39,8 +39,8 @@ let AuthController =
 	},
 
 	postSignup: function(req, res){passport.authenticate('local-signup', {
-		successRedirect : '/profile', 
-		failureRedirect : '/signup', 
+		successRedirect : '/auth/profile', 
+		failureRedirect : '/auth/signup', 
 		failureFlash : true 
 	})(req, res);},
 
@@ -93,7 +93,7 @@ let AuthController =
 
 	facebookCallback: function(req, res){
 		passport.authenticate('facebook', {
-            						successRedirect : '/profile',
+            						successRedirect : '/auth/profile',
             						failureRedirect : '/'
        							   })(req, res);
 								},
@@ -106,7 +106,7 @@ let AuthController =
 	},
 
 	googleCallback: function(req, res){
-		passport.authenticate('google', { failureRedirect: '/', successRedirect :'http://localhost:8080/profile'})(req, res);
+		passport.authenticate('google', { failureRedirect: '/', successRedirect :'http://localhost:3000/auth/profile'})(req, res);
 	},
 
 	// =====================================
@@ -328,7 +328,7 @@ let AuthController =
       });
     }
   ], function(err) {
-    res.redirect('/login');
+    res.redirect('/auth/login');
   });
 },
 
