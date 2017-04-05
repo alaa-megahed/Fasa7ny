@@ -6,7 +6,6 @@ var Offer = mongoose.model('Offer');
 /* this function views all the offers created by a business by finding the offers
  having the same id as the id of the business passed to the function. */
 exports.viewOffers = function(req, res) {
-  console.log("hay");
   if(typeof req.query.id != "undefined") {
     console.log(req.query.id);
     var id = req.query.id;
@@ -278,7 +277,7 @@ exports.updateOffer = function(req, res) {
                 res.send("error in finding offer");
               } else {
                 console.log(offers);
-                if(offers) res.render("crudoffer", {offers:offers, id:req.user.id});
+                if(offers) res.send("done");
                 else res.send("enter a valid offer");
               }
             })
@@ -326,7 +325,7 @@ exports.deleteOffer = function(req, res) {
                 }
                  else
                 {
-                  if(myoffers) res.render("crudoffer", {offers:myoffers, id:req.user.id});
+                  if(myoffers) res.send("done")
                 }
               });
             }
