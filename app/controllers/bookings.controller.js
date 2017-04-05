@@ -185,11 +185,16 @@ exports.regUserAddBooking = function(req, res, next) {
 			if(!req.body.count || !req.body.event)
 			{
 				res.send("Please fill in all required elements.");
+				return;
 			}
 
 
 			if(isNaN(req.body.count))
+			{
 				res.send("Enter a number in the count field.");
+				return;
+			}
+
 
 			var date = new Date();
 	    var booking = new Booking(
