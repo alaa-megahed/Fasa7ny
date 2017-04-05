@@ -31,18 +31,18 @@ var BusinessController = {
     },
 
     makePagePublic: function(req, res) {
-      var businessId = req.user.id;
-      // var businessId = req.query.id; //just for testing
-      Business.findByIdAndUpdate(
-        businessId,
-        {$set:{public:1}},
-        function(err) {
-          if(err) {
-            console.log("error in making page public");
-          } else {
-            console.log("Page public");
-          }
+      if(req.user && req.user instanceof Business) {
+        var businessId = req.user.id;
+        Business.findByIdAndUpdate(businessId, {$set:{public:1}},
+          function(err) {
+            if(err) {
+              console.log("error in making page public");
+            } else {
+              console.log("Page public");
+              res.send("done");
+            }
         });
+      }
   },
 
 
@@ -51,7 +51,7 @@ var BusinessController = {
         // if(req.user){
             // var id = req.query.id;
             var id = "58e368c90a4710a67fec4931";
-          
+
             if(typeof req.body.password != "undefined" && req.body.password.length > 0){
                 Business.findByIdAndUpdate(id,{$set:{password:req.body.password}}, function(err,info){
                     if(err) res.send('Could not update');
@@ -148,4 +148,3 @@ var BusinessController = {
 }
 
 module.exports = BusinessController;
-
