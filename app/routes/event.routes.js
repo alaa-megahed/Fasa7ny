@@ -12,4 +12,8 @@ router.post('/edit', RegularEventController.editEvent);
 router.post('/cancel', RegularEventController.cancelEvent);
 router.post('/cancelO', RegularEventController.cancelOccurrence);
 
+router.get('/haga.ejs', RegularEventController.editEvent);
+router.post('/update', RegularEventController.editEvent);
+
+
 module.exports = router;
