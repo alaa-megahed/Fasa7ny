@@ -7,6 +7,10 @@ var upload = multer({ dest: 'public/uploads/' });
 
 var user   = require('../controllers/RegisteredUserController');
 
+router.use('/edit', function(req, res) {
+  res.render('userEditInfo.ejs');
+});
+
 router.post('/rate', user.addRating);
 router.post('/subscribe',user.subscribe);
 router.post('/unsubscribe',user.unsubscribe);

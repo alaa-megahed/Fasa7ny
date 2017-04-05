@@ -8,9 +8,6 @@ var offers = require('./offers.routes');
 var event = require('./event.routes');
 var auth = require('./auth.routes');
 
-router.use('/edit', function(req, res) {
-  res.render('userEditInfo.ejs');
-})
 router.use('/auth', auth);
 router.use('/event', event);
 router.use('/offers', offers);
