@@ -8,6 +8,7 @@ var offers = require('./offers.routes');
 var event = require('./event.routes');
 var auth = require('./auth.routes');
 
+router.use('/auth', auth);
 router.use('/event', event);
 router.use('/offers', offers);
 router.use('/reviews', reviews);
@@ -18,9 +19,8 @@ router.use('/event',event);
 router.use('/contact', function(req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
-router.use('/auth', auth);
 router.get('/', function (req, res) {
-    res.render('index.ejs'); 
+    res.render('index.ejs');
 });
 
 module.exports = router;

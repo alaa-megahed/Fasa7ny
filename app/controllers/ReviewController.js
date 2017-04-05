@@ -9,32 +9,29 @@ var WebAdmin = mongoose.model('WebAdmin');
  then pushing this review to the array of reviews of the business*/
 exports.writeReview = function(req, res) {
 
-  if(req.user && req.user instanceof RegisteredUser && typeof req.body.review != "undefined" && typeof req.query.id != "undefined") {
+  if(req.user && req.user instanceof RegisteredUser && typeof req.body.review != "undefined" && req.body.review.length > 0 && typeof req.query.id != "undefined") {
     var businessId = req.query.id;
     var id = req.user.id;
-    // var businessId = "58e404b1ffdbba435dd6452c";
-    // var id = req.body.id;
 
-    var newReview = new Review({
-      review : req.body.review,
-      upvote : 0,
-      downvote : 0
-    });
-    newReview.business = businessId;
-    newReview.user = id;
+    Business.findOne({_id:businessId}, function(err, business) {
+      if(err) console.log("error in adding review to business");
+      else if(business) {
 
-    newReview.save(function(err, review) {
-      if(err) {
-        console.log("cannot save review");
-      } else {
-        console.log(review);
+        var newReview = new Review({
+          review : req.body.review,
+          upvote : 0,
+          downvote : 0
+        });
+        newReview.business = businessId;
+        newReview.user = id;
 
-        Business.findOne({_id:businessId}, function(err, business) {
+        newReview.save(function(err, review) {
           if(err) {
-            console.log("error in adding review to business");
+            console.log("cannot save review");
           } else {
-            console.log(business);
-            console.log(business.reviews);
+            console.log(review);
+
+
             business.reviews.push(review);
 
             business.save(function(err, updatedbusiness) {
