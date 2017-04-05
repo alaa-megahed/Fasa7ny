@@ -12,7 +12,7 @@ var mongoose = require('./config/mongoose');
     schedule = require('node-schedule'),
     async = require('async');
 
- app.use(require('./app/routes/WebAdminRouter.js'));
+ //app.use(require('./app/routes/WebAdminRouter.js'));
 
 
 //requiring Schemas
@@ -25,9 +25,6 @@ require('./app/models/WebAdmin');
 // require('./app/controllers/RegularEventController');
 // require('./app/controllers/BusinessController');
 // require('./app/controllers/OffersController');
-
-app.listen(config.port);
-
 
 
 var router = require('./app/routes/RegisteredUserRouter.js');

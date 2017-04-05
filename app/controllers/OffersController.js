@@ -53,6 +53,15 @@ exports.createOffer = function(req, res) {
       } else {
         console.log(offer);
         console.log("offer created successfully");
+
+        this.notify_on_create(function(err)
+        {
+          if(err)
+              console.log("error in offer creation notification");
+          else
+              console.log("successfully notified for offer creation");
+
+          });
         res.send(offer);
         // res.send("offer created successfully");
         //send to profile/next page
@@ -274,3 +283,37 @@ exports.deleteOffer = function(req, res) {
     }
   })
 };
+
+
+exports.notify_on_create = function(req,res)
+{
+  //Notification:  "Business name" just added "event name".
+  var subscibers = req.user.subscibers;
+  var content = req.user.name + "added" + req.body.name; 
+  var notification = new Notification(
+  {
+    date: new Date(),
+    content: content
+  });
+
+  notification.save(function(err,notification)
+  {
+    if(err)
+      console.log("error saving notification");
+    else
+    {
+
+      for(var i = 0; i < subscribers.length; i++)
+      {
+        User.findByIdAndUpdate({_id:subscibers[i]},{$push:{"notifications": notification}},function(err,user)
+        {
+          if(err)
+            console.log("error updating user notifications");
+          else
+            console.log(user);
+        });
+      }
+    }
+  });
+
+}

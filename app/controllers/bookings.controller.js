@@ -10,7 +10,7 @@ exports.book_event = function (req,res)
   // {
 	var form     = req.body;
 //  var event_id = req.params.event_id; 	   // pass event id in url
-	var	event_id = "58de4bc1c6e6f2e13cc833e8"; // testing
+	var	event_id = "58e36d8aa6cd531f513cd881"; // testing
 
 
 	var booking = new Booking
@@ -64,7 +64,7 @@ exports.edit_booking = function(req,res)
 	 // if(req.user)
   // {
 //	var bookingID    = req.params.id;        		//id of booking to be edited should be passed in the url or body
-	var bookingID    = "58e14564de21c3446730b843"; 	//for testing
+	var bookingID    = "58e36efba3fe1e3e3895bb85"; 	//for testing
 
 	var new_date 	 = new Date();
 	var count 		 = req.body.count1;
@@ -113,8 +113,8 @@ exports.cancel_booking = function(req,res)
 // {
 //	var bookingID = req.params.id;        //id of booking to be cancelled should be passed in the url or body
 //  var event_id  = req.params.id 		  //event_id of booking to be cancelled should be passed in the url or body or we need to findOne
-	var bookingID = "58de5cbf9b286d30f8c1d9a0";  //for testing
-	var event_id  = "58de4bc1c6e6f2e13cc833e8";  //for testing
+	var bookingID = "58e36efba3fe1e3e3895bb85";  //for testing
+	var event_id  = "58e36d8aa6cd531f513cd881";  //for testing
 
 	Booking.findByIdAndRemove(bookingID,function(err,booking)
 	{
@@ -141,7 +141,7 @@ exports.cancel_booking = function(req,res)
 
 	});
 
-// }
+   // }
   // else
   // {
   //   res.send("Please log in to cancel bookings");

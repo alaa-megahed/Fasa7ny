@@ -1,8 +1,8 @@
 
 var Events = require('mongoose').model('Events');
-var EventOccurrences   = require('mongoose').model('EventOccurrences');
-
-
+var User   = require('mongoose').model('RegisteredUser');
+var EventOccurrences = require('mongoose').model('EventOccurrences');
+var Notifications    = require('mongoose').model('Notifications');
 
 
 	exports.createEvent = function(req,res){
@@ -24,7 +24,6 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
             }
             else{
                 event.image = req.file.filename;
-
             }
 
 
@@ -117,7 +116,8 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
              }
 
 
-             if(req.body.repeat == "Once"){
+             if(req.body.repeat == "Once")
+             {
              	
 
              	let occurrence = new EventOccurrences({
@@ -128,11 +128,25 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
 				});
 
              		occurrence.save(function(err,occurrence){
-					if(err) res.send(err.message);
+					if(err)
+						 res.send(err.message);
+					else
+					{
+						this.notify_on_create(function(err) //notify user when creating event
+		             	{
+		             		if(err)
+		             			console.log("error notifying users");
+		             		else
+		             			console.log("successfully notified");
+
+		             	});
+					}
+
+
 					
 				});
 
-
+             	
              }
 
 
@@ -227,6 +241,12 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
 				});
 
 			}
+
+
+			  //notify user when editing event if he booked
+             
+
+
 		// }
 		// else{
 		// 	console.log('not logged in');
@@ -247,7 +267,18 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
 
 			EventOccurrences.remove({event:id}, function(err){
 				if(err) console.log('could not delete occurrence');
-				else console.log('occurrence deleted');
+				else
+				{ 
+					console.log('occurrence deleted');
+					this.notify_on_cancel(function(err)
+					{
+						if(err)
+							console.log("FAILED to notify for cancellation");
+						else
+							console.log("successfully notified for cancellation");
+
+					});
+				}
 			});
 
 			res.render('eventCreated.ejs');
@@ -264,7 +295,18 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
 
 			EventOccurrences.remove({_id:id}, function(err){
 				if(err) console.log('could not delete occurrence');
-				else console.log('occurrence deleted');
+				else
+				{ 
+					console.log('occurrence deleted');
+					this.notify_on_cancel(function(err)
+					{
+						if(err)
+							console.log("FAILED to notify for cancellation");
+						else
+							console.log("successfully notified for cancellation");
+
+					});
+				}
 			});
 
 			res.render('eventCreated.ejs');
@@ -275,3 +317,82 @@ var EventOccurrences   = require('mongoose').model('EventOccurrences');
 
 		}
 
+
+
+
+//================================Notifications=====================================
+
+exports.notify_on_create = function(req,res)
+{
+	//Notification:  "Business name" just added "event name".
+	var subscibers = req.user.subscibers;
+	var content = req.user.name + "added" + req.body.name; 
+	var notification = new Notification(
+	{
+		date: new Date(),
+		content: content
+	});
+
+	notification.save(function(err,notification)
+	{
+		if(err)
+			console.log("error saving notification");
+		else
+		{
+
+			for(var i = 0; i < subscribers.length; i++)
+			{
+				User.findByIdAndUpdate({_id:subscibers[i]},{$push:{"notifications": notification}},function(err,user)
+				{
+					if(err)
+						console.log("error updating user notifications");
+					else
+						console.log(user);
+				});
+			}
+		}
+	});
+
+}
+
+exports.notify_on_cancel = function(req,res)	//would be exactly the same for edit event but 												
+{												//different  notification content, how to check
+												// which function am I currently executing	
+	event_id = req.query.id; 					//get the event id from session? 
+	EventOccurrences.findOne({_id:id},function(err,eventocc)
+	{
+		if(err)
+			console.log("err in notify_on_cancel");
+		else
+		{
+			var bookers = eventocc.bookers;
+			var content = req.user.name + "cancelled" + req.body.name; 
+			var notification = new Notification(
+			{
+				date: new Date(),
+				content: content
+			});
+
+			notification.save(function(err,notification)
+			{
+				if(err)
+					console.log("error saving notification");
+				else
+				{
+
+					for(var i = 0; i < bookers.length; i++)
+					{
+						User.findByIdAndUpdate({_id:bookers[i]},{$push:{"notifications": notification}},function(err,user)
+						{
+							if(err)
+								console.log("error updating user notifications");
+							else
+								console.log(user);
+						});
+					}
+				}
+			});
+
+		}
+	});
+}

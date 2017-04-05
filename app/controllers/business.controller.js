@@ -11,7 +11,7 @@ var BusinessController = {
                     res.send(result);
             });
     },
-    equestRemoval: function(req,res) {
+    requestRemoval: function(req,res) {
         // if(req.user){
         var id = req.query.id;
         Business.findByIdAndUpdate(id,{$set:{deleted:1}}, function(err,business){

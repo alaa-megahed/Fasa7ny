@@ -6,23 +6,25 @@ var SchemaTypes = mongoose.Schema.Types;
 
 
 var BusinessSchema = new Schema({
-    name: {
-        type: String,
+    name: 
+    {
+        type  : String,
         unique: true
     },
-    username: {
-        type: String,
+    username: 
+    {
+        type  : String,
         unique: true
     },
-    password: String,
-    email: String,
-    phones: [String],
-    address: String,
-    area: String,
+    password  :  String,
+    email     :  String,
+    phones    : [String],
+    address   :  String,
+    area      :  String,
     description: String,
     merchant_ID: String,
-    category: [String], //or int? can be in more than one category
-    location: { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
+    category   : [String], //or int? can be in more than one category
+    location   : { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
     average_rating: SchemaTypes.Double,
     public:
     {
