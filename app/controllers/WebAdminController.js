@@ -181,7 +181,6 @@ exports.WebAdminDeleteBusiness = function (req, res) {
         Business.find({ delete: 1 }, function (err, requests) {
             if (err)
                 throw err;
-
             res.render('requestedDelete', { user: req.user, requests: requests });
         });
     });
