@@ -4,16 +4,27 @@ var Offer = mongoose.model('Offer');
 
 
 /* this function views all the offers created by a business by finding the offers
- having the same id as the id of the business passed to the function. */
+ having the same id as the id of the business passed to the function.
+ if the user is a business, he will be sent to his offer's page where he
+ can update/delete the offers */
 exports.viewOffers = function(req, res) {
   if(typeof req.query.id != "undefined") {
     console.log(req.query.id);
     var id = req.query.id;
-    Offer.find({business:id}, function(err, offers) {
-      if(err) {
-        console.log("error in finding all offers");
-      } else {
-          res.render("view_offers", {offers:offers});
+
+    Business.findOne({_id:id}, function(err, business) {
+      if(err) console.log("error in finding the business to view the offers");
+      else {
+        if(!business) res.send("business does not exist. enter a valid one");
+        else {
+          Offer.find({business:id}, function(err, offers) {
+            if(err) {
+              console.log("error in finding all offers");
+            } else {
+                res.render("view_offers", {offers:offers});
+            }
+          })
+        }
       }
     })
   } else if(req.user && req.user instanceof Business) {
@@ -73,7 +84,7 @@ exports.createOffer = function(req, res) {
       // console.log(d1);
       // console.log(d2);
       if(startdate - expirationdate >= 0) {
-        console.log("please add a valid expiration_date");
+        console.log("please add a valid start_date/ expiration_date");
       } else {
         newOffer.save(function(err, offer) {
           if(err) {
@@ -113,7 +124,7 @@ exports.updateOffer = function(req, res) {
     Offer.findOne({_id:id}, function(err, offer1){
       if(err) console.log("error in finding the offer");
       else {
-        if(!offer1)console.log ("enter a valid offer");
+        if(!offer1)res.send("offer does not exist");
         else {
           if(offer1.business.equals(businessId)) {
             if(typeof body.name != 'undefined' && body.name.length != 0) {
@@ -338,7 +349,10 @@ exports.deleteOffer = function(req, res) {
               });
             }
           })
-        } else console.log("you must delete only your offers");
+        } else {
+          if(!offer) res.send("offer does not exist");
+          else res.send("you must delete only your offers");
+        }
       }
     })
   } else {
