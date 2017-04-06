@@ -11,10 +11,27 @@ router.use('/edit', function(req, res) {
   res.render('userEditInfo.ejs');
 });
 
+
+router.get('/subscribe', function(req, res) {
+  res.render('subscribe.ejs');
+});
+
+
+router.get('/unsubscribe', function(req, res) {
+  res.render('unsubscribe.ejs');
+});
+
+
+router.get('/rate', function(req, res) {
+  res.render('rate.ejs');
+});
+
+
+
 router.post('/rate', user.addRating);
 router.post('/subscribe',user.subscribe);
 router.post('/unsubscribe',user.unsubscribe);
-router.post('/customize', user.customize);
+router.get('/customize', user.customize);
 router.post('/editInfo', upload.single('image'), user.editInformation);
 
 module.exports = router;
