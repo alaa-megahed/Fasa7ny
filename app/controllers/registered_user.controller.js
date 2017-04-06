@@ -58,26 +58,37 @@ exports.unsubscribe = function (req, res) {
 				return;
 			}
 
-			Business.findOne({ _id: businessID }, function (err, business) {
-				if (err || !business) {
-					res.send("Error in finding business.");
-					return;
-				}
+			var check = 0;
+			for (var i = 0; i < user_found.subscriptions.length; i++) {
+				if (user_found.subscriptions[i] == businessID)
+					check = 1;
+			}
+			if (check == 1) {
+				Business.findOne({ _id: businessID }, function (err, business) {
+					if (err || !business) {
+						res.send("Error in finding business.");
+						return;
+					}
 
-				if (user_found) {
-					business.subscribers.pull(user_found);
-					business.save();
-					user_found.subscriptions.pull(business);
-					user_found.save();
-					res.send("business has been removed from subscriptions.");
-					return;
-				}
-				else {
-					res.send("User is not found.");
-					return;
-				}
+					if (user_found) {
+						business.subscribers.pull(user_found);
+						business.save();
+						user_found.subscriptions.pull(business);
+						user_found.save();
+						res.send("business has been removed from subscriptions.");
+						return;
+					}
+					else {
+						res.send("User is not found.");
+						return;
+					}
 
-			});
+				});
+			}
+			else {
+				return res.send("Not subscribed");
+			}
+
 
 
 
