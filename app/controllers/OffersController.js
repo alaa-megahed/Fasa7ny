@@ -68,18 +68,19 @@ exports.createOffer = function(req, res) {
         newOffer.image = file.filename;
       }
       if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length > 0) {
-        newOffer.notify_subscribers = body.notify_subscribers;
+        newOffer.notify_subscribers = Number(body.notify_subscribers);
       }
-      if(typeof body.start_date != 'undefined' && body.start_date > 0) {
+      var now = new Date();
+      if(typeof body.start_date != 'undefined' && body.start_date.length > 0) {
         newOffer.start_date = new Date(body.start_date);
       } else {
-        newOffer.start_date = new Date();
+        newOffer.start_date = now;
       }
       var startdate = newOffer.start_date;
       var expirationdate = newOffer.expiration_date;
       // console.log(d1);
       // console.log(d2);
-      if(startdate - expirationdate >= 0) {
+      if(startdate - expirationdate >= 0 || now - startdate > 0) {
         res.send("please add a valid start_date/ expiration_date");
       } else {
         newOffer.save(function(err, offer) {
@@ -129,6 +130,7 @@ exports.updateOffer = function(req, res) {
             var expirationdate = offer.expiration_date;
             var flag1 = false;
             var flag2 = false;
+            var now = new Date();
             if(typeof body.start_date != 'undefined' && body.start_date.length != 0)
             {
                startdate = new Date(body.start_date);
@@ -141,14 +143,14 @@ exports.updateOffer = function(req, res) {
               flag2 = true;
             }
             var error = "";
-            if(startdate - expirationdate >= 0) error = "please add a valid start_date/ expiration_date";
+            if(startdate - expirationdate >= 0 || (flag1 && now - startdate > 0) || (flag2 && now - expirationdate > 0)) error = "please add a valid start_date/ expiration_date";
             else
             {
               if(flag1 == true) offer.start_date = startdate;
               if(flag2 == true) offer.expiration_date = expirationdate;
             }
             if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length != 0)
-              offer.notify_subscribers = body.notify_subscribers;
+              offer.notify_subscribers = Number(body.notify_subscribers);
 
               if(typeof file != 'undefined') offer.file = file.filename;
 

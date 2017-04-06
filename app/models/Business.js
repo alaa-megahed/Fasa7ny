@@ -33,13 +33,13 @@ var BusinessSchema = new Schema({
     email         : String,
     phones        : [String],
     description   : String,
-    merchant_ID   : String,
+    merchant_ID   : {type: String, unique: true },
     category      : [String], //or int? can be in more than one category
     location      : { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
     address: String,
     area: String,
     description: String,  
-    average_rating: SchemaTypes.Double,
+    average_rating: {type: SchemaTypes.Double, default: 0.0},
     public:
     {
         type: Number, default: 0
