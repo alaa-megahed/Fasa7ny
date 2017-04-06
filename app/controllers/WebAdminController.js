@@ -13,9 +13,21 @@ var configAuth = require('../../config/auth');
 
 
 exports.AddBusiness = function (req, res) {
-
-    Business.findOne({ username: req.body.username }, function (err, user) {
+    var name_username_merchantID_unique = true; 
+    //test if name and merchant_ID
+    Business.findOne({ 
+        $or: [
+            {username: req.body.username}, 
+            {name: req.body.name}, 
+            {merchant_ID: req.body.merchant_ID}, 
+            {email: req.body.email}
+        ] 
+    }, 
+    function (err, user) {
         if (err) { return next(err); }
+        console.log(user); 
+        if(user)
+            name_username_merchantID_unique = false; 
         if (!business) {
          var business = new Business();
          var generatedPassword = generator.generate({
