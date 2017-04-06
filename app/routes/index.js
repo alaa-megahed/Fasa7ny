@@ -14,6 +14,7 @@ var auth = require('./auth.routes');
 var user = require('./RegisteredUserRouter'); 
 var admin = require('./WebAdminRouter');
 
+router.use('/auth', auth);
 router.use('/event', event);
 router.use('/offers', offers);
 router.use('/reviews', reviews);
@@ -28,9 +29,8 @@ router.use('/contact', function(req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
 
-
 router.get('/', function (req, res) {
-    res.render('index.ejs'); 
+    res.render('index.ejs');
 });
 
 module.exports = router;

@@ -8,27 +8,18 @@ SearchController = {
                 if (err)
                     console.log(err);
                 else
-                    res.send(result);
+                    res.render("search.ejs", {result: result});
             });
     },
-    // , searchRedirect: function(req, res) {
-    //     var keyword = req.body.keyword; 
-    //     req.session.formData = req.body; 
-    //     res.redirect(keyword); 
-    // },  
-    /** Searches businesses by keyword inserted by user 
-     * Filters by category, minimum rating, area 
-     * Sorts by average_rating 
-     */
     search: function (req, res) {
         var formData = req.body;
         var sortBy = formData.sortBy;
-
+        console.log(formData); 
         var queryBody = helper.makeQuery(formData); // retrieve query body 
 
         var query = Business.find(queryBody);
 
-        if (sortBy !== 'udefined' && sortBy.length > 0) { //apply sort filter only if not empty 
+        if (typeof sortBy !== 'undefined' && sortBy.length > 0) { //apply sort filter only if not empty 
             var sortObj = {};
             sortObj[sortBy] = -1;
             query.sort(sortObj);
@@ -40,7 +31,8 @@ SearchController = {
             if (err)
                 res.send(err);
             else {
-                res.send(result);
+                console.log(result); 
+                res.render('search.ejs', {result: result});
             }
         });
 
