@@ -4,7 +4,7 @@ var businessController = require('../controllers/business.controller.js');
 var path 	 = require('path');
 
 business.use('/makepagepublic', function(req, res) {
-  res.render("makePagePublic.ejs");
+  res.render("makePagePublic.ejs", {user:req.user});
 })
 
 

@@ -9,17 +9,16 @@ var Offer = mongoose.model('Offer');
  can update/delete the offers */
 exports.viewOffers = function(req, res) {
   if(typeof req.query.id != "undefined") {
-    console.log(req.query.id);
     var id = req.query.id;
 
     Business.findOne({_id:id}, function(err, business) {
-      if(err) console.log("error in finding the business to view the offers");
+      if(err) res.send("error in finding the business to view the offers");
       else {
         if(!business) res.send("business does not exist. enter a valid one");
         else {
           Offer.find({business:id}, function(err, offers) {
             if(err) {
-              console.log("error in finding all offers");
+              res.send("error in finding all offers");
             } else {
                 res.render("view_offers", {offers:offers});
             }
@@ -29,10 +28,9 @@ exports.viewOffers = function(req, res) {
     })
   } else if(req.user && req.user instanceof Business) {
       var id = req.user.id;
-      console.log(id);
       Offer.find({business:id}, function(err, offers) {
         if(err) {
-          console.log("error in finding all offers");
+          res.send("error in finding all offers");
         } else {
             res.render("crudoffer", {offers:offers, id:req.user.id});
         }
@@ -55,9 +53,7 @@ exports.createOffer = function(req, res) {
     var file = req.file;
 
     if(!body.name || !body.type || !body.value || !body.details || !body.expiration_date) {
-      console.log("please add all information");
       res.send("please add all information");
-      //send back to add offer page
     } else {
       var newOffer = new Offer({
         name:body.name,
@@ -84,19 +80,13 @@ exports.createOffer = function(req, res) {
       // console.log(d1);
       // console.log(d2);
       if(startdate - expirationdate >= 0) {
-        console.log("please add a valid start_date/ expiration_date");
+        res.send("please add a valid start_date/ expiration_date");
       } else {
         newOffer.save(function(err, offer) {
           if(err) {
-            console.log("error in creating offer");
             res.send("error in creating offer");
-            //send back to add offer page
           } else {
-            console.log(offer);
-            console.log("offer created successfully");
             res.send(offer);
-            // res.send("offer created successfully");
-            //send to profile/next page
           }
         })
       }
@@ -121,86 +111,22 @@ exports.updateOffer = function(req, res) {
     var id = req.query.id;
     var file = req.file;
 
-    Offer.findOne({_id:id}, function(err, offer1){
-      if(err) console.log("error in finding the offer");
-      else {
-        if(!offer1)res.send("offer does not exist");
-        else {
-          if(offer1.business.equals(businessId)) {
-            if(typeof body.name != 'undefined' && body.name.length != 0) {
-              Offer.findByIdAndUpdate(
-                id,
-                {$set:{name:body.name}},
-                function(err, offer) {
-                  if(err){
-                    console.log("error in updating name");
-                    // res.send("error in updating type");
-                  }
-                  else {
-                    console.log("name updated");
-                    console.log(offer);
-                    // res.send(offer);
-                  }
-                }
-              )
-            }
+    Offer.findOne({_id:id}, function(err, offer) {
+      if(err) res.send("error in finding the offer");
+      else
+      {
+        if(!offer) res.send("offer does not exist");
+        else
+        {
+          if(offer.business.equals(businessId))
+          {
+            if(typeof body.name != 'undefined' && body.name.length != 0) offer.name = body.name;
+            if(typeof body.type != 'undefined' && body.type.length != 0) offer.type = body.type;
+            if(typeof body.value != 'undefined' && body.value.length != 0) offer.value = body.type;
+            if(typeof body.details != 'undefined' && body.details.length != 0) offer.details = body.details;
 
-            if(typeof body.type != 'undefined' && body.type.length != 0) {
-              Offer.findByIdAndUpdate(
-                id,
-                {$set:{type:body.type}},
-                function(err, offer) {
-                  if(err){
-                    console.log("error in updating type");
-                    // res.send("error in updating type");
-                  }
-                  else {
-                    console.log("type updated");
-                    console.log(offer);
-                    // res.send(offer);
-                  }
-                }
-              )
-            }
-
-            if(typeof body.value != 'undefined' && body.value.length != 0) {
-              Offer.findByIdAndUpdate(
-                id,
-                {$set:{value:body.value}},
-                function(err, offer) {
-                  if(err){
-                    console.log("error in updating value");
-                    // res.send("error in updating value")
-                  }
-                  else {
-                    console.log("value updated");
-                    console.log(offer);
-                    // res.send(offer);
-                  }
-                }
-              )
-            }
-
-            if(typeof body.details != 'undefined' && body.details.length != 0) {
-              Offer.findByIdAndUpdate(
-                id,
-                {$set:{details:body.details}},
-                function(err, offer) {
-                  if(err){
-                    console.log("error in updating details");
-                    // res.send("error in updating details");
-                  }
-                  else {
-                    console.log("details updated");
-                    console.log(offer);
-                    // res.send(offer);
-                  }
-                }
-              )
-            }
-
-            var startdate = offer1.start_date;
-            var expirationdate = offer1.expiration_date;
+            var startdate = offer.start_date;
+            var expirationdate = offer.expiration_date;
             var flag1 = false;
             var flag2 = false;
             if(typeof body.start_date != 'undefined' && body.start_date.length != 0)
@@ -214,99 +140,28 @@ exports.updateOffer = function(req, res) {
               expirationdate = new Date(body.expiration_date);
               flag2 = true;
             }
-
-            if(startdate - expirationdate >= 0) {
-              console.log("please add a valid start_date/ expiration_date");
-            } else {
-              if(flag1 == true) {
-                Offer.findByIdAndUpdate(
-                  id,
-                  {$set:{start_date:startdate}},
-                  function(err, offer) {
-                    if(err) {
-                      console.log("error in updating start_date");
-                      // res.send("error in updating expiration_date");
-                    }
-                    else {
-                      console.log("start_date updated");
-                      console.log(offer);
-                      // res.send("offer");
-                    }
-                  });
-              }
-              if(flag2 == true) {
-                Offer.findByIdAndUpdate(
-                  id,
-                  {$set:{expiration_date:expirationdate}},
-                  function(err, offer) {
-                    if(err) {
-                      console.log("error in updating expiration_date");
-                      // res.send("error in updating expiration_date");
-                    }
-                    else {
-                      console.log("expiration_date updated");
-                      console.log(offer);
-                      // res.send("offer");
-                    }
-                  });
-              }
+            var error = "";
+            if(startdate - expirationdate >= 0) error = "please add a valid start_date/ expiration_date";
+            else
+            {
+              if(flag1 == true) offer.start_date = startdate;
+              if(flag2 == true) offer.expiration_date = expirationdate;
             }
+            if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length != 0)
+              offer.notify_subscribers = body.notify_subscribers;
 
-            if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length != 0) {
-              Offer.findByIdAndUpdate(
-                id,
-                {$set:{notify_subscribers:body.notify_subscribers}},
-                function(err, offer) {
-                  if(err){
-                    console.log("error in updating notify_subscribers");
-                    // res.send("error in updating notify_subscribers");
-                  }
-                  else {
-                    console.log("notify_subscribers updated");
-                    console.log(offer);
-                    // res.send(offer);
-                  }
-                }
-              )
-            }
+              if(typeof file != 'undefined') offer.file = file.filename;
 
-            if(typeof file != 'undefined') {
-              Offer.findByIdAndUpdate(
-                id,
-                {$set:{image:file.filename}},
-                function(err, offer) {
-                  if(err){
-                    console.log("error in updating image");
-                    // res.send("error in updating image");
-                  }
-                  else {
-                    console.log("image updated");
-                    console.log(offer);
-                    // res.send(offer);
-                  }
-                }
-              )
-            }
+              offer.save(function(err, updatedoffer) {
+                if(err) res.send("error");
+                else res.send(error + "----" +updatedoffer);
+              })
 
-            Offer.find({business:businessId}, function(err, offers) {
-              if(err) {
-                console.log("error in finding offer");
-                res.send("error in finding offer");
-              } else {
-                console.log(offers);
-                if(offers) res.send("done");
-                else res.send("enter a valid offer");
-              }
-            })
-          } else {
-            console.log("you must update only your offers");
-          }
+          } else res.send("you must update only your offers");
         }
       }
     })
-  } else {
-    res.send("you're not a logged in business");
-  }
+  } else res.send("you're not a logged in business");
 };
 
 
@@ -320,7 +175,7 @@ exports.deleteOffer = function(req, res) {
     Offer.findOne({_id:id}, function(err, offer) {
       if(err)
       {
-        console.log("error in finding the offer");
+        res.send("error in finding the offer");
       }
       else
       {
@@ -329,19 +184,12 @@ exports.deleteOffer = function(req, res) {
           Offer.remove({_id:id}, function(err)
           {
             if(err)
-            {
-              console.log("cannot delete offer");
               res.send("cannot delete offer");
-            }
             else
             {
-              console.log("offer deleted");
-              // res.send("offer deleted");
               Offer.find({business:businessId},function(err, myoffers) {
                 if(err)
-                {
-                  console.log("cannot get my offers");
-                }
+                  res.send("cannot get my offers");
                  else
                 {
                   if(myoffers) res.send("done")
