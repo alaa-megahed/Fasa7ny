@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var ReviewController = require('../controllers/ReviewController');
+var ReviewController = require('../controllers/review.controller');
 
 // review routes
 router.post('/writeReview', ReviewController.writeReview);

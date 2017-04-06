@@ -11,8 +11,8 @@ var reviews = require('./reviews.routes');
 var offers = require('./offers.routes');
 var event = require('./event.routes');
 var auth = require('./auth.routes');
-var user = require('./RegisteredUserRouter'); 
-var admin = require('./WebAdminRouter');
+var user = require('./registered_user.routes'); 
+var admin = require('./web_admin.routes');
 
 router.use('/auth', auth);
 router.use('/event', event);
