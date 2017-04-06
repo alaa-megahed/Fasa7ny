@@ -11,7 +11,7 @@ var booking    = require('../controllers/bookings.controller');
     //below belongs to business
     router.get('/', function(req, res){
         if(req.user && req.user.user_type == 2)
-             res.render('test2.ejs');
+             res.render(path.resolve('app/views/test2.ejs'));
          else
          {
             res.send("You Are Not Authorized To Access This Page!");
