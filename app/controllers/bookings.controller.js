@@ -59,18 +59,19 @@ exports.book_event = function (req,res)
                       {
                         if(err || !booking)
                             res.send("Oops, something went wrong, please try again with the correct information ");
-                          else{
-                        var newAvailable = eventocc.available - booking.count;
+                         else
+                         {
+                          var newAvailable = eventocc.available - booking.count;
 
-                        // Insert booking in array of bookings of booked event occurrence
-                        EventOccurrences.findByIdAndUpdate(event_id,{$set:{"available":newAvailable},$push: {"bookings": booking}},{safe: true, upsert: true, new : true},
-                        function(err,eventoccur)
-                        {
-                          if(err || !eventoccur)
-                            res.send("Oops, something went wrong, please try again with the correct information ");
-                          else
-                            res.send("Booked successfully");
-                        });
+                          // Insert booking in array of bookings of booked event occurrence
+                          EventOccurrences.findByIdAndUpdate(event_id,{$set:{"available":newAvailable},$push: {"bookings": booking}},{safe: true, upsert: true, new : true},
+                          function(err,eventoccur)
+                          {
+                            if(err || !eventoccur)
+                              res.send("Oops, something went wrong, please try again with the correct information ");
+                            else
+                              res.send("Booked successfully");
+                          });
                       }
                       });
                      }
@@ -449,7 +450,6 @@ exports.regUserEditBookings = function(req,res,next){
 						{
               if(err || !eve)
                 return res.send("Error!");
-
 							eve.available = eve.available + booking.count - req.body.count;
 							if(eve.available < 0)
 								res.send("Invalid amount. Please try again.");
