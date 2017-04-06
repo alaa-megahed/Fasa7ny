@@ -15,7 +15,7 @@ var BusinessController = {
 
     },
 
-    /* A business can request to be removed from the website. 
+    /* A business can request to be removed from the website.
     If the business has any bookings the request is rejected and a message is sent to the business specifying
     that the request was cancelled and that the business should cancel its bookings first.*/
 
@@ -78,7 +78,7 @@ var BusinessController = {
               res.send("done");
             }
         });
-      }
+      } else res.send("you must be a logged in business");
   },
 
 /* A business can edit its personal infromation.*/
@@ -88,7 +88,7 @@ var BusinessController = {
 
         if(req.user && req.user instanceof Business){
             var id = req.user.id;
-          
+
             if(typeof req.body.description != "undefined" && req.body.description.length > 0){
                 Business.findByIdAndUpdate(id,{$set:{description:req.body.description}}, function(err,info){
                     if(err) res.send('Could not update');
@@ -146,13 +146,13 @@ var BusinessController = {
         }
     },
 
-/* A business can request to delete a phone number. If this is business' only phone number then it will 
-not be deleted and the business will receive a message. If the business has other phone numbers then this 
+/* A business can request to delete a phone number. If this is business' only phone number then it will
+not be deleted and the business will receive a message. If the business has other phone numbers then this
 one can be deleted. If the business entered a wrong phone number a message is sent to the business
 saying that the phone number was not found.*/
     deletePhone: function(req,res){
         if(req.user && req.user instanceof Business){
-            if(typeof req.body.phone != "undefined"){    
+            if(typeof req.body.phone != "undefined"){
             var id = req.user.id;
             var phone = req.body.phone;
             Business.findOne({_id:id},function(err,business){
@@ -166,7 +166,7 @@ saying that the phone number was not found.*/
                                 var check = 0;
                                 if(business.phones[i] == phone){
                                     Business.findByIdAndUpdate(id,{$pull:{"phones":phone}}, function(err,info){
-                                    
+
                                     check  = 1;
                                     if(err) res.send('Could not delete');
                                     if(!info) res.send('Something went wrong');
@@ -191,14 +191,14 @@ saying that the phone number was not found.*/
 
     },
 
-/* A business can request to delete a payment method. If this is business' only payment method then it will 
-not be deleted and the business will receive a message. If the business has other payment methods then this 
+/* A business can request to delete a payment method. If this is business' only payment method then it will
+not be deleted and the business will receive a message. If the business has other payment methods then this
 one can be deleted. If the business entered a wrong payment method a message is sent to the business
 saying that the payment method was not found.*/
 
     deletePaymentMethod: function(req,res){
         if(req.user && req.user instanceof Business){
-            if(typeof req.body.payment != "undefined"){    
+            if(typeof req.body.payment != "undefined"){
                 var id = req.user.id;
                 var payment = req.body.payment;
                 Business.findOne({_id:id},function(err,business){
@@ -212,7 +212,7 @@ saying that the payment method was not found.*/
                                 var check = 0;
                                 if(business.payment_methods[i] == payment){
                                     Business.findByIdAndUpdate(id,{$pull:{"payment_methods":payment}}, function(err,info){
-                                    
+
                                     check  = 1;
                                     if(err) res.send('Could not delete');
                                     if(!info) res.send('Something went wrong');
@@ -223,7 +223,7 @@ saying that the payment method was not found.*/
                             if(check == 0){
                                 res.send('Payment Method not found!');
                             }
-                          
+
                         }
                     }
                 });
@@ -235,9 +235,9 @@ saying that the payment method was not found.*/
          }
          else{
             res.send('You are not a logged in business');
-         }   
+         }
 
     }
- }   
+ }
 
 module.exports = BusinessController;
