@@ -7,9 +7,9 @@ var path 	 = require('path');
 
 
 
-// router.get('/', function(req, res){
-//         res.sendFile(path.resolve('app/views/event.html'));
-//     });
+router.get('/', function(req, res){
+        res.sendFile(path.resolve('app/views/event.html'));
+    });
 
 router.post('/create', RegularEventController.createEvent);
 router.post('/edit', RegularEventController.editEvent);
