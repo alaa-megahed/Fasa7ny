@@ -38,6 +38,7 @@
 			<input type="text" class="form-control" name="username">
 		</div>
 	
+<<<<<<< HEAD
 		<div class="form-group">
 			<label>Email</label>
 			<input type="email" class="form-control" name="email">
@@ -60,6 +61,37 @@
 	<a href="/admin/viewRequestedDelete" class="btn btn-default btn-sm">view</a>
 		
 		
+=======
+		
+		<div class="form-group">
+			<label>merchant id</label>
+			<input type="text" class="form-control" name="merchant_ID">
+		</div>
+		<div class="form-group">
+		<!-- temp -->
+			<label>Category</label>
+			<input type="number" class="form-control" name="category">
+		</div>
+		<button type="submit" class="btn btn-warning btn-lg">Add Business</button>
+	</form>
+
+	<p>Remove Buiness</p>
+	<form action="/admin/add_business" method="post">
+	<div class="form-group">
+		<label>Name</label>
+			<input type="text" class="form-control" name="name">
+		</div>
+	
+		<div class="form-group">
+		<!-- temp -->
+			<label>Category</label>
+			<input type="number" class="form-control" name="category">
+		</div>
+		<button type="submit" class="btn btn-warning btn-lg">Add Business</button>
+	</form>
+
+		<!-- <a href="/create-business" class="btn btn-default btn-sm">Add Business</a> -->
+>>>>>>> c328b15fd48fd3dc55f32a03c487eec8f31e1813
 
 
 <% } %>

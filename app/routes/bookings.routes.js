@@ -12,6 +12,10 @@ var booking    = require('../controllers/bookings.controller');
         res.sendFile(path.resolve('app/views/test.html'));
     });
 
+		router.get('/regusers', function(req, res){
+	        res.sendFile(path.resolve('app/views/regusersbookingtest.html'));
+	    });
+
     //below belongs to business
 
     router.post('/book_event', booking.book_event);

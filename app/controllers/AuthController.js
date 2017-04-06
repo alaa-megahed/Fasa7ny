@@ -1,9 +1,9 @@
 var passport = require('passport'),
-    async = require('async'),
-    crypto = require('crypto'),
+    async    = require('async'),
+    crypto   = require('crypto'),
     configAuth = require('../../config/auth'),
     User = require('../models/RegisteredUser'),
-    Business = require('../models/Business'),
+    Business   = require('../models/Business'),
     nodemailer = require("nodemailer"),
     configAuth = require('../../config/auth'),
     xoauth2 = require('xoauth2');
@@ -52,6 +52,7 @@ let AuthController =
 		{
 			if(req.user.user_type == 1)       // regular user
 			{
+        console.log(req.session.id);
 			res.render('user_profile.ejs', {
 			user : req.user 
 			});
@@ -133,7 +134,7 @@ let AuthController =
                 if(check == 2)
                 {
                 console.log('error', 'No account with that email address exists.');
-                return res.redirect('/forgot');
+                return res.redirect('/auth/forgot');
                 }
               }
               else
@@ -153,7 +154,7 @@ let AuthController =
             if(check == 2)
             {
               console.log('error', 'No account with that email address exists.');
-              return res.redirect('/forgot');
+              return res.redirect('/auth/forgot');
             }
                                            
         	}
@@ -221,7 +222,7 @@ let AuthController =
           if(check == 2)
           {
           req.flash('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('/forgot'); 
+          return res.redirect('/auth/forgot'); 
           }
         }
         else
@@ -238,7 +239,7 @@ let AuthController =
       if(check == 2)
       {
         req.flash('error', 'Password reset token is invalid or has expired.');
-      return res.redirect('/forgot');
+      return res.redirect('/auth/forgot');
       }  
     	}
       else

@@ -22,7 +22,6 @@ var EventOccurrencesSchema = mongoose.Schema({
     bookings : [{type: mongoose.Schema.Types.ObjectId,ref: 'Booking',default: [] }],
     event : {type: mongoose.Schema.Types.ObjectId, ref:'Events'}
 
-
 });
 
 //creating models
