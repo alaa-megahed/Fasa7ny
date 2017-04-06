@@ -2,6 +2,7 @@ var WebAdmin = require('mongoose').model('WebAdmin');
 var Business = require('mongoose').model('Business');
 var generator = require('generate-password');
 var Events = require('mongoose').model('Events');
+var EventOcc = require('mongoose').model('EventOccurrences');
 var Offer = require('mongoose').model('Offer');
 var User = require('mongoose').model('RegisteredUser');
 var Review = require('mongoose').model('Review');
@@ -26,7 +27,7 @@ exports.AddBusiness = function (req, res) {
         function (err, resultBusiness) {
             console.log(resultBusiness);
             if (err) { return next(err); }
-            
+
             if (resultBusiness.length == 0) {   //if yes then check user 
                 User.find({
                     $or: [
@@ -38,10 +39,10 @@ exports.AddBusiness = function (req, res) {
                         if (err)
                             console.log(err);
                         else if (resultUser.length == 0) {
-                            
+
                             WebAdmin.find({ 'local.username': req.body.username },
                                 function (err, resultAdmin) {
-                                     
+
                                     if (err)
                                         console.log(err);
                                     else if (resultAdmin.length == 0) {
@@ -127,20 +128,59 @@ exports.AddBusiness = function (req, res) {
 exports.WebAdminDeleteBusiness = function (req, res) {
 
 
-    Business.findByIdAndRemove(req.params.id, function (err, business) {
+    Business.findById(req.params.id, function (err, business) {
         if (err)
             throw err;
-
+        //remove offers
         Offer.remove({ business: business._id }, function (err) {
 
             if (err) throw err;
         });
-
-        Events.remove({ business_id: business._id }, function (err) {
+        //remove events of the business
+        Events.find({ business_id: business._id }, function (err, events) {
             if (err) throw err;
+            else
+                for (var i = 0; i < events.length; i++) {
+                    EventOcc.remove({ event: events[i]._id }, function (err) {
+                        if (err)
+                            throw err;
+                    });
+                }
+            Events.remove({ business_id: business._id }, function (err) {
+                if (err)
+                    throw err;
+            })
+
+        });
+
+        //remove business from subscribers
+        for (var i = 0; i < business.subscribers.length; i++) {
+            var user_id = business.subscribers[i];
+            User.findById(user_id, function (err, user) {
+                if (err)
+                    throw err;
+                else {
+                    var subs = user.subscriptions;
+                    var index = subs.indexOf(business._id);
+                    if (index > -1) {
+                        subs.splice(index, 1);
+                        User.findByIdAndUpdate(user_id, { $set: { subscriptions: subs } }, function (err, userResult) {
+                            if (err)
+                                throw err;
+
+                        });
+                    }
+                }
+            });
+        }
+        Business.findByIdAndRemove(req.params.id, function (err, business) {
+            if (err)
+                throw err;
         });
 
         Business.find({ delete: 1 }, function (err, requests) {
+            if (err)
+                throw err;
             res.render('requestedDelete', { user: req.user, requests: requests });
         });
     });
