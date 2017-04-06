@@ -52,21 +52,19 @@ let AuthController =
 		{
 			if(req.user.user_type == 1)       // regular user
 			{
-			 res.render('user_profile.ejs', {
-			 user : req.user 
-			});
+        res.redirect('http://localhost:3000/user/customize');
+        // res.render('user_profile.ejs', {
+        // user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });  
 			}
 			else if(req.user.user_type == 2)  // business
 			{
-				res.render('business_profile.ejs', {
-				user : req.user 
-				});
+        res.render('business_profile.ejs', {
+          user : req.user });
 			}
 			else if(req.user.user_type == 3)  // admin
 			{
 				res.render('admin_profile.ejs', {
-				user : req.user 
-				});
+				user : req.user}); 	
 			}	
 		}
 		else

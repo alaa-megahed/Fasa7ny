@@ -160,22 +160,11 @@ exports.average_rating = function(req,res)
 exports.customize = function(req,res)
 {
 	if(req.user && req.user instanceof User)
-	{
-		var userID = req.user.id;              // from passport session
-
-		User.findOne({_id: userID}, function(err, user_found)
-		{
-		    if(err) {
-				return res.send("Error. Please retry.");
-			}
-			if(!user_found) {
-				return res.send("User not found.");
-			}
-			else {
-				return res.send("Bookings: " +  user_found.bookings + "\n Subscriptions: "  + user_found.subscriptions);
-
-			}
-		});
+	{	
+		// return res.send("Bookings: " +  user_found.bookings + "\n Subscriptions: "  + user_found.subscriptions);
+		return res.render('user_profile.ejs', {
+        user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions }); 
+		
 	}
 	else {
 		res.send("Please log in.");
