@@ -143,7 +143,7 @@ exports.updateOffer = function(req, res) {
               flag2 = true;
             }
             var error = "";
-            if(startdate - expirationdate >= 0 || now - startdate > 0) error = "please add a valid start_date/ expiration_date";
+            if(startdate - expirationdate >= 0 || (flag1 && now - startdate > 0) || (flag2 && now - expirationdate > 0)) error = "please add a valid start_date/ expiration_date";
             else
             {
               if(flag1 == true) offer.start_date = startdate;
