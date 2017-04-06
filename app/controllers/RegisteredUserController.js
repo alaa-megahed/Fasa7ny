@@ -189,7 +189,7 @@ exports.editInformation = function(req, res) {
 				if(!user) res.send("user not found");
 				else {
 					if(typeof body.name != "undefined" && body.name.length > 0) user.name = body.name;
-					if(typeof body.birthdate != "undefined") user.birthdate = new Date(body.birthdate);
+					if(typeof body.birthdate != "undefined" && body.birthdate.length > 0) user.birthdate = new Date(body.birthdate);
 					if(typeof body.phone != "undefined" && body.phone.length > 0) user.phone = body.phone;
 					if(typeof body.gender != "undefined" && body.gender.length > 0) user.gender = body.gender;
 					if(typeof body.address != "undefined" && body.address.length > 0) user.address = body.address;
