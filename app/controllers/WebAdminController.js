@@ -1,10 +1,10 @@
-var WebAdmin = require('mongoose').model('WebAdmin');
-var Business = require('mongoose').model('Business');
+var WebAdmin  = require('mongoose').model('WebAdmin');
+var Business  = require('mongoose').model('Business');
 var generator = require('generate-password');
 var Events = require('mongoose').model('Events');
-var User = require('mongoose').model('RegisteredUser');
+var User   = require('mongoose').model('RegisteredUser');
 var Review = require('mongoose').model('Review');
-var Reply   = require('mongoose').model('Reply');
+var Reply  = require('mongoose').model('Reply');
 const nodemailer = require('nodemailer');
 
 
@@ -24,6 +24,7 @@ exports.AddBusiness = function (req, res) {
         else {
             var business = new Business(
                 {
+                    name: req.body.name,
                     username: username,
                     password: hashedPassword,
                     merchant_ID: req.body.merchant_ID,
@@ -65,14 +66,9 @@ exports.AddBusiness = function (req, res) {
 
 
 
-
-
-
 //i am not sure about attribute name deleted ? ,,, and business attribute name in offer... check eno m3ndosh booking
 
 exports.WebAdminDeleteBusiness = function (req, res) {
-
-
 
     Business.findByIdAndRemove(req.params.name, function (err, business) {
         if (err) throw err;
@@ -91,7 +87,7 @@ exports.WebAdminDeleteBusiness = function (req, res) {
 
 exports.webAdminViewRequestedDelete = function (req, res) {
     Business.find({ deleted: 1 }, function (err, requests) {
-        res.render('requestedDelete', requests);
+        res.render('delete_requests', requests);
 
     }
     );

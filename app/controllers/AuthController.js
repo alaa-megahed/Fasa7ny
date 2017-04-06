@@ -26,8 +26,8 @@ let AuthController =
 	},
 
 	postLogin: function(req, res){passport.authenticate('local-login', {
-		successRedirect : '/profile', 
-		failureRedirect : '/login', 
+		successRedirect : '/auth/profile', 
+		failureRedirect : '/auth/login', 
 		failureFlash : true 
 	})(req, res);},
 
@@ -39,8 +39,8 @@ let AuthController =
 	},
 
 	postSignup: function(req, res){passport.authenticate('local-signup', {
-		successRedirect : '/profile', 
-		failureRedirect : '/signup', 
+		successRedirect : '/auth/profile', 
+		failureRedirect : '/auth/signup', 
 		failureFlash : true 
 	})(req, res);},
 
@@ -52,6 +52,7 @@ let AuthController =
 		{
 			if(req.user.user_type == 1)       // regular user
 			{
+        console.log(req.session.id);
 			res.render('user_profile.ejs', {
 			user : req.user 
 			});
@@ -93,7 +94,7 @@ let AuthController =
 
 	facebookCallback: function(req, res){
 		passport.authenticate('facebook', {
-            						successRedirect : '/profile',
+            						successRedirect : '/auth/profile',
             						failureRedirect : '/'
        							   })(req, res);
 								},
@@ -106,7 +107,7 @@ let AuthController =
 	},
 
 	googleCallback: function(req, res){
-		passport.authenticate('google', { failureRedirect: '/', successRedirect :'http://localhost:8080/profile'})(req, res);
+		passport.authenticate('google', { failureRedirect: '/', successRedirect :'http://localhost:3000/auth/profile'})(req, res);
 	},
 
 	// =====================================
@@ -133,7 +134,7 @@ let AuthController =
                 if(check == 2)
                 {
                 console.log('error', 'No account with that email address exists.');
-                return res.redirect('/forgot');
+                return res.redirect('/auth/forgot');
                 }
               }
               else
@@ -153,7 +154,7 @@ let AuthController =
             if(check == 2)
             {
               console.log('error', 'No account with that email address exists.');
-              return res.redirect('/forgot');
+              return res.redirect('/auth/forgot');
             }
                                            
         	}
@@ -195,7 +196,7 @@ let AuthController =
         	subject: 'Fasa7ny Password Reset',
         	text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           	'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          	'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+          	'http://' + req.headers.host + '/auth/reset/' + token + '\n\n' +
           	'If you did not request this, please ignore this email and your password will remain unchanged.\n'
      		};
      	
@@ -221,7 +222,7 @@ let AuthController =
           if(check == 2)
           {
           req.flash('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('/forgot'); 
+          return res.redirect('/auth/forgot'); 
           }
         }
         else
@@ -238,7 +239,7 @@ let AuthController =
       if(check == 2)
       {
         req.flash('error', 'Password reset token is invalid or has expired.');
-      return res.redirect('/forgot');
+      return res.redirect('/auth/forgot');
       }  
     	}
       else
@@ -328,7 +329,7 @@ let AuthController =
       });
     }
   ], function(err) {
-    res.redirect('/login');
+    res.redirect('/auth/login');
   });
 },
 
