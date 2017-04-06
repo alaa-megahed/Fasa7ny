@@ -8,9 +8,9 @@ var router   = express.Router();
 var booking    = require('../controllers/bookings.controller');
 
 
-	router.get('/', function(req, res){
-        res.sendFile(path.resolve('app/views/test.html'));
-    });
+	// router.get('/', function(req, res){
+ //        res.sendFile(path.resolve('app/views/test.html'));
+ //    });
 
 		router.get('/regusers', function(req, res){
 	        res.sendFile(path.resolve('app/views/regusersbookingtest.html'));

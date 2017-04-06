@@ -6,9 +6,9 @@ var router   = express.Router();
 var booking    = require('../controllers/BookingsController');
 
 
-	router.get('/', function(req, res){
-        res.sendFile(path.resolve('app/views/test.html'));
-    });
+	// router.get('/', function(req, res){
+ //        res.sendFile(path.resolve('app/views/test.html'));
+ //    });
 
     //below belongs to business
 

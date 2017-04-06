@@ -11,9 +11,9 @@ business.use('/makepagepublic', function(req, res) {
 
 
 
-business.get('/', function(req, res){
-        res.sendFile(path.resolve('app/views/business.html'));
-    });
+// business.get('/', function(req, res){
+//         res.sendFile(path.resolve('app/views/business.html'));
+//     });
 business.get('/:name', businessController.getBusiness);
 business.post('/requestRemoval',businessController.requestRemoval)
 business.post('/deletePaymentMethod', businessController.deletePaymentMethod);
