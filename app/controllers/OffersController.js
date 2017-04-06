@@ -68,7 +68,7 @@ exports.createOffer = function(req, res) {
         newOffer.image = file.filename;
       }
       if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length > 0) {
-        newOffer.notify_subscribers = body.notify_subscribers;
+        newOffer.notify_subscribers = Number(body.notify_subscribers);
       }
       var now = new Date();
       if(typeof body.start_date != 'undefined' && body.start_date.length > 0) {
@@ -123,7 +123,7 @@ exports.updateOffer = function(req, res) {
           {
             if(typeof body.name != 'undefined' && body.name.length != 0) offer.name = body.name;
             if(typeof body.type != 'undefined' && body.type.length != 0) offer.type = body.type;
-            if(typeof body.value != 'undefined' && body.value.length != 0) offer.value = body.type;
+            if(typeof body.value != 'undefined' && body.value.length != 0) offer.value = body.value;
             if(typeof body.details != 'undefined' && body.details.length != 0) offer.details = body.details;
 
             var startdate = offer.start_date;
@@ -150,7 +150,7 @@ exports.updateOffer = function(req, res) {
               if(flag2 == true) offer.expiration_date = expirationdate;
             }
             if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length != 0)
-              offer.notify_subscribers = body.notify_subscribers;
+              offer.notify_subscribers = Number(body.notify_subscribers);
 
               if(typeof file != 'undefined') offer.file = file.filename;
 

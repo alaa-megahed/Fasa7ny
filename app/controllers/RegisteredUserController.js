@@ -160,22 +160,11 @@ exports.average_rating = function(req,res)
 exports.customize = function(req,res)
 {
 	if(req.user && req.user instanceof User)
-	{
-		var userID = req.user.id;              // from passport session
-
-		User.findOne({_id: userID}, function(err, user_found)
-		{
-		    if(err) {
-				return res.send("Error. Please retry.");
-			}
-			if(!user_found) {
-				return res.send("User not found.");
-			}
-			else {
-				return res.send("Bookings: " +  user_found.bookings + "\n Subscriptions: "  + user_found.subscriptions);
-
-			}
-		});
+	{	
+		// return res.send("Bookings: " +  user_found.bookings + "\n Subscriptions: "  + user_found.subscriptions);
+		return res.render('user_profile.ejs', {
+        user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions }); 
+		
 	}
 	else {
 		res.send("Please log in.");
@@ -200,7 +189,7 @@ exports.editInformation = function(req, res) {
 				if(!user) res.send("user not found");
 				else {
 					if(typeof body.name != "undefined" && body.name.length > 0) user.name = body.name;
-					if(typeof body.birthdate != "undefined") user.birthdate = new Date(body.birthdate);
+					if(typeof body.birthdate != "undefined" && body.birthdate.length > 0) user.birthdate = new Date(body.birthdate);
 					if(typeof body.phone != "undefined" && body.phone.length > 0) user.phone = body.phone;
 					if(typeof body.gender != "undefined" && body.gender.length > 0) user.gender = body.gender;
 					if(typeof body.address != "undefined" && body.address.length > 0) user.address = body.address;

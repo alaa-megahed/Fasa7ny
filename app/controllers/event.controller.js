@@ -19,23 +19,27 @@ exports.createEvent = function (req, res) {
 	if (req.user && req.user instanceof Business) {
 		var id = req.user.id;
 
-		if (!req.body.name || !req.body.description || !req.body.location || !req.body.price || !req.body.capacity || !req.body.repeat) {
+    	
+    	if(!req.body.name || !req.body.description || !req.body.location || !req.body.price || !req.body.capacity || !req.body.repeat) {
+     
+        res.send("Please add all information");
 
-			res.send("Please add all information");
+        }
+        else if(req.body.repeat != "Once" && req.body.repeat!="Daily"){
+        res.send("Repitition type can either be Daily or Once");
+    	}
+        else {
 
-		}
-		else {
-
-			if (req.body.capacity > 0 && req.body.price > 0) {
-				let event = new Events({
-					name: req.body.name,
-					description: req.body.description,
-					location: req.body.location,
-					price: req.body.price,
-					capacity: req.body.capacity,
-					repeated: req.body.repeat,
-					daysOff: req.body.day,
-					business_id: id
+        	if(req.body.capacity > 0 && req.body.price > 0){
+			let event = new Events({
+				name:req.body.name,
+				description:req.body.description,
+				location:req.body.location,
+				price:req.body.price,
+				capacity:req.body.capacity,
+				repeated: req.body.repeat,
+				daysOff: req.body.day,
+				business_id: id
 
 				});
 

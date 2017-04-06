@@ -8,11 +8,14 @@ var router   = express.Router();
 var booking    = require('../controllers/bookings.controller');
 
 
-   
-
     //below belongs to business
     router.get('/', function(req, res){
-        res.sendFile(path.resolve('app/views/test.html'));
+        if(req.user && req.user.user_type == 2)
+             res.sendFile(path.resolve('app/views/test2.ejs'));
+         else
+         {
+            res.send("You Are Not Authorized To Access This Page!");
+         }
     });
 
     router.post('/book_event', booking.book_event);

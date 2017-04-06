@@ -10,7 +10,7 @@ var offerSchema = new Schema({
   details		 	: String,
   start_date : { type: Date, default: new Date() },
   expiration_date	: Date,
-  notify_subscribers: Boolean, //boolean or int?
+  notify_subscribers: Number, //boolean or int?
   business:
   {
     type: mongoose.Schema.Types.ObjectId,

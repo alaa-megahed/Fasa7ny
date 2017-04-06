@@ -19,9 +19,30 @@
 
 	<div class="row">
 
-	
+	<p><h4>My Subscriptions</h4></p>
+	 
+            <div class="row">
+                <% for(var i=0; i< subscriptions.length; i++){%>
+                      <h6>  <%= subscriptions[i].name %></h6>
+                <% } %>
+            </div>
 
 
+	</div>
+
+	</r></r>
+	<div class="row">
+
+	<p><h4>My Bookings</h4></p>
+	 
+            <div class="row">
+                <% for(var i=0; i< bookings.length; i++){%>
+                      <h6> "Booking Date: " <%= bookings[i].booking_date %></h6></r>
+                      <h6> "Number of guests: " <%= bookings[i].count %></h6></r>
+                      <h6> "Event_id : " <%= bookings[i].event_id  %>(TODO: add event details)</h6>
+                <% } %>
+            </div>
+            
 
 	</div>
 
