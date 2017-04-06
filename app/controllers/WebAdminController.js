@@ -52,7 +52,6 @@ exports.AddBusiness = function (req, res) {
         }
 
       });
-        console.log(1);
         var mailOptions = {
             to: req.body.email,
             from: 'fasa7ny.team@gmail.com',
@@ -63,14 +62,12 @@ exports.AddBusiness = function (req, res) {
             'Fasa7ny team'
 
         };
-        console.log(2);
         smtpTransport.sendMail(mailOptions, function(err) {
             if(err)
                 console.log(err);
-            req.flash('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
+            console.log('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
             
         });
-        console.log(3);
         }
     });
     res.render("admin_profile", {user: req.user});
