@@ -1,7 +1,7 @@
 var express  = require('express');
 //var app      = express();
 //var path 	 = require('path');
-var webAdmin  = require('../controllers/WebAdminController');
+var webAdmin  = require('../controllers/web_admin.controller');
 var router = express.Router();
 
 	//router.get('/', function(req, res){

@@ -5,7 +5,7 @@ var router   = express.Router();
 var multer = require('multer');
 var upload = multer({ dest: 'public/uploads/' });
 
-var user   = require('../controllers/RegisteredUserController');
+var user   = require('../controllers/registered_user.controller');
 
 router.use('/edit', function(req, res) {
   res.render('userEditInfo.ejs', {user:req.user});
