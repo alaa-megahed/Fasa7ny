@@ -9,17 +9,16 @@ var Offer = mongoose.model('Offer');
  can update/delete the offers */
 exports.viewOffers = function(req, res) {
   if(typeof req.query.id != "undefined") {
-    console.log(req.query.id);
     var id = req.query.id;
 
     Business.findOne({_id:id}, function(err, business) {
-      if(err) console.log("error in finding the business to view the offers");
+      if(err) res.send("error in finding the business to view the offers");
       else {
         if(!business) res.send("business does not exist. enter a valid one");
         else {
           Offer.find({business:id}, function(err, offers) {
             if(err) {
-              console.log("error in finding all offers");
+              res.send("error in finding all offers");
             } else {
                 res.render("view_offers", {offers:offers});
             }
@@ -29,10 +28,9 @@ exports.viewOffers = function(req, res) {
     })
   } else if(req.user && req.user instanceof Business) {
       var id = req.user.id;
-      console.log(id);
       Offer.find({business:id}, function(err, offers) {
         if(err) {
-          console.log("error in finding all offers");
+          res.send("error in finding all offers");
         } else {
             res.render("crudoffer", {offers:offers, id:req.user.id});
         }
@@ -55,9 +53,7 @@ exports.createOffer = function(req, res) {
     var file = req.file;
 
     if(!body.name || !body.type || !body.value || !body.details || !body.expiration_date) {
-      console.log("please add all information");
       res.send("please add all information");
-      //send back to add offer page
     } else {
       var newOffer = new Offer({
         name:body.name,
@@ -84,19 +80,13 @@ exports.createOffer = function(req, res) {
       // console.log(d1);
       // console.log(d2);
       if(startdate - expirationdate >= 0) {
-        console.log("please add a valid start_date/ expiration_date");
+        res.send("please add a valid start_date/ expiration_date");
       } else {
         newOffer.save(function(err, offer) {
           if(err) {
-            console.log("error in creating offer");
             res.send("error in creating offer");
-            //send back to add offer page
           } else {
-            console.log(offer);
-            console.log("offer created successfully");
             res.send(offer);
-            // res.send("offer created successfully");
-            //send to profile/next page
           }
         })
       }
@@ -150,8 +140,8 @@ exports.updateOffer = function(req, res) {
               expirationdate = new Date(body.expiration_date);
               flag2 = true;
             }
-
-            if(startdate - expirationdate >= 0) console.log("please add a valid start_date/ expiration_date");
+            var error = "";
+            if(startdate - expirationdate >= 0) error = "please add a valid start_date/ expiration_date";
             else
             {
               if(flag1 == true) offer.start_date = startdate;
@@ -164,7 +154,7 @@ exports.updateOffer = function(req, res) {
 
               offer.save(function(err, updatedoffer) {
                 if(err) res.send("error");
-                else res.send(updatedoffer);
+                else res.send(error + "----" +updatedoffer);
               })
 
           } else res.send("you must update only your offers");
@@ -185,7 +175,7 @@ exports.deleteOffer = function(req, res) {
     Offer.findOne({_id:id}, function(err, offer) {
       if(err)
       {
-        console.log("error in finding the offer");
+        res.send("error in finding the offer");
       }
       else
       {
@@ -194,19 +184,12 @@ exports.deleteOffer = function(req, res) {
           Offer.remove({_id:id}, function(err)
           {
             if(err)
-            {
-              console.log("cannot delete offer");
               res.send("cannot delete offer");
-            }
             else
             {
-              console.log("offer deleted");
-              // res.send("offer deleted");
               Offer.find({business:businessId},function(err, myoffers) {
                 if(err)
-                {
-                  console.log("cannot get my offers");
-                }
+                  res.send("cannot get my offers");
                  else
                 {
                   if(myoffers) res.send("done")
