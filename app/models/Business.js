@@ -39,7 +39,7 @@ var BusinessSchema = new Schema({
     address: String,
     area: String,
     description: String,  
-    average_rating: SchemaTypes.Double,
+    average_rating: {type: SchemaTypes.Double, default: 0.0},
     public:
     {
         type: Number, default: 0

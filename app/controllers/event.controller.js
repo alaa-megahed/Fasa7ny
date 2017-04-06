@@ -136,24 +136,24 @@ exports.createEvent = function (req, res) {
 
 				}
 
-
-				if (req.body.repeat == "Once") {
-
-
-					let occurrence = new EventOccurrences({
-						day: req.body.date,
-						time: req.body.timing,
-						available: req.body.capacity,
-						event: event._id
-					});
-
-					occurrence.save(function (err, occurrence) {
-						if (err) res.send(err.message);
-
-					});
+				else
+					if (req.body.repeat == "Once") {
 
 
-				}
+						let occurrence = new EventOccurrences({
+							day: req.body.date,
+							time: req.body.timing,
+							available: req.body.capacity,
+							event: event._id
+						});
+
+						occurrence.save(function (err, occurrence) {
+							if (err) res.send(err.message);
+
+						});
+
+
+					}
 
 
 
