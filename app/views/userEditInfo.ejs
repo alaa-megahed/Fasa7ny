@@ -5,8 +5,10 @@
 </head>
 <body>
 	<p>Edit Personal Info</p>
-
-	<form action = "/editInfo" enctype="multipart/form-data" method="post">
+	<% if(!(user && user.user_type == 1)) {%>
+	 <p> you're not authorized to view this page </p>
+	<%} else {%>
+	<form action = "/user/editInfo" enctype="multipart/form-data" method="post">
 
   name: <input type="text" name="name"><br>
   birthdate: <input type="date" name="birthdate" ><br>
@@ -15,10 +17,10 @@
   Address: <input type="text" name="address" ><br>
   Email: <input type="text" name="email" ><br>
   Profile Picture: <input type="file" name = "image"><br>
-
 	<input type="submit"><br> </button>
 
 	</form>
+	<%}%>
 
 
 </body>
