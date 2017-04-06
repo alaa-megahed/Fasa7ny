@@ -20,10 +20,13 @@ If the type is Once only one event occurrence is added.
 		var id = req.user.id;
     	
     	if(!req.body.name || !req.body.description || !req.body.location || !req.body.price || !req.body.capacity || !req.body.repeat) {
-        
+     
         res.send("Please add all information");
 
         }
+        else if(req.body.repeat != "Once" && req.body.repeat!="Daily"){
+        res.send("Repitition type can either be Daily or Once");
+    	}
         else {
 
         	if(req.body.capacity > 0 && req.body.price > 0){

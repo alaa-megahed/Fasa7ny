@@ -1,6 +1,7 @@
 var Business = require('../models/Business');
 var Events = require('mongoose').model('Events');
 var EventOccurrences   = require('mongoose').model('EventOccurrences');
+var async = require("async");
 
 var BusinessController = {
     getBusiness: function (req, res) {
@@ -19,50 +20,18 @@ var BusinessController = {
     If the business has any bookings the request is rejected and a message is sent to the business specifying
     that the request was cancelled and that the business should cancel its bookings first.*/
 
-    requestRemoval: function(req,res) {
+requestRemoval: function(req,res) {
         if(req.user && req.user instanceof Business){
         var id = req.user.id;
-        Business.findById(id,function(err,business){
-            if(err) res.send(err.message);
-            else if(!business) res.send('Something went wrong');
-            else{
-                Events.find({business_id:id},function(err,event){
-                    if(err) res.send(err.message);
-                    else if(!event) res.send('Something went wrong');
-                    else{
-                        EventOccurrences.find({event:event._id},function(err,occ){
-                            if(err) res.send(err.message);
-                            else if(!occ) res.send('Something went wrong');
-                            else{
-                                var check = 0;
-                                for(var i = 0; i < occ.length &&  check == 0; i++)
-                                {
-                                    if(occ[i].bookings.length > 0)
-                                    {
-                                        check = 1;
-                                        res.send("Request is rejected as you have bookings. Please cancel bookings first");
-                                    }
-
-                                }
-
-                                if(check == 0)
-                                {
-                                    Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
-                                    if(err) res.send("error in request removal");
-                                    else if(!business) res.send('Something went wrong');
-                                    else res.send("Requested!");
-                                     });
-                                }
-                            }
-                        });
-                    }
-                });
-            }
+        Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
+            if(err) res.send("error in request removal");
+            else res.send("Requested!");
         });
+
         }
 
         else{
-         res.send('You are not a logged in business');
+         console.log('You are not a logged in busiess');
         }
     },
 
