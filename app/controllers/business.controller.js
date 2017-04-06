@@ -66,7 +66,7 @@ var BusinessController = {
         }
     },
 
-/* A business can make his own page public (by changing the public flag) 
+/* A business can make his own page public (by changing the public flag)
 so that Business will now show up in searches and can be viewed by all users.*/
     makePagePublic: function(req, res) {
       if(req.user && req.user instanceof Business) {
@@ -74,9 +74,8 @@ so that Business will now show up in searches and can be viewed by all users.*/
         Business.findByIdAndUpdate(businessId, {$set:{public:1}},
           function(err) {
             if(err) {
-              console.log("error in making page public");
+              res.send("error in making page public");
             } else {
-              console.log("Page public");
               res.send("done");
             }
         });
