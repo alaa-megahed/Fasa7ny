@@ -5,19 +5,14 @@
     <title></title>
   </head>
   <body>
+    <p><% View Offers: %></p>
     <% if(offers.length == 0) { %>
       <p>No offers to show</p>
       <% }%>
     <% for(var i = 0; i < offers.length; i++) {%>
       <%var d = new Date(); %>
-    <%  if(d - offers[i].expiration_date < 0) { >%
-      <p>Name: <%= offers[i].name %></p>
-      <p>Type: <%= offers[i].type %></p>
-      <p>Value: <%= offers[i].value %></p>
-      <p>Details: <%= offers[i].details %></p>
-      <p>start_date: <%= offers[i].start_date %></p>
-      <p>expiration_date: <%= offers[i].expiration_date %></p>
-      <p>business: <%= offers[i].business %></p>
+    <%  if(d - offers[i].expiration_date < 0) { %>
+      <p><%= offers[i] %></p>
       <p> ----------------------------------------------------- </p>
     <%}%>
     <% } %>
