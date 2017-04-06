@@ -7,7 +7,6 @@ var router   = express.Router();
 
 var booking    = require('../controllers/bookings.controller');
 
-
     //below belongs to business
     router.get('/', function(req, res){
         if(req.user && req.user.user_type == 2)
