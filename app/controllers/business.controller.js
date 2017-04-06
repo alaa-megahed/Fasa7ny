@@ -90,59 +90,44 @@ so that Business will now show up in searches and can be viewed by all users.*/
 
         if(req.user && req.user instanceof Business){
             var id = req.user.id;
+            
 
-            if(typeof req.body.description != "undefined" && req.body.description.length > 0){
-                Business.findByIdAndUpdate(id,{$set:{description:req.body.description}}, function(err,info){
-                    if(err) res.send('Could not update');
-                    else if(!info) res.send('Something went wrong');
-                    else res.send('description updated');
-                });
-            }
-            if(typeof req.body.location != "undefined" && req.body.location.length > 0){
-                Business.findByIdAndUpdate(id,{$set:{location:req.body.location}}, function(err,info){
-                    if(err) res.send('Could not update')
-                    else if(!info) res.send('Something went wrong');
-                    else res.send('location updated');
-                });
-            }
-            if(typeof req.body.email != "undefined" && req.body.email.length > 0){
-                Business.findByIdAndUpdate(id,{$set:{email:req.body.email}}, function(err,info){
-                    if(err) res.send('Could not update');
-                    else if(!info) res.send('Something went wrong');
-                    else res.send('email updated');
-                });
-            }
-              if(typeof req.body.address != "undefined" && req.body.address.length > 0){
-                Business.findByIdAndUpdate(id,{$set:{address:req.body.address}}, function(err,info){
-                    if(err) res.send('Could not update');
-                    else if(!info) res.send('Something went wrong');
-                    else res.send('address updated');
-                });
-            }
-              if(typeof req.body.area != "undefined" && req.body.area.length > 0){
-                Business.findByIdAndUpdate(id,{$set:{area:req.body.area}}, function(err,info){
-                    if(err) res.send('Could not update');
-                    else if(!info) res.send('Something went wrong');
-                    else res.send('area updated');
-                });
-            }
-            if(typeof req.body.phones != "undefined" && req.body.phones.length > 0){
-                Business.findByIdAndUpdate(id,{$push:{"phones":req.body.phones}}, function(err,info){
-                    if(err) res.send('Could not update');
-                    else if(!info) res.send('Something went wrong');
-                    else res.send('phones updated');
-                });
-            }
-            if(typeof req.body.payment_methods != "undefined" && req.body.payment_methods.length > 0){
-                Business.findByIdAndUpdate(id,{$push:{"payment_methods":req.body.payment_methods}}, function(err,info){
-                    if(err) res.send('Could not update PAYMENT');
-                    else if(!info) res.send('Something went wrong');
-                    else res.send('payment_methods updated');
-                });
-            }
+            Business.findById(id,function(err,business){
+                if(err) res.send(err.message);
+                else if(!business) res.send('Something went wrong');
+                else{
+                     if(typeof req.body.description != "undefined" && req.body.description.length > 0){
+                        business.description = req.body.description;
+                    }
 
+                    if(typeof req.body.location != "undefined" && req.body.location.length > 0){
+                        business.location = req.body.location;
+                    }
+                    if(typeof req.body.email != "undefined" && req.body.email.length > 0){
+                         business.email = req.body.email;
+                     }
 
+                    if(typeof req.body.address != "undefined" && req.body.address.length > 0){
+                        business.address = req.body.address;
+                    }
+                    if(typeof req.body.area != "undefined" && req.body.area.length > 0){
+                        business.area = req.body.area;               
+                    }
+                    if(typeof req.body.phones != "undefined" && req.body.phones.length > 0){
+                         business.phones.push(req.body.phones);
+                    }
+                    if(typeof req.body.payment_methods != "undefined" && req.body.payment_methods.length > 0){
+                            business.payment_methods.push(req.body.payment_methods);
+                    }
+
+                    business.save();
+                    res.send(business);
+                }
+
+            });
+            
         }
+
         else{
             res.send('You are not a logged in business');
         }
@@ -164,26 +149,30 @@ saying that the phone number was not found.*/
                     if(business.phones.length < 2)
                         res.send('Must have at least one phone number');
                     else{
-                        for( var i = 0; i < business.phones.length; i++){
-                                var check = 0;
+                        var check = 0;
+                        for( var i = 0; i < business.phones.length && check == 0; i++){
+                                
                                 if(business.phones[i] == phone){
-                                    Business.findByIdAndUpdate(id,{$pull:{"phones":phone}}, function(err,info){
-
-                                    check  = 1;
-                                    if(err) res.send('Could not delete');
-                                    if(!info) res.send('Something went wrong');
-                                    else res.send('phone deleted');
-                                    });
+                                    check = 1;
                                 }
-                            }
-                            if(check == 0){
-                                res.send('Phone not found!');
-                            }
+                        }
+                        if(check){
+                            Business.findByIdAndUpdate(id,{$pull:{"phones":phone}}, function(err,info){
+                                if(err) res.send('Could not delete');
+                                if(!info) res.send('Something went wrong');
+                                else res.send('phone deleted');
+                             });   
+                        }
+                        else{
+                            res.send('Phone not found!')
+                        }            
 
-                    }
                 }
-             });
+             
             }
+
+        });
+        }    
          else res.send('Enter a phone numebr to be deleted');
         }
 
@@ -210,19 +199,23 @@ saying that the payment method was not found.*/
                         if(business.payment_methods.length < 2)
                             res.send('Must have at least one payment method');
                         else{
-                            for( var i = 0; i < business.payment_methods.length; i++){
-                                var check = 0;
+                            var check = 0;
+                            for( var i = 0; i < business.payment_methods.length && check == 0; i++){
+                                
                                 if(business.payment_methods[i] == payment){
-                                    Business.findByIdAndUpdate(id,{$pull:{"payment_methods":payment}}, function(err,info){
-
-                                    check  = 1;
-                                    if(err) res.send('Could not delete');
-                                    if(!info) res.send('Something went wrong');
-                                    else res.send('payment method deleted');
-                                    });
+                                    check = 1;
                                 }
                             }
-                            if(check == 0){
+
+                            if(check){
+                                Business.findByIdAndUpdate(id,{$pull:{"payment_methods":payment}}, function(err,info){
+                                if(err) res.send('Could not delete');
+                                if(!info) res.send('Something went wrong');
+                                else res.send('payment method deleted');
+                             });
+
+                            }
+                            else{
                                 res.send('Payment Method not found!');
                             }
 
