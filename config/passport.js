@@ -55,13 +55,13 @@ module.exports = function(passport)
 
           // check weather the username entered is unique
           // search the registered users collection
-          User.findOne({ 'local.username' :  username }, function(err, user) 
+          User.findOne({ $or: [{'local.username' :  username}, {'email': req.body.email} ]}, function(err, user) 
           {
               if (err)
                 return done(err);
               if (user) 
               {
-                return done(null, false, req.flash('signupMessage', 'That username is already taken.'));
+                return done(null, false, req.flash('signupMessage', 'The username or email provided is already taken.'));
               } 
               else 
               {
@@ -69,7 +69,7 @@ module.exports = function(passport)
                 //if this is the third(last) check and no user found
                 if(check == 3)
                 {
-                    // username entered is unique 
+                    // username and email entered is unique 
                       var newUser            = new User();
                       newUser.local.username = username;
                       newUser.local.password = newUser.generateHash(password);
@@ -90,12 +90,12 @@ module.exports = function(passport)
                }    
           });          
           //repeate the same check on business usernames
-            Business.findOne({ 'local.username' :  username }, function(err, user)
+            Business.findOne({ $or: [{'local.username' :  username}, {'email': req.body.email} ]}, function(err, user)
             {
               if(err)
                 return done(err);
               if(user){
-                return done(null, false, req.flash('signupMessage', 'That username is already taken.')); 
+                return done(null, false, req.flash('signupMessage', 'The username or email provided is already taken.')); 
               }
               else 
               {
@@ -124,13 +124,13 @@ module.exports = function(passport)
               }       
             });          
             // finnally check web admins usernames
-            Admin.findOne({ 'local.username' :  username }, function(err, user)
+            Admin.findOne({ $or: [{'local.username' :  username}, {'email': req.body.email} ]}, function(err, user)
             {
                 if(err)
                   return done(err);
                 if(user)
                 {
-                  return done(null, false, req.flash('signupMessage', 'That username is already taken.')); 
+                  return done(null, false, req.flash('signupMessage', 'The username or email provided is already taken.')); 
                 }
                 else 
                 {
@@ -284,7 +284,10 @@ module.exports = function(passport)
             newUser.save(function(err) 
             {
               if (err)
-                 throw err;
+              {
+                 console.log("error: please try again");
+                 return done(err);
+              }
               return done(null, newUser);
             });
           }
@@ -332,7 +335,10 @@ passport.use(new GoogleStrategy({
                     // save the user
                     newUser.save(function(err) {
                         if (err)
-                            throw err;
+                        {
+                          console.log("error: please try again");
+                          return done(err);
+                        }
                         return done(null, newUser);
                     });
                 }

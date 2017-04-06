@@ -106,7 +106,7 @@ let AuthController =
 	},
 
 	googleCallback: function(req, res){
-		passport.authenticate('google', { failureRedirect: '/', successRedirect :'http://localhost:300`0/auth/profile'})(req, res);
+		passport.authenticate('google', { failureRedirect: 'http://localhost:3000', successRedirect :'http://localhost:3000/auth/profile'})(req, res);
 	},
 
 	// =====================================
@@ -118,91 +118,105 @@ let AuthController =
 
 	forgotPassword: function(req, res, next) {
   		async.waterfall([
+      // generate random token of length 20, to uniquely identify each request of reseting password  
     	function(done) {
       	crypto.randomBytes(20, function(err, buf) {
         	var token = buf.toString('hex');
         	done(err, token);
     	  });
    		},
+      // validate the entered email belongs to some actual user saved in the database
+      // first, search the business collection
     	function(token, done) {
         var check = 0;
         Business.findOne({ email: req.body.email }, function(err, business){
+              if(err)
+              {
+                  console.log("Sorry for inconvenience, your trial to reset the password has been denied");
+                  return res.redirect('/auth/forgot');
+              }
               if(!business)
               {
                 check++;
-                if(check == 2)
+                if(check == 2)    // if no user found, print error msg and redirect
                 {
                 console.log('error', 'No account with that email address exists.');
                 return res.redirect('/auth/forgot');
                 }
               }
+              // if found, set the values of resetPasswordToken to the token generated
               else
                { 
-              business.local.resetPasswordToken = token;
-              business.local.resetPasswordExpires = Date.now() + 3600000;
-              business.save(function(err){
-                if(err)
-                  console.log(err);
-                done(err, token, business);
+                 business.local.resetPasswordToken = token;
+                 business.local.resetPasswordExpires = Date.now() + 3600000;    // expires after one hour
+                 business.save(function(err){
+                
+                 done(err, token, business);
               });
             }
         });  
+        // then search the registeredusers collection
       		User.findOne({ email: req.body.email }, function(err, user) {
+            if(err)
+              {
+                  console.log("Sorry for inconvenience, your trial to reset the password has been denied");
+                  return res.redirect('/auth/forgot');
+              }
         	if (!user) {
             check++;
-            if(check == 2)
+            if(check == 2)       // if no user found, print error msg and redirect
             {
               console.log('error', 'No account with that email address exists.');
               return res.redirect('/auth/forgot');
             }
                                            
         	}
+          // if found, set the values of resetPasswordToken to the token generated
           else
           {
-        	user.local.resetPasswordToken = token;
-        	user.local.resetPasswordExpires = Date.now() + 3600000; // 1 hour
-        	user.save(function(err) {
-        		if(err)
-        		console.log(err);
+        	   user.local.resetPasswordToken = token;
+        	   user.local.resetPasswordExpires = Date.now() + 3600000;   // expires after one hour
+        	   user.save(function(err) {
+        		  if(err)
+              {
+                  console.log("Sorry for inconvenience, your trial to reset the password has been denied");
+                  return res.redirect('/auth/forgot');
+              }
           	done(err, token, user);
         	});
           }
       	});
     	},
       
-    	function(token, user, done) {
-    		
-    
-        // login
+      // the next function actually sends the email with the reset url
+    	function(token, user, done) {  
+        // first login via our Gmail account, (this might be modified to use XOAuth2 later)
         var smtpTransport = nodemailer.createTransport({
         service:'Gmail',
-        auth:{
-            // XOAuth2: {
-            //     user:'fasa7ny.team@gmail.com',
-            //     clientId:configAuth.googleAuth.clientID,
-            //     clientSecret:configAuth.googleAuth.clientSecret,
-            //     refreshToken:configAuth.googleAuth.accessToken,
-            //     accessToken: configAuth.googleAuth.accessToken // optional 
-            // }
+        auth:
+        {
             user: configAuth.gmail.user,
        		  pass: configAuth.gmail.pass
         }
       });
-
+        // set the values of sender, receiver, subject and body of the mail
         var mailOptions = {
         	to: user.email,
         	from: 'fasa7ny.team@gmail.com',
         	subject: 'Fasa7ny Password Reset',
         	text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           	'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          	'http://' + req.headers.host + '/auth/reset/' + token + '\n\n' +
+          	'http://' + req.headers.host + '/auth/reset/' + token + '\n\n' +                                    //url containing the token generated
           	'If you did not request this, please ignore this email and your password will remain unchanged.\n'
      		};
-     	
+     	  // send the email using nodeMailer, and previously specified options
       	smtpTransport.sendMail(mailOptions, function(err) {
       			if(err)
-      				console.log("error");
-        	req.flash('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+            {
+      				console.log("ERROR: can not send email to the entered email, please try again");
+              return res.redirect('/auth/forgot');
+            }
+        	console.log('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
        		done(err, 'done');
       	});
     	}
@@ -213,14 +227,16 @@ let AuthController =
 	},
 
 	getReset: function(req, res) {
-    var check = 0;
+        var check = 0;
+        // check the validity of the token sent in the url 
+        // first search the business collection
         Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
         if(!business)
         {
           check++;
-          if(check == 2)
+          if(check == 2)      // if no user found, print error msg and redirect
           {
-          req.flash('error', 'Password reset token is invalid or has expired.');
+          console.log('error', 'Password reset token is invalid or has expired.');
           return res.redirect('/auth/forgot'); 
           }
         }
@@ -232,12 +248,13 @@ let AuthController =
           });
         }
       });
+        // search the registeredusers collection
  	 User.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
    	 if (!user) {
       check++;
-      if(check == 2)
+      if(check == 2)      // if no user found, print error msg and redirect
       {
-        req.flash('error', 'Password reset token is invalid or has expired.');
+        console.log('error', 'Password reset token is invalid or has expired.');
       return res.redirect('/auth/forgot');
       }  
     	}
@@ -253,6 +270,7 @@ let AuthController =
 
 	postReset: function(req, res) {
   async.waterfall([
+    // recheck the validity of the token sent (it might be expired)
     function(done) {
       var check = 0;
           Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
@@ -262,9 +280,10 @@ let AuthController =
               if(check == 2)
               {
               console.log('error', 'Password reset token is invalid or has expired.');
-              return res.redirect('back');
+              return res.redirect('/auth/forgot');
               }
             }
+            // save the new password, and reset token related attributes
             else
             {
               business.local.password = business.generateHash(req.body.password);
@@ -272,8 +291,10 @@ let AuthController =
               business.local.resetPasswordExpires = undefined;
               business.save(function(err, business){
                  if(err)
-                    console.log(err);
-                 done(err, business);
+                 { 
+                  console.log("error: can not update the password, please try again");
+                  return res.redirect('/auth/login');
+                 }
               });
             }
           });
@@ -283,9 +304,10 @@ let AuthController =
               if(check == 2)
               {
               console.log('error', 'Password reset token is invalid or has expired.');
-              return res.redirect('back');
+              return res.redirect('/auth/forgot');
               }
         }
+        // save the new password, and reset token related attributes
         else
         {
         user.local.password = user.generateHash(req.body.password);
@@ -293,24 +315,21 @@ let AuthController =
         user.local.resetPasswordExpires = undefined;
         user.save(function(err,user) {
             if(err)
-            console.log(err);
+            { 
+              console.log("error: can not update the password, please try again");
+              return res.redirect('/auth/login');
+            }
             done(err, user);
         });
       }
       });
     },
-   
+   // send confirmation mail
     function(user, done) {
         var smtpTransport = nodemailer.createTransport({
         service:'Gmail',
-        auth:{
-            // XOAuth2: {
-            //     user:'fasa7ny.team@gmail.com',
-            //     clientId:configAuth.googleAuth.clientID,
-            //     clientSecret:configAuth.googleAuth.clientSecret,
-            //     refreshToken:configAuth.googleAuth.accessToken,
-            //     accessToken: configAuth.googleAuth.accessToken // optional 
-            // }
+        auth:
+        {
             user: configAuth.gmail.user,
             pass: configAuth.gmail.pass
         }
@@ -323,7 +342,12 @@ let AuthController =
           'This is a confirmation that the password for your account ' + user.email + ' has just been changed.\n'
       };
       smtpTransport.sendMail(mailOptions, function(err) {
-        req.flash('success', 'Success! Your password has been changed.');
+        if(err)
+        {
+          console.log("ERROR: can not send email to the entered email, please try again");
+          return res.redirect('/auth/forgot');
+        }
+        console.log('success', 'Success! Your password has been changed.');
         done(err);
       });
     }

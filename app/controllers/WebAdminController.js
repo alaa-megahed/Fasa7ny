@@ -13,6 +13,7 @@ var configAuth = require('../../config/auth');
 
 
 exports.AddBusiness = function (req, res) {
+
     //test if name and merchant_ID
     Business.find({
         $or: [
@@ -118,6 +119,7 @@ exports.AddBusiness = function (req, res) {
 
         });
 }
+
 
 
 //i am not sure about attribute name deleted ? ,,, and business attribute name in offer... check eno m3ndosh booking
