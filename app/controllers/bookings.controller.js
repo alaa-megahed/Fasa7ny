@@ -447,6 +447,9 @@ exports.regUserEditBookings = function(req,res,next){
 						//updates available places
 						EventOccurrences.findOne(booking.event_id, function(err, eve)
 						{
+              if(err || !eve)
+                return res.send("Error!");
+
 							eve.available = eve.available + booking.count - req.body.count;
 							if(eve.available < 0)
 								res.send("Invalid amount. Please try again.");
@@ -488,7 +491,7 @@ exports.regUserDeleteBookings = function(req,res,next){
   {
 		if(req.user instanceof RegisteredUser)
 		{
-			Booking.findByIdAndRemove(req.body.bookingD, function(err,booking)
+			Booking.findById(req.body.bookingD, function(err,booking)
 			{
 				if(err || !booking)
 				{
@@ -508,6 +511,7 @@ exports.regUserDeleteBookings = function(req,res,next){
 							if(err || !eve) return res.send("Error.");
 							eve.available = eve.available + booking.count;
 							eve.save();
+              booking.remove();
 							res.send(booking);
 						});
 
