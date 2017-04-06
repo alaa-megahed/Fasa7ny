@@ -16,13 +16,9 @@ exports.AddBusiness = function (req, res) {
 
     Business.findOne({ username: req.body.username }, function (err, user) {
         if (err) { return next(err); }
-        // if (business) {
-        //  return res.render("admin_profile", {user: req.user});
-        // }
-    });
-    
-    var business = new Business();
-    var generatedPassword = generator.generate({
+        if (!business) {
+         var business = new Business();
+         var generatedPassword = generator.generate({
         length: 10,
         numbers: true
     });
@@ -52,11 +48,11 @@ exports.AddBusiness = function (req, res) {
             //     accessToken: configAuth.googleAuth.accessToken // optional 
             // }
             user: configAuth.gmail.user,
-              pass: configAuth.gmail.pass
+            pass: configAuth.gmail.pass
         }
 
       });
-
+        console.log(1);
         var mailOptions = {
             to: req.body.email,
             from: 'fasa7ny.team@gmail.com',
@@ -67,16 +63,20 @@ exports.AddBusiness = function (req, res) {
             'Fasa7ny team'
 
         };
-        
+        console.log(2);
         smtpTransport.sendMail(mailOptions, function(err) {
-                if(err)
-                    console.log("error");
+            if(err)
+                console.log(err);
             req.flash('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
             
         });
-        res.render("admin_profile", {user: req.user});
-    
+        console.log(3);
         }
+    });
+    res.render("admin_profile", {user: req.user});
+    
+    
+}
        
 
 //i am not sure about attribute name deleted ? ,,, and business attribute name in offer... check eno m3ndosh booking

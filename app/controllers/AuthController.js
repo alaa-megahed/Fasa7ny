@@ -52,9 +52,8 @@ let AuthController =
 		{
 			if(req.user.user_type == 1)       // regular user
 			{
-        console.log(req.session.id);
-			res.render('user_profile.ejs', {
-			user : req.user 
+			 res.render('user_profile.ejs', {
+			 user : req.user 
 			});
 			}
 			else if(req.user.user_type == 2)  // business

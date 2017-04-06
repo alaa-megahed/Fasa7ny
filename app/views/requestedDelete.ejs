@@ -10,7 +10,7 @@
 	</style>
 </head>
 <body>
-	<% if(!(user)) { %>
+	<% if(!(user && user.user_type == 3)) { %>
 	<div class="page-header text-center">
 		<h1><span class="fa fa-anchor"></span>YOU ARE NOT AUTTHORIZED TO ACCESS THIS PAGE!</h1>
 		
@@ -27,7 +27,7 @@
 	</div>
 
 	<div class="row">
-	<p>Buinesses Requested To Be Deleted</p>
+	<p><h4>Buinesses Requested To Be Deleted</h4></p>
 	 
             <div class="row">
                 <% for(var i=0; i< requests.length; i++){%>
