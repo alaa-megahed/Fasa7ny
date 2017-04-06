@@ -70,16 +70,17 @@ exports.createOffer = function(req, res) {
       if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length > 0) {
         newOffer.notify_subscribers = body.notify_subscribers;
       }
-      if(typeof body.start_date != 'undefined' && body.start_date > 0) {
+      var now = new Date();
+      if(typeof body.start_date != 'undefined' && body.start_date.length > 0) {
         newOffer.start_date = new Date(body.start_date);
       } else {
-        newOffer.start_date = new Date();
+        newOffer.start_date = now;
       }
       var startdate = newOffer.start_date;
       var expirationdate = newOffer.expiration_date;
       // console.log(d1);
       // console.log(d2);
-      if(startdate - expirationdate >= 0) {
+      if(startdate - expirationdate >= 0 || now - startdate > 0) {
         res.send("please add a valid start_date/ expiration_date");
       } else {
         newOffer.save(function(err, offer) {
