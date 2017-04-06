@@ -74,8 +74,9 @@ so that Business will now show up in searches and can be viewed by all users.*/
         Business.findByIdAndUpdate(businessId, {$set:{public:1}},
           function(err) {
             if(err) {
-              res.send("error in making page public");
+              console.log("error in making page public");
             } else {
+              console.log("Page public");
               res.send("done");
             }
         });
