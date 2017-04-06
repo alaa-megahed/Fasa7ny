@@ -8,9 +8,6 @@ business.use('/makepagepublic', function(req, res) {
 })
 
 
-
-
-
 business.get('/', function(req, res){
         res.sendFile(path.resolve('app/views/business_profile.ejs'));
     });
