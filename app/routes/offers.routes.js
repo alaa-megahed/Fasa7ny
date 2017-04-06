@@ -7,10 +7,10 @@ var upload = multer({ dest: 'public/uploads/' });
 //Offer routes
 
 router.get("/update_offer", function(req, res) {
-  if(typeof req.query.id != "undefined") {
+  if(req.user && typeof req.query.id != "undefined") {
     var id = req.query.id;
-    res.render("updateoffer.ejs", {id})
-  }
+    res.render("updateoffer.ejs", {id:id, user:req.user})
+  } else res.send("you're not authorized to view this page");
 });
 
 router.get('/viewOffers', OffersController.viewOffers);
