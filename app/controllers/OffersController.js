@@ -68,7 +68,7 @@ exports.createOffer = function(req, res) {
         newOffer.image = file.filename;
       }
       if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length > 0) {
-        newOffer.notify_subscribers = body.notify_subscribers;
+        newOffer.notify_subscribers = Number(body.notify_subscribers);
       }
       var now = new Date();
       if(typeof body.start_date != 'undefined' && body.start_date.length > 0) {
@@ -150,7 +150,7 @@ exports.updateOffer = function(req, res) {
               if(flag2 == true) offer.expiration_date = expirationdate;
             }
             if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length != 0)
-              offer.notify_subscribers = body.notify_subscribers;
+              offer.notify_subscribers = Number(body.notify_subscribers);
 
               if(typeof file != 'undefined') offer.file = file.filename;
 
