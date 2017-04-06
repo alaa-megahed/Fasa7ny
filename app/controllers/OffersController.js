@@ -123,7 +123,7 @@ exports.updateOffer = function(req, res) {
           {
             if(typeof body.name != 'undefined' && body.name.length != 0) offer.name = body.name;
             if(typeof body.type != 'undefined' && body.type.length != 0) offer.type = body.type;
-            if(typeof body.value != 'undefined' && body.value.length != 0) offer.value = body.type;
+            if(typeof body.value != 'undefined' && body.value.length != 0) offer.value = body.value;
             if(typeof body.details != 'undefined' && body.details.length != 0) offer.details = body.details;
 
             var startdate = offer.start_date;
