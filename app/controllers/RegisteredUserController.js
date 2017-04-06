@@ -26,7 +26,6 @@ exports.subscribe = function(req,res)
 					res.send("Something went wrong. Please try again.");
 				else {
 					if (user_found) {
-						console.log("Updating user-subscriptions & business-subscribers..");
 						user_found.subscriptions.push(business);
 						user_found.save();
 						res.send("business has been added to subscriptions.");
@@ -36,7 +35,6 @@ exports.subscribe = function(req,res)
 		});
 	}
 	else {
-	 	console.log("Must be logged in to subscribe");
 		res.redirect('/auth/login');
     }
 }
@@ -82,7 +80,6 @@ exports.unsubscribe = function(req,res)
 	    });
 	}
 	else {
-		 console.log("Must be logged in to unsubscribe.");
 		res.redirect('/auth/login');
 	}
 }
@@ -101,18 +98,16 @@ exports.addRating = function(req, res)
 	    Rating.findOne(rating_query, function(err, previous_rating)
 	    {
 	    	if(err) {
-	    		res.send("Error in findOne() of rating");
+	    		res.send("Error in finding rating");
 	    		return;
 	    	}
 
 	    	if (previous_rating) {
-	    		console.log("Found previous rating. Updating it..");
 	    		previous_rating.rating = rating2;
 					previous_rating.save();
 	    	}
 
 	    	else {
-	    		console.log("No previous rating. Inserting new rating..");
 	    		var rating1 = new Rating(
 				  {
 						user_ID: userID,
@@ -125,11 +120,10 @@ exports.addRating = function(req, res)
 
 	    	module.exports.average_rating(req,res);
 
-				res.send("rating successfully added");
+
 	    });
 	}
 	else {
-	 	console.log("Must be logged in to rate.");
 	 	res.redirect('/auth/login');
     }
 };
@@ -139,7 +133,6 @@ exports.average_rating = function(req,res)
     var businessID = req.body.business;
 
 	Rating.find({business_ID:businessID}, function(err,ratings) { //this exists mainly to postpone the function
-		console.log(ratings);
 		Rating.aggregate([{$group: {_id : '$business_ID', average: {$avg: '$rating'}}}],
         function (err, result) {
 			if(err)
@@ -148,14 +141,15 @@ exports.average_rating = function(req,res)
 					return;
 				}
 			else {
-				console.log(result);
 				Business.findByIdAndUpdate(businessID,{$set:{average_rating:result[0].average}},function(err, business){
 					if(err)
 					{
-						res.send("Error. Please return to previous page.");
+						return res.send("Error. Please return to previous page.");
 					}
 					else
-						console.log(business);
+					{
+						return res.send("rating successfully added");
+					}
 				});
 			}
 		});
@@ -172,20 +166,20 @@ exports.customize = function(req,res)
 		User.findOne({_id: userID}, function(err, user_found)
 		{
 		    if(err) {
-				console.log("Error in findOne() of customize");
-				res.send("Error. Please retry.");
+				return res.send("Error. Please retry.");
 			}
 			if(!user_found) {
-				console.log("User not found.")
+				return res.send("User not found.");
 			}
 			else {
-				res.send("Bookings: " +  user_found.bookings + "\n Subscriptions: "  + user_found.subscriptions);
+				return res.send("Bookings: " +  user_found.bookings + "\n Subscriptions: "  + user_found.subscriptions);
 
 			}
 		});
 	}
 	else {
 		res.send("Please log in.");
+		return;
 	}
 
 }
@@ -201,7 +195,7 @@ exports.editInformation = function(req, res) {
 		var file = req.file;
 
 		User.findOne({_id:id}, function(err, user) {
-			if(err) res.send("error");
+			if(err)  res.send("error");
 			else {
 				if(!user) res.send("user not found");
 				else {
@@ -223,10 +217,3 @@ exports.editInformation = function(req, res) {
 		});
 	} else res.send("you are not authorized to view this page");
 }
-
-
-
-
-
-
-//
