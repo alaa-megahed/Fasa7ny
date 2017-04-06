@@ -36,7 +36,7 @@ the name, type, value, details and expiration date.
 if the business added an expiration_date that is before the start_date(which if
  he did not enter it will be by default the current date when he created the offer)
  he will be notified that he entered a wrong expiration_date */
- 
+
 exports.createOffer = function(req, res) {
   if(req.user && req.user instanceof Business) {
     var businessId = req.user.id;  //get _id from session
@@ -90,6 +90,8 @@ exports.createOffer = function(req, res) {
         })
       }
     }
+  } else {
+    res.send("you're not a logged in business");
   }
 };
 
@@ -291,6 +293,8 @@ exports.updateOffer = function(req, res) {
         }
       }
     })
+  } else {
+    res.send("you're not a logged in business");
   }
 };
 
@@ -337,5 +341,7 @@ exports.deleteOffer = function(req, res) {
         } else console.log("you must delete only your offers");
       }
     })
+  } else {
+    res.send("you're not a logged in business");
   }
 };
