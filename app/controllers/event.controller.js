@@ -202,40 +202,27 @@ If the type is Once only one event occurrence is added.
 
 			var id = req.body.id;
 			var business_id = req.user.id;
-			Events.findById(id,function(err,event){
-				if(!event) res.send('Something went wrong');
-				else if(event.business_id == business_id){
-					if(typeof req.body.name != "undefined" && req.body.name.length > 0){
-				Events.findByIdAndUpdate(id,{$set:{name:req.body.name}}, function(err,event){
-					if(err) res.send('Could not update');
-					else if(!event) res.send('Something went wrong');
-					else res.send('name updated');
-				});
-			}
-			if(typeof req.body.location != "undefined" && req.body.location.length > 0){
-				Events.findByIdAndUpdate(id,{$set:{location:req.body.location}}, function(err,event){
-					if(err) res.send('Could not update');
-					else if(!event) res.send('Something went wrong');
-					else res.send('updated');
-				});
-			}
-			if(typeof req.body.price != "undefined" && req.body.price.length > 0){
-				Events.findByIdAndUpdate(id,{$set:{price:req.body.price}}, function(err,event){
-					if(err) res.send('Could not update');
-					else if(!event) res.send('Something went wrong');
-					else res.send('updated');
-				});
-			}
 			
-			if(typeof req.body.capacity != "undefined" && req.body.capacity.length > 0){
 
-				
-				Events.findById(id, function(err,event){
+			Events.findById(id,function(err,event){
+				if(err) res.send(err.message);
+				else if(!event) res.send('Something went wrong');
+				else{
+					if(event.business_id == business_id){
 
-					if(err) res.send('Could not update');
-					else if(!event) res.send('Something went wrong');
-					else {
-						var oldCapacity = event.capacity;
+						if(typeof req.body.name != "undefined" && req.body.name.length > 0){
+							event.name = req.body.name;
+						}
+
+						if(typeof req.body.location != "undefined" && req.body.location.length > 0){
+							event.location = req.body.location;
+						}
+						if(typeof req.body.price != "undefined" && req.body.price.length > 0){
+							event.price = req.body.price;
+						}	
+
+						if(typeof req.body.capacity != "undefined" && req.body.capacity.length > 0){
+							var oldCapacity = event.capacity;
 						if(oldCapacity < req.body.capacity)
 						{
 							
@@ -252,8 +239,7 @@ If the type is Once only one event occurrence is added.
 
 							});
 							event.capacity = req.body.capacity;
-							event.save();
-						  res.send("Successful editing of capacity");
+							
 						}
 						else if( oldCapacity > req.body.capacity)
 						{
@@ -288,69 +274,48 @@ If the type is Once only one event occurrence is added.
 
 									});
 									event.capacity = req.body.capacity;
-									event.save();
-
-									res.send("Successful editing of capacity");
+									
 								}
 
 							});
 						}
-						else res.send('Successful editing of capacity');
-					}
-				});
+						else event.capacity = req.body.capacity; 
 
-			}
+						}	
 
-			if(typeof req.body.description != "undefined" && req.body.description.length > 0){
-				Events.findByIdAndUpdate(id,{$set:{description:req.body.description}}, function(err,event){
-					if(err) res.send('Could not update');
-					else if(!event) res.send('Something went wrong');
-					else res.send('updated');
-				});
-			}
-
-				if(typeof req.body.day != "undefined" && req.body.day.length > 0){
-				Events.findByIdAndUpdate(id,{$set:{daysOff:req.body.day}}, function(err,event){
-					if(err) res.send('Could not update');
-					else if(!event) res.send('Something went wrong');
-					else res.send('Days off will change starting next month.');
-				});
-			}
-
-			if(typeof req.body.date != "undefined" && req.body.date.length > 0){
-				Events.findOne({_id:id},function(err,event){
-					if(err) res.send(err.message);
-					else if(!event) res.send('Something went wrong');
-					else{
-						if(event.repeated == "Once"){	
+						if(typeof req.body.description != "undefined" && req.body.description.length > 0){
+							event.description = req.body.description;
+						}	
+						if(typeof req.body.day != "undefined" && req.body.day.length > 0){
+							event.daysOff = req.body.day;
+						}
+						if(typeof req.body.date != "undefined" && req.body.date.length > 0){
+							if(event.repeated == "Once"){	
 							EventOccurrences.findOneAndUpdate({event:id},{$set:{day:req.body.date}},function(err,occurrence){
 								if(err) res.send('Could not update');
 								else if(!occurrence) res.send('Something went wrong');
-								else res.send('updated');
+								
 							});		
+							}
 						}
+						if(typeof req.body.timing != "undefined" && req.body.timing.length >0 ){
+							EventOccurrences.update({event:id},{$set:{time:req.body.timing}},{"multi":true}, function(err){
+							if(err) res.send(err.message);
+							});
+
+						}
+						event.save();
+						res.send(event);
+					
 					}
-				});
-
+					else res.send('Can not edit this event!');	
+				} 
+				
+			});	
 			}
-
-			if(typeof req.body.timing != "undefined" && req.body.timing.length >0 ){
-				EventOccurrences.update({event:id},{$set:{time:req.body.timing}},{"multi":true}, function(err){
-					if(err) res.send(err.message);
-					else res.send('updated');
-
-				});
-
+			else{
+				res.send('You are not a logged in business');
 			}
-				}
-				else res.send('Can not edit this event!');
-			});
-			
-		}
-		else{
-			res.send('You are not a logged in business');
-		}
-			
 
 		}
 		
