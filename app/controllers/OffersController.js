@@ -130,6 +130,7 @@ exports.updateOffer = function(req, res) {
             var expirationdate = offer.expiration_date;
             var flag1 = false;
             var flag2 = false;
+            var now = new Date();
             if(typeof body.start_date != 'undefined' && body.start_date.length != 0)
             {
                startdate = new Date(body.start_date);
@@ -142,7 +143,7 @@ exports.updateOffer = function(req, res) {
               flag2 = true;
             }
             var error = "";
-            if(startdate - expirationdate >= 0) error = "please add a valid start_date/ expiration_date";
+            if(startdate - expirationdate >= 0 || now - startdate > 0) error = "please add a valid start_date/ expiration_date";
             else
             {
               if(flag1 == true) offer.start_date = startdate;
