@@ -26,9 +26,22 @@ exports.subscribe = function(req,res)
 					res.send("Something went wrong. Please try again.");
 				else {
 					if (user_found) {
-						user_found.subscriptions.push(business);
-						user_found.save();
-						res.send("business has been added to subscriptions.");
+						var check = 0;
+						for(var i = 0; i < user_found.subscriptions.length; i++)
+						{
+							if(user_found.subscriptions[i] == businessID)
+								check = 1;
+						}
+
+						if(check == 1)
+							return res.send("Already subscribed");
+						else
+						{
+							user_found.subscriptions.push(business);
+							user_found.save();
+							return res.send("business has been added to subscriptions.");
+						}
+
 				}
 			}
 		 });
@@ -160,11 +173,11 @@ exports.average_rating = function(req,res)
 exports.customize = function(req,res)
 {
 	if(req.user && req.user instanceof User)
-	{	
+	{
 		// return res.send("Bookings: " +  user_found.bookings + "\n Subscriptions: "  + user_found.subscriptions);
 		return res.render('user_profile.ejs', {
-        user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions }); 
-		
+        user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });
+
 	}
 	else {
 		res.send("Please log in.");
