@@ -8,21 +8,6 @@ var mongoose = require('./config/mongoose'),
 
 
 
-// what is this?!
- app.use(require('./app/routes/WebAdminRouter.js'));
-
-
-//requiring Schemas
-require('./app/models/Booking');
-require('./app/models/Business');
-require('./app/models/Event');
-require('./app/models/Offer');
-require('./app/models/RegisteredUser');
-require('./app/models/WebAdmin');
-// require('./app/controllers/RegularEventController');
-// require('./app/controllers/BusinessController');
-// require('./app/controllers/OffersController');
-
 
 var router = require('./app/routes/RegisteredUserRouter.js');
 app.use(router);

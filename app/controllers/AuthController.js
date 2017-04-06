@@ -106,7 +106,7 @@ let AuthController =
 	},
 
 	googleCallback: function(req, res){
-		passport.authenticate('google', { failureRedirect: '/', successRedirect :'http://localhost:3000/auth/profile'})(req, res);
+		passport.authenticate('google', { failureRedirect: '/', successRedirect :'http://localhost:300`0/auth/profile'})(req, res);
 	},
 
 	// =====================================
@@ -195,7 +195,7 @@ let AuthController =
         	subject: 'Fasa7ny Password Reset',
         	text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           	'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          	'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+          	'http://' + req.headers.host + '/auth/reset/' + token + '\n\n' +
           	'If you did not request this, please ignore this email and your password will remain unchanged.\n'
      		};
      	

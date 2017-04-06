@@ -12,7 +12,7 @@ var router = express.Router();
 
      
      router.get('/viewRequestedDelete', webAdmin.webAdminViewRequestedDelete);
-     router.get('/deleteBusiness/:username', webAdmin.WebAdminDeleteBusiness);
+     router.get('/deleteBusiness/:id', webAdmin.WebAdminDeleteBusiness);
      router.post('/add_business', webAdmin.AddBusiness);
 
   

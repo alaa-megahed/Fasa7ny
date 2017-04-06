@@ -4,6 +4,7 @@ var mongoose      = require('mongoose'),
 
 require('mongoose-double')(mongoose);
 var SchemaTypes = mongoose.Schema.Types;
+var RegisteredUser = require('./RegisteredUser');
 
 
 var BusinessSchema = new Schema({
@@ -73,6 +74,23 @@ BusinessSchema.methods.validPassword = function(password) {
     return (bcrypt.compareSync(password, this.local.password));
 };
 
+BusinessSchema.pre('remove', function(next)
+{
+  var business = this;
+   async.each(business.subscribers, function(subscriber,callback)
+         {
+            RegisteredUser.findOne({_id:subscriber}, function(err,user)
+            {
+                if(user.subscriptions.indexOf(business._id)!== -1)
+                {
+                    user.subscriptions.splice(i,1);
+                }     
+            });
+        },function(err){
+            if (err) throw err;
+        }
+        );
+});
 
 var Business = mongoose.model('Business', BusinessSchema);
 module.exports = Business;
