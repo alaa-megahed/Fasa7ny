@@ -11,7 +11,7 @@ var BusinessController = {
                 if (err)
                     console.log(err);
                 else
-                    res.send(result);
+                    res.render("view_business", {business: result});
             });
 
     },
