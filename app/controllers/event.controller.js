@@ -341,6 +341,14 @@ exports.cancelEvent = function (req, res) {
 
 }
 
+/** Removes all occurence of an event */
+exports.removeAllOccurrences = function (event_id) {
+	EventOccurrences.remove({ event: event_id }, function (err) {
+		if (err)
+			console.log(err);
+	})
+}
+
 /* Abusiness can cancel an event occurrence.*/
 
 exports.cancelOccurrence = function (req, res) {
