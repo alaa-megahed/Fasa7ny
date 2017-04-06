@@ -451,7 +451,7 @@ exports.regUserEditBookings = function(req,res,next){
               if(err || !eve)
                 return res.send("Error!");
 							eve.available = eve.available + booking.count - req.body.count;
-							if(eve.available < 0)
+							if(eve.available < 0 || req.body.count == 0)
 								res.send("Invalid amount. Please try again.");
 							else
 							{
