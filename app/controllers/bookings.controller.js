@@ -25,14 +25,13 @@ exports.book_event = function (req,res)
     //get event occurrence being booked
     EventOccurrences.findById(event_id,function(err,eventocc)
     {
-        if(err)
+        if(err || !eventocc)
           res.send("Oops, something went wrong, please try again with the correct information ");
         else
         {
-           if(!eventocc) res.send("Oops, something went wrong, please try again with the correct information ");
           Events.findById(eventocc.event,function(err,event)
           {   
-              if(err)
+              if(err || !event)
                 res.send("Oops, something went wrong, please try again with the correct information ");
               else
               {
@@ -58,6 +57,9 @@ exports.book_event = function (req,res)
                       // the number of people in booking (count) and the available.
                       booking.save(function(err,booking)
                       {
+                        if(err || !booking)
+                            res.send("Oops, something went wrong, please try again with the correct information ");
+                          else{
                         var newAvailable = eventocc.available - booking.count;
 
                         // Insert booking in array of bookings of booked event occurrence
@@ -69,6 +71,7 @@ exports.book_event = function (req,res)
                           else
                             res.send("Booked successfully");
                         });
+                      }
                       });
                      }
 
@@ -108,23 +111,21 @@ exports.edit_booking = function(req,res)
        // get booking 
        Booking.findById(bookingID,function(err,booking)
         {
-          if(err)
+          if(err || !booking)
              res.send("Oops, something went wrong, please try again with the correct information ");
           else
           {
-             if(!booking) res.send("Oops, something went wrong, please try again with the correct information ");
             // get event occurrence of this booking
             EventOccurrences.findById(booking.event_id, function(err,eventocc)
             {
-               if(err)
+               if(err || !eventocc)
                      res.send("Oops, something went wrong, please try again with the correct information ");
                 else
                 {
-                   if(!eventocc) res.send("Oops, something went wrong, please try again with the correct information ");
                   //get event of event occurrence
                   Events.findById(eventocc.event,function(err,event)
                   {
-                    if(err)
+                    if(err || !event)
                        res.send("Oops, something went wrong, please try again with the correct information ");
                     else
                     {
@@ -179,27 +180,24 @@ exports.cancel_booking = function(req,res)
     var bookingID = req.body.booking_id;       //id of booking to be cancelled 
     var event_id  = req.body.event_id;         //event_id of booking to be cancelled 
 
-     // get booking 
+        // get booking 
         Booking.findById(bookingID,function(err,booking)
         {
-          if(err)
+          if(err || !booking)
              res.send("Oops, something went wrong, please try again with the correct information ");
           else
           {
-            if(!booking) res.send("Oops, something went wrong, please try again with the correct information ");
-
             // get event occurrence of this booking
             EventOccurrences.findById(booking.event_id, function(err,eventocc)
             {
-               if(err)
+               if(err || !eventocc)
                      res.send("Oops, something went wrong, please try again with the correct information ");
                 else
                 {
-                    if(!eventocc) res.send("Oops, something went wrong, please try again with the correct information ");
                     //get event of event occurrence
                     Events.findById(eventocc.event,function(err,event)
                     {
-                      if(err)
+                      if(err || !event)
                           res.send("Oops, something went wrong, please try again with the correct information ");
                       else
                       {
