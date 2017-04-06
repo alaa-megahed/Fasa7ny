@@ -2,7 +2,7 @@ var Booking  = require('mongoose').model('Booking');
 var Events   = require('mongoose').model('Events');
 var EventOccurrences = require('mongoose').model('EventOccurrences');
 var RegisteredUser   = require('mongoose').model('RegisteredUser');
-var Business         = require('mongoose').model('Business');  
+var Business         = require('mongoose').model('Business');
 
 
 //================  < BUSINESS BOOKINGS > ====================
@@ -11,60 +11,81 @@ var Business         = require('mongoose').model('Business');
 exports.book_event = function (req,res)
 {
   //checking active session
-  if(req.user && req.user instanceof Business) 
+  if(req.user && req.user instanceof Business)
   {
      var form = req.body;
 
-     if(!form.count) res.send("please enter count");
-     else count = form.count;    
+     //exception handling
+     if(!form.count || form.count < 1) res.send("please enter count > 1");
+     else count = form.count;
+     if(form.count<1) return;
 
-    var event_id = req.body.event_id;   
+    var event_id = req.body.event_id;
 
-    //Create booking instance 
-    var booking  = new Booking     
-    ({
-        booking_date : new Date(),
-        count        : count,
-        event_id     : event_id,
-        booker       : req.user.id  
+    //get event occurrence being booked
+    EventOccurrences.findById(event_id,function(err,eventocc)
+    {
+        if(err || !eventocc)
+          res.send("Oops, something went wrong, please try again with the correct information ");
+        else
+        {
+          Events.findById(eventocc.event,function(err,event)
+        {
+              if(err || !event)
+                res.send("Oops, something went wrong, please try again with the correct information ");
+              else
+              {
+                //check if this event belongs to business currently booking it
+                if(event.business_id == req.user.id)
+                {
+                    //cannot book more than available number
+                    if(eventocc.available < count)
+                    {
+                       res.send("capacity doesn't allow more than "+eventocc.available);
+                    }
+                    else
+                    {//Create booking instance
+                      var booking  = new Booking
+                      ({
+                          booking_date : new Date(),
+                          count        : count,
+                          event_id     : event_id,
+                          booker       : req.user.id
+                      });
+
+                      //update number of available bookings in event occurrence by subtracting
+                      // the number of people in booking (count) and the available.
+                      booking.save(function(err,booking)
+                      {
+                        if(err || !booking)
+                            res.send("Oops, something went wrong, please try again with the correct information ");
+                         else
+                         {
+                          var newAvailable = eventocc.available - booking.count;
+
+                          // Insert booking in array of bookings of booked event occurrence
+                          EventOccurrences.findByIdAndUpdate(event_id,{$set:{"available":newAvailable},$push: {"bookings": booking}},{safe: true, upsert: true, new : true},
+                          function(err,eventoccur)
+                          {
+                            if(err || !eventoccur)
+                              res.send("Oops, something went wrong, please try again with the correct information ");
+                            else
+                              res.send("Booked successfully");
+                          });
+                      }
+                      });
+                     }
+
+                }
+                else
+                {
+                   res.send("You do not have authority to access this page");
+                }
+              }
+          });
+        }
     });
 
-
-      // Insert booking in array of bookings of booked event occurrence
-      EventOccurrences.findById(event_id,function(err, eventocc)
-      {
-           if(err)
-               console.log(err);
-            else
-            {
-                  //cannot book more than available number
-                  if(eventocc.available < count)
-                  {
-                     res.send("capacity doesn't allow more than "+eventocc.available);
-                  }
-                  
-                  else
-                  {
-                    //update number of available bookings in event occurrence by subtracting 
-                    // the number of people in booking (count) and the available.
-                    booking.save(function(err,booking)
-                    {
-                      var newAvailable = eventocc.available - booking.count;
-                      EventOccurrences.findByIdAndUpdate(event_id,{$set:{"available":newAvailable},$push: {"bookings": booking}},{safe: true, upsert: true, new : true}, 
-                      function(err,eventoccur)
-                      {
-                        if(err)
-                          res.send("Oops, something went wrong, please try again with the correct information ");
-                        else
-                          res.send("Booked successfully");
-                      });
-                    });
-                    
-                  }       
-            }
-       
-      });
-          
    }
   else
   {
@@ -77,59 +98,70 @@ exports.edit_booking = function(req,res)
   //checking active session
   if(req.user && req.user instanceof Business)
   {
-    var bookingID  = req.body.booking_id;  //booking to be edited       
+
+    //exception handling
+    if(!req.body.count1 || req.body.count1 < 1) res.send("please enter count > 1");
+     else newCount = req.body.count1;
+    if(req.body.count1 < 1 ) return;
+
+
+    var bookingID  = req.body.booking_id;  //booking to be edited
     var new_date   = new Date();
     var newCount   = req.body.count1;
-    
-       // get booking 
+
+       // get booking
        Booking.findById(bookingID,function(err,booking)
         {
-          if(err)
-             res.send("Oops, something went wrong, please try again with the correct information "+booking);
+          if(err || !booking)
+             res.send("Oops, something went wrong, please try again with the correct information ");
           else
           {
             // get event occurrence of this booking
             EventOccurrences.findById(booking.event_id, function(err,eventocc)
             {
-               if(err)
-                     res.send("Oops, something went wrong, please try again with the correct information "+booking);
+               if(err || !eventocc)
+                     res.send("Oops, something went wrong, please try again with the correct information ");
                 else
                 {
                   //get event of event occurrence
                   Events.findById(eventocc.event,function(err,event)
                   {
-                    var business = event.business_id;
+                    if(err || !event)
+                       res.send("Oops, something went wrong, please try again with the correct information ");
+                    else
+                    {
+                        var business = event.business_id;
 
-                    //check if this booking belongs to business currently manipulating it
-                    if(business != req.user.id)
-                        res.send("You do not have authority to access this page"+business+" "+req.user.id);
-                     else
-                     {
-                        var old = booking.count;
-                         //cannot book more than available number
-                         if(eventocc.available < newCount)
-                            res.send("capacity doesn't allow more than "+ eventocc.available);
-                          else
-                          {
-                             Booking.findByIdAndUpdate(bookingID,{$set:{'booking_date':new_date,'count':newCount}},
-                             function(err,booking2)
+                        //check if this booking belongs to business currently manipulating it
+                        if(business != req.user.id)
+                            res.send("You do not have authority to access this page");
+                         else
+                         {
+                            var old = booking.count;
+                             //cannot book more than available number
+                             if(eventocc.available < newCount)
+                                res.send("capacity doesn't allow more than "+ eventocc.available);
+                              else
                               {
-                                if(err)
-                                  res.send("Oops, something went wrong, please try again with the correct information "+booking);
-                                 else
-                                 {
-                                   //update available 
-                                    eventocc.available = eventocc.available - newCount -(-old);
-                                    eventocc.save();
-                                    res.send("Edited booking successfully");
-                                  } 
-                              });
-                            }  
-                        }
-
+                                 Booking.findByIdAndUpdate(bookingID,{$set:{'booking_date':new_date,'count':newCount}},
+                                 function(err,booking2)
+                                  {
+                                    if(err || !booking2)
+                                      res.send("Oops, something went wrong, please try again with the correct information ");
+                                     else
+                                     {
+                                       //update available
+                                        eventocc.available = eventocc.available - newCount -(-old);
+                                        eventocc.save();
+                                        res.send("Edited booking successfully");
+                                      }
+                                  });
+                                }
+                            }
+                      }
                     });
                  }
-              });    
+              });
           }
         });
 
@@ -146,71 +178,68 @@ exports.cancel_booking = function(req,res)
 {
   if(req.user && req.user instanceof Business)
   {
-    var bookingID = req.body.booking_id;       //id of booking to be cancelled 
-    var event_id  = req.body.event_id;        //event_id of booking to be cancelled 
+    var bookingID = req.body.booking_id;       //id of booking to be cancelled
+    var event_id  = req.body.event_id;         //event_id of booking to be cancelled
 
-
-     // get booking 
+     // get booking
         Booking.findById(bookingID,function(err,booking)
         {
-          if(err)
-             res.send("Oops, something went wrong, please try again with the correct information "+booking);
+          if(err || !booking)
+             res.send("Oops, something went wrong, please try again with the correct information ");
           else
           {
             // get event occurrence of this booking
             EventOccurrences.findById(booking.event_id, function(err,eventocc)
             {
-               if(err)
-                     res.send("Oops, something went wrong, please try again with the correct information "+booking);
-                  else
-                  {
+               if(err || !eventocc)
+                     res.send("Oops, something went wrong, please try again with the correct information ");
+                else
+                {
                     //get event of event occurrence
                     Events.findById(eventocc.event,function(err,event)
                     {
+                      if(err || !event)
+                          res.send("Oops, something went wrong, please try again with the correct information ");
+                      else
+                      {
+                        var business = event.business_id;
 
-                       var business = event.business_id;
+                         //check if this booking belongs to business currently manipulating it
+                         if(business != req.user.id)
+                            res.send("You do not have authority to access this page");
+                          else
+                          {
 
-                       //check if this booking belongs to business currently manipulating it
-                       if(business != req.user.id)
-                          res.send("You do not have authority to access this page");
-                        else
-                        {
-                             
-                           Booking.findByIdAndRemove(bookingID,function(err,booking)
-                            {
-                              if(err)
-                                res.send(err);
-                              else
+                             Booking.findByIdAndRemove(bookingID,function(err,booking)
                               {
-                                 EventOccurrences.findByIdAndUpdate(event_id,{ $pull: {bookings: bookingID}},
-                                  function(err,eventocc)
-                                   {
-                                    if(err)
-                                      console.log(err);
-                                     else
+                                if(err || !booking)
+                                    res.send("Oops, something went wrong, please try again with the correct information ");
+                                else
+                                {
+                                   EventOccurrences.findByIdAndUpdate(event_id,{ $pull: {bookings: bookingID}},
+                                    function(err,eventocc)
                                      {
-                                       if(!eventocc) //handling null exception
-                                          res.send("Oops, something went wrong, please try again with the correct information");
-                                        else
-                                        {  
+                                      if(err || !eventocc)
+                                          res.send("Oops, something went wrong, please try again with the correct information ");
+                                       else
+                                       {
                                           eventocc.available = eventocc.available + booking.count;
                                           eventocc.save();
                                           res.send("Booking cancelled");
-                                         }
-                                     }
-                                 });
+                                       }
+                                   });
 
-                                }
-                            });
-                                                     
-                                 
-                        }
+                                  }
+                              });
 
+
+                          }
+                      }
                     });
                  }
-              });    
+              });
           }
-      });    
+      });
   }
   else
   {
@@ -223,34 +252,41 @@ exports.view_event_bookings = function(req,res)
 {
   if(req.user && req.user instanceof Business)
   {
-    var event_id  = req.body.event_id; 
+    var event_id  = req.body.event_id;
 
     EventOccurrences.findById(event_id,function(err,eventocc)
     {
-        if(err)
+        if(err || !eventocc)
           res.send("Oops, something went wrong, please try again with the correct information ");
         else
         {
           Events.findById(eventocc.event,function(err,event)
-          {   
-              //check if this event belongs to business currently viewing its bookings
-              if(event.business_id == req.user.id)
-              {
-                EventOccurrences.findOne({_id:event_id}).populate('bookings').exec(function(err,bookings)
-                {
-                    res.send(bookings);
-                });
-              }
+          {
+
+              if(err || !event)
+                res.send("Oops, something went wrong, please try again with the correct information ");
               else
               {
-                 res.send("You do not have authority to access this page");
-              }
+                //check if this event belongs to business currently viewing its bookings
+                if(event.business_id == req.user.id)
+                {
+                  EventOccurrences.findOne({_id:event_id}).populate('bookings').exec(function(err,bookings)
+                  {
+                      if(err || !bookings)
+                         res.send("Oops, something went wrong, please try again with the correct information ");
+                       else
+                        res.send(bookings);
+                  });
+                }
+                else
+                {
+                   res.send("You do not have authority to access this page");
+                }
+            }
           });
         }
-
-
     });
-    
+
   }
   else
   {
@@ -268,6 +304,11 @@ exports.regUserAddBooking = function(req, res, next) {
   {
 		if(req.user instanceof RegisteredUser)
 		{
+
+
+      if(req.body.count <= 0)
+        return res.send("Can't have negative or no count.");
+
 			var date = new Date();
 	    var booking = new Booking(
 	      {
@@ -294,6 +335,7 @@ exports.regUserAddBooking = function(req, res, next) {
 									eve.available = eve.available - req.body.count;
 									if(eve.available < 0)
 									{
+                    booking.remove();
 										res.send("Not enough spaces - please decrease count of booking.");
 										return;
 									}
@@ -308,6 +350,7 @@ exports.regUserAddBooking = function(req, res, next) {
 								 {
 									 if(err || !user)
 									 {
+                     booking.remove();
 										 res.send("Error saving booking. Please try again.");
 										 return;
 									 }
@@ -358,9 +401,9 @@ exports.regUserViewBookings = function(req,res,next){
 		{
 			RegisteredUser.findOne({_id:req.user.id}).populate('bookings').exec(function(err, bookings)
 			{
-				if(err)
+				if(err || !bookings)
 				{
-					res.send("Error finding bookings");
+					res.send("Error finding bookings or possibly no bookings");
 					return;
 				}
 				else
@@ -405,6 +448,8 @@ exports.regUserEditBookings = function(req,res,next){
 						//updates available places
 						EventOccurrences.findOne(booking.event_id, function(err, eve)
 						{
+              if(err || !eve)
+                return res.send("Error");
 							eve.available = eve.available + booking.count - req.body.count;
 							if(eve.available < 0)
 								res.send("Invalid amount. Please try again.");
@@ -457,14 +502,13 @@ exports.regUserDeleteBookings = function(req,res,next){
 				{
 					if(booking.booker == req.user.id)
 					{
-						if(err) throw err;
-						RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.booking}}, function(err,user)
+						RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
 						{
-							if(err) throw err;
+							if(err || !user ) return res.send("Error");
 						});
-						EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.booking}}, function(err,eve)
+						EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.bookingD}}, function(err,eve)
 						{
-							if(err) throw err;
+							if(err || !eve) return res.send("Error.");
 							eve.available = eve.available + booking.count;
 							eve.save();
 							res.send(booking);
