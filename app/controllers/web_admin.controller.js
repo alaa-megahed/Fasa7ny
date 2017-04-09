@@ -28,11 +28,11 @@ exports.AddBusiness = function (req, res) {
             console.log(resultBusiness);
             if (err) { return next(err); }
 
-            if (resultBusiness.length == 0) {   //if yes then check user 
+            if (resultBusiness.length == 0) {   //if yes then check user
                 User.find({
                     $or: [
                         { 'local.username': req.body.username }
-                        //to add email 
+                        //to add email
                     ]
                 },
                     function (err, resultUser) {
@@ -62,7 +62,7 @@ exports.AddBusiness = function (req, res) {
 
                                             if (err)
                                                 throw err;
-                                            else { //send confirmation email 
+                                            else { //send confirmation email
                                                 var smtpTransport = nodemailer.createTransport({
                                                     service: 'Gmail',
                                                     auth: {
@@ -101,7 +101,7 @@ exports.AddBusiness = function (req, res) {
                                         res.render("admin_profile", { user: req.user });
                                     }
                                 });
-                        }//end of user check 
+                        }//end of user check
                         else {
                             console.log(resultUser)
                             console.log("conflict with user");
@@ -110,7 +110,7 @@ exports.AddBusiness = function (req, res) {
                         }
                     }
                 );
-            }//end of business check 
+            }//end of business check
             else {
                 console.log(resultBusiness);
                 console.log("conflict with business");
@@ -197,4 +197,102 @@ exports.webAdminViewRequestedDelete = function (req, res) {
 
     }
     );
+}
+
+
+
+
+
+
+
+
+
+//<=========================================================================ADVERTISEMENT=======================================================================>
+
+
+exports.addAdvertisement = function(req,res)
+{
+  var ad = new Advertisement(
+    {
+      image       : req.body.filename, //should be changed to req.file.filename
+      text        : req.body.text,
+      start_date  : req.body.sdate,
+      end_date    : req.body.edate
+    }
+  )
+
+  ad.save(function(err,ad){
+    if(err)
+      res.send("error saving advertisement");
+    else
+      res.send("successfully created advertisement");
+
+  });
+}
+
+
+
+
+
+exports.deleteAdvertisement = function(req,res)
+{
+      Advertisement.findByIdAndRemove(req.body.ad, function(err,ad)
+      {
+        if(err)
+          res.send("error deleting advertisement");
+        else {
+          res.send("successfully deleted advertisement");
+        }
+
+      });
+
+
+}
+
+
+
+
+exports.updateAvailableAdvertisements = function(req,res)
+{
+  var rule = new schedule.RecurrenceRule();
+  rule.dayOfWeek = [new schedule.Range(0,6)];
+  rule.hour = 00;
+  rule.minute = 00;
+
+
+  var j = schedule.scheduleJob(rule, function()
+  {
+    var d = new Date();
+    Advertisement.find({}, function(err, ads)
+    {
+      console.log(ads);
+      for(var i = 0; i < ads.length; i++)
+      {
+        if(ads[i].end_date < d || ads[i].start_date > d)
+        {
+          console.log("this has expired: " + ads[i]);
+          ads[i].available = 0;
+          ads[i].save();
+        }
+        else {
+          ads[i].available = 1;
+          ads[i].save();
+        }
+      }
+
+
+      res.send("successful");
+
+    })
+  });
+
+
+}
+
+exports.viewAvailableAdvertisements = function(req,res)
+{
+  Advertisement.find({available : 1}, function(err, ads)
+  {
+    res.send(ads);
+  });
 }
