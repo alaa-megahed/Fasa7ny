@@ -139,7 +139,7 @@ exports.edit_booking = function(req,res)
                          {
                             var old = booking.count;
                              //cannot book more than available number
-                             if(eventocc.available - newCount -(-old) < newCount)
+                             if(eventocc.available - newCount -(-old) < 0)
                                 res.send("capacity doesn't allow more than "+ eventocc.available);
                               else
                               {
