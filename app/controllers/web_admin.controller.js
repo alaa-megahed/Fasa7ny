@@ -212,22 +212,36 @@ exports.webAdminViewRequestedDelete = function (req, res) {
 
 exports.addAdvertisement = function(req,res)
 {
-  var ad = new Advertisement(
+
+
+  if(req.user && req.user instanceof WebAdmin)
+  {
+
+    if(!req.body.filename || !req.body.text || !req.body.sdate || !req.body.edate)
     {
-      image       : req.body.filename, //should be changed to req.file.filename
-      text        : req.body.text,
-      start_date  : req.body.sdate,
-      end_date    : req.body.edate
+      return res.send("Please fill in all necessary components");
     }
-  )
+    var ad = new Advertisement(
+      {
+        image       : req.body.filename, //should be changed to req.file.filename
+        text        : req.body.text,
+        start_date  : req.body.sdate,
+        end_date    : req.body.edate
+      }
+    )
 
-  ad.save(function(err,ad){
-    if(err)
-      res.send("error saving advertisement");
-    else
-      res.send("successfully created advertisement");
+    ad.save(function(err,ad){
+      if(err)
+        return res.send("error saving advertisement");
+      else
+        return res.send("successfully created advertisement");
 
-  });
+    });
+  }
+  else {
+    return res.send("Unauthorized access. Please log in.");
+  }
+
 }
 
 
@@ -236,6 +250,9 @@ exports.addAdvertisement = function(req,res)
 
 exports.deleteAdvertisement = function(req,res)
 {
+
+    if(req.user && req.user instanceof WebAdmin)
+    {
       Advertisement.findByIdAndRemove(req.body.ad, function(err,ad)
       {
         if(err)
@@ -245,6 +262,8 @@ exports.deleteAdvertisement = function(req,res)
         }
 
       });
+    }
+
 
 
 }
@@ -291,8 +310,15 @@ exports.updateAvailableAdvertisements = function(req,res)
 
 exports.viewAvailableAdvertisements = function(req,res)
 {
-  Advertisement.find({available : 1}, function(err, ads)
+  if(req.user && req.user instanceof WebAdmin)
   {
-    res.send(ads);
-  });
+    Advertisement.find({available : 1}, function(err, ads)
+    {
+      res.send(ads);
+    });
+  }
+  else {
+    return res.send("Unauthorized access. Please log in.");
+  }
+
 }
