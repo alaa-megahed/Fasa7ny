@@ -1,6 +1,4 @@
 var express  = require('express');
-//var app      = express();
-//var path 	 = require('path');
 var webAdmin  = require('../controllers/web_admin.controller');
 var router = express.Router();
 
@@ -8,13 +6,20 @@ var router = express.Router();
     //    res.render('test');
     //});
 
-     
+
 
      router.get('/viewRequestedDelete', webAdmin.webAdminViewRequestedDelete);
      router.get('/deleteBusiness/:id', webAdmin.WebAdminDeleteBusiness);
      router.post('/add_business', webAdmin.AddBusiness);
 
+     router.post('/createAdvertisement', webAdmin.addAdvertisement);
+     router.post('/deleteAdvertisement', webAdmin.deleteAdvertisement);
+     router.post('/updateAdvertisements', webAdmin.updateAvailableAdvertisements);
 
-  
+
+
+
+
+
 
 module.exports = router;
