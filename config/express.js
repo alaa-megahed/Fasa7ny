@@ -27,7 +27,7 @@ module.exports = function() {
 
     app.use(session({
         saveUninitialized: true,
-        resave: false,        
+        resave: false,
         secret: 'OurSuperSecretCookieSecret'
     }));
 
@@ -44,9 +44,9 @@ module.exports = function() {
 
     var router = require('../app/routes');
 
-    app.use(router); 
+    app.use(router);
 
-    
+
 
     require('./passport')(passport);                                     // pass passport for passport configuration
 
