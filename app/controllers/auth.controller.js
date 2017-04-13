@@ -14,15 +14,14 @@ let AuthController =
 	// 			   HOME PAGE 
 	// ============================
 	home: function(req, res) {
-		res.render('index.ejs'); 
+    res.sendFile('index.html', { root: './public/views'});
 	},
 
 	// ============================
 	// 		    	LOGIN 
 	// ============================
 	getLogin: function(req, res) {
-
-		res.render('login.ejs', { message: req.flash('loginMessage') });
+    res.sendFile('index.html', { root: './public/views'});
 	},
 
 	postLogin: function(req, res){passport.authenticate('local-login', {
@@ -35,7 +34,7 @@ let AuthController =
 	//           SIGNUP 
 	// ============================
 	getSignup: function(req, res) {
-		res.render('signup.ejs', { message: req.flash('signupMessage') });
+    res.sendFile('signup.html', { root: './public/views'});
 	},
 
 	postSignup: function(req, res){passport.authenticate('local-signup', {
@@ -52,9 +51,7 @@ let AuthController =
 		{
 			if(req.user.user_type == 1)       // regular user
 			{
-        res.redirect('http://localhost:3000/user/customize');
-        // res.render('user_profile.ejs', {
-        // user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });  
+        res.sendFile('user_profile.html', { root: './public/views'});
 			}
 			else if(req.user.user_type == 2)  // business
 			{
@@ -111,7 +108,7 @@ let AuthController =
 	// 		     FORGOT PASSWORD 
 	// =====================================
 	getForgetPassword: function(req, res){
-		res.render('frogetPassword.ejs');
+    res.sendFile('frogetPassword.html', { root: './public/views'});
 	},
 
 	forgotPassword: function(req, res, next) {

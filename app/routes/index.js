@@ -3,6 +3,7 @@ var router   = express.Router();
 var search   = require('./search.routes.js');
 var business = require('./business.routes.js');
 var bookings = require('./bookings.routes');
+var path = require('path');
 
 var reviews  = require('./reviews.routes');
 var offers   = require('./offers.routes');
@@ -29,7 +30,8 @@ router.use('/contact', function(req, res) {
 });
 
 router.get('/', function (req, res) {
-    res.render('index.ejs');
+   res.sendFile('index.html', { root: './public/views'});
+   
 });
 
 module.exports = router;
