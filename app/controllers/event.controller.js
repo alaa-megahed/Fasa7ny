@@ -2,6 +2,7 @@
 var Events = require('mongoose').model('Events');
 var EventOccurrences = require('mongoose').model('EventOccurrences');
 var Business = require('mongoose').model('Business');
+var Bookings = require('mongoose').model('Booking');
 var Notification = require('mongoose').model('Notifications');
 var User = require('mongoose').model('RegisteredUser');
 var async = require("async");
@@ -154,10 +155,12 @@ exports.createEvent = function (req, res) {
 						});
 
 						occurrence.save(function (err, occurrence) {
-							if (err) res.send(err.message);
+							if (err) 
+								res.send(err.message);
+							else
+								notify_on_create(req.body.name,req.user.subscribers,req.user.name);
 
 						});
-						notify_on_create(req.body.name,req.user.subscribers,req.user.name);
 
 
 					}
@@ -175,36 +178,7 @@ exports.createEvent = function (req, res) {
 }
 
 
-exports.getEvents = function (req, res) {
-	if (req.user && req.user instanceof Business) {
-		Events.find({ business_id: req.user.id }, function (err, events) {
-			if (err) res.send(err.message);
-			else if (!events) res.send('Something went wrong');
-			else res.send(events);
-		});
-	}
-	else {
-		res.send('You are not a logged in business');
-	}
-
-}
-
-exports.getOccurrences = function (req, res) {
-	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
-		EventOccurrences.find({ event: req.body.id }, function (err, events) {
-			if (err) res.send(err.message);
-			if (!events) res.send('Something went wrong');
-			else res.send(events);
-		});
-
-	}
-	else {
-		res.send('You are not a logged in business');
-	}
-}
-
 /* A business can edit an event or an event occurrence based on the changed field. */
-
 
 exports.getEvents = function (req, res) {
 	if (req.user && req.user instanceof Business) {
@@ -370,11 +344,15 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 									{
 										async.each(all_occ, function(one_occ, callback) 
 										{
-										    one_occ.remove(function(err, result) 
+											EventOccurrences.findByIdAndRemove(one_occ.id,function(err,removed_doc)
+										  //  one_occ.remove(function(err, result) 
 										    {
-										      //ActionCtrl.saveRemove(result, callback);
 										      if(!err)
-										      	notify_on_cancel_occ(event.name,one_occ.id,req.user.name);
+										      {
+										      	console.log("one occ "+one_occ);
+										      	notify_on_cancel_occ(event.name,removed_doc.id,req.user.name);
+										      	console.log("after notify_on_cancel");
+										      }
 										  	  else
 										  	  	res.send("Something went wrong");
 										    });
@@ -436,7 +414,7 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 							else 
 						    {
 								notify_on_cancel_occ(event.name,occurrence_id,req.user.name);
-								res.send('occurrence deleted');
+								//res.send('occurrence deleted');
 							}
 						});
 
@@ -489,16 +467,16 @@ function notify_on_create(event_name,subscribers,business)
 }
 
 
-function notify_on_cancel_occ(event_name,event_id,business)			    //would be exactly the same for edit event but 												
+function notify_on_cancel_occ(event_name,eventocc_id,business)			    //would be exactly the same for edit event but 												
 {													//different  notification content, how to check
 													// which function am I currently executing	
-	EventOccurrences.findOne({_id:event_id},function(err,eventocc)
+	EventOccurrences.findOne({_id:eventocc_id},function(err,eventocc)
 	{
 		if(err)
 			console.log("err in notify_on_cancel");
 		else
 		{
-			var bookers = eventocc.bookers;
+			var bookings = eventocc.bookings;
 			var content = business + " cancelled " + event_name; 
 			var notification = new Notification(
 			{
@@ -513,15 +491,19 @@ function notify_on_cancel_occ(event_name,event_id,business)			    //would be exa
 				else
 				{
 
-					for(var i = 0; i < bookers.length; i++)
+					for(var i = 0; i < bookings.length; i++)
 					{
-						User.findByIdAndUpdate({_id:bookers[i]},{$push:{"notifications": notification}},function(err,user)
+						Bookings.findById({_id:bookings[i]},function(err,booking)
 						{
-							if(err)
-								console.log("error updating user notifications");
-							else
-								console.log(user);
+							User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": notification}},function(err,user)
+							{
+								if(err)
+									console.log("error updating user notifications");
+								else
+									console.log(user);
+							});
 						});
+						
 					}
 				}
 			});
