@@ -4,7 +4,6 @@ var Offer = mongoose.model('Offer');
 var User  = require('mongoose').model('RegisteredUser');
 
 
-
 /* this function views all the offers created by a business by finding the offers
  having the same id as the id of the business passed to the function.
  if the user is a business, he will be sent to his offer's page where he
@@ -49,6 +48,7 @@ if the business added an expiration_date that is before the start_date(which if
  he will be notified that he entered a wrong expiration_date */
 
 exports.createOffer = function(req, res,notify_on_create) {
+
   if(req.user && req.user instanceof Business) {
     var businessId = req.user.id;  //get _id from session
     var body = req.body;

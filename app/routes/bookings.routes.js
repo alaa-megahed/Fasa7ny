@@ -7,12 +7,15 @@ var router   = express.Router();
 
 var booking    = require('../controllers/bookings.controller');
 
-
-	router.get('/', function(req, res){
-        res.sendFile(path.resolve('app/views/test.html'));
-    });
-
     //below belongs to business
+    router.get('/', function(req, res){
+        if(req.user && req.user.user_type == 2)
+             res.render(path.resolve('app/views/test2.ejs'));
+         else
+         {
+            res.send("You Are Not Authorized To Access This Page!");
+         }
+    });
 
     router.post('/book_event', booking.book_event);
 
@@ -23,6 +26,10 @@ var booking    = require('../controllers/bookings.controller');
     router.post('/view_event_bookings',booking.view_event_bookings);
 
     //below belongs to RegisteredUser
+
+    router.get('/regusers', function(req, res){
+        res.sendFile(path.resolve('app/views/regusersbookingtest.html'));
+    });
 
     router.post('/createRegUserBookings', booking.regUserAddBooking);
 

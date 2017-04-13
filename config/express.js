@@ -1,6 +1,8 @@
 var config = require('./config'),
     express = require('express'),
+    http = require('http'),
     bodyParser = require('body-parser'),
+    cookieParser = require('cookie-parser'),
     passport = require('passport'),
     flash = require('connect-flash'),
     session = require('express-session'),
@@ -18,32 +20,39 @@ module.exports = function() {
         extended: true
     }));
 
-
+    // app.use(bodyParser()); // get information from html forms
+    app.use(cookieParser()); // read cookies (needed for auth)
 
     app.use(flash());
 
     app.use(session({
         saveUninitialized: true,
-        resave: true,
+        resave: false,        
         secret: 'OurSuperSecretCookieSecret'
     }));
 
     app.use(passport.initialize());
     app.use(passport.session());
 
+
+
     app.set('views', './app/views');
     app.set('view engine', 'ejs');
 
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
-        //require('../app/routes/users.server.routes.js')(app, passport, multer);
+    //require('../app/routes/users.server.routes.js')(app, passport, multer);
 
-    var routes = require('../app/routes');
+    var router = require('../app/routes');
 
-    app.use(routes); 
+    app.use(router); 
 
     
 
+    require('./passport')(passport);                                     // pass passport for passport configuration
+
+
     app.use( express.static("./uploads") );
+
 
     return app;
 };

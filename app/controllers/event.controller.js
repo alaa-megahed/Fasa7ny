@@ -4,10 +4,10 @@ var EventOccurrences = require('mongoose').model('EventOccurrences');
 var Business = require('mongoose').model('Business');
 var Notification = require('mongoose').model('Notifications');
 var User = require('mongoose').model('RegisteredUser');
-
-
 var async = require("async");
 var schedule = require('node-schedule');
+
+
 	
 /* This function creates an event. An event can have two types Once or Daily specified by "repeated". 
 The function creates an event and save it in the database. If it is Daily then 30 instances of event occurrences 
@@ -157,8 +157,9 @@ exports.createEvent = function (req, res) {
 							if (err) res.send(err.message);
 
 						});
-
 						notify_on_create(req.body.name,req.user.subscribers,req.user.name);
+
+
 					}
 
 
@@ -172,6 +173,7 @@ exports.createEvent = function (req, res) {
 		res.send('You are not a logged in business');
 	}
 }
+
 
 exports.getEvents = function (req, res) {
 	if (req.user && req.user instanceof Business) {
@@ -202,6 +204,38 @@ exports.getOccurrences = function (req, res) {
 }
 
 /* A business can edit an event or an event occurrence based on the changed field. */
+
+
+exports.getEvents = function (req, res) {
+	if (req.user && req.user instanceof Business) {
+		Events.find({ business_id: req.user.id }, function (err, events) {
+			if (err) res.send(err.message);
+			else if (!events) res.send('Something went wrong');
+			else res.send(events);
+		});
+	}
+	else {
+		res.send('You are not a logged in business');
+	}
+
+}
+
+exports.getOccurrences = function (req, res) {
+	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
+		EventOccurrences.find({ event: req.body.id }, function (err, events) {
+			if (err) res.send(err.message);
+			if (!events) res.send('Something went wrong');
+			else res.send(events);
+		});
+
+	}
+	else {
+		res.send('You are not a logged in business');
+	}
+}
+
+/* A business can edit an event or an event occurrence based on the changed field. */
+
 
 exports.editEvent = function (req, res) {
 	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
@@ -315,9 +349,10 @@ exports.editEvent = function (req, res) {
 
 }
 
+
 /*A business can cancel an event with all its occurrences.*/
 
-exports.cancelEvent = function (req, res) {
+exports.cancelEvent = function (req, res,notify_on_cancel) {
 	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
 		var id = req.body.id;
 		var business_id = req.user.id;
@@ -373,6 +408,7 @@ exports.cancelEvent = function (req, res) {
 
 }
 
+
 /** Removes all occurence of an event */
 exports.removeAllOccurrences = function (event_id) {
 	EventOccurrences.remove({ event: event_id }, function (err) {
@@ -397,8 +433,8 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 
 						EventOccurrences.remove({ _id: occurrence_id }, function (err) {
 							if (err) res.send('could not delete occurrence');
-							else
-							{ 
+							else 
+						    {
 								notify_on_cancel_occ(event.name,occurrence_id,req.user.name);
 								res.send('occurrence deleted');
 							}
@@ -493,5 +529,3 @@ function notify_on_cancel_occ(event_name,event_id,business)			    //would be exa
 		}
 	});
 }
-
-

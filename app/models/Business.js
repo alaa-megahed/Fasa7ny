@@ -1,8 +1,10 @@
-var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+var mongoose      = require('mongoose'),
+    Schema        = mongoose.Schema,
+    bcrypt   = require('bcrypt-nodejs');
 
 require('mongoose-double')(mongoose);
 var SchemaTypes = mongoose.Schema.Types;
+var RegisteredUser = require('./RegisteredUser');
 
 
 var BusinessSchema = new Schema({
@@ -26,6 +28,38 @@ var BusinessSchema = new Schema({
     category   : [String], //or int? can be in more than one category
     location   : { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
     average_rating: SchemaTypes.Double,
+    local         :
+    {   
+        username: 
+        {
+            type : String,
+            required : true,
+            unique : true
+        },
+        password: 
+        {
+            type : String,
+            required : true
+        },
+        resetPasswordToken: String,
+        resetPasswordExpires: Date 
+    },    
+    user_type     : {type: Number, default: 2},
+    name          :
+    {
+        type: String,
+        unique: true
+    },
+    email         : String,
+    phones        : [String],
+    description   : String,
+    merchant_ID   : {type: String, unique: true },
+    category      : [String], //or int? can be in more than one category
+    location      : { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
+    address: String,
+    area: String,
+    description: String,  
+    average_rating: {type: SchemaTypes.Double, default: 0.0},
     public:
     {
         type: Number, default: 0
@@ -33,12 +67,15 @@ var BusinessSchema = new Schema({
     payment_methods: [String], //or int?
 
     subscribers    : [{type: mongoose.Schema.Types.ObjectId, ref:'RegisteredUser',default: []}], //whenever user subscribes to business, add him to this list.
-    images        :[String],
-    delete: {
+    reviews        : [{type: mongoose.Schema.Types.ObjectId, ref:'Review',default: []}],
+    images         : [String],
+    delete         : 
+    {
         type: Number, default:0
-    }
-
+    },
+    reviews : [{type: mongoose.Schema.Types.ObjectId, ref:'Review',default: []}]
 });
+
 
 //created a text index on the desired fields
 BusinessSchema.index({
@@ -47,16 +84,33 @@ BusinessSchema.index({
     description: "text"
 });
 
-// generating a hash
+// generating a hash (encrypted password)
 BusinessSchema.methods.generateHash = function(password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
-// checking if password is valid
+// checking if (encrypted) password is valid
 BusinessSchema.methods.validPassword = function(password) {
-    return (bcrypt.compareSync(password, this.password));
+    return (bcrypt.compareSync(password, this.local.password));
 };
 
+BusinessSchema.pre('remove', function(next)
+{
+  var business = this;
+   async.each(business.subscribers, function(subscriber,callback)
+         {
+            RegisteredUser.findOne({_id:subscriber}, function(err,user)
+            {
+                if(user.subscriptions.indexOf(business._id)!== -1)
+                {
+                    user.subscriptions.splice(i,1);
+                }     
+            });
+        },function(err){
+            if (err) throw err;
+        }
+        );
+});
 
 var Business = mongoose.model('Business', BusinessSchema);
 module.exports = Business;
