@@ -7,9 +7,8 @@ var mongoose = require('./config/mongoose'),
     app      = express();
 
 
-
-
 app.listen(config.port);
+
 
 module.exports = app;
 console.log(process.env.NODE_ENV  + ' server running at http://localhost:' + config.port);

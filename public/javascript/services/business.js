@@ -5,5 +5,9 @@ angular.module('businessService', [])
             get : function() {
                 return $http.get('/business/b');
             }
+
+            // post : function(){
+            // 	retur $http.post('/business/editInformation');
+            // }
         }
     });

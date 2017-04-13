@@ -37,8 +37,7 @@ var BusinessSchema = new Schema({
     category      : [String], //or int? can be in more than one category
     location      : { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
     address: String,
-    area: String,
-    description: String,  
+    area: String, 
     average_rating: {type: SchemaTypes.Double, default: 0.0},
     public:
     {

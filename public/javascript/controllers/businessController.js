@@ -4,7 +4,18 @@ angular.module('businessController', [])
         Business.get()
                 .then(function(d) {
                 		console.log(d);
-                        $scope.message = d.data;
+                        $scope.business = d.data;
+                        $scope.phones = d.data.phones;
+                        $scope.categories = d.data.category;
                 });
+
+        // Business.post()
+        //         .then(function(d) {
+        //         		console.log(d);
+        //                 $scope.business = d.data;
+        //                 $scope.phones = d.data.phones;
+        //                 $scope.categories = d.data.category;
+        //         });
+
 
     });

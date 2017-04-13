@@ -105,7 +105,7 @@
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <div class="blog-title">
-                            <h1> {{ message.name }} </h1>
+                            <h1> {{ business.name }} </h1>
                         </div>
                         
                     </div>     <!-- End col-lg-12 -->
@@ -134,8 +134,7 @@
 
                                 <div class="post-excerpt">
                                     <h3><a href="single-post.html">Description</a></h3>
-                                    <p>{{ message.local.username }}</p>
-                                    <a class="btn btn-transparent" href="single-post.html">Read more</a>
+                                    <p>{{ business.description }}</p>
                                 </div>
                                 
                             </article>
@@ -175,11 +174,29 @@
                             </div>
                             <div class="widget-content">
                                 <ul class="categories">
-                                    <li><i class="fa fa-plus"></i> <a href="#">Marketing Policy</a></li>
+                                    <li ng-repeat = "category in categories"><i class="fa fa-plus"></i> <a href="#">{{ category }}</a></li>
                                 </ul>
                             </div>
                         </aside>
                         <!-- End Single Widget -->
+
+                         <aside class="widget wow fadeInDown">
+							<div class="widget-title">
+                               <h3>Business' Information</h3>
+							</div>
+							<div class="widget-content">
+								<li>Area: {{ business.area }}</li>
+                                <li>Address: {{ business.address }}</li>
+                                <li>Phone Numbers: </li>
+                                <li ng-repeat = "phone in phones"> {{ phone }}</li> 
+                                <li>Email: {{ business.email }}</li>
+							</div>
+							<div class="widget-content">
+                                <form action="businessEdit.html" method="post">
+                                    <input type="submit" value="Edit" class="btn btn-transparent">
+                                </form>
+                                </div>
+                        </aside>
                         
                     </div>
                     <!-- End Widget Section -->

@@ -5,7 +5,7 @@ var EventOccurrences = require('mongoose').model('EventOccurrences');
 
 var BusinessController = {
     getBusiness: function (req, res) {
-        var name = "habiibaa";
+        var name = "Habiiba";
         Business.findOne({ name: name }).
             exec(function (err, result) {
                 if (err)
@@ -103,7 +103,7 @@ requestRemoval: function(req,res) {
                     }
 
                     business.save();
-                    res.send(business);
+                    res.json(business);
                 }
 
             });
