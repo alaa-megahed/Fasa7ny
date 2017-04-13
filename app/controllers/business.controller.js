@@ -5,13 +5,17 @@ var EventOccurrences = require('mongoose').model('EventOccurrences');
 
 var BusinessController = {
     getBusiness: function (req, res) {
-        var name = req.params.name;
+        var name = "habiibaa";
         Business.findOne({ name: name }).
             exec(function (err, result) {
                 if (err)
                     console.log(err);
-                else
-                    res.render("view_business", {business: result});
+                else{
+                    console.log("Habiiba");
+
+                    res.json(result);
+                }
+                    // res.render("view_business", {business: result});
             });
 
     },

@@ -1,0 +1,20 @@
+{
+  "name": "fasa7ny",
+  "description": "",
+  "main": "server.js",
+  "authors": [
+    "habiibaelghamry <habiiba.elghamry@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/SEGUC17/Drop-The-Bit",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.4"
+  }
+}

@@ -29,7 +29,8 @@ router.use('/contact', function(req, res) {
 });
 
 router.get('/', function (req, res) {
-    res.render('index.ejs');
+    // res.render('index.ejs');
+    res.sendfile('./public/views/businesspage.html');
 });
 
 module.exports = router;

@@ -7,8 +7,6 @@ var mongoose = require('./config/mongoose'),
     app      = express();
 
 
-
-
 app.listen(config.port);
 
 module.exports = app;
