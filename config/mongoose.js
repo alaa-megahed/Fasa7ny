@@ -7,6 +7,8 @@ require('../app/models/WebAdmin');
 require('../app/models/Rating');
 require('../app/models/Review');
 require('../app/models/Notifications');
+require('../app/models/Facility');
+
 
 var mongoose = require('mongoose'),
     config = require('./config');

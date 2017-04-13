@@ -54,17 +54,43 @@ exports.createOffer = function(req, res,notify_on_create) {
     var body = req.body;
     var file = req.file;
 
-    if(!body.name || !body.type || !body.value || !body.details || !body.expiration_date) {
+    // expiration date not required in case of count dependent offer
+    if(!body.name || !body.type || !body.value || !body.details ) {
       res.send("please add all information");
     } else {
       var newOffer = new Offer({
         name:body.name,
         type:body.type,
         value:body.value,
-        details:body.details,
-        expiration_date:new Date(body.expiration_date)
+        details:body.details
+       
       });
       newOffer.business = businessId;
+
+      if(req.body.expiration_date)
+      {
+         newOffer.expiration_date = new Date(body.expiration_date);
+      }
+
+      if(req.body.facility_id)
+      {
+            newOffer.facility_id = facility.id;
+      }
+
+      if(req.body.lucky_first)
+      {
+         newOffer.lucky_first = req.body.lucky_first;
+      }
+
+       if(req.body.min_count)
+      {
+        newOffer.min_count = req.body.min_count;
+      }
+
+      if(req.body.event_id)
+      {
+        newOffer.event_id = req.body.event_id;
+      }
 
       if(typeof file != 'undefined') {
         newOffer.image = file.filename;
@@ -75,21 +101,24 @@ exports.createOffer = function(req, res,notify_on_create) {
       var now = new Date();
       if(typeof body.start_date != 'undefined' && body.start_date.length > 0) {
         newOffer.start_date = new Date(body.start_date);
-      } else {
-        newOffer.start_date = now;
-      }
+      } //removed else because it is set by default in mongoose
       var startdate = newOffer.start_date;
-      var expirationdate = newOffer.expiration_date;
-      // console.log(d1);
-      // console.log(d2);
-      if(startdate - expirationdate >= 0 || now - startdate > 0) {
-        res.send("please add a valid start_date/ expiration_date");
-      } else {
+      if(body.expiration_date)
+      {
+        var expirationdate = newOffer.expiration_date;
+        if(startdate - expirationdate >= 0 || now - startdate > 0) 
+        {
+          res.send("please add a valid start_date/ expiration_date");
+        }
+      
+      } 
+      else 
+      {
         newOffer.save(function(err, offer) {
           if(err) {
             res.send("error in creating offer");
           } else {
-            notify_on_create(body.name,req.user.subscribers,req.user.name);
+           // notify_on_create(body.name,req.user.subscribers,req.user.name);
             res.send(offer);
           }
         })

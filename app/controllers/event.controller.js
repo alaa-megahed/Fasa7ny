@@ -4,26 +4,61 @@ var EventOccurrences = require('mongoose').model('EventOccurrences');
 var Business = require('mongoose').model('Business');
 var Bookings = require('mongoose').model('Booking');
 var Notification = require('mongoose').model('Notifications');
+var Facility = require('mongoose').model('Facility');
 var User = require('mongoose').model('RegisteredUser');
 var async = require("async");
 var schedule = require('node-schedule');
 
 
+
+exports.createFacility = function(req,res)
+{
+	if (req.user && req.user instanceof Business) 
+	{
+		var id = req.user.id;
+
+		if(!req.body.name || !req.body.description || !req.body.price || !req.body.capacity) 
+		{
+			res.send("incomplete form");
+		}
+		else
+		{
+			var facility = new Facility(
+			{
+				name : req.body.name,
+				description:req.body.description,
+				price:req.body.price,
+				capacity:req.body.capacity,
+				business_id: id
+			});
+
+			facility.save(function(err)
+			{
+				if(err)
+					res.send("Oops Something went wrong");
+			});
+		}
+
+
+	}
+}
 	
+//add edit and delete facility
+
+
 /* This function creates an event. An event can have two types Once or Daily specified by "repeated". 
 The function creates an event and save it in the database. If it is Daily then 30 instances of event occurrences 
 will be created and saved in the database. Then I initialize a scheduling rule using node scheduler which adds a 
 single event occurence next month on a daily basis. 
 If the type is Once only one event occurrence is added.
 */
-
 exports.createEvent = function (req, res) {
 
 	if (req.user && req.user instanceof Business) {
 		var id = req.user.id;
 
-    	
-    	if(!req.body.name || !req.body.description || !req.body.location || !req.body.price || !req.body.capacity || !req.body.repeat) {
+    	//if event belongs to facility, fields will be passed from facility to event in hidden fields
+    	if(!req.body.name || !req.body.description || !req.body.price || !req.body.capacity || !req.body.repeat) {
      
         res.send("Please add all information");
 
@@ -37,7 +72,6 @@ exports.createEvent = function (req, res) {
 			let event = new Events({
 				name:req.body.name,
 				description:req.body.description,
-				location:req.body.location,
 				price:req.body.price,
 				capacity:req.body.capacity,
 				repeated: req.body.repeat,
@@ -45,6 +79,18 @@ exports.createEvent = function (req, res) {
 				business_id: id
 
 				});
+
+				//loaction not required (event can take place in many places or in business venue)
+				if(req.body.location)
+				{
+					event.location = req.body.location;
+				}
+
+				//facility not required in case of just once events
+				if(req.body.facility_id)
+				{
+					event.facility_id = req.body.facility_id;
+				}
 
 				if (typeof req.file == "undefined") {
 					event.image = " ";
@@ -93,6 +139,12 @@ exports.createEvent = function (req, res) {
 							available: req.body.capacity,
 							event: event._id
 						});
+
+						if(req.body.facility_id)
+						{
+							occurrence.facility_id = req.body.facility_id;
+						}
+
 						occurrence.save(function (err, occurrence) {
 							if (err) res.send(err.message);
 
@@ -121,6 +173,11 @@ exports.createEvent = function (req, res) {
 							available: req.body.capacity,
 							event: event._id
 						});
+
+						if(req.body.facility_id)
+						{
+							occurrence.facility_id = req.body.facility_id;
+						}
 
 						var flag = true;
 
@@ -178,7 +235,53 @@ exports.createEvent = function (req, res) {
 }
 
 
-/* A business can edit an event or an event occurrence based on the changed field. */
+
+exports.getOnceEvents = function(req,res)
+{
+	//whoever views business page can see all "once" events, no restrictions 
+	var business_name = req.params.name;
+
+	Business.find({name:business_name},function(err,business)
+	{
+		if(err || !business)
+			res.send("Oops!! Something went wrong");
+		else
+		{
+			Events.find({business_id: business.id,repeated:"Once"},function(err,events)
+			{
+				if(err)
+					res.send("Oops!! Something went wrong");
+				else
+					res.send(events);
+			});
+		}
+		
+	});
+}
+
+exports.getFacilities = function(req,res)
+{	
+	//whoever views business page can see all facilities, no restrictions 
+	var business_name = req.params.name;
+
+	Business.find({name:business_name},function(err,business)
+	{
+		if(err || !business)
+			res.send("Oops!! Something went wrong");
+		else
+		{
+			Facility.find({business_id: business.id},function(err,facilities)
+			{
+				if(err)
+					res.send("Oops!! Something went wrong");
+				else
+					res.send(facilities);
+			});
+		}
+		
+	});
+	
+}
 
 exports.getEvents = function (req, res) {
 	if (req.user && req.user instanceof Business) {
@@ -209,8 +312,6 @@ exports.getOccurrences = function (req, res) {
 }
 
 /* A business can edit an event or an event occurrence based on the changed field. */
-
-
 exports.editEvent = function (req, res) {
 	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
 
