@@ -17,6 +17,11 @@ module.exports = {
     'gmail'     : {
         'user'          : 'fasa7ny.team@gmail.com',
         'pass'          : 'fasa7ny8franshly'
+    },
+
+    'stripe'    :{
+        'secretKey'     : 'sk_test_7Fj1tAMukSo5YAdchcbVBntj',
+        'publicKey'     : 'pk_test_O1Gn3Rl11nLaHckNqvJOzaYz'
     }
 
 };
