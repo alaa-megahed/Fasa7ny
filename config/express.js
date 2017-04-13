@@ -27,7 +27,7 @@ module.exports = function() {
 
     app.use(session({
         saveUninitialized: true,
-        resave: false,        
+        resave: false,
         secret: 'OurSuperSecretCookieSecret'
     }));
 
@@ -36,21 +36,18 @@ module.exports = function() {
 
 
 
-    app.set('views', './app/views');
+    app.set('views', './public/views');
     app.set('view engine', 'ejs');
-
-    //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
-    //require('../app/routes/users.server.routes.js')(app, passport, multer);
 
     var router = require('../app/routes');
 
-    app.use(router); 
+    app.use(router);
 
-    
+
 
     require('./passport')(passport);                                     // pass passport for passport configuration
 
-
+    app.use( express.static("public") );
     app.use( express.static("./uploads") );
 
 
