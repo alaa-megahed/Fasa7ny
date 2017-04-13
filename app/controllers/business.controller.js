@@ -4,14 +4,36 @@ var EventOccurrences = require('mongoose').model('EventOccurrences');
 
 
 var BusinessController = {
+  /** Gets the page of the website
+  */
     getBusiness: function (req, res) {
         var name = req.params.name;
-        Business.findOne({ name: name }).
+        Business.findOne({ name: name, public: 1}).
             exec(function (err, result) {
                 if (err)
                     console.log(err);
-                else
-                    res.render("view_business", {business: result});
+                else {
+                  if(result == null)
+                    return res.send('No businenss found.');
+                    else {
+                      // console.log(req.cookie);
+                      console.log(req.cookies);
+                      cookieName = 'fasa7ny.' + name;
+                      console.log(req.cookies[cookieName]);
+                      if(typeof req.cookies[cookieName] === 'undefined' ) {
+                        console.log('NO COOKIES');
+                        var value = 1;
+                        res.cookie(cookieName, value, {maxAge: 60*1000*5, httpOnly: true});
+                      } else {
+                        var date = new Date();
+
+                      }
+
+                      res.render("view_business", {business: result});
+
+                    }
+
+                }
             });
 
     },
@@ -85,7 +107,7 @@ requestRemoval: function(req,res) {
                     }
                     if (typeof req.body.phones != "undefined" && req.body.phones.length > 0) {
                         var found = false;
-                        //check if phone already added 
+                        //check if phone already added
                         for (var i = 0; i < business.phones.length; i++) {
                             if (business.phones[i] == req.body.phones) {
                                 found = true;
