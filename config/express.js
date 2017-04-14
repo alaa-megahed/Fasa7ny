@@ -50,7 +50,7 @@ module.exports = function() {
 
     require('./passport')(passport);                                     // pass passport for passport configuration
 
-
+    app.use( express.static("public") );
     app.use( express.static("./uploads") );
 
 

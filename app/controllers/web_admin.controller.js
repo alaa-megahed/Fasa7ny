@@ -148,12 +148,6 @@ exports.WebAdminDeleteBusiness = function (req, res) {
                     });
                 });
 
-                // for (var i = 0; i < events.length; i++) {
-                //     EventOcc.remove({ event: events[i]._id }, function (err) {
-                //         if (err)
-                //             throw err;
-                //     });
-                // }
                 Events.remove({ business_id: business._id }, function (err) {
                     if (err)
                         throw err;
