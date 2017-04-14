@@ -22,7 +22,7 @@ var BusinessController = {
                             console.log('NO COOKIES');
                             var value = 1;
                             res.cookie(cookieName, value, { maxAge: 24 * 60 * 60 * 60 * 1000, httpOnly: true });
-                            statsController.addStat(result._id, 'views', 1);
+                            statsController.addStat(new Date(), result._id, 'views', 1);
 
                         }
                         res.render("view_business", { business: result });

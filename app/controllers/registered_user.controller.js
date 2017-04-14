@@ -36,7 +36,7 @@ exports.subscribe = function (req, res) {
 									if (err)
 										throw err;
 									else
-										StatsController.addStat(business, 'subscriptions', 1);
+										StatsController.addStat(new Date(), business, 'subscriptions', 1);
 								});
 								return res.send("business has been added to subscriptions.");
 							}

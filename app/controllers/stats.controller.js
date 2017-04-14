@@ -2,14 +2,15 @@ var mongoose = require('mongoose');
 var WeekStat = mongoose.model('WeekStat');
 var MonthStat = mongoose.model('MonthStat');
 var YearStat = mongoose.model('YearStat');
+var schedule = require('node-schedule'); 
 
 var StatsController = {
   /**
     updates the statistics related to the given businessID,
     in the WeekStats, MonthStats and YearStats
   */
-  addStat: function (businessID, statType, amount) {
-    var now = new Date();
+  addStat: function (date, businessID, statType, amount) {
+    var now = date;
     //update week stats
     //check if there is an entry for this business for this week
     WeekStat.findOne({
@@ -95,6 +96,17 @@ var StatsController = {
         }
       }
     });
+  }, 
+  schedule: function(businessID) {
+    var rule = schedule.RecurrenceRule(); 
+    rule.dayOfWeek = 6; 
+    rule.hour = 23; 
+    rule.minute = 59; 
+    rule.second = 50; 
+    schedule.scheduleJob(rule, function() {
+      that = this; 
+      that.addStat(new Date (), businessID, 'views', 1); 
+    }); 
   }
 }
 

@@ -47,17 +47,27 @@ var yearStat = new Schema({
   }
 });
 
-weekStat.plugin(findOrCreate);
-monthStat.plugin(findOrCreate);
-yearStat.plugin(findOrCreate);
+var allStat = new Schema({
+  subscriptions: Number,
+  sales: Number, //total amount of money recieved
+  rating: Number,
+  attendees: Number,
+  views: Number,
+  business:
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'business'
+  }
+});
 
 var WeekStat = mongoose.model('WeekStat', weekStat);
 var MonthStat = mongoose.model('MonthStat', monthStat);
 var YearStat = mongoose.model('YearStat', yearStat);
-
+var AllStat = mongoose.model('AllStat', allStat); 
 module.exports = {
   WeekStat: WeekStat,
   MonthStat: MonthStat,
   YearStat: YearStat,
+  AllStat: AllStat
 
 };
