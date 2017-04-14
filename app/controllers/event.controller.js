@@ -3,7 +3,6 @@ var Events = require('mongoose').model('Events');
 var EventOccurrences = require('mongoose').model('EventOccurrences');
 var Business = require('mongoose').model('Business');
 var Bookings = require('mongoose').model('Booking');
-var Notification = require('mongoose').model('Notifications');
 var Facility = require('mongoose').model('Facility');
 var User = require('mongoose').model('RegisteredUser');
 var async = require("async");
@@ -215,7 +214,19 @@ exports.createEvent = function (req, res) {
 							if (err) 
 								res.send(err.message);
 							else
-								notify_on_create(req.body.name,req.user.subscribers,req.user.name);
+								{
+									var content = req.user.name + " added " + req.body.name +"        "+ Date.now(); 
+
+									async.each(req.user.subscribers, function(subscriber, callback){
+										User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
+										{
+											if(err)
+												console.log("error updating user notifications");
+											else
+												console.log(user);
+										});
+									});	
+								}
 
 						});
 
@@ -555,7 +566,7 @@ function notify_on_create(event_name,subscribers,business)
 	var content = business + " added " + event_name +"        "+ Date.now(); 
 
 	async.each(subscribers, function(subscriber, callback){
-		User.findByIdAndUpdate({_id:subscribers[i]},{$push:{"notifications": content}},function(err,user)
+		User.findByIdAndUpdate({_id:subscriber.id},{$push:{"notifications": content}},function(err,user)
 		{
 			if(err)
 				console.log("error updating user notifications");
