@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Business = mongoose.model('Business');
 var Offer = mongoose.model('Offer');
 var User  = require('mongoose').model('RegisteredUser');
+var async = require("async");
+
 
 
 /* this function views all the offers created by a business by finding the offers
@@ -156,8 +158,26 @@ exports.createOffer = function(req, res,notify_on_create) {
         newOffer.save(function(err, offer) {
           if(err) {
             res.send("error in creating offer");
-          } else {
+          } else 
+          {
            // notify_on_create(body.name,req.user.subscribers,req.user.name);
+               var rightNow = new Date();
+               var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");    
+               var content = req.user.name + " added " + req.body.name +"    "+ date; 
+
+                  async.each(req.user.subscribers, function(subscriber, callback){
+                    User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
+                    {
+                      if(err)
+                        console.log("error updating user notifications");
+                      else
+                      {
+                        user.unread_notifications = user.unread_notifications + 1;
+                        user.save();
+                        console.log(user);
+                      }
+                    });
+                  }); 
             res.send(offer);
           }
         })

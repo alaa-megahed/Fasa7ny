@@ -160,7 +160,7 @@
                         <div> {{betengan}} </div>
                          Special Offers : <br>
                         <select name="chosen_offer" ng-repeat="offer in offers" ng-if=" offer.type === 'specific audience'">
-                          <option value="{{offer.id}}">{{"Offer: "+offer.name + "   details: "+offer.details +" value: "+ offer.value}} </option>
+                          <option value="{{offer.id}}">{{"Offer: "+offer.name + "   details: "+offer.details +" value: "+ offer.value}} <br></option><br>
                         </select><br><br>
                             
                         <button type="submit" ng-click="book(chosen_offer)"> BOOK </button>
