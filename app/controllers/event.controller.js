@@ -234,8 +234,6 @@ exports.createEvent = function (req, res) {
 	}
 }
 
-
-
 exports.getOnceEvents = function(req,res)
 {
 	//whoever views business page can see all "once" events, no restrictions 
@@ -312,6 +310,7 @@ exports.getOccurrences = function (req, res) {
 }
 
 /* A business can edit an event or an event occurrence based on the changed field. */
+
 exports.editEvent = function (req, res) {
 	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
 
