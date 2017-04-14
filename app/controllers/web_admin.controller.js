@@ -20,8 +20,8 @@ exports.AddBusiness = function (req, res) {
         $or: [
             { 'local.username': req.body.username },
             { name: req.body.name },
-            { merchant_ID: req.body.merchant_ID }
-            //to add email
+            { merchant_ID: req.body.merchant_ID },
+             {'email': req.body.email}
         ]
     }, //check if business is unique
         function (err, resultBusiness) {
@@ -31,8 +31,8 @@ exports.AddBusiness = function (req, res) {
             if (resultBusiness.length == 0) {   //if yes then check user
                 User.find({
                     $or: [
-                        { 'local.username': req.body.username }
-                        //to add email
+                        { 'local.username': req.body.username },
+                        {'email': req.body.email}
                     ]
                 },
                     function (err, resultUser) {
@@ -40,8 +40,11 @@ exports.AddBusiness = function (req, res) {
                             console.log(err);
                         else if (resultUser.length == 0) {
 
-                            WebAdmin.find({ 'local.username': req.body.username },
-                                function (err, resultAdmin) {
+                            WebAdmin.find({ $or: [
+                                    { 'local.username': req.body.username },
+                                    {'email': req.body.email}
+                                ]},
+                                    function (err, resultAdmin) {
 
                                     if (err)
                                         console.log(err);
@@ -148,12 +151,6 @@ exports.WebAdminDeleteBusiness = function (req, res) {
                     });
                 });
 
-                // for (var i = 0; i < events.length; i++) {
-                //     EventOcc.remove({ event: events[i]._id }, function (err) {
-                //         if (err)
-                //             throw err;
-                //     });
-                // }
                 Events.remove({ business_id: business._id }, function (err) {
                     if (err)
                         throw err;
@@ -163,9 +160,9 @@ exports.WebAdminDeleteBusiness = function (req, res) {
         });
 
         //remove business from subscribers
-        for (var i = 0; i < business.subscribers.length; i++) {
-            var user_id = business.subscribers[i];
-            User.findById(user_id, function (err, user) {
+
+        async.each(business.subscribers, function(subscriber, callback){
+            User.findById(subscriber, function (err, user) {
                 if (err)
                     throw err;
                 else {
@@ -173,15 +170,16 @@ exports.WebAdminDeleteBusiness = function (req, res) {
                     var index = subs.indexOf(business._id);
                     if (index > -1) {
                         subs.splice(index, 1);
-                        User.findByIdAndUpdate(user_id, { $set: { subscriptions: subs } }, function (err, userResult) {
+                        User.findByIdAndUpdate(subscriber, { $set: { subscriptions: subs } }, function (err, userResult) {
                             if (err)
                                 throw err;
 
                         });
                     }
                 }
-            });
-        }
+            }); 
+        });
+
         Business.findByIdAndRemove(req.params.id, function (err, business) {
             if (err)
                 throw err;
@@ -201,11 +199,17 @@ exports.WebAdminDeleteBusiness = function (req, res) {
 
 exports.webAdminViewRequestedDelete = function (req, res) {
 
+if(req.user && req.user instanceof WebAdmin)
+  {
     Business.find({ delete: 1 }, function (err, requests) {
         res.render('requestedDelete', { user: req.user, requests: requests });
 
-    }
-    );
+    });
+  }
+  else {
+    return res.send("Unauthorized access. Please log in.");
+  }
+    
 }
 
 

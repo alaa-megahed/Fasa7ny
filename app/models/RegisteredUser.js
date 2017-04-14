@@ -14,7 +14,8 @@ var RegisteredUserSchema = new Schema({
     profilePic    : String,
     bookings      : [{type: mongoose.Schema.Types.ObjectId, ref:'Booking',default: []}],
     subscriptions : [{type: mongoose.Schema.Types.ObjectId, ref:'Business',default: []}],
-    notifications : [{type: mongoose.Schema.Types.ObjectId, ref:'Notification',default: []}], 
+    notifications : [String],
+    unread_notifications : {type: Number, default: 0},
     local    :
     {
         username: 

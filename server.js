@@ -9,7 +9,13 @@ var mongoose = require('./config/mongoose'),
 
 var Business = require('./app/models/Business');
 
+// var b = new Business();
+// b.local.username = "nourhan";
+// b.local.password = b.generateHash("password");
+// b.name = "Nourhan";
+// b.merchant_ID = "12345678";
 
+// b.save(function(err){if(err) throw err;});
 
 app.listen(config.port);
 

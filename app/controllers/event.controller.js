@@ -444,32 +444,32 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 									{
 										async.each(all_occ, function(one_occ, callback) 
 										{
-											EventOccurrences.findByIdAndRemove(one_occ.id,function(err,removed_doc)
-										  //  one_occ.remove(function(err, result) 
+											one_occ.remove(function(err)
 										    {
 										      if(!err)
 										      {
-										      	console.log("one occ "+one_occ);
-										      	notify_on_cancel_occ(event.name,removed_doc.id,req.user.name);
-										      	console.log("after notify_on_cancel");
+											      	var bookings = one_occ.bookings;
+													var content = req.user.name + " cancelled " + event.name + "     " + Date.now(); 
+													
+													async.each(bookings, function(one_booking, cb){
+														Bookings.findById({_id:one_booking},function(err,booking)
+														{
+															User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
+															{
+																if(err)
+																	console.log("error updating user notifications");
+																else
+																	console.log(user);
+															});
+														});
+													});
+											      	// notify_on_cancel_occ(event.name,one_occ.id,req.user.name);
+										      	res.send("event canceled");
 										      }
 										  	  else
 										  	  	res.send("Something went wrong");
 										    });
 										});
-									// 	console.log(occ);
-									// 	EventOccurrences.remove({_id:occ.id},function(err)
-									// 	{
-									// 		if(err)
-									// 			res.send("Something went wrong");
-									// 		else
-									// 		{
-									// 			notify_on_cancel_occ(event.name,occ.id,req.user.name);
-									// 	res.send('Event cancelled');
-									// 		}
-
-									// 	})
-											
 									 }
 							});
 						}
@@ -513,7 +513,22 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 							if (err) res.send('could not delete occurrence');
 							else 
 						    {
-								notify_on_cancel_occ(event.name,occurrence_id,req.user.name);
+						    	var bookings = occ.bookings;
+								var content = req.user.name + " cancelled " + event.name + "     " + Date.now(); 
+													
+								async.each(bookings, function(one_booking, cb){
+									Bookings.findById({_id:one_booking},function(err,booking)
+									{
+										User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
+										{
+											if(err)
+												console.log("error updating user notifications");
+											else
+												console.log(user);
+										});
+									});
+								});
+								// notify_on_cancel_occ(event.name,occurrence_id,req.user.name);
 								//res.send('occurrence deleted');
 							}
 						});
@@ -537,34 +552,19 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 function notify_on_create(event_name,subscribers,business)
 {
 	//Notification:  "Business name" just added "event name".
-	var content = business + " added " + event_name; 
-	var notification = new Notification(
-	{
-		date: new Date(),
-		content: content
-	});
+	var content = business + " added " + event_name +"        "+ Date.now(); 
 
-	notification.save(function(err,notification)
-	{
-		if(err)
-			console.log("error saving notification");
-		else
+	async.each(subscribers, function(subscriber, callback){
+		User.findByIdAndUpdate({_id:subscribers[i]},{$push:{"notifications": content}},function(err,user)
 		{
-
-			for(var i = 0; i < subscribers.length; i++)
-			{
-				User.findByIdAndUpdate({_id:subscribers[i]},{$push:{"notifications": notification}},function(err,user)
-				{
-					if(err)
-						console.log("error updating user notifications");
-					else
-						console.log(user);
-				});
-			}
-		}
-	});
-
+			if(err)
+				console.log("error updating user notifications");
+			else
+				console.log(user);
+		});
+	});	
 }
+
 
 
 function notify_on_cancel_occ(event_name,eventocc_id,business)			    //would be exactly the same for edit event but 												
