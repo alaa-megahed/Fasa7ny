@@ -214,7 +214,19 @@ exports.createEvent = function (req, res) {
 							if (err) 
 								res.send(err.message);
 							else
-								notify_on_create(req.body.name,req.user.subscribers,req.user.name);
+								{
+									var content = req.user.name + " added " + req.body.name +"        "+ Date.now(); 
+
+									async.each(req.user.subscribers, function(subscriber, callback){
+										User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
+										{
+											if(err)
+												console.log("error updating user notifications");
+											else
+												console.log(user);
+										});
+									});	
+								}
 
 						});
 
