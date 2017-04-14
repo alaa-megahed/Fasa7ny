@@ -14,6 +14,7 @@ router.get("/update_offer", function(req, res) {
 });
 
 router.get('/viewOffers', OffersController.viewOffers);
+router.get('/createOffer', OffersController.getCreateOffer);
 router.post('/createOffer', upload.single('image'), OffersController.createOffer);
 router.post('/updateOffer', upload.single('image'), OffersController.updateOffer);
 router.get('/deleteOffer', OffersController.deleteOffer);

@@ -63,7 +63,7 @@
     
     </head>
     
-    <body id="body">
+    <body id="body" ng-app="booking">
         <!--
         Start Preloader
         ==================================== -->
@@ -139,8 +139,8 @@
         <!--
       Start About Section
         ==================================== -->
-        <section id="about" class="bg-one">
-            <div class="container">
+        <section id="about" class="text-center">
+            <div ng-controller="main" class="container">
 <!--                 <div class="row">
  -->                
         
@@ -153,12 +153,24 @@
                     <!-- /section title -->
                     
                    
-                      <form method="Post">
+                      <form method="Post" >
                        
-                        Day  :  <input type="date" name="event_day"><br>
-                        Time :  <input type="drop-down" name="">
+                        Number of people  :  <input type="Number" name="count"><br>
                        
-                      </form>  
+                        <div> {{betengan}} </div>
+                         Special Offers : <br>
+                        <select name="chosen_offer" ng-repeat="offer in offers" ng-if=" offer.type === 'specific audience'">
+                          <option value="{{offer.id}}">{{"Offer: "+offer.name + "   details: "+offer.details +" value: "+ offer.value}} </option>
+                        </select><br><br>
+                            
+                        <button type="submit" ng-click="book(chosen_offer)"> BOOK </button>
+                      <!--   <li ng-repeat="offer in offers" ng-if=" offer.type === 'specific audience'" >  {{"Offer: "+offer.name + "   details: "+offer.details +" value: "+ offer.value}} 
+                     
+                       <input type="checkbox" name="pick_offer" ></li> -->
+                       </form>
+                </div>
+                        
+
 <!--                       </div>         
  -->                    
                       <!-- End row -->
@@ -237,7 +249,7 @@
                 
         
         
-        <!-- Srart Contact Us
+        <!-- Srart Contact
         =========================================== -->     
         <section id="contact-us">
             <div class="container">
@@ -415,6 +427,11 @@
         <script src="js/grid.js"></script>
         <!-- Custom js -->
         <script src="js/custom.js"></script>
+         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script><!-- load angular 1.2.4 -->
+
+        <script src="javascript/controllers/bookingController.js"></script> 
+        <script src="javascript/services/bookingService.js"></script> 
+        <script src="javascript/core.js"></script>
 
     </body>
 </html>
