@@ -13,6 +13,12 @@ business.get('/', function(req, res){
        	// res.render('b.ejs');
 
     });
+
+business.get('/edit', function(req, res){
+        res.sendFile(path.resolve('public/views/businessEdit.html'));
+       	// res.render('b.ejs');
+
+    });
 business.get('/b', businessController.getBusiness);
 business.post('/requestRemoval',businessController.requestRemoval)
 business.post('/deletePaymentMethod', businessController.deletePaymentMethod);

@@ -6,10 +6,11 @@ var Rating = mongoose.model('Rating');
 
 exports.subscribe = function(req,res)
 {
-	if(req.user && req.user instanceof User) {
-		var userID = req.user.id;
-		var businessID = req.body.business;
+	// if(req.user && req.user instanceof User) {
+		var userID = "58f0c9341767d632566c9fb5";
+		var businessID = req.params.id;
 		var subscribed_business;
+		console.log("business sub");
 		User.findOne({_id: userID}, function(err, user_found)
 		{
 			if(err) {
@@ -46,10 +47,10 @@ exports.subscribe = function(req,res)
 			}
 		 });
 		});
-	}
-	else {
-		res.redirect('/auth/login');
-    }
+	// }
+	// else {
+	// 	res.redirect('/auth/login');
+ //    }
 }
 
 

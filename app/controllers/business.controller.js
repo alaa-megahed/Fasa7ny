@@ -61,9 +61,9 @@ requestRemoval: function(req,res) {
 
     editInformation: function (req, res) {
 
-        if (req.user && req.user instanceof Business) {
-            var id = req.user.id;
-
+        // if (req.user && req.user instanceof Business) {
+            var id = "58efd89e145d6225df260fae";
+            console.log("ana fl backend");
 
             Business.findById(id, function (err, business) {
                 if (err) res.send(err.message);
@@ -108,11 +108,11 @@ requestRemoval: function(req,res) {
 
             });
 
-        }
+        // }
 
-        else {
-            res.send('You are not a logged in business');
-        }
+        // else {
+        //     res.send('You are not a logged in business');
+        // }
     },
 
     /* A business can request to delete a phone number. If this is business' only phone number then it will
