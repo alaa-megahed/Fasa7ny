@@ -140,16 +140,25 @@ exports.WebAdminDeleteBusiness = function (req, res) {
         Events.find({ business_id: business._id }, function (err, events) {
             if (err) throw err;
             else
-                for (var i = 0; i < events.length; i++) {
-                    EventOcc.remove({ event: events[i]._id }, function (err) {
+            {
+                async.each(events, function(event, callback){
+                    EventOcc.remove({ event: event._id }, function (err) {
                         if (err)
                             throw err;
                     });
-                }
-            Events.remove({ business_id: business._id }, function (err) {
-                if (err)
-                    throw err;
-            })
+                });
+
+                // for (var i = 0; i < events.length; i++) {
+                //     EventOcc.remove({ event: events[i]._id }, function (err) {
+                //         if (err)
+                //             throw err;
+                //     });
+                // }
+                Events.remove({ business_id: business._id }, function (err) {
+                    if (err)
+                        throw err;
+                });
+            }
 
         });
 

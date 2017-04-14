@@ -174,7 +174,6 @@ exports.createEvent = function (req, res) {
 	}
 }
 
-
 exports.getEvents = function (req, res) {
 	if (req.user && req.user instanceof Business) {
 		Events.find({ business_id: req.user.id }, function (err, events) {
@@ -204,38 +203,6 @@ exports.getOccurrences = function (req, res) {
 }
 
 /* A business can edit an event or an event occurrence based on the changed field. */
-
-
-exports.getEvents = function (req, res) {
-	if (req.user && req.user instanceof Business) {
-		Events.find({ business_id: req.user.id }, function (err, events) {
-			if (err) res.send(err.message);
-			else if (!events) res.send('Something went wrong');
-			else res.send(events);
-		});
-	}
-	else {
-		res.send('You are not a logged in business');
-	}
-
-}
-
-exports.getOccurrences = function (req, res) {
-	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
-		EventOccurrences.find({ event: req.body.id }, function (err, events) {
-			if (err) res.send(err.message);
-			if (!events) res.send('Something went wrong');
-			else res.send(events);
-		});
-
-	}
-	else {
-		res.send('You are not a logged in business');
-	}
-}
-
-/* A business can edit an event or an event occurrence based on the changed field. */
-
 
 exports.editEvent = function (req, res) {
 	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
