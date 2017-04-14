@@ -8,7 +8,7 @@ exports.subscribe = function(req,res)
 {
 	if(req.user && req.user instanceof User) {
 		var userID = req.user.id;
-		var businessID = req.body.business;
+		var businessID = req.params.id;
 		var subscribed_business;
 		User.findOne({_id: userID}, function(err, user_found)
 		{

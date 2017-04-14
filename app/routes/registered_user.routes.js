@@ -12,9 +12,9 @@ router.use('/edit', function(req, res) {
 });
 
 
-router.get('/subscribe', function(req, res) {
-  res.render('subscribe.ejs');
-});
+// router.get('/subscribe', function(req, res) {
+//   res.render('subscribe.ejs');
+// });
 
 
 router.get('/unsubscribe', function(req, res) {
@@ -29,7 +29,7 @@ router.get('/rate', function(req, res) {
 
 
 router.post('/rate', user.addRating);
-router.post('/subscribe',user.subscribe);
+router.get('/subscribe/:id',user.subscribe);
 router.post('/unsubscribe',user.unsubscribe);
 router.get('/customize', user.customize);
 router.post('/editInfo', upload.single('image'), user.editInformation);

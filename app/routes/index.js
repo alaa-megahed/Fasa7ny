@@ -29,7 +29,7 @@ router.use('/contact', function(req, res) {
 });
 
 router.get('/', function (req, res) {
-    res.render('index.ejs');
+    res.render('index0.ejs');
 });
 
 module.exports = router;

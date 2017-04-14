@@ -3,25 +3,25 @@
     <head>
             <!-- ================ Angular ================ -->
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script><!-- load angular 1.2.4 -->
-
-        <script src="javascript/controllers/businessController.js"></script> 
-        <script src="javascript/services/business.js"></script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+        <script src="javascript/controllers/businessController.js"></script>
+        <script src="javascript/services/business.js"></script>
         <script src="javascript/core.js"></script>
 
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		
+
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>Fasa7ny</title>
-		
+
         <meta name="description" content="description">
-		
+
 		<!-- Mobile Specific Meta
 		================================================== -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
-		
+
 		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="img/favicon.png" />
-		
+
 		<!-- CSS
 		================================================== -->
 		<!-- Fontawesome Icon font -->
@@ -31,22 +31,22 @@
 		<!-- Animate.css -->
         <link rel="stylesheet" href="css/animate.css">
 		<!-- Owl Carousel -->
-        <link rel="stylesheet" href="css/owl.carousel.css">		
+        <link rel="stylesheet" href="css/owl.carousel.css">
 		<!-- Main Stylesheet -->
         <link rel="stylesheet" href="css/main.css">
 		<!-- Media Queries -->
         <link rel="stylesheet" href="css/responsive.css">
-		
-		
+
+
 		<!--
 		Google Font
-		=========================== -->                    
-		
+		=========================== -->
+
 		<!-- Oswald / Title Font -->
 		<link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
 		<!-- Ubuntu / Body Font -->
 		<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300' rel='stylesheet' type='text/css'>
-		
+
 		<!-- Modernizer Script for old Browsers -->
         <script src="js/modernizr-2.6.2.min.js"></script>
 
@@ -76,27 +76,19 @@
 					</a>
                 </div>
 
-                <nav class="collapse navbar-collapse navbar-right" >
-                    <ul id="nav" class="nav navbar-nav">
-                                            <div class="widget-content">
-                                <form action="#" id="search-form" method="get" role="search">
-                                    <input type="text" class="form-control" placeholder="Search..." autocomplete="on" name="seach">
-                                    <button type="submit" title="Search" id="search-submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </form>
-                           </div>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="index.html#about">About Us</a></li>
-                        <li><a href="index.html#services">Services</a></li>
-                        <li><a href="index.html#our-team">Team</a></li>
-                        <li><a href="index.html#pricing">Pricing</a></li>
-                        <li><a href="index.html#showcase">Portfolio</a></li>
-                        <li><a href="index.html#blog">Blog</a></li>
-                        <li><a href="index.html#contact-us">Contact</a></li>
-                    </ul>
-
-                </nav><!-- /.navbar-collapse -->
+                <nav class="collapse navbar-collapse navbar-right" role="Navigation">
+                <ul id="nav" class="nav navbar-nav">
+                    <li class="current"><a href="#body">Home</a></li>
+                    <li><a href="#showcase">About Us</a></li>
+                    <li ng-if = "!user.data.user_type"><a href="/auth/signup">Sign Up</a></li>
+                    <li ng-if = "!user.data.user_type"><a href="/auth/login">Sign In</a></li>
+                    <li ng-if = "user.data.user_type == 1"><a href="/auth/login"> My Profile </a></li>
+                    <li ng-if = "user.data.user_type == 2"><a href="/auth/login"> My Business Page </a></li>
+                    <li ng-if = "user.data.user_type == 3"><a href="/auth/login"> Admin Requests </a></li>
+                    <li><a href="#contact-us">Contact Us</a></li>
+                    <li ng-if = "user.data.user_type"><a href="/auth/logout" </a>Log Out</li>
+                </ul>
+            </nav>
             </div>
         </header>
 
@@ -107,7 +99,7 @@
                         <div class="blog-title">
                             <h1> {{ message.name }} </h1>
                         </div>
-                        
+
                     </div>     <!-- End col-lg-12 -->
                 </div>      <!-- End row -->
             </div>       <!-- End container -->
@@ -116,10 +108,10 @@
        <section id="blog-page">
             <div class="container">
                 <div class="row">
-                   
+
                     <div id="blog-posts" class="col-md-8 col-sm-8">
                         <div class="post-item">
-                           
+
                            <!-- Single Post -->
                             <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
 
@@ -137,24 +129,22 @@
                                     <p>{{ message.local.username }}</p>
                                     <a class="btn btn-transparent" href="single-post.html">Read more</a>
                                 </div>
-                                
+
                             </article>
                             <!-- End Single Post -->
-                           
+
                         </div>
                     </div>
-                    
+
                     <!-- Widget Section -->
-                    <div id="right-sidebar" class="col-md-4 col-sm-4">    
-                                              
+                    <div id="right-sidebar" class="col-md-4 col-sm-4">
+
                        <!-- Single Widget -->
                         <aside class="widget wow fadeInDown">
-                            
+
                             <div class="widget-content">
-                                <form action="">
-                                    <input type="submit" value="Subscribe" class="btn btn-transparent">
-                                </form>
-                                </div>
+                                    <input type="submit" value="Subscribe" class="btn btn-transparent" ng-click="subscribe(message._id)">
+                            </div>
 
                                 <div>
                                     <fieldset class="rating">
@@ -167,7 +157,7 @@
                                 </div>
                         </aside>
                         <!-- End Single Widget -->
-                       
+
                        <!-- Single Widget -->
                         <aside class="widget wow fadeInDown">
                             <div class="widget-title">
@@ -180,7 +170,7 @@
                             </div>
                         </aside>
                         <!-- End Single Widget -->
-                        
+
                     </div>
                     <!-- End Widget Section -->
 
@@ -192,14 +182,14 @@
             <div class="container">
                 <div class="row wow fadeInUp" data-wow-duration="500ms">
                     <div class="col-lg-12">
-                        
+
                         <!-- Footer Social Links -->
                         <div class="social-icon">
                             <ul>
                                 <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                                 <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                                 <li><a href="#"><i class="fa fa-youtube"></i></a></li>
-                                
+
                             </ul>
                         </div>
                         <!--/. End Footer Social Links -->
@@ -210,23 +200,23 @@
                             <p>Copyright &copy; 2017. Drop The Bit.</p>
                         </div>
                         <!-- /copyright -->
-                        
+
                     </div> <!-- end col lg 12 -->
                 </div> <!-- end row -->
             </div> <!-- end container -->
         </footer> <!-- end footer -->
-        
+
         <!-- Back to Top
         ============================== -->
         <a href="#" id="scrollUp"><i class="fa fa-angle-up fa-2x"></i></a>
-        
+
         <!-- end Footer Area
         ========================================== -->
-        
-        <!-- 
+
+        <!--
         Essential Scripts
         =====================================-->
-        
+
         <!-- Main jQuery -->
         <script src="js/jquery-1.11.0.min.js"></script>
         <!-- Bootstrap 3.1 -->
@@ -249,9 +239,3 @@
 
 </body>
 </html>
-
-
-
-
-
-

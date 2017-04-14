@@ -1,0 +1,49 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+	<title>Node Authentication</title>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+	<style>
+		body 		{ padding-top:80px; word-wrap:break-word; }
+	</style>
+</head>
+<body>
+<div class="container">
+
+	<div class="page-header text-center">
+		<h1><span class="fa fa-anchor"></span> User Profile Page</h1>
+		<a href="/auth/logout" class="btn btn-default btn-sm">Logout</a>
+	</div>
+
+	<div class="row">
+
+	<p><h4>My Subscriptions</h4></p>
+
+            <div class="row">
+                <% for(var i=0; i< subscriptions.length; i++){%>
+                      <h6>  <%= subscriptions[i] %></h6>
+                <% } %>
+            </div>
+
+
+	</div>
+
+	</r></r>
+	<div class="row">
+
+	<p><h4>My Bookings</h4></p>
+
+            <div class="row">
+                <% for(var i=0; i< bookings.length; i++){%>
+                      <h6> "Booking: " <%= bookings[i]%></h6></r>
+                <% } %>
+            </div>
+
+
+	</div>
+
+</div>
+</body>
+</html>

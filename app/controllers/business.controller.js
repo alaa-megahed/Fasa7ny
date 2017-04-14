@@ -5,7 +5,8 @@ var EventOccurrences = require('mongoose').model('EventOccurrences');
 
 var BusinessController = {
     getBusiness: function (req, res) {
-        var name = "habiibaa";
+        var name = req.params.name;
+        console.log(name);
         Business.findOne({ name: name }).
             exec(function (err, result) {
                 if (err)
@@ -88,7 +89,7 @@ requestRemoval: function(req,res) {
                     }
                     if (typeof req.body.phones != "undefined" && req.body.phones.length > 0) {
                         var found = false;
-                        //check if phone already added 
+                        //check if phone already added
                         for (var i = 0; i < business.phones.length; i++) {
                             if (business.phones[i] == req.body.phones) {
                                 found = true;
