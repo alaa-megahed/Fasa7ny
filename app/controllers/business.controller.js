@@ -1,36 +1,31 @@
 var Business = require('../models/Business');
 var Events = require('mongoose').model('Events');
 var EventOccurrences = require('mongoose').model('EventOccurrences');
-
+var statsController = require('./stats.controller');
 
 var BusinessController = {
-  /** Gets the page of the website
-  */
+    /** Gets the page of the website
+    */
     getBusiness: function (req, res) {
         var name = req.params.name;
-        Business.findOne({ name: name, public: 1}).
+        Business.findOne({ name: name, public: 1 }).
             exec(function (err, result) {
                 if (err)
                     console.log(err);
                 else {
-                  if(result == null)
-                    return res.send('No businenss found.');
+                    if (result == null)
+                        return res.send('No businenss found.');
                     else {
-                      // console.log(req.cookie);
-                      console.log(req.cookies);
-                      cookieName = 'fasa7ny.' + name;
-                      console.log(req.cookies[cookieName]);
-                      if(typeof req.cookies[cookieName] === 'undefined' ) {
-                        console.log('NO COOKIES');
-                        var value = 1;
-                        res.cookie(cookieName, value, {maxAge: 60*1000*5, httpOnly: true});
-                      } else {
-                        var date = new Date();
 
-                      }
+                        cookieName = 'fasa7ny.' + name;
+                        if (typeof req.cookies[cookieName] === 'undefined') {
+                            console.log('NO COOKIES');
+                            var value = 1;
+                            res.cookie(cookieName, value, { maxAge: 24 * 60 * 60 * 60 * 1000, httpOnly: true });
+                            statsController.addStat(result._id, 'views', 1);
 
-                      res.render("view_business", {business: result});
-
+                        }
+                        res.render("view_business", { business: result });
                     }
 
                 }
@@ -43,19 +38,19 @@ var BusinessController = {
     that the request was cancelled and that the business should cancel its bookings first.*/
 
 
-requestRemoval: function(req,res) {
-        if(req.user && req.user instanceof Business){
-        var id = req.user.id;
-        Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
-            if(err) res.send("error in request removal");
-            else res.send("Requested!");
-        });
+    requestRemoval: function (req, res) {
+        if (req.user && req.user instanceof Business) {
+            var id = req.user.id;
+            Business.findByIdAndUpdate(id, { $set: { delete: 1 } }, function (err, business) {
+                if (err) res.send("error in request removal");
+                else res.send("Requested!");
+            });
 
         }
 
-        else{
-         console.log('You are not a logged in busiess');
-     }
+        else {
+            console.log('You are not a logged in busiess');
+        }
 
     },
 

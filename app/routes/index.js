@@ -29,8 +29,6 @@ router.use('/contact', function(req, res) {
 });
 
 router.get('/', function (req, res) {
-  // req.cookies['track_id'] ||= require('connect').utils.uid(32);
-  console.log(req.cookies);
     res.render('index.ejs');
 });
 

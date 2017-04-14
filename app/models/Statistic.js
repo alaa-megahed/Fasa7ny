@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+  Schema = mongoose.Schema,
+  findOrCreate = require('mongoose-find-or-create');
 
 
 var weekStat = new Schema({
@@ -7,7 +8,7 @@ var weekStat = new Schema({
   endDate: Date, //used only with
   subscriptions: Number,
   sales: Number, //total amount of money recieved
-  averageRating: Number,
+  rating: Number,
   attendees: Number,
   views: Number,
   business:
@@ -22,7 +23,7 @@ var monthStat = new Schema({
   year: Number,
   subscriptions: Number,
   sales: Number, //total amount of money recieved
-  averageRating: Number,
+  rating: Number,
   attendees: Number,
   views: Number,
   business:
@@ -33,11 +34,10 @@ var monthStat = new Schema({
 });
 
 var yearStat = new Schema({
-  month: Number,
   year: Number,
   subscriptions: Number,
   sales: Number, //total amount of money recieved
-  averageRating: Number,
+  rating: Number,
   attendees: Number,
   views: Number,
   business:
@@ -46,6 +46,10 @@ var yearStat = new Schema({
     ref: 'business'
   }
 });
+
+weekStat.plugin(findOrCreate);
+monthStat.plugin(findOrCreate);
+yearStat.plugin(findOrCreate);
 
 var WeekStat = mongoose.model('WeekStat', weekStat);
 var MonthStat = mongoose.model('MonthStat', monthStat);
