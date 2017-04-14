@@ -13,6 +13,7 @@ var event = require('./event.routes');
 var auth = require('./auth.routes');
 var user = require('./registered_user.routes'); 
 var admin = require('./web_admin.routes');
+var path = require('path');
 
 router.use('/auth', auth);
 router.use('/event', event);
@@ -29,7 +30,8 @@ router.use('/contact', function(req, res) {
 });
 
 router.get('/', function (req, res) {
-    res.render('index.ejs');
+   // res.render('index.ejs');
+     res.sendFile(path.resolve('public/views/bookings.html'));
 });
 
 module.exports = router;

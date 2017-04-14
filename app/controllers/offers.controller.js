@@ -241,7 +241,7 @@ exports.deleteOffer = function(req, res) {
     res.send("you're not a logged in business");
   }
 };
-
+    
 //==================================== Notifications =================================================
 
 function notify_on_create(offer_name,subscribers,business)

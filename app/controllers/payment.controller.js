@@ -16,4 +16,3 @@ var charge = stripe.charges.create({
 }, function(err, charge) {
   // asynchronously called
 });
-
