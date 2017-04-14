@@ -7,6 +7,8 @@ var mongoose = require('./config/mongoose'),
     app      = express();
 
 
+var Business = require('./app/models/Business');
+
 
 
 app.listen(config.port);

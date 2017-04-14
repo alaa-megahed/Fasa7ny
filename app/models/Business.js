@@ -56,7 +56,6 @@ var BusinessSchema = new Schema({
     reviews : [{type: mongoose.Schema.Types.ObjectId, ref:'Review',default: []}]
 });
 
-
 //created a text index on the desired fields
 BusinessSchema.index({
     name: "text",

@@ -298,6 +298,7 @@ exports.view_event_bookings = function(req,res)
 
 //======================= < USER > ==============================
 
+
 //Registered User adds bookings by giving count, event id. Booking date is saved as current date.
 exports.regUserAddBooking = function(req, res, next) {
 
@@ -305,7 +306,6 @@ exports.regUserAddBooking = function(req, res, next) {
   {
 		if(req.user instanceof RegisteredUser)
 		{
-
 
       if(req.body.count <= 0)
         return res.send("Can't have negative or no count.");

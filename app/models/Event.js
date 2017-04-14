@@ -10,7 +10,9 @@ var EventsSchema = mongoose.Schema({
     image: [String],
     repeated: String,
     daysOff: [String],
-    business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'}
+    business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'},
+    facility_id:{type: mongoose.Schema.Types.ObjectId, ref:'Facility'}
+
 
 });
 
@@ -20,7 +22,9 @@ var EventOccurrencesSchema = mongoose.Schema({
     time: String,
     available: Number,
     bookings : [{type: mongoose.Schema.Types.ObjectId,ref: 'Booking',default: [] }],
-    event : {type: mongoose.Schema.Types.ObjectId, ref:'Events'}
+    event : {type: mongoose.Schema.Types.ObjectId, ref:'Events'},
+    facility_id  :{type: mongoose.Schema.Types.ObjectId, ref:'Facility'}
+
 
 });
 
@@ -32,6 +36,5 @@ var EventOccurrences = mongoose.model("EventOccurrences", EventOccurrencesSchema
 module.exports = {
     Events: Events,
     EventOccurrences: EventOccurrences
-
 };
 
