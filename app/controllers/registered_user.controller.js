@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('RegisteredUser');
 var Business = mongoose.model('Business');
 var Rating = mongoose.model('Rating');
-
+var StatsController = require('./stats.controller');
 
 exports.subscribe = function (req, res) {
 	if (req.user && req.user instanceof User) {
@@ -32,7 +32,12 @@ exports.subscribe = function (req, res) {
 								return res.send("Already subscribed");
 							else {
 								user_found.subscriptions.push(business);
-								user_found.save();
+								user_found.save(function (err) {
+									if (err)
+										throw err;
+									else
+										StatsController.addStat(business, 'subscriptions', 1);
+								});
 								return res.send("business has been added to subscriptions.");
 							}
 
@@ -74,7 +79,12 @@ exports.unsubscribe = function (req, res) {
 						business.subscribers.pull(user_found);
 						business.save();
 						user_found.subscriptions.pull(business);
-						user_found.save();
+						user_found.save(function (err) {
+							if (err)
+								throw err;
+							else
+								StatsController.addStat(business, 'subscriptions', -1);
+						});
 						res.send("business has been removed from subscriptions.");
 						return;
 					}
@@ -157,6 +167,8 @@ exports.average_rating = function (req, res) {
 							return res.send("Error. Please return to previous page.");
 						}
 						else {
+
+							// StatsController.addStat(business, 'rating', result[0].average); 
 							return res.send("rating successfully added");
 						}
 					});
