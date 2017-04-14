@@ -2,14 +2,16 @@ var mongoose = require('mongoose');
 var WeekStat = mongoose.model('WeekStat');
 var MonthStat = mongoose.model('MonthStat');
 var YearStat = mongoose.model('YearStat');
-var schedule = require('node-schedule'); 
-
+var AllStat = mongoose.model('AllStat');
+var schedule = require('node-schedule');
+var Business = require('../models/Business');
 var StatsController = {
   /**
     updates the statistics related to the given businessID,
     in the WeekStats, MonthStats and YearStats
   */
   addStat: function (date, businessID, statType, amount) {
+    console.log('hi hi hi');
     var now = date;
     //update week stats
     //check if there is an entry for this business for this week
@@ -59,7 +61,7 @@ var StatsController = {
           var newMonthStat = new MonthStat();
           newMonthStat.month = now.getMonth();
           newMonthStat.year = now.getFullYear();
-          newMonthStat.business = businessID; 
+          newMonthStat.business = businessID;
           newMonthStat[statType] = amount;
           console.log(newMonthStat);
 
@@ -76,9 +78,9 @@ var StatsController = {
       else {
         if (stat != null) {
           console.log('betengaaaannnnn');
-          console.log(stat); 
+          console.log(stat);
           var query = helper.updateQuery(stat, statType, amount);
-          console.log(query); 
+          console.log(query);
           stat.update(query).exec(function (err, result) {
             if (err)
               throw err;
@@ -88,7 +90,7 @@ var StatsController = {
         } else {
           var newYearStat = new YearStat();
           newYearStat.year = now.getFullYear();
-          newYearStat.business = businessID; 
+          newYearStat.business = businessID;
           newYearStat[statType] = amount;
           console.log(newYearStat);
 
@@ -96,17 +98,77 @@ var StatsController = {
         }
       }
     });
+    AllStat.findOne({ business: businessID }, function (err, stat) {
+      if (stat != null) {
+        var query = helper.updateQuery(stat, statType, amount);
+        console.log(query);
+        stat.update(query).exec(function (err, result) {
+          if (err)
+            throw err;
+          else
+            console.log(result);
+        });
+      } else {
+        var newAllStat = new AllStat();
+        newAllStat.business = businessID;
+        newAllStat.save(function (err) { if (err) throw err; });
+      }
+    });
+  },
+  schedule: function (businessID) {
+    var rule = new schedule.RecurrenceRule();
+    rule.dayOfWeek = 6;
+    rule.hour = 23;
+    rule.minute = 59;
+    rule.second = 50;
+    schedule.scheduleJob(rule, function () {
+      that = this;
+      that.addStat(new Date(), businessID, 'views', 1);
+    });
+  },
+  getWeekStats: function (req, res) {
+    if (req.user && req.user instanceof Business) {
+      var id = req.user.id;
+      var startDate = req.body.startDate;
+      var endDate = req.body.endDate;
+
+      WeekStat.find({
+        startDate: { $lte: startDate },
+        endDate: { $gte: endDate },
+        business: id
+      }, function (err, result) {
+        if (err)
+          throw err;
+        else
+          res.json(result);
+      });
+    } else {
+      res.json(null);
+    }
+
+  },
+  getMothStats: function (req, res) {
+    if (req.user && req.user instanceof Business) {
+      var id = req.user.id;
+      var startMonth = req.body.startMonth;
+      var startYear = req.body.startYear;
+      var endMonth = req.body.endMonth;
+      var endYear = req.body.endYear;
+      MonthStat.find({
+        month: { $lte: startMonth, $gte: endMonth },
+        year: { $lte: startYear, $gte: endYear },
+        business: businessID
+      }, function (err, result) {
+        if (err)
+          throw err;
+        else
+          res.json(result);
+      }); 
+
+    }
   }, 
-  schedule: function(businessID) {
-    var rule = schedule.RecurrenceRule(); 
-    rule.dayOfWeek = 6; 
-    rule.hour = 23; 
-    rule.minute = 59; 
-    rule.second = 50; 
-    schedule.scheduleJob(rule, function() {
-      that = this; 
-      that.addStat(new Date (), businessID, 'views', 1); 
-    }); 
+  getYeatStats: function(req, res) {
+    
   }
 }
 
@@ -122,13 +184,13 @@ var helper = {
     var dayOfWeek = date.getDay();
     var dayOfMonth = date.getDate();
 
-   
+
     //calculate the start of this week
     var startDate = new Date();
     var startDay = dayOfMonth - dayOfWeek;
     var startMonth = month;
     var startYear = year;
-     
+
 
     //if start of this week goes into last month
     if (startDay < 0) {
@@ -145,16 +207,16 @@ var helper = {
     }
     // console.log(startDate); 
     // console.log(startDate.setMonth(startMonth));
-    startDate.setMonth(startMonth); 
-    startDate.setDate(startDay); 
+    startDate.setMonth(startMonth);
+    startDate.setDate(startDay);
     startDate.setFullYear(startYear);
-    console.log(startDay + " " + startMonth + " " + startYear);  
-    ; 
+    console.log(startDay + " " + startMonth + " " + startYear);
+    ;
     //calculate end date of this week
     var endDate = new Date();
     var thisMonth = this.daysOfMonth(month);
     var endDay = (dayOfMonth + (6 - dayOfWeek)) % thisMonth;
-    console.log(endDay); 
+    console.log(endDay);
     var endMonth = month;
     var endYear = year;
     if (endDay < date.getDate()) {
@@ -164,9 +226,9 @@ var helper = {
         endYear++;
       }
     }
-    console.log(endDay + " " + endMonth + " " + endYear);  
-    
- 
+    console.log(endDay + " " + endMonth + " " + endYear);
+
+
     endDate.setDate(endDay);
     endDate.setMonth(endMonth);
     endDate.setFullYear(endYear);
@@ -206,8 +268,8 @@ var helper = {
     if (statType == 'rating') {
       query['rating'] = amount;
     } else {
-      var inc = {}; 
-      inc[statType] = amount; 
+      var inc = {};
+      inc[statType] = amount;
       query['$inc'] = inc;
     }
     return query;

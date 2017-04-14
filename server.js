@@ -7,7 +7,13 @@ var mongoose = require('./config/mongoose'),
     app      = express();
 
 
-
+// var admin = new WebAdmin();
+// admin.local.username = "radwa";
+// admin.local.password = admin.generateHash("1234");
+// admin.save(
+//   function(err)
+//     {if(err) throw err;}
+// );
 
 app.listen(config.port);
 

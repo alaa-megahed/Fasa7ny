@@ -1,0 +1,25 @@
+<!DOCTYPE>
+<html>
+
+<head>
+
+
+    <title>Statistics </title>
+</head>
+
+<body ng-app="stats">
+    <div ng-controller="main">
+        <canvas id="line" class="chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
+            chart-dataset-override="datasetOverride" chart-click="onClick">
+        </canvas>
+    </div>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="/scripts/chart.js/dist/Chart.min.js"></script>
+    <script src="/scripts/angular-chart.js/dist/angular-chart.min.js"></script>
+    <script src="/custom-scripts/controllers/statsController.js"></script>
+    <script src="/custom-scripts/services/statsService.js"></script>
+    <script src="/custom-scripts/core.js"></script>
+</body>
+
+</html>

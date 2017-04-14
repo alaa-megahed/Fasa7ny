@@ -6,11 +6,26 @@ var mongoose = require('mongoose'),
 var weekStat = new Schema({
   startDate: Date,
   endDate: Date, //used only with
-  subscriptions: Number,
-  sales: Number, //total amount of money recieved
-  rating: Number,
-  attendees: Number,
-  views: Number,
+  subscriptions: {
+    type: Number,
+    default: 0
+  },
+  sales: {
+    type: Number,
+    default: 0
+  }, //total amount of money recieved
+  rating: {
+    type: Number,
+    default: 0
+  },
+  attendees: {
+    type: Number,
+    default: 0
+  },
+  views: {
+    type: Number,
+    default: 0
+  },
   business:
   {
     type: mongoose.Schema.Types.ObjectId,
@@ -21,11 +36,26 @@ var weekStat = new Schema({
 var monthStat = new Schema({
   month: Number,
   year: Number,
-  subscriptions: Number,
-  sales: Number, //total amount of money recieved
-  rating: Number,
-  attendees: Number,
-  views: Number,
+  subscriptions: {
+    type: Number,
+    default: 0
+  },
+  sales: {
+    type: Number,
+    default: 0
+  }, //total amount of money recieved
+  rating: {
+    type: Number,
+    default: 0
+  },
+  attendees: {
+    type: Number,
+    default: 0
+  },
+  views: {
+    type: Number,
+    default: 0
+  },
   business:
   {
     type: mongoose.Schema.Types.ObjectId,
@@ -35,11 +65,26 @@ var monthStat = new Schema({
 
 var yearStat = new Schema({
   year: Number,
-  subscriptions: Number,
-  sales: Number, //total amount of money recieved
-  rating: Number,
-  attendees: Number,
-  views: Number,
+  subscriptions: {
+    type: Number,
+    default: 0
+  },
+  sales: {
+    type: Number,
+    default: 0
+  }, //total amount of money recieved
+  rating: {
+    type: Number,
+    default: 0
+  },
+  attendees: {
+    type: Number,
+    default: 0
+  },
+  views: {
+    type: Number,
+    default: 0
+  },
   business:
   {
     type: mongoose.Schema.Types.ObjectId,
@@ -48,12 +93,26 @@ var yearStat = new Schema({
 });
 
 var allStat = new Schema({
-  subscriptions: Number,
-  sales: Number, //total amount of money recieved
-  rating: Number,
-  attendees: Number,
-  views: Number,
-  business:
+  subscriptions: {
+    type: Number,
+    default: 0
+  },
+  sales: {
+    type: Number,
+    default: 0
+  }, //total amount of money recieved
+  rating: {
+    type: Number,
+    default: 0
+  },
+  attendees: {
+    type: Number,
+    default: 0
+  },
+  views: {
+    type: Number,
+    default: 0
+  }, business:
   {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'business'
@@ -63,7 +122,7 @@ var allStat = new Schema({
 var WeekStat = mongoose.model('WeekStat', weekStat);
 var MonthStat = mongoose.model('MonthStat', monthStat);
 var YearStat = mongoose.model('YearStat', yearStat);
-var AllStat = mongoose.model('AllStat', allStat); 
+var AllStat = mongoose.model('AllStat', allStat);
 module.exports = {
   WeekStat: WeekStat,
   MonthStat: MonthStat,

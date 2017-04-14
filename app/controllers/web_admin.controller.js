@@ -8,7 +8,7 @@ var User = require('mongoose').model('RegisteredUser');
 var Review = require('mongoose').model('Review');
 var Reply = require('mongoose').model('Reply');
 var async = require('async');
-var StatsController = require('./stats.controller'); 
+var StatsController = require('./stats.controller');
 const nodemailer = require('nodemailer');
 var configAuth = require('../../config/auth');
 
@@ -62,12 +62,12 @@ exports.AddBusiness = function (req, res) {
 
                                             if (err)
                                                 throw err;
-                                            else { 
+                                            else {
                                                 //add statistics about business 
-                                                StatsController.addStat(new Date(), newBusiness._id, 'views', 0); 
+                                                StatsController.addStat(new Date(), newBusiness._id, 'views', 0);
 
                                                 //schedule statistics for the future 
-                                                StatsController.schedule(newBusiness._id); 
+                                                StatsController.schedule(newBusiness._id);
 
                                                 //send confirmation email 
                                                 var smtpTransport = nodemailer.createTransport({

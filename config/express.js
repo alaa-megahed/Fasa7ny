@@ -8,7 +8,8 @@ var config = require('./config'),
     session = require('express-session'),
     schedule = require('node-schedule'),
     async = require('async');
-    multer = require('multer');
+    multer = require('multer'), 
+    path = require('path');
 
 
 
@@ -52,6 +53,10 @@ module.exports = function() {
 
 
     app.use( express.static("./uploads") );
+    console.log(path.resolve('public/javascript')); 
+    app.use('/scripts', express.static(path.resolve('node_modules')));
+    app.use('/custom-scripts', express.static(path.resolve('public/javascript')));
+    
 
 
     return app;
