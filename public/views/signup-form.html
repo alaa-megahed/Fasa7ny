@@ -1,0 +1,75 @@
+<div class="modal-header">
+    <h3>Create A New Account!</h3>
+</div>
+<form name="form.userForm" ng-submit="submitForm(formData)" novalidate>
+    <div class="modal-body" background-color:#ccc>
+
+      <div class="alert alert-danger" ng-if = "err1">{{err1}}</div>
+
+        <!-- NAME -->
+        <div class="form-group" >
+            <label>Name</label>
+            <input type="text" name="name" class="form-control" ng-model="formData.name" required>
+            <p ng-show="form.userForm.name.$invalid && !form.userForm.name.$pristine" class="help-block">Your name is required.</p>
+        </div>
+
+        <!-- EMAIL -->
+        <div class="form-group" >
+            <label>Email</label>
+            <input type="email" name="email" class="form-control" ng-model="formData.email" required>
+            <p ng-show="form.userForm.email.$invalid && !form.userForm.email.$pristine" class="help-block">Enter a valid email.</p>
+        </div>
+
+        <!-- USERNAME -->
+        <div class="form-group" >
+            <label>Username</label>
+            <input type="text" name="username" class="form-control" ng-model="formData.username" ng-minlength="3" ng-maxlength="8" required>
+            <p ng-show="form.userForm.username.$error.minlength" class="help-block">Username is too short.</p>
+            <p ng-show="form.userForm.username.$error.maxlength" class="help-block">Username is too long.</p>
+        </div>
+
+        <!-- PASSWORD-->
+        <div class="form-group" >
+            <label>Password</label>
+            <input type="password" name="password" class="form-control" ng-model="formData.password" ng-minlength="3" ng-maxlength="8" required>
+            <p ng-show="form.userForm.password.$error.minlength" class="help-block">Password is too short.</p>
+            <p ng-show="form.userForm.password.$error.maxlength" class="help-block">Password is too long.</p>
+        </div>
+
+
+        <!-- Address-->
+        <div class="form-group" >
+            <label>Address</label>
+            <input type="text" name="address" class="form-control" ng-model="formData.address">
+            <p ng-show="form.userForm.address.$invalid && !form.userForm.address.$pristine" class="help-block">Enter a valid address.</p>
+        </div>
+
+        <!-- Phone-->
+        <div class="form-group" >
+            <label>Phone</label>
+            <input type="text" name="phone" class="form-control" ng-model="formData.phone" required>
+            <p ng-show="form.userForm.phone.$invalid && !form.userForm.phone.$pristine" class="help-block">Your phone is required.</p>
+        </div>
+
+        <!-- Birthdate-->
+        <div class="form-group" >
+            <label>Birthdate</label>
+            <input type="date" name="birthdate" class="form-control" ng-model="formData.birthdate">
+            <p ng-show="form.userForm.birthdate.$invalid && !form.userForm.birthdate.$pristine" class="help-block">Enter a valid date</p>
+        </div>
+
+        <!-- Gender-->
+        <div class="form-group" >
+            <label>Gender</label>
+            <input type="text" name="gender" class="form-control" ng-model="formData.gender">
+            <p ng-show="form.userForm.gender.$invalid && !form.userForm.gender.$pristine" class="help-block">Enter a valid gender</p>
+        </div>
+
+
+
+    </div>
+    <div class="modal-footer" >
+        <button type="submit" class="btn btn-primary" ng-disabled="form.userForm.$invalid">OK</button>
+        <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+    </div>
+</form>

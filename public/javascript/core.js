@@ -1,1 +1,1 @@
-angular.module('homepage', ['homepageController', 'homepageService']);
+angular.module('homepage', ['ui.bootstrap','ngRoute','homepageController', 'homepageService']);

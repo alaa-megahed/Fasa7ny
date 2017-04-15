@@ -20,27 +20,35 @@ let AuthController =
 	// ============================
 	// 		    	LOGIN
 	// ============================
-	getLogin: function(req, res) {
-
-		res.render('login.ejs', { message: req.flash('loginMessage') });
+	getLoginFail: function(req, res) {
+		res.json(req.flash('loginMessage'));
 	},
 
+  getLoginSuccess: function(req, res) {
+    res.json("success");
+  },
+
 	postLogin: function(req, res){passport.authenticate('local-login', {
-		successRedirect : '/', 
-		failureRedirect : '/auth/login',
+		successRedirect : '/auth/successLogIn',
+		failureRedirect : '/auth/failLogIn',
 		failureFlash : true
 	})(req, res);},
 
 	// ============================
 	//           SIGNUP
 	// ============================
-	getSignup: function(req, res) {
-		res.render('signup.ejs', { message: req.flash('signupMessage') });
+	getSignupFail: function(req, res) {
+		res.json(req.flash('signupMessage'));
 	},
 
+  getSignupSuccess: function(req, res) {
+		res.json("success");
+	},
+
+
 	postSignup: function(req, res){passport.authenticate('local-signup', {
-		successRedirect : '/auth/profile',
-		failureRedirect : '/auth/signup',
+		successRedirect : '/auth/successSignUp',
+		failureRedirect : '/auth/failSignUp',
 		failureFlash : true
 	})(req, res);},
 
@@ -52,7 +60,7 @@ let AuthController =
 		{
 			if(req.user.user_type == 1)       // regular user
 			{
-        res.redirect('http://localhost:3000/user/customize');
+        res.redirect('/');
         // res.render('user_profile.ejs', {
         // user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });
 			}

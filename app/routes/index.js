@@ -29,7 +29,11 @@ router.use('/contact', function(req, res) {
 });
 
 router.get('/', function (req, res) {
-    res.render('index.ejs', {message : "Ahlan"});
+    res.render('index.ejs', {user: req.user});
+});
+
+router.get('/loggedin', function (req, res) {
+    res.json(req.user);
 });
 
 module.exports = router;

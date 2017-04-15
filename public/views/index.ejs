@@ -2,17 +2,21 @@
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" ng-app = "homepage"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" ng-app = "homepage"  > <!--<![endif]-->
     <head>
 
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script><!-- load angular 1.2.4 -->
+      <script src="http://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.9.0.js"></script>
+      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
 
-      <script src="javascript/controllers/homepage.js"></script> <!-- load up our controller -->
-      <script src="javascript/services/homepage.js"></script> <!-- load our todo service -->
+
+      <script src="javascript/controllers/homepageController.js"></script> <!-- load up our controller -->
+      <script src="javascript/services/homepageService.js"></script> <!-- load our todo service -->
       <script src="javascript/core.js"></script> <!-- load our main application -->
 
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="description" content="Meghna One page parallax responsive HTML Template ">
+		  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="description" content="Meghna One page parallax responsive HTML Template ">
+
 
 
         <title>Fasa7ny</title>
@@ -56,23 +60,13 @@
         <script src="js/modernizr-2.6.2.min.js"></script>
 
 
-		<script>
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-		  ga('create', 'UA-54152927-1', 'auto');
-		  ga('send', 'pageview');
-
-		</script>
 
 
 
 
     </head>
 
-    <body ng-Controller = "main" id="body">
+    <body ng-controller = "main" id="body">
 
       <!--
       Fixed Navigation
@@ -102,10 +96,15 @@
               <nav class="collapse navbar-collapse navbar-right" role="Navigation">
                   <ul id="nav" class="nav navbar-nav">
                       <li class="current"><a href="#body">Home</a></li>
-                      <li><a href="/auth/login">About Us</a></li>
-                      <li><a href="#services">Sign In</a></li>
-                      <li><a href="#showcase">Sign Up</a></li>
+                      <li><a href="#showcase">About Us</a></li>
+                      <li ng-if = "!user.data.user_type"><a href = "#navigation" ng-click = "signUp()">Sign Up</a></li>
+                      <li ng-if = "!user.data.user_type"><a href = "#navigation" ng-click = "signIn()">Sign In</a></li>
+                      <li ng-if = "user.data.user_type == 1"><a href="/auth/login"> My Profile </a></li>
+                      <li ng-if = "user.data.user_type == 2"><a href="/auth/login"> My Business Page </a></li>
+                      <li ng-if = "user.data.user_type == 3"><a href="/auth/login"> Admin Requests </a></li>
                       <li><a href="#contact-us">Contact Us</a></li>
+                      <li ng-if = "user.data.user_type"><a href="/auth/logout">Log Out</a></li>
+
 
                   </ul>
               </nav>
@@ -150,7 +149,7 @@
 						<div class="carousel-caption">
 							<div>
 								<h2 data-wow-duration="500ms"  data-wow-delay="500ms" class="heading animated fadeInRight">Welcome To Fasa7ny</h2>
-							</div>
+             </div>
 						</div>
 						</div>
 					</div>
@@ -164,7 +163,7 @@
 							<div>
 								<h2 class="heading animated fadeInDown">Jump above your worries!</h2>
 								<h3 class="animated fadeInUp">See the latest offers from your favorite trampoline parks</h3>
-								<a class="btn btn-green animated fadeInUp" href="#">Get Started</a>
+								<!-- <a class="btn btn-green animated fadeInUp" href="#">Get Started</a> -->
 							</div>
 						</div>
 						</div>
@@ -177,10 +176,9 @@
 							<div class="bg-img bg-img-3"></div>
 						<div class="carousel-caption">
 							<div>
-								<h2 class="heading animated fadeInRight">One Page Parallax HTML Template</h2>
-								<h3 class="animated fadeInLeft">Clean and Professional Design</h3>
+								<h2 class="heading animated fadeInRight">Soar across the desert</h2>
+								<h3 class="animated fadeInLeft">You're only a few clicks away from your latest adventure </h3>
 								<a class="btn btn-green animated fadeInUp" href="#">Learn More</a>
-                {{ message }}
 							</div>
 						</div>
 						</div>
@@ -216,22 +214,12 @@
 
 						<!-- section title -->
 						<div class="title text-center">
-							<h2>Our <span class="color">Works</span></h2>
+							<h2>Choose Your <span class="color">Challenge</span></h2>
 							<div class="border"></div>
 						</div>
 						<!-- /section title -->
 
-						<!-- portfolio item filtering -->
-						<div class="portfolio-filter clearfix">
-							<ul class="text-center">
-							    <li><a href="javascript:void(0)" class="filter" data-filter="all">All</a></li>
-								<li><a href="javascript:void(0)" class="filter" data-filter=".app">Mobile App</a></li>
-								<li><a href="javascript:void(0)" class="filter" data-filter=".web">Web Design</a></li>
-								<li><a href="javascript:void(0)" class="filter" data-filter=".photoshop">Photoshop</a></li>
-								<li><a href="javascript:void(0)" class="filter" data-filter=".illustrator">Illustrator</a></li>
-							</ul>
-						</div>
-						<!-- /portfolio item filtering -->
+
 
 					</div> <!-- /end col-lg-12 -->
 				</div> <!-- end row -->
@@ -243,10 +231,10 @@
 
 					<!-- single portfolio item -->
 					<li class="mix app">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Azuki bean" data-description="Swiss chard pumpkin bunya nuts maize plantain aubergine napa cabbage soko coriander sweet pepper water spinach winter purslane shallot tigernut lentil beetroot.">
+						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="CATEGORY 1 NAME" data-description="CATEGORY 1 DESCRIPTION">
 							<img src="img/portfolio/portx1.jpg" alt="Meghna">
 							<div class="hover-mask">
-								<h3>Azuki bean</h3>
+								<h3>CATEGORY 1</h3>
 								<span>
 									<i class="fa fa-plus fa-2x"></i>
 								</span>
@@ -257,10 +245,10 @@
 
 					<!-- single portfolio item -->
 					<li class="mix web">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Veggies sunt bona vobis" data-description="Komatsuna prairie turnip wattle seed artichoke mustard horseradish taro rutabaga ricebean carrot black-eyed pea turnip greens beetroot yarrow watercress kombu.">
+						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="CATEGORY 2 NAME" data-description="CATEGORY 2 DESCRIPTION">
 							<img src="img/portfolio/portx1.jpg" alt="Meghna">
 							<div class="hover-mask">
-								<h3>Veggies sunt bona vobis</h3>
+								<h3>CATEGORY 2</h3>
 								<span>
 									<i class="fa fa-plus fa-2x"></i>
 								</span>
@@ -271,10 +259,10 @@
 
 					<!-- single portfolio item -->
 					<li class="mix photoshop">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Dandelion horseradish" data-description="Cabbage bamboo shoot broccoli rabe chickpea chard sea lettuce lettuce ricebean artichoke earthnut pea aubergine okra brussels sprout avocado tomato.">
+						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="CATEGORY 3 NAME" data-description="CATEGORY 3 DESCRIPTION">
 							<img src="img/portfolio/portx1.jpg" alt="Meghna">
 							<div class="hover-mask">
-								<h3>Dandelion horseradish</h3>
+								<h3>CATEGORY 3</h3>
 								<span>
 									<i class="fa fa-plus fa-2x"></i>
 								</span>
@@ -283,131 +271,7 @@
 					</li>
 					<!-- /single portfolio item -->
 
-					<!-- single portfolio item -->
-					<li class="mix illustrator">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Dandelion horseradish" data-description="Cabbage bamboo shoot broccoli rabe chickpea chard sea lettuce lettuce ricebean artichoke earthnut pea aubergine okra brussels sprout avocado tomato.">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>Dandelion horseradish</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
 
-					<!-- single portfolio item -->
-					<li class="mix app">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Azuki bean" data-description="Swiss chard pumpkin bunya nuts maize plantain aubergine napa cabbage soko coriander sweet pepper water spinach winter purslane shallot tigernut lentil beetroot.">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>Azuki bean</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
-
-					<!-- single portfolio item -->
-					<li class="mix app">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Veggies sunt bona vobis" data-description="Komatsuna prairie turnip wattle seed artichoke mustard horseradish taro rutabaga ricebean carrot black-eyed pea turnip greens beetroot yarrow watercress kombu.">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>Veggies sunt bona vobis</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
-
-					<!-- single portfolio item -->
-					<li class="mix web">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Dandelion horseradish" data-description="Cabbage bamboo shoot broccoli rabe chickpea chard sea lettuce lettuce ricebean artichoke earthnut pea aubergine okra brussels sprout avocado tomato.">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>Dandelion horseradish</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
-
-					<!-- single portfolio item -->
-					<li class="mix photoshop">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Azuki bean" data-description="Swiss chard pumpkin bunya nuts maize plantain aubergine napa cabbage soko coriander sweet pepper water spinach winter purslane shallot tigernut lentil beetroot.">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>Azuki bean</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
-
-					<!-- single portfolio item -->
-					<li class="mix photoshop">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Veggies sunt bona vobis" data-description="Komatsuna prairie turnip wattle seed artichoke mustard horseradish taro rutabaga ricebean carrot black-eyed pea turnip greens beetroot yarrow watercress kombu.">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>Veggies sunt bona vobis</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
-
-					<!-- single portfolio item -->
-					<li class="mix illustrator">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Veggies sunt bona vobis" data-description="Komatsuna prairie turnip wattle seed artichoke mustard horseradish taro rutabaga ricebean carrot black-eyed pea turnip greens beetroot yarrow watercress kombu.">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>Veggies sunt bona vobis</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
-
-					<!-- single portfolio item -->
-					<li class="mix web">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Dandelion horseradish" data-description="Cabbage bamboo shoot broccoli rabe chickpea chard sea lettuce lettuce ricebean artichoke earthnut pea aubergine okra brussels sprout avocado tomato.">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>Dandelion horseradish</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
-
-					<!-- single portfolio item -->
-					<li class="mix app">
-						<a href="javascript:void(0)" data-largesrc="img/portfolio/portx1.jpg" data-title="Azuki bean" data-description="Swiss chard pumpkin bunya nuts maize plantain aubergine napa cabbage soko coriander sweet pepper water spinach winter purslane shallot tigernut lentil beetroot.">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>Azuki bean</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
 
 				</ul> <!-- end og grid -->
 			</div>  <!-- portfolio items wrapper -->
