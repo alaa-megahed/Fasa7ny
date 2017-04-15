@@ -6,7 +6,7 @@
                         <div class="blog-title">
                             <h1> {{ business.name }} </h1>
                         </div>
-                        
+
                     </div>     <!-- End col-lg-12 -->
                 </div>      <!-- End row -->
             </div>       <!-- End container -->
@@ -15,10 +15,10 @@
        <section id="blog-page">
             <div class="container">
                 <div class="row">
-                   
+
                     <div id="blog-posts" class="col-md-8 col-sm-8">
                         <div class="post-item">
-                           
+
                            <!-- Single Post -->
                             <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
 
@@ -35,39 +35,41 @@
                                     <h3><a href="single-post.html">Description</a></h3>
                                     <p>{{ business.description }}</p>
                                 </div>
-                                
+
                             </article>
                             <!-- End Single Post -->
-                           
+
                         </div>
                     </div>
-                    
+
                     <!-- Widget Section -->
-                    <div id="right-sidebar" class="col-md-4 col-sm-4">    
-                                              
+                    <div id="right-sidebar" class="col-md-4 col-sm-4">
+
                        <!-- Single Widget -->
                         <aside class="widget wow fadeInDown">
-                            
+
                             <div class="widget-content">
                                 <!-- <form action="" ng-if = "user.data.user_type == 1"> -->
                                 <!-- <form action=""> -->
-                                    <input type="submit" value="Subscribe" ng-click = "subscribe(business._id)" class="btn btn-transparent">
+                                    <input ng-if = "check == 0" type="submit" value="Subscribe" ng-click = "subscribe(business._id)" class="btn btn-transparent">
+                                    <input ng-if = "check == 1" type="submit" value="unsubscribe" ng-click = "unsubscribe(business._id)" class="btn btn-transparent">
                                 <!-- </form> -->
                                 </div>
 
                                 <div>
-                       
-                                    <fieldset class="rating" ng-if = "user.data.user_type == 1">
-                                        <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Awesome - 5 stars"></label>
-                                        <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Pretty good - 4 stars"></label>
-                                        <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 stars"></label>
-                                        <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Kinda bad - 2 stars"></label>
-                                        <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Sucks big time - 1 star"></label>
+
+                                    <fieldset class="rating">
+                                      <!-- <fieldset class="rating" ng-if = "user.data.user_type == 1"> -->
+                                        <input type="radio" id="star5" ng-click = "rate(5,business._id)"/><label class = "full" for="star5"></label>
+                                        <input type="radio" id="star4" ng-click = "rate(4,business._id)"/><label class = "full" for="star4"></label>
+                                        <input type="radio" id="star3" ng-click = "rate(3,business._id)"/><label class = "full" for="star3"></label>
+                                        <input type="radio" id="star2" ng-click = "rate(2,business._id)"/><label class = "full" for="star2"></label>
+                                        <input type="radio" id="star1" ng-click = "rate(1,business._id)"/><label class = "full" for="star1"></label>
                                     </fieldset>
                                 </div>
                         </aside>
                         <!-- End Single Widget -->
-                       
+
                        <!-- Single Widget -->
                         <aside class="widget wow fadeInDown">
                             <div class="widget-title">
@@ -87,31 +89,27 @@
 							</div>
 							<div class="widget-content">
 								<li>Area: {{ business.area }}</li>
-                                <li>Address: {{ business.address }}</li>
-                                <li>Phone Numbers: </li>
-                                <li ng-repeat = "phone in phones"> {{ phone }}</li> 
-                                <li>Email: {{ business.email }}</li>
+                <li>Address: {{ business.address }}</li>
+                <li>Phone Numbers: </li>
+                  <li ng-repeat = "phone in phones"> {{ phone }}</li>
+                <li>Email: {{ business.email }}</li>
 							</div>
 							<div class="widget-content">
                                 <!-- <form ng-if = "user.data.user_type == 2" action="/business/edit" method="get"> -->
-                               <!-- <form action="#business/edit" method="get">
+                               <form action="#!/business/edit" method="get">
 
                                     <input type="submit" value="Edit" class="btn btn-transparent">
                                 </form>
 
-
-
- -->
-                                <a href = "/business/edit" > EDIT </a>
+                                <!-- <a href = "#!/business/edit" > EDIT </a> -->
                                 <!-- <a href = "#business/edit" > EDIT </a> -->
 
                                 </div>
                         </aside>
-                        
+
                     </div>
                     <!-- End Widget Section -->
 
                 </div>      <!-- End row -->
             </div>       <!-- End container -->
         </section>    <!-- End Section -->
-

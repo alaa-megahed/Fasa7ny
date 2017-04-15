@@ -5,14 +5,14 @@ var EventOccurrences = require('mongoose').model('EventOccurrences');
 
 var BusinessController = {
     getBusiness: function (req, res) {
-        var name = "Habiiba";
+        var name = "business1";
         Business.findOne({ name: name }).
             exec(function (err, result) {
                 if (err)
                     console.log(err);
                 else{
                     console.log(result);
-                    res.json(result);
+                    res.json({result:result, user:"58f09946fcefb434ea0d4e22"});
                     // res.render("", {business: result});
                 }
             });
@@ -62,7 +62,7 @@ requestRemoval: function(req,res) {
     editInformation: function (req, res) {
 
         // if (req.user && req.user instanceof Business) {
-            var id = "58efd89e145d6225df260fae";
+            var id = "58e666a20d04c180d969d591";
             console.log("ana fl backend");
 
             Business.findById(id, function (err, business) {
@@ -88,7 +88,7 @@ requestRemoval: function(req,res) {
                     }
                     if (typeof req.body.phones != "undefined" && req.body.phones.length > 0) {
                         var found = false;
-                        //check if phone already added 
+                        //check if phone already added
                         for (var i = 0; i < business.phones.length; i++) {
                             if (business.phones[i] == req.body.phones) {
                                 found = true;

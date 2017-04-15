@@ -14,17 +14,16 @@
             subscribe : function(id) {
             	console.log("sub service");
             	return $http.get('/user/subscribe/' + id);
+            },
+
+            unsubscribe : function(id) {
+            	console.log("unsub service");
+            	return $http.get('/user/unsubscribe/' + id);
+            },
+
+            rate : function(rate, id) {
+              console.log("rate service");
+              return $http.get('/user/rate/' + rate + "/" + id);
             }
     	}
     }]);
-           
-    // .factory('Edit',function($http){
-    // 	return{
-    // 		get : function(){
-    //         	return $http.get('/business/editInformation');
-    //         }
-    // 	}
-    // });
-            
-        
- 

@@ -17,9 +17,9 @@ router.use('/edit', function(req, res) {
 // });
 
 
-router.get('/unsubscribe', function(req, res) {
-  res.render('unsubscribe.ejs');
-});
+// router.get('/unsubscribe', function(req, res) {
+//   res.render('unsubscribe.ejs');
+// });
 
 
 router.get('/rate', function(req, res) {
@@ -28,9 +28,9 @@ router.get('/rate', function(req, res) {
 
 
 
-router.post('/rate', user.addRating);
+router.get('/rate/:rate/:id', user.addRating);
 router.get('/subscribe/:id',user.subscribe);
-router.post('/unsubscribe',user.unsubscribe);
+router.get('/unsubscribe/:id',user.unsubscribe);
 router.get('/customize', user.customize);
 router.post('/editInfo', upload.single('image'), user.editInformation);
 

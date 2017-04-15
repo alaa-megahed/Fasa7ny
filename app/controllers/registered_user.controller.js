@@ -7,7 +7,7 @@ var Rating = mongoose.model('Rating');
 exports.subscribe = function(req,res)
 {
 	// if(req.user && req.user instanceof User) {
-		var userID = "58f0c9341767d632566c9fb5";
+		var userID = "58f09946fcefb434ea0d4e22";
 		var businessID = req.params.id;
 		var subscribed_business;
 		console.log("business sub");
@@ -56,10 +56,12 @@ exports.subscribe = function(req,res)
 
 exports.unsubscribe = function(req,res)
 {
-	if(req.user && req.user instanceof User) {
-		var userID = req.user.id;
-	    var businessID = req.body.business;
+	// if(req.user && req.user instanceof User) {
+		// var userID = req.user.id;
+		var userID = "58f09946fcefb434ea0d4e22";
+	    var businessID = req.params.id;
 	    var subscribed_business;
+			console.log("business unsub");
 	    User.findOne({_id: userID}, function(err, user_found)
 	    {
 			if(err) {
@@ -105,21 +107,22 @@ exports.unsubscribe = function(req,res)
 
 
 	    });
-	}
-	else {
-		res.redirect('/auth/login');
-	}
+	// }
+	// else {
+		// res.redirect('/auth/login');
+	// }
 }
 
 
 exports.addRating = function(req, res)
 {
 
-	 if(req.user && req.user instanceof User) {
-
-		var userID = req.user.id;              // from passport session; changed to body temporarily for testing
-	    var businessID = req.body.business;        // from url parameters; changed from param to body
-	    var rating2 = req.body.rating;		   // from post body
+	//  if(req.user && req.user instanceof User) {
+		 var userID = "58f09946fcefb434ea0d4e22";
+		// var userID = req.user.id;              // from passport session; changed to body temporarily for testing
+	    var businessID = req.params.id;        // from url parameters; changed from param to body
+	    var rating2 = req.params.rate;		   // from post body
+			console.log("entered addRating");
 	    var rating_query = {user_ID: userID, business_ID: businessID};
 
 	    Rating.findOne(rating_query, function(err, previous_rating)
@@ -149,15 +152,17 @@ exports.addRating = function(req, res)
 
 
 	    });
-	}
-	else {
-	 	res.redirect('/auth/login');
-    }
+	// }
+	// else {
+		// 	res.redirect('/auth/login');
+    // }
 };
 
 exports.average_rating = function(req,res)
 {
-    var businessID = req.body.business;
+	console.log("entered average_rating");
+    var businessID = req.params.id;
+
 
 	Rating.find({business_ID:businessID}, function(err,ratings) { //this exists mainly to postpone the function
 		Rating.aggregate([{$group: {_id : '$business_ID', average: {$avg: '$rating'}}}],

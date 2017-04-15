@@ -8,7 +8,7 @@ app.config(function($routeProvider){
 	$routeProvider
 	// .when("/",{
 	// 	templateUrl : "./public/views/index.ejs",
-	// 	controller  : "homepageController" 
+	// 	controller  : "homepageController"
 	// })
 
 	.when("/", {
@@ -21,4 +21,4 @@ app.config(function($routeProvider){
 		controller  : "businessController"
 
 	})
-})
+});
