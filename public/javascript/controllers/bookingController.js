@@ -8,7 +8,7 @@ angular.module('bookingController', [])
 
         $scope.book = function()
         {		
-        	console.log($scope.formData.count+" "+$scope.formData.chosen_offer); //why  undefined?
+        	console.log("count   "+$scope.formData.count+" offer   "+$scope.formData.chosen_offer); //why  undefined?
         	$http.post('/bookings/regusers',{count: $scope.formData.count,offer_id:$scope.formData.chosen_offer}).then(function(data)
         	{
         		console.log(data);
