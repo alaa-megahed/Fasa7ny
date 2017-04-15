@@ -1,15 +1,16 @@
-// angular.module('businessController', [])
-
 app.controller('businessController', function($scope, $http, Business, $location) {
+  $scope.maxRating = 5;
+  $scope.ratedBy = 0;
         Business.get()
                 .then(function(d) {
                   console.log(d.data.result._id);
                         $scope.business = d.data.result;
                         $scope.phones = d.data.result.phones;
-                        $scope.methods = d.data.result.payment_methods;
                         $scope.categories = d.data.result.category;
                         $scope.user = d.data.user;
+                        if(d.data.rate) $scope.ratedBy = d.data.rate;
                         $scope.check = 0;
+
                         for(var i = 0; i < d.data.result.subscribers.length; i++) {
                           if(d.data.result.subscribers[i] == d.data.user)
                             $scope.check = 1;
@@ -42,15 +43,17 @@ app.controller('businessController', function($scope, $http, Business, $location
            .then(function(d) {
              console.log("unsub done");
            })
-         },
+         };
 
-         $scope.rate = function(rate, id) {
-           console.log("controller rate");
-           Business.rate(rate, id)
+         $scope.rateBy = function (star) {
+           console.log("rating ctrl");
+           Business.rate(star)
            .then(function(d) {
-             console.log("rate done");
-           })
+             console.log("rating done");
+           });
+             $scope.ratedBy = star;
          },
+       
 
          $scope.public = function(){
          	console.log('public ctrl');
@@ -67,6 +70,23 @@ app.controller('businessController', function($scope, $http, Business, $location
          		console.log('remove done');
          	})
          }
+
+//          $scope.rateFunction = function( rating ){
+//        		var _url = 'your service url';
+ 
+//  			var data = {
+//    				rating: rating
+//  			};
+ 
+//  			$http.post( _url, angular.toJson(data), {cache: false} )
+//   			.success( function( data ){
+//    			success(data);
+//  			})
+//   			.error(function(data){
+//    			error(data);
+//   		});
+ 
+// };
 
         // $scope.edit() = function() {
         // 	$http.get('/business/edit');

@@ -7,7 +7,7 @@ var Rating = mongoose.model('Rating');
 exports.subscribe = function(req,res)
 {
 	// if(req.user && req.user instanceof User) {
-		var userID = "58f09946fcefb434ea0d4e22";
+		var userID = "58f0c9341767d632566c9fb5";
 		var businessID = req.params.id;
 		var subscribed_business;
 		console.log("business sub");
@@ -58,7 +58,7 @@ exports.unsubscribe = function(req,res)
 {
 	// if(req.user && req.user instanceof User) {
 		// var userID = req.user.id;
-		var userID = "58f09946fcefb434ea0d4e22";
+		var userID = "58f0c9341767d632566c9fb5";
 	    var businessID = req.params.id;
 	    var subscribed_business;
 			console.log("business unsub");
@@ -118,9 +118,10 @@ exports.addRating = function(req, res)
 {
 
 	//  if(req.user && req.user instanceof User) {
-		 var userID = "58f09946fcefb434ea0d4e22";
+		 var userID = "58f0c9341767d632566c9fb5";
+		 var businessID = "58f20e01b38dec5d920104f3"; 
 		// var userID = req.user.id;              // from passport session; changed to body temporarily for testing
-	    var businessID = req.params.id;        // from url parameters; changed from param to body
+	    // var businessID = req.params.id;        // from url parameters; changed from param to body
 	    var rating2 = req.params.rate;		   // from post body
 			console.log("entered addRating");
 	    var rating_query = {user_ID: userID, business_ID: businessID};
@@ -161,7 +162,7 @@ exports.addRating = function(req, res)
 exports.average_rating = function(req,res)
 {
 	console.log("entered average_rating");
-    var businessID = req.params.id;
+    var businessID = "58f20e01b38dec5d920104f3";
 
 
 	Rating.find({business_ID:businessID}, function(err,ratings) { //this exists mainly to postpone the function

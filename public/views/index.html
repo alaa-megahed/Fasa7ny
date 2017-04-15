@@ -8,12 +8,25 @@
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
 
 
-      <script src="javascript/core.js"></script> <!-- load our main application -->
+      <script src="javascript/core.js"></script> 
 
       <script src="javascript/controllers/homepage.js"></script>
       <script src="javascript/services/homepage.js"></script>
 	  <script src="javascript/controllers/businessController.js"></script>
       <script src="javascript/services/businessService.js"></script>
+
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+	  
+
+	   <script>
+		
+			function openRightMenu() {
+			    document.getElementById("rightMenu").style.display = "block";
+			}
+			function closeRightMenu() {
+			    document.getElementById("rightMenu").style.display = "none";
+			}
+		</script>
 
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="description" content="Meghna One page parallax responsive HTML Template">
@@ -103,7 +116,6 @@
                       <li ng-if = "user.data.user_type == 3"><a href="/auth/login"> Admin Requests </a></li>
                       <li><a href="#contact-us">Contact Us</a></li>
                       <li ng-if = "user.data.user_type"><a href="/auth/logout">Log Out</a></li>
-                   <!--    <li ng-if = "user.data.user_type"><a href="/auth/logout" </a>Log Out</li> -->
 
                   </ul>
               </nav>
@@ -145,7 +157,7 @@
 		<!-- Back to Top
 		============================== -->
 		<!-- <a href="javascript:;" id="scrollUp"> -->
-			<i class="fa fa-angle-up fa-2x"></i>
+			<!-- <i class="fa fa-angle-up fa-2x"></i> -->
 		<!-- </a> -->
 
 		<!-- end Footer Area

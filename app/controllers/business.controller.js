@@ -1,10 +1,10 @@
 var Business = require('../models/Business');
 var Events = require('mongoose').model('Events');
 var EventOccurrences = require('mongoose').model('EventOccurrences');
-
+var Rating = require('mongoose').model('Rating');
 
 var BusinessController = {
-    getBusiness: function (req, res) {
+       getBusiness: function (req, res) {
         var name = "Habiiba";
         Business.findOne({ name: name }).
             exec(function (err, result) {
@@ -12,7 +12,17 @@ var BusinessController = {
                     console.log(err);
                 else{
                     console.log(result);
-                    res.json({result:result, user:"58f20e01b38dec5d920104f3"});
+
+                    Rating.findOne({user_ID: "58f0c9341767d632566c9fb5" , business_ID: result._id}, function(err, rate) {
+                      if(err) console.log("error in finding rate");
+                      if(!rate) res.json({result:result, user:"58f0c9341767d632566c9fb5", rate:0});
+                      else {
+                        console.log(rate);
+                        res.json({result:result, user:"58f0c9341767d632566c9fb5", rate:rate.rating});
+                      }
+                    })
+
+                    // res.json({result:result, user:"58f09946fcefb434ea0d4e22"});
                     // res.render("", {business: result});
                 }
             });
@@ -108,6 +118,7 @@ requestRemoval: function(req,res) {
 
                     business.save();
                     res.json(business);
+                    // res.sendFile('/business/b');
 
                 }
 
