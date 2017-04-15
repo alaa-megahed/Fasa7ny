@@ -5,7 +5,7 @@ var Rating = require('mongoose').model('Rating');
 
 var BusinessController = {
        getBusiness: function (req, res) {
-        var name = "Habiiba";
+        var name = "business1";
         Business.findOne({ name: name }).
             exec(function (err, result) {
                 if (err)
@@ -13,7 +13,7 @@ var BusinessController = {
                 else{
                     console.log(result);
 
-                    Rating.findOne({user_ID: "58f0c9341767d632566c9fb5" , business_ID: result._id}, function(err, rate) {
+                    Rating.findOne({user_ID: "58f09946fcefb434ea0d4e22" , business_ID: result._id}, function(err, rate) {
                       if(err) console.log("error in finding rate");
                       if(!rate) res.json({result:result, user:"58f09946fcefb434ea0d4e22", rate:0});
                       else {
@@ -76,7 +76,7 @@ requestRemoval: function(req,res) {
     editInformation: function (req, res) {
 
         // if (req.user && req.user instanceof Business) {
-            var id = "58f20e01b38dec5d920104f3";
+            var id = "58e666a20d04c180d969d591";
             console.log("ana fl backend");
 
             Business.findById(id, function (err, business) {

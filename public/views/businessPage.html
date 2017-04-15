@@ -1,20 +1,17 @@
 
 
-  <div class="w3-sidebar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;" id="rightMenu">
-  <button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-large">Close &times;</button>
-   <input ng-if = "business.delete == 0" type="submit" value="Request Removal" ng-click = "remove()" class="btn btn-transparent">
-   <input ng-if = "business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent">
+  <div class="w3-sidebar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;background-color:#2B2C30;" id="rightMenu">
+    <!-- <div class="w3-grey"> -->
+  <button onclick="closeRightMenu()" class=" w3-button w3-large" style="background-color:#2B2C30;" >&times;</button>
+   <input ng-if = "business.delete == 0" type="submit" value="Request Removal" ng-click = "remove()" class="btn btn-transparent w3-green">
+   <input ng-if = "business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent w3-green">
     <form action="#!/business/edit" method="get">
-       <input type="submit" value="Edit" class="btn btn-transparent">
+       <input type="submit" value="Edit" class="btn btn-transparent w3-green">
      </form>
+   <!-- </div> -->
 </div>
 
-<div class="w3-teal">
 
-  <button class="w3-button w3-teal w3-xlarge w3-right" onclick="openRightMenu()">&#9776;</button>
-  <div class="w3-container">
-
-  </div>
 </div>
 
         <section id="blog-banner">
@@ -24,9 +21,9 @@
                         <div class="blog-title">
                             <h1> {{ business.name }}
                              <span >
-                               <span style=“font-size:140%;color:#90EE90 ;“>&bigstar;</span>
-                               <span style=“font-size:70%;color:#90EE90;“>{{ business.average_rating }}
-                               <span style=“font-size:40%;#90EE90 ;“> / 5</span></span>
+                               <span style="font-size:140%;color:#90EE90;">&bigstar;</span>
+                               <span style="font-size:70%;color:#90EE90;">{{ business.average_rating }}
+                               <span style="font-size:40%;#90EE90 ;"> / 5</span></span>
                              </span>
                            </h1>
                         </div>
@@ -69,6 +66,12 @@
                     <!-- Widget Section -->
                     <div id="right-sidebar" class="col-md-4 col-sm-4">
 
+                      <div style="background-color:#2B2C30;">
+
+                        <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()">&#9776;</button>
+                        <div class="w3-container">
+
+                        </div>
                        <!-- Single Widget -->
                         <aside class="widget wow fadeInDown">
 

@@ -52,8 +52,7 @@ app.controller('businessController', function($scope, $http, Business, $location
              console.log("rating done");
            });
              $scope.ratedBy = star;
-         }
-  },
+         };
 
 
          $scope.public = function(){
@@ -62,7 +61,7 @@ app.controller('businessController', function($scope, $http, Business, $location
          	.then(function(d){
          		console.log('public done');
          	})
-         },
+        };
 
           $scope.remove = function(){
          	console.log('remove ctrl');
