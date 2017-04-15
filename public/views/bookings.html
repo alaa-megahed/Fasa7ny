@@ -147,37 +147,33 @@
                     <!-- section title -->
                     <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
                         
-                        <h2>Book <span class="color">[Event name here]</span></h2>
+                        <h2>Book<span class="color">ING</span></h2>
                         <div class="border"></div>
                     </div>
                     <!-- /section title -->
                     
                    
-                      <form ng-submit="book()" >
-                       
-                        <h3>Number of people  :  <input type="Number" ng-model="count"><br></h3>
+                      <form ng-model="formData">
+                        <h3>Number of people  :  <input type="Number" ng-model="formData.count"><br></h3>
                        
                         <div> {{betengan}} </div>
                         <h3> Special Offers:</h3> <br>
 
                         <div ng-repeat="offer in offers" ng-if=" offer.type === 'specific audience'">
 
-                          <input type="radio" ng-model="chosen_offer" name="offer_option" ng-value="{{offer.id}}"><label>{{"Offer: "+offer.name + "   details: "+offer.details +" value: "+ offer.value}}</label> <br>
+                          <input type="radio" ng-model="formData.chosen_offer" name="chosen_offer" value=offer.id >
+                          <label>{{"Offer: "+offer.name + "  details: "+offer.details +" value: "+ offer.value}}</label>
+                          <br>
 
-                        </div><br><br>
+                        </div> <br><br>
                             
-                        <button type="submit" > BOOK </button>
-                                        
+                        <button type="submit" ng-click="book()"> BOOK </button>
                        </form>
-                       
+
                        
                     
                 </div>
-                        
-
-<!--                       </div>         
- -->                    
-                      <!-- End row -->
+                        <!-- End row -->
 
             </div>      <!-- End container -->
         </section>   <!-- End section -->
