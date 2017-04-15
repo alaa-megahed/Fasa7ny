@@ -40,7 +40,7 @@ exports.createFacility = function(req,res)
 
 	}
 	else
-		res.send("Not logged in Business");
+		res.send("Not logged in Business");	
 }
 
 //don't need to edit fields in repeated events because we will always get them from facility
@@ -71,8 +71,24 @@ exports.editFacility = function(req,res)
 						if(req.body.description)
 							facility.description = req.body.description;
 
+						//update capacity in event and available in event occurrences
 						if(req.body.capacity)
-							facility.capacity = req.body.capacity;
+						{
+							var old = facility.capacity;
+							var difference = req.body.capacity - old;
+
+							Events.update({facility_id:facility_id},{ $set: { capacity: capacity+difference }},function(err)
+							{
+								if(err)
+									return res.send("error updating event");
+							});
+							EventOccurrences.update({facility_id:facility_id},{ $set: { available: available+difference }},function(err)
+							{
+								if(err)
+									return res.send("error updating eventocc");
+							});
+
+						}
 
 						facility.save();
 					}
