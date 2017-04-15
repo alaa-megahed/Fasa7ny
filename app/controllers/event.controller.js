@@ -570,7 +570,7 @@ function notify_on_create(event_name,subscribers,business)
 	var content = business + " added " + event_name +"        "+ Date.now(); 
 
 	async.each(subscribers, function(subscriber, callback){
-		User.findByIdAndUpdate({_id:subscriber.id},{$push:{"notifications": content}},function(err,user)
+		User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
 		{
 			if(err)
 				console.log("error updating user notifications");

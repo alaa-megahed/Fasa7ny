@@ -1,10 +1,10 @@
-angular.module('bookingService', [])
 
-.factory('Offers', function($http) {
+angular.module('fasa7ny')
+.factory('Offers', ['$http', function($http) {
         return {
             get : function() {
                 return $http.get('/offers/viewOffers');
             }
 
         }
-    });
+    }]);
