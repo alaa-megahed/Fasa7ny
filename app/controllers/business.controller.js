@@ -101,6 +101,9 @@ requestRemoval: function(req,res) {
                     if (typeof req.body.payment_methods != "undefined" && req.body.payment_methods.length > 0) {
                         business.payment_methods.push(req.body.payment_methods);
                     }
+                    if (typeof req.file != "undefined"){
+                        business.profilePicture = req.file.filename;
+                    }
 
                     business.save();
                     res.json(business);

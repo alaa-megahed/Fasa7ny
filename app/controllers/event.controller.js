@@ -18,7 +18,7 @@ exports.createEvent = function (req, res) {
 
 	if (req.user && req.user instanceof Business) {
 		var id = req.user.id;
-
+		var date = new Date();
     	
     	if(!req.body.name || !req.body.description || !req.body.location || !req.body.price || !req.body.capacity || !req.body.repeat) {
      
@@ -27,6 +27,9 @@ exports.createEvent = function (req, res) {
         }
         else if(req.body.repeat != "Once" && req.body.repeat!="Daily"){
         res.send("Repitition type can either be Daily or Once");
+    	}
+    	else if(req.body.date < date){
+    		res.send("Invalid date!");
     	}
         else {
 
@@ -297,6 +300,10 @@ exports.editEvent = function (req, res) {
 							if (err) res.send(err.message);
 						});
 
+					}
+
+					if (typeof req.file != "undefined"){
+						Events.image.push(req.file);
 					}
 					event.save();
 					res.send(event);

@@ -30,7 +30,7 @@ router.use('/contact', function(req, res) {
 
 router.get('/', function (req, res) {
     res.sendfile('public/views/index.html');
-    // res.render('index0.ejs');
+    
 
 });
 

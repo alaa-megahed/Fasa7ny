@@ -52,7 +52,8 @@ var BusinessSchema = new Schema({
     {
         type: Number, default:0
     },
-    reviews : [{type: mongoose.Schema.Types.ObjectId, ref:'Review',default: []}]
+    reviews : [{type: mongoose.Schema.Types.ObjectId, ref:'Review',default: []}],
+    profilePicture : String
 });
 
 
