@@ -8,12 +8,12 @@ var config = require('./config'),
     session = require('express-session'),
     schedule = require('node-schedule'),
     async = require('async');
-    multer = require('multer'), 
+multer = require('multer'),
     path = require('path');
 
 
 
-module.exports = function() {
+module.exports = function () {
     var app = express();
 
     app.use(bodyParser.json());
@@ -40,6 +40,8 @@ module.exports = function() {
     app.set('views', './app/views');
     app.set('view engine', 'ejs');
 
+
+    // app.use(express.static("./uploads"));
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
 
@@ -52,11 +54,11 @@ module.exports = function() {
     require('./passport')(passport);                                     // pass passport for passport configuration
 
 
-    app.use( express.static("./uploads") );
-    console.log(path.resolve('public/javascript')); 
+
+    //setting up static files 
     app.use('/scripts', express.static(path.resolve('node_modules')));
-    app.use('/custom-scripts', express.static(path.resolve('public/javascript')));
-    
+    console.log(path.resolve('public'));
+    app.use(express.static(path.resolve('public')));
 
 
     return app;

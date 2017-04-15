@@ -3,16 +3,16 @@ var Business = require('../models/Business');
 SearchController = {
 
     showAll: function (req, res) {
-        Business.find({public: 1}).
+        Business.find({ public: 1 }).
             exec(function (err, result) {
                 if (err)
                     console.log(err);
                 else
-                    res.render("search.ejs", {result: result});
-                  });
+                    res.json(result);
+            });
     },
     search: function (req, res) {
-      var formData = req.body;
+        var formData = req.body;
         var sortBy = formData.sortBy;
         console.log(formData);
         var queryBody = helper.makeQuery(formData); // retrieve query body
@@ -32,7 +32,7 @@ SearchController = {
                 res.send(err);
             else {
                 console.log(result);
-                res.render('search.ejs', {result: result});
+                res.render('search.ejs', { result: result });
             }
         });
 
@@ -66,7 +66,7 @@ helper = {
         // add filters one by one, according to user input
         var anding = [];
         //make sute business page is public
-        anding.push({public: 1});
+        anding.push({ public: 1 });
         if (category.length > 0) {
             anding.push({ category: new RegExp(category, 'i') });
         }

@@ -2,7 +2,7 @@ var Business = require('../models/Business');
 var Events = require('mongoose').model('Events');
 var EventOccurrences = require('mongoose').model('EventOccurrences');
 var statsController = require('./stats.controller');
-var path = require('path'); 
+var path = require('path');
 var BusinessController = {
     /** Gets the page of the website
     */
@@ -21,7 +21,10 @@ var BusinessController = {
                         if (typeof req.cookies[cookieName] === 'undefined') {
                             console.log('NO COOKIES');
                             var value = 1;
-                            res.cookie(cookieName, value, { maxAge: 3 * 60 * 1000, httpOnly: true });
+                            res.cookie(cookieName, value, { maxAge: 30 * 1000, httpOnly: true });
+                           
+                           //add page view
+                           var date = new Date('2017-04-15'); 
                             statsController.addStat(new Date(), result._id, 'views', 1);
 
                         }
@@ -230,13 +233,13 @@ var BusinessController = {
 
     },
     loadStats: function (req, res) {
-        console.log(req.user);
-        
-        if (req.user && req.user instanceof Business) {
-            res.sendFile(path.resolve('public/views/statistics.html'));
-        } else {
-            res.json('Unauthorized request.'); 
-        }
+
+
+        // if (req.user && req.user instanceof Business) {
+        res.sendFile(path.resolve('public/views/statistics.html'));
+        // } else {
+        // res.json('Unauthorized request.'); 
+        // }
     }
 }
 

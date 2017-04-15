@@ -4,4 +4,6 @@ angular.module('statsService', [])
         factory.postStats = function() {
             return $http.post('/business/stats'); 
         }
+
+        return factory; 
     }); 

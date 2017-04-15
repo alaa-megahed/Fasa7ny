@@ -1,5 +1,9 @@
 angular.module('statsController', ["chart.js"])
-    .controller('main', function ($scope) {
+    .controller('main', function ($scope, Stats) {
+        $scope.businessID = '58f0f8312ffb434813227cc0';
+        $scope.getStats = function() {
+            $scope.test = 'ay 7aga'; 
+        } 
         $scope.labels = ["January", "February", "March", "April", "May", "June", "July"];
         $scope.series = ['Series A', 'Series B'];
         $scope.data = [
@@ -29,3 +33,5 @@ angular.module('statsController', ["chart.js"])
             }
         };
     }); 
+
+angular.module('route')
