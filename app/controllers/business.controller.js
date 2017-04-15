@@ -1,7 +1,7 @@
 var Business = require('../models/Business');
 var Events = require('mongoose').model('Events');
 var EventOccurrences = require('mongoose').model('EventOccurrences');
-
+var Rating = require('mongoose').model('Rating');
 
 var BusinessController = {
     getBusiness: function (req, res) {
@@ -12,7 +12,16 @@ var BusinessController = {
                     console.log(err);
                 else{
                     console.log(result);
-                    res.json({result:result, user:"58f09946fcefb434ea0d4e22"});
+
+                    Rating.findOne({user_ID: "58f09946fcefb434ea0d4e22" , business_ID: result._id}, function(err, rate) {
+                      if(err) console.log("error in finding rate");
+                      else {
+                        console.log(rate);
+                        res.json({result:result, user:"58f09946fcefb434ea0d4e22", rate:rate.rating});
+                      }
+                    })
+
+                    // res.json({result:result, user:"58f09946fcefb434ea0d4e22"});
                     // res.render("", {business: result});
                 }
             });

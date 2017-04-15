@@ -28,7 +28,7 @@ router.get('/rate', function(req, res) {
 
 
 
-router.get('/rate/:rate/:id', user.addRating);
+router.get('/rate/:rate', user.addRating);
 router.get('/subscribe/:id',user.subscribe);
 router.get('/unsubscribe/:id',user.unsubscribe);
 router.get('/customize', user.customize);

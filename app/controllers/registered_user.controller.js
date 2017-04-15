@@ -120,7 +120,8 @@ exports.addRating = function(req, res)
 	//  if(req.user && req.user instanceof User) {
 		 var userID = "58f09946fcefb434ea0d4e22";
 		// var userID = req.user.id;              // from passport session; changed to body temporarily for testing
-	    var businessID = req.params.id;        // from url parameters; changed from param to body
+	    // var businessID = req.params.id;        // from url parameters; changed from param to body
+			var businessID = "58e666a20d04c180d969d591";
 	    var rating2 = req.params.rate;		   // from post body
 			console.log("entered addRating");
 	    var rating_query = {user_ID: userID, business_ID: businessID};
@@ -161,7 +162,8 @@ exports.addRating = function(req, res)
 exports.average_rating = function(req,res)
 {
 	console.log("entered average_rating");
-    var businessID = req.params.id;
+    // var businessID = req.params.id;
+		var businessID = "58e666a20d04c180d969d591";
 
 
 	Rating.find({business_ID:businessID}, function(err,ratings) { //this exists mainly to postpone the function

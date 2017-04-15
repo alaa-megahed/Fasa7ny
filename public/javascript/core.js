@@ -21,4 +21,6 @@ app.config(function($routeProvider){
 		controller  : "businessController"
 
 	})
+	// $locationProvider.html5Mode(true);
+
 });

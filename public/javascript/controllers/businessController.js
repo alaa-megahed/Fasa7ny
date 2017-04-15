@@ -1,6 +1,8 @@
 // angular.module('businessController', [])
 
 app.controller('businessController', function($scope, $http, Business, $location) {
+  $scope.maxRating = 5;
+  $scope.ratedBy = 0;
         Business.get()
                 .then(function(d) {
                   console.log(d.data.result._id);
@@ -8,7 +10,9 @@ app.controller('businessController', function($scope, $http, Business, $location
                         $scope.phones = d.data.result.phones;
                         $scope.categories = d.data.result.category;
                         $scope.user = d.data.user;
+                        if(d.data.rate) $scope.ratedBy = d.data.rate;
                         $scope.check = 0;
+
                         for(var i = 0; i < d.data.result.subscribers.length; i++) {
                           if(d.data.result.subscribers[i] == d.data.user)
                             $scope.check = 1;
@@ -41,27 +45,22 @@ app.controller('businessController', function($scope, $http, Business, $location
            .then(function(d) {
              console.log("unsub done");
            })
-         },
+         };
 
-         $scope.rate = function(rate, id) {
-           console.log("controller rate");
-           Business.rate(rate, id)
+         $scope.rateBy = function (star) {
+           console.log("rating ctrl");
+           Business.rate(star)
            .then(function(d) {
-             console.log("rate done");
-           })
+             console.log("rating done");
+           });
+             $scope.ratedBy = star;
          }
 
-        // $scope.edit() = function() {
-        // 	$http.get('/business/edit');
-        // }
-
-        // Edit.get()
-        //         .then(function(d) {
-        //         		console.log(d);
-        //                 $scope.business = d.data;
-        //                 $scope.phones = d.data.phones;
-        //                 $scope.categories = d.data.category;
-        //         });
-
-
+        //  $scope.rate = function(rate, id) {
+        //    console.log("controller rate");
+        //    Business.rate(rate, id)
+        //    .then(function(d) {
+        //      console.log("rate done");
+        //    })
+        //  }
     });

@@ -4,7 +4,14 @@
                 <div class="row">
                     <div class="col-lg-12 text-center">
                         <div class="blog-title">
-                            <h1> {{ business.name }} </h1>
+                            <h1> {{ business.name }}
+                              <span >
+                                <span style="font-size:140%;color:#90EE90;">&bigstar;</span>
+                                <span style="font-size:70%;color:green;">{{ business.average_rating }}
+                                <span style="font-size:40%;#90EE90;"> / 5</span></span>
+                              </span>
+                            </h1>
+
                         </div>
 
                     </div>     <!-- End col-lg-12 -->
@@ -55,17 +62,17 @@
                                     <input ng-if = "check == 1" type="submit" value="unsubscribe" ng-click = "unsubscribe(business._id)" class="btn btn-transparent">
                                 <!-- </form> -->
                                 </div>
-
+                                <div ng-controller="businessController">
+                                    <ul class="rating">
+                                        <li ng-repeat="n in [].constructor(maxRating) track by $index">
+                                            <span ng-click="rateBy($index+1)" ng-show="ratedBy > $index" class="filled">&#9733;</span>
+                                            <span ng-click="rateBy($index+1)" ng-show="ratedBy <= $index">&#9733;</span>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <div>
 
-                                    <fieldset class="rating">
-                                      <!-- <fieldset class="rating" ng-if = "user.data.user_type == 1"> -->
-                                        <input type="radio" id="star5" ng-click = "rate(5,business._id)"/><label class = "full" for="star5"></label>
-                                        <input type="radio" id="star4" ng-click = "rate(4,business._id)"/><label class = "full" for="star4"></label>
-                                        <input type="radio" id="star3" ng-click = "rate(3,business._id)"/><label class = "full" for="star3"></label>
-                                        <input type="radio" id="star2" ng-click = "rate(2,business._id)"/><label class = "full" for="star2"></label>
-                                        <input type="radio" id="star1" ng-click = "rate(1,business._id)"/><label class = "full" for="star1"></label>
-                                    </fieldset>
+
                                 </div>
                         </aside>
                         <!-- End Single Widget -->
@@ -84,17 +91,17 @@
                         <!-- End Single Widget -->
 
                          <aside class="widget wow fadeInDown">
-							<div class="widget-title">
+                            <div class="widget-title">
                                <h3>Business' Information</h3>
-							</div>
-							<div class="widget-content">
-								<li>Area: {{ business.area }}</li>
+                            </div>
+                            <div class="widget-content">
+                                <li>Area: {{ business.area }}</li>
                 <li>Address: {{ business.address }}</li>
                 <li>Phone Numbers: </li>
                   <li ng-repeat = "phone in phones"> {{ phone }}</li>
                 <li>Email: {{ business.email }}</li>
-							</div>
-							<div class="widget-content">
+                            </div>
+                            <div class="widget-content">
                                 <!-- <form ng-if = "user.data.user_type == 2" action="/business/edit" method="get"> -->
                                <form action="#!/business/edit" method="get">
 
