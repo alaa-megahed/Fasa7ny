@@ -9,7 +9,7 @@ var EventsSchema = mongoose.Schema({
     capacity: Number,
     image: [String],
     repeated: String,
-    daysOff: [String],
+    // daysOff: [String],
     business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'},
     facility_id:{type: mongoose.Schema.Types.ObjectId, ref:'Facility'}
 

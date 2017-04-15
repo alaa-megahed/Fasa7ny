@@ -26,8 +26,8 @@ exports.createFacility = function(req,res)
 			{
 				name : req.body.name,
 				description:req.body.description,
-				price:req.body.price,
 				capacity:req.body.capacity,
+				daysOff: req.body.day,
 				business_id: id
 			});
 
@@ -74,7 +74,7 @@ exports.createEvent = function (req, res) {
 				price:req.body.price,
 				capacity:req.body.capacity,
 				repeated: req.body.repeat,
-				daysOff: req.body.day,
+				// daysOff: req.body.day,
 				business_id: id
 
 				});
