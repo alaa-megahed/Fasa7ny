@@ -140,7 +140,7 @@
       Start About Section
         ==================================== -->
         <section id="about" class="text-center">
-            <div ng-controller="bookingController" class="container">
+            <div ng-controller="bookFacilityController" class="container">
 <!--                 <div class="row">
  -->                
         
@@ -154,7 +154,8 @@
                     
                    
                       <form ng-model="formData">
-                        <h3>Number of people  :  <input type="Number" ng-model="formData.count"><br></h3>
+
+                        <h3>Number of people  : <input type="Number" ng-model="formData.count"><br></h3>
                        
                         <div> {{betengan}} </div>
                         <h3> Special Offers:</h3> <br>
@@ -171,7 +172,7 @@
                         <button type="submit" ng-click="book()"> BOOK </button>
                        </form>
 
-                        <a href="\book_facility">CLICK ME CLICK ME</a>
+                         <div>{{chosen_offer}}</div>
                     
                 </div>
                         <!-- End row -->

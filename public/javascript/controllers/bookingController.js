@@ -1,11 +1,10 @@
 
 angular.module('fasa7ny')
 .controller('bookingController', function($scope, $http, $location, Offers) {
-        Offers.get()
-                .then(function(response) {
-                       $scope.offers = response.data;
-                       $scope.betengan = "Roody";
-                   });
+        Offers.get().then(function(response) {
+              $scope.offers = response.data;
+              $scope.betengan = "Roody";
+        });
 
         $scope.book = function()
         {		
@@ -16,5 +15,14 @@ angular.module('fasa7ny')
         	});
         }
                         
-     });
+     })
 
+.controller('bookFacilityController', function($scope, $http, $location, Offers) {
+      console.log("in bookFacilityController");
+      Offers.get().then(function(response) {
+              $scope.offers = response.data;
+              $scope.betengan = "Facility Booking";
+        });
+
+
+});
