@@ -16,7 +16,7 @@ exports.createFacility = function(req,res)
 	{
 		var id = req.user.id;
 
-		if(!req.body.name || !req.body.description || !req.body.price || !req.body.capacity) 
+		if(!req.body.name || !req.body.description || !req.body.capacity) 
 		{
 			res.send("incomplete form");
 		}
@@ -27,7 +27,6 @@ exports.createFacility = function(req,res)
 				name : req.body.name,
 				description:req.body.description,
 				capacity:req.body.capacity,
-				daysOff: req.body.day,
 				business_id: id
 			});
 
@@ -74,7 +73,7 @@ exports.createEvent = function (req, res) {
 				price:req.body.price,
 				capacity:req.body.capacity,
 				repeated: req.body.repeat,
-				// daysOff: req.body.day,
+				daysOff: req.body.day,
 				business_id: id
 
 				});
@@ -89,12 +88,6 @@ exports.createEvent = function (req, res) {
 				if(req.body.facility_id)
 				{
 					event.facility_id = req.body.facility_id;
-					// set event daysoff to facility daysoff
-					Facility.findById(req.body.facility_id, function(err, facility){
-						if(err) throw err;
-						else 
-							event.daysOff = facility.daysOff;
-					});
 				}
 
 				if (typeof req.file == "undefined") {
@@ -120,8 +113,8 @@ exports.createEvent = function (req, res) {
 						now.setDate(now.getDate() + 1);
 						var tflag = true;
 
-						for (l = 0; l < event.daysOff.length; l++) {
-							var y = Number(event.daysOff[l]);
+						for (l = 0; l < req.body.day.length; l++) {
+							var y = Number(req.body.day[l]);
 
 							if (y == now.getDay()) {
 								tflag = false;
@@ -186,8 +179,8 @@ exports.createEvent = function (req, res) {
 
 						var flag = true;
 
-						for (i = 0; i < event.daysOff.length; i++) {
-							var x = Number(event.daysOff[i]);
+						for (i = 0; i < req.body.day.length; i++) {
+							var x = Number(req.body.day[i]);
 
 							if (x == day) {
 								flag = false;
