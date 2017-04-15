@@ -13,7 +13,6 @@ var EventsSchema = mongoose.Schema({
     business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'},
     facility_id:{type: mongoose.Schema.Types.ObjectId, ref:'Facility'}
 
-
 });
 
 
