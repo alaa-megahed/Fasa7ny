@@ -7,14 +7,12 @@
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
 
 
-      <script src="javascript/core.js"></script> <!-- load our main application -->
+      <script src="javascript/core.js"></script>
 
       <script src="javascript/controllers/homepage.js"></script>
       <script src="javascript/services/homepage.js"></script>
 	  <script src="javascript/controllers/businessController.js"></script>
-    <script src="javascript/controllers/RatingCtrl.js"></script>
       <script src="javascript/services/businessService.js"></script>
-      <script src="javascript/directives.js"></script>
 
       <script>
       function openLeftMenu() {
@@ -31,6 +29,19 @@
           document.getElementById("rightMenu").style.display = "none";
       }
       </script>
+
+      <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+
+	   <script>
+
+			function openRightMenu() {
+			    document.getElementById("rightMenu").style.display = "block";
+			}
+			function closeRightMenu() {
+			    document.getElementById("rightMenu").style.display = "none";
+			}
+		</script>
 
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="description" content="Meghna One page parallax responsive HTML Template">

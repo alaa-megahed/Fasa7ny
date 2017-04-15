@@ -1,5 +1,3 @@
-// angular.module('businessController', [])
-
 app.controller('businessController', function($scope, $http, Business, $location) {
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
@@ -55,12 +53,22 @@ app.controller('businessController', function($scope, $http, Business, $location
            });
              $scope.ratedBy = star;
          }
+  },
 
-        //  $scope.rate = function(rate, id) {
-        //    console.log("controller rate");
-        //    Business.rate(rate, id)
-        //    .then(function(d) {
-        //      console.log("rate done");
-        //    })
-        //  }
+
+         $scope.public = function(){
+         	console.log('public ctrl');
+         	Business.public()
+         	.then(function(d){
+         		console.log('public done');
+         	})
+         },
+
+          $scope.remove = function(){
+         	console.log('remove ctrl');
+         	Business.remove()
+         	.then(function(d){
+         		console.log('remove done');
+         	})
+         }
     });

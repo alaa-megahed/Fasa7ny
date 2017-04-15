@@ -21,9 +21,19 @@
             	return $http.get('/user/unsubscribe/' + id);
             },
 
-            rate : function(star) {
+             rate : function(star) {
               console.log("rate service");
               return $http.get('/user/rate/' + star);
+            },
+
+            public : function(){
+            	console.log('public service');
+            	return $http.get('/business/publicPage');
+            },
+
+            remove : function(){
+            	console.log('remove service');
+            	return $http.get('/business/requestRemoval');
             }
     	}
     }]);

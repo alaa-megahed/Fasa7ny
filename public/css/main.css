@@ -1623,9 +1623,47 @@ blockquote {
 
 
 
+.menu {
+    position: fixed;
+    right: -200px;
+    width: 260px;
+    height: 100%;
+    top: 0;
+    z-index: 10;
+    text-align: left;
+}
 
 
 
+.menu-wrap {
+    position: absolute;
+    top: 0;
+    left: 60px;
+    background: #1a1a1a;
+    width: 200px;
+    height: 100%}
+
+ .menu-close {
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    font-size: 14px;
+    color: gray;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    top: 20px;
+    right: 5px;
+    -webkit-transition: all .1s ease-in-out;
+    -moz-transition: all .1s ease-in-out;
+    -ms-transition: all .1s ease-in-out;
+    -o-transition: all .1s ease-in-out;
+    transition: all .1s ease-in-out;
+}
+
+.font{
+	font-color : #000;
+}
 
 .rating {
            color: #a9a9a9;

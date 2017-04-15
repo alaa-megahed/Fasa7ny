@@ -8,7 +8,7 @@
       <script src="../javascript/controllers/homepage.js"></script> 
       <script src="../javascript/services/homepage.js"></script> 
       <script src="../javascript/controllers/businessController.js"></script>
-      <script src="../javascript/services/business.js"></script>
+      <script src="../javascript/services/businessService.js"></script>
         <section id="blog-banner">
             <div class="container">
                 <div class="row">
@@ -24,10 +24,10 @@
 
        <section id = "blog-page">
             <div ng-app = "fasa7ny" ng-controller = "businessController">
-                <form ng-model = "formData">
+                <form ng-model = "formData" >
         
                 Description: <br>
-                <input type="text" ng-model = "formData.description"></input> <br>
+                <input font-color:'#000' type="text" ng-model = "formData.description"></input> <br>
                 Location: <br>
                 <input type="text" ng-model = "formData.location"></input> <br>
                 Email: <br>
