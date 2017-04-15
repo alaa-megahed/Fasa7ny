@@ -161,16 +161,16 @@
 
                         <div ng-repeat="offer in offers" ng-if=" offer.type === 'specific audience'">
 
-                          <input type="radio" ng-model="formData.chosen_offer" name="chosen_offer" value=offer.id >
+                          <input type="radio" ng-model="$parent.formData.chosen_offer" name="chosen_offer" value="{{offer._id}}">
                           <label>{{"Offer: "+offer.name + "  details: "+offer.details +" value: "+ offer.value}}</label>
                           <br>
 
                         </div> <br><br>
-                            
+
                         <button type="submit" ng-click="book()"> BOOK </button>
                        </form>
 
-                       
+                         <div>{{chosen_offer}}</div>
                     
                 </div>
                         <!-- End row -->
