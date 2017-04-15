@@ -5,8 +5,8 @@ var FacilitySchema = new mongoose.Schema(
 {
 	name: String,
     description: String,
-    price: SchemaTypes.Double,
     capacity: Number,
+    daysOff: [String],
     image: [String],
     business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'}
 
