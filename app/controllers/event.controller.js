@@ -27,6 +27,54 @@ exports.createFacility = function(req,res)
 				name : req.body.name,
 				description:req.body.description,
 				capacity:req.body.capacity,
+				business_id: id
+			});
+
+			facility.save(function(err)
+			{
+				if(err)
+					res.send("Oops Something went wrong");
+			});
+		}
+
+
+	}
+}
+
+//add edit and delete facility
+
+exports.editFacility = function(req,res)
+{
+	if (req.user && req.user instanceof Business) 
+	{
+		var id = req.user.id;
+		var facility_id = req.body.facility_id;
+
+		Facility.findById(facility_id,function(err,facility)
+		{
+			if(err || !facility)
+				return res.send("Oops!! Something went wrong");
+			if(req.body.name)
+				facility.name = req.body.name;
+
+			if(req.body.description)
+				facility.description = req.body.description;
+
+			if(req.body.capacity)
+				facility.capacity = req.body.capacity;
+
+			facility.save();
+
+		});
+
+		 
+		else
+		{
+			var facility = new Facility(
+			{
+				name : req.body.name,
+				description:req.body.description,
+				capacity:req.body.capacity,
 				daysOff: req.body.day,
 				business_id: id
 			});
@@ -42,7 +90,6 @@ exports.createFacility = function(req,res)
 	}
 }
 	
-//add edit and delete facility
 
 
 /* This function creates an event. An event can have two types Once or Daily specified by "repeated". 

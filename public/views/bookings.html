@@ -159,9 +159,9 @@
                         <div> {{betengan}} </div>
                         <h3> Special Offers:</h3> <br>
 
-                        <div ng-repeat="offer in offers" ng-if=" offer.type === 'specific audience'">
+                        <div ng-repeat="offer in offers" ng-if="offer.type === 'specific audience'">
 
-                          <input type="radio" ng-model="$parent.formData.chosen_offer" name="chosen_offer" value="{{offer._id}}">
+                          <input type="radio" ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer._id}}">
 
                           <label>{{"Offer: "+offer.name + "  details: "+offer.details +" value: "+ offer.value}}</label>
                           <br>
