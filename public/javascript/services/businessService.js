@@ -24,6 +24,16 @@
             rate : function(rate, id) {
               console.log("rate service");
               return $http.get('/user/rate/' + rate + "/" + id);
+            },
+
+            public : function(){
+            	console.log('public service');
+            	return $http.get('/business/publicPage');
+            },
+
+            remove : function(){
+            	console.log('remove service');
+            	return $http.get('/business/requestRemoval');
             }
     	}
     }]);

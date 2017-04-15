@@ -24,15 +24,15 @@
 
                                 <div id="post-thumb" class="post-thumb">
                                     <div class="item">
-                                        <img src="img/blog/bicycle.jpg" alt="Flying bicycle" class="img-responsive">
+                                        <img src="../img/blog/bicycle.jpg" alt="Flying bicycle" class="img-responsive">
                                     </div>
                                     <div class="item">
-                                        <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                        <img src="../img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
                                     </div>
                                 </div>
 
                                 <div class="post-excerpt">
-                                    <h3><a href="single-post.html">Description</a></h3>
+                                    <h3>Description</h3>
                                     <p>{{ business.description }}</p>
                                 </div>
 
@@ -51,6 +51,8 @@
                             <div class="widget-content">
                                 <!-- <form action="" ng-if = "user.data.user_type == 1"> -->
                                 <!-- <form action=""> -->
+                                    <input ng-if = "business.delete == 0" type="submit" value="Request Removal" ng-click = "remove()" class="btn btn-transparent">
+                                    <input ng-if = "business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent">
                                     <input ng-if = "check == 0" type="submit" value="Subscribe" ng-click = "subscribe(business._id)" class="btn btn-transparent">
                                     <input ng-if = "check == 1" type="submit" value="unsubscribe" ng-click = "unsubscribe(business._id)" class="btn btn-transparent">
                                 <!-- </form> -->
@@ -89,10 +91,12 @@
 							</div>
 							<div class="widget-content">
 								<li>Area: {{ business.area }}</li>
-                <li>Address: {{ business.address }}</li>
-                <li>Phone Numbers: </li>
-                  <li ng-repeat = "phone in phones"> {{ phone }}</li>
-                <li>Email: {{ business.email }}</li>
+                                <li>Address: {{ business.address }}</li>
+                                <li>Phone Numbers: </li>
+                                <li ng-repeat = "phone in phones"> {{ phone }}</li>
+                                <li>Email: {{ business.email }}</li>
+                                <li>Payment Methods: </li>
+                                <li ng-repeat = "method in methods"> {{ method }}</li>
 							</div>
 							<div class="widget-content">
                                 <!-- <form ng-if = "user.data.user_type == 2" action="/business/edit" method="get"> -->

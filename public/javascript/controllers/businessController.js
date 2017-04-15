@@ -6,6 +6,7 @@ app.controller('businessController', function($scope, $http, Business, $location
                   console.log(d.data.result._id);
                         $scope.business = d.data.result;
                         $scope.phones = d.data.result.phones;
+                        $scope.methods = d.data.result.payment_methods;
                         $scope.categories = d.data.result.category;
                         $scope.user = d.data.user;
                         $scope.check = 0;
@@ -49,6 +50,22 @@ app.controller('businessController', function($scope, $http, Business, $location
            .then(function(d) {
              console.log("rate done");
            })
+         },
+
+         $scope.public = function(){
+         	console.log('public ctrl');
+         	Business.public()
+         	.then(function(d){
+         		console.log('public done');
+         	})
+         },
+
+          $scope.remove = function(){
+         	console.log('remove ctrl');
+         	Business.remove()
+         	.then(function(d){
+         		console.log('remove done');
+         	})
          }
 
         // $scope.edit() = function() {

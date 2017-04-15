@@ -20,11 +20,11 @@ business.get('/', function(req, res){
 //
 //     });
 business.get('/b', businessController.getBusiness);
-business.post('/requestRemoval',businessController.requestRemoval)
+business.get('/requestRemoval',businessController.requestRemoval)
 business.post('/deletePaymentMethod', businessController.deletePaymentMethod);
 business.post('/editInformation', businessController.editInformation);
 business.post('/deletePhone', businessController.deletePhone);
-business.post('/publicPage', businessController.makePagePublic);
+business.get('/publicPage', businessController.makePagePublic);
 
 
 

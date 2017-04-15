@@ -5,14 +5,14 @@ var EventOccurrences = require('mongoose').model('EventOccurrences');
 
 var BusinessController = {
     getBusiness: function (req, res) {
-        var name = "business1";
+        var name = "Habiiba";
         Business.findOne({ name: name }).
             exec(function (err, result) {
                 if (err)
                     console.log(err);
                 else{
                     console.log(result);
-                    res.json({result:result, user:"58f09946fcefb434ea0d4e22"});
+                    res.json({result:result, user:"58f20e01b38dec5d920104f3"});
                     // res.render("", {business: result});
                 }
             });
@@ -25,26 +25,30 @@ var BusinessController = {
 
 
 requestRemoval: function(req,res) {
-        if(req.user && req.user instanceof Business){
-        var id = req.user.id;
+        // if(req.user && req.user instanceof Business){
+        // var id = req.user.id;
+        console.log('removal');
+        var id = "58f20e01b38dec5d920104f3";
         Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
             if(err) res.send("error in request removal");
             else res.send("Requested!");
         });
 
-        }
+     //    }
 
-        else{
-         console.log('You are not a logged in busiess');
-     }
+     //    else{
+     //     console.log('You are not a logged in busiess');
+     // }
 
     },
 
     /* A business can make his own page public (by changing the public flag)
     so that Business will now show up in searches and can be viewed by all users.*/
     makePagePublic: function (req, res) {
-        if (req.user && req.user instanceof Business) {
-            var businessId = req.user.id;
+        // if (req.user && req.user instanceof Business) {
+            // var businessId = req.user.id;
+            console.log('public');
+            var businessId = "58f20e01b38dec5d920104f3";
             Business.findByIdAndUpdate(businessId, { $set: { public: 1 } },
                 function (err) {
                     if (err) {
@@ -53,7 +57,7 @@ requestRemoval: function(req,res) {
                         res.send("done");
                     }
                 });
-        } else res.send("you must be a logged in business");
+        // } else res.send("you must be a logged in business");
     },
 
     /* A business can edit its personal infromation.*/
@@ -62,7 +66,7 @@ requestRemoval: function(req,res) {
     editInformation: function (req, res) {
 
         // if (req.user && req.user instanceof Business) {
-            var id = "58e666a20d04c180d969d591";
+            var id = "58f20e01b38dec5d920104f3";
             console.log("ana fl backend");
 
             Business.findById(id, function (err, business) {
@@ -104,6 +108,7 @@ requestRemoval: function(req,res) {
 
                     business.save();
                     res.json(business);
+
                 }
 
             });

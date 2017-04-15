@@ -3,6 +3,7 @@
 <html class="no-js" ng-app = "fasa7ny">
     <head>
 
+
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
 
@@ -101,7 +102,8 @@
                       <li ng-if = "user.data.user_type == 2"><a href="/auth/login"> My Business Page </a></li>
                       <li ng-if = "user.data.user_type == 3"><a href="/auth/login"> Admin Requests </a></li>
                       <li><a href="#contact-us">Contact Us</a></li>
-                      <li ng-if = "user.data.user_type"><a href="/auth/logout" </a>Log Out</li>
+                      <li ng-if = "user.data.user_type"><a href="/auth/logout">Log Out</a></li>
+                   <!--    <li ng-if = "user.data.user_type"><a href="/auth/logout" </a>Log Out</li> -->
 
                   </ul>
               </nav>

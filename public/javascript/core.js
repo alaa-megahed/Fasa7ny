@@ -21,4 +21,5 @@ app.config(function($routeProvider){
 		controller  : "businessController"
 
 	})
+
 });
