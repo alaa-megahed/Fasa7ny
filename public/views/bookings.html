@@ -153,21 +153,25 @@
                     <!-- /section title -->
                     
                    
-                      <form method="Post" >
+                      <form ng-submit="book()" >
                        
-                        Number of people  :  <input type="Number" name="count"><br>
+                        <h3>Number of people  :  <input type="Number" ng-model="count"><br></h3>
                        
                         <div> {{betengan}} </div>
-                         Special Offers : <br>
-                        <select name="chosen_offer" ng-repeat="offer in offers" ng-if=" offer.type === 'specific audience'">
-                          <option value="{{offer.id}}">{{"Offer: "+offer.name + "   details: "+offer.details +" value: "+ offer.value}} <br></option><br>
-                        </select><br><br>
+                        <h3> Special Offers:</h3> <br>
+
+                        <div ng-repeat="offer in offers" ng-if=" offer.type === 'specific audience'">
+
+                          <input type="radio" ng-model="chosen_offer" name="offer_option" ng-value="{{offer.id}}"><label>{{"Offer: "+offer.name + "   details: "+offer.details +" value: "+ offer.value}}</label> <br>
+
+                        </div><br><br>
                             
-                        <button type="submit" ng-click="book(chosen_offer)"> BOOK </button>
-                      <!--   <li ng-repeat="offer in offers" ng-if=" offer.type === 'specific audience'" >  {{"Offer: "+offer.name + "   details: "+offer.details +" value: "+ offer.value}} 
-                     
-                       <input type="checkbox" name="pick_offer" ></li> -->
+                        <button type="submit" > BOOK </button>
+                                        
                        </form>
+                       
+                       
+                    
                 </div>
                         
 

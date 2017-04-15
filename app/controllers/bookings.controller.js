@@ -70,7 +70,7 @@ exports.book_event = function (req,res)
                             if(err || !eventoccur)
                               res.send("Oops, something went wrong, please try again with the correct information ");
                             else
-                              res.send("Booked successfully");
+                              res.json(booking);
                           });
                       }
                       });
