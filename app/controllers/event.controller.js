@@ -223,7 +223,11 @@ exports.createEvent = function (req, res) {
 											if(err)
 												console.log("error updating user notifications");
 											else
+											{
+												user.unread_notifications = user.unread_notifications + 1;
+												user.save();
 												console.log(user);
+											}
 										});
 									});	
 								}

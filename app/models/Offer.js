@@ -9,7 +9,7 @@ var offerSchema = new Schema({
   value       : SchemaTypes.Double,
   details		 	: String,
   start_date  : { type: Date, default: new Date() },
-  expiration_date	: Date,
+  expiration_date	  : Date,
   notify_subscribers: Number, 
   business:
   {

@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Business = mongoose.model('Business');
 var Offer = mongoose.model('Offer');
 var User  = require('mongoose').model('RegisteredUser');
+var async = require("async");
+
 
 
 /* this function views all the offers created by a business by finding the offers
@@ -9,36 +11,75 @@ var User  = require('mongoose').model('RegisteredUser');
  if the user is a business, he will be sent to his offer's page where he
  can update/delete the offers */
 exports.viewOffers = function(req, res) {
-  if(typeof req.query.id != "undefined") {
-    var id = req.query.id;
+ // if(typeof req.query.id != "undefined") {
+    // var id = req.query.id;
+   var id = "58f0f3faaa02d151aa4c987c";
 
-    Business.findOne({_id:id}, function(err, business) {
-      if(err) res.send("error in finding the business to view the offers");
-      else {
-        if(!business) res.send("business does not exist. enter a valid one");
-        else {
-          Offer.find({business:id}, function(err, offers) {
-            if(err) {
-              res.send("error in finding all offers");
-            } else {
-                res.render("view_offers", {offers:offers});
-            }
-          })
-        }
+   Business.findOne({_id:id}, function(err, business) 
+   {
+      if(err || !business)
+        return res.send("error in viewOffers");
+      else
+      { 
+        Offer.find({business:id}, function(err, offers) 
+         {
+            if(err)
+              console.log("error in viewOffers");
+            else
+              res.json(offers);
+         });
       }
-    })
-  } else if(req.user && req.user instanceof Business) {
+    });
+    // Business.findOne({_id:id}, function(err, business) {
+    //   if(err) return res.send("error in finding the business to view the offers");
+    //   else {
+    //     if(!business) return res.send("business does not exist. enter a valid one");
+    //     else {
+    //       Offer.find({business:id}, function(err, offers) {
+    //         if(err) {
+    //           return res.send("error in finding all offers");
+    //         } else {
+    //             // res.render("view_offers", {offers:offers});
+    //             res.json(offers);
+    //         }
+    //       })
+    //     }
+    //   }
+    // })
+ // } else
+  //  if(req.user && req.user instanceof Business) 
+  //  {
+  //     var id = req.user.id;
+  //     Offer.find({business:id}, function(err, offers) {
+  //       if(err) {
+  //         res.send("error in finding all offers");
+  //       } else {
+  //         console.log("else")
+  //           //res.render("crudoffer", {offers:offers, id:req.user.id});
+  //       }
+  //   })
+  // } 
+  // else {
+  //   res.send("enter a business to find its offers");
+  // }
+}
+
+exports.getCreateOffer = function(req, res){
+  if(req.user && req.user instanceof Business) 
+   {
       var id = req.user.id;
       Offer.find({business:id}, function(err, offers) {
         if(err) {
           res.send("error in finding all offers");
         } else {
+          // console.log("else")
             res.render("crudoffer", {offers:offers, id:req.user.id});
         }
-    })
-  } else {
+    });
+  } 
+  else {
     res.send("enter a business to find its offers");
-  }
+  } 
 }
 
 /*this function is used by business to create an offer where he must enter
@@ -117,8 +158,26 @@ exports.createOffer = function(req, res,notify_on_create) {
         newOffer.save(function(err, offer) {
           if(err) {
             res.send("error in creating offer");
-          } else {
+          } else 
+          {
            // notify_on_create(body.name,req.user.subscribers,req.user.name);
+               var rightNow = new Date();
+               var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");    
+               var content = req.user.name + " added " + req.body.name +"    "+ date; 
+
+                  async.each(req.user.subscribers, function(subscriber, callback){
+                    User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
+                    {
+                      if(err)
+                        console.log("error updating user notifications");
+                      else
+                      {
+                        user.unread_notifications = user.unread_notifications + 1;
+                        user.save();
+                        console.log(user);
+                      }
+                    });
+                  }); 
             res.send(offer);
           }
         })
