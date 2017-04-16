@@ -12,6 +12,7 @@ $scope.id = "58e666a20d04c180d969d591";
                         $scope.phones = d.data.result.phones;
                         $scope.categories = d.data.result.category;
                         $scope.user = d.data.user;
+                        $scope.methods = d.data.result.payment_methods;
                         if(d.data.rate) $scope.ratedBy = d.data.rate;
                         $scope.check = 0;
                         $scope.avgRate = d.data.result.average_rating;
