@@ -2,8 +2,8 @@
 
     app.factory('Business', ['$http', function($http) {
         return {
-            get : function() {
-                return $http.get('/business/b');
+            get : function(id) {
+                return $http.get('/business/b/' + id);
             },
 
             edit : function(formData) {

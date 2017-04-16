@@ -16,6 +16,10 @@ app.config(function($routeProvider){
 		controller  : "businessController"
 	})
 
+	.when("/:id", {
+		templateUrl : "views/businessPage.html",
+		controller  : "businessController"
+	})
 	.when("/business/edit", {
 		templateUrl : "views/businessEdit.html",
 		controller  : "businessController"

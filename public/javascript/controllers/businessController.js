@@ -1,7 +1,10 @@
-app.controller('businessController', function($scope, $http, Business, $location) {
+app.controller('businessController', function($scope, $http, Business, $location, $routeParams) {
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
-        Business.get()
+  $scope.avgRate = 0;
+console.log($routeParams.id);
+$scope.id = "58e666a20d04c180d969d591";
+        Business.get($scope.id)
                 .then(function(d) {
                   console.log(d.data.result._id);
                         $scope.business = d.data.result;
@@ -10,7 +13,7 @@ app.controller('businessController', function($scope, $http, Business, $location
                         $scope.user = d.data.user;
                         if(d.data.rate) $scope.ratedBy = d.data.rate;
                         $scope.check = 0;
-
+                        $scope.avgRate = d.data.result.average_rating;
                         for(var i = 0; i < d.data.result.subscribers.length; i++) {
                           if(d.data.result.subscribers[i] == d.data.user)
                             $scope.check = 1;
@@ -25,7 +28,8 @@ app.controller('businessController', function($scope, $http, Business, $location
          	console.log("controller");
          	Business.edit($scope.formData)
          	.then(function(d) {
-         		console.log("edit done");
+         		console.log(d.data.business._id);
+            $location.path('/'+ d.data.business._id);
          	})
          };
 
@@ -50,6 +54,7 @@ app.controller('businessController', function($scope, $http, Business, $location
            Business.rate(star)
            .then(function(d) {
              console.log("rating done");
+             $scope.avgRate = d.data.average_rating;
            });
              $scope.ratedBy = star;
          };

@@ -5,14 +5,15 @@ var Rating = require('mongoose').model('Rating');
 
 var BusinessController = {
        getBusiness: function (req, res) {
-        var name = "business1";
-        Business.findOne({ name: name }).
+        // var name = "business1";
+        var id = req.params.id;
+        Business.findOne({ _id: id }).
             exec(function (err, result) {
                 if (err)
                     console.log(err);
                 else{
                     console.log(result);
-
+//in case there is a user logged in
                     Rating.findOne({user_ID: "58f09946fcefb434ea0d4e22" , business_ID: result._id}, function(err, rate) {
                       if(err) console.log("error in finding rate");
                       if(!rate) res.json({result:result, user:"58f09946fcefb434ea0d4e22", rate:0});
@@ -117,7 +118,7 @@ requestRemoval: function(req,res) {
                     }
 
                     business.save();
-                    res.json(business);
+                    res.json({business:business});
                     // res.sendFile('/business/b');
 
                 }

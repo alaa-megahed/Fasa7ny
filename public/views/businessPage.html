@@ -76,6 +76,17 @@
                         <aside class="widget wow fadeInDown">
 
                             <div class="widget-content">
+
+                              <div>
+                                <ul class="rating">
+                                <li ng-repeat="n in [].constructor(maxRating) track by $index">
+                                <span ng-click="rateBy($index+1)" ng-show="ratedBy > $index" class="filled">&#9733;</span>
+                                <span ng-click="rateBy($index+1)" ng-show="ratedBy <= $index">&#9733;</span>
+                                </li>
+                                </ul>
+                              </div>
+
+                              <br>
                                 <!-- <form action="" ng-if = "user.data.user_type == 1"> -->
                                 <!-- <form action=""> -->
 
@@ -85,14 +96,6 @@
                                 </div>
 
 
-                                <div>
-                                  <ul class="rating">
-                                  <li ng-repeat="n in [].constructor(maxRating) track by $index">
-                                  <span ng-click="rateBy($index+1)" ng-show="ratedBy > $index" class="filled">&#9733;</span>
-                                  <span ng-click="rateBy($index+1)" ng-show="ratedBy <= $index">&#9733;</span>
-                                  </li>
-                                  </ul>
-                                </div>
 
 
                         </aside>

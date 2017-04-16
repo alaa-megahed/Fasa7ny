@@ -19,7 +19,7 @@ business.get('/', function(req, res){
 //        	// res.render('b.ejs');
 //
 //     });
-business.get('/b', businessController.getBusiness);
+business.get('/b/:id', businessController.getBusiness);
 business.get('/requestRemoval',businessController.requestRemoval)
 business.post('/deletePaymentMethod', businessController.deletePaymentMethod);
 business.post('/editInformation', businessController.editInformation);

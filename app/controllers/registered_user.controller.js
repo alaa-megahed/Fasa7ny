@@ -122,7 +122,7 @@ exports.addRating = function(req, res)
 		 var businessID = "58f20e01b38dec5d920104f3";
 		// var userID = req.user.id;              // from passport session; changed to body temporarily for testing
 	    // var businessID = req.params.id;        // from url parameters; changed from param to body
-			
+
 	    var rating2 = req.params.rate;		   // from post body
 			console.log("entered addRating");
 	    var rating_query = {user_ID: userID, business_ID: businessID};
@@ -183,7 +183,7 @@ exports.average_rating = function(req,res)
 					}
 					else
 					{
-						return res.send("rating successfully added");
+						return res.json({average_rating:business.average_rating });
 					}
 				});
 			}
