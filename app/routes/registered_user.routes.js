@@ -12,23 +12,7 @@ router.use('/edit', function(req, res) {
 });
 
 
-// router.get('/subscribe', function(req, res) {
-//   res.render('subscribe.ejs');
-// });
-
-
-// router.get('/unsubscribe', function(req, res) {
-//   res.render('unsubscribe.ejs');
-// });
-
-
-router.get('/rate', function(req, res) {
-  res.render('rate.ejs');
-});
-
-
-
-router.get('/rate/:rate', user.addRating);
+router.get('/rate/:rate/:bid', user.addRating);
 router.get('/subscribe/:id',user.subscribe);
 router.get('/unsubscribe/:id',user.unsubscribe);
 router.get('/customize', user.customize);

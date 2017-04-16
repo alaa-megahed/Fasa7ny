@@ -21,9 +21,9 @@
             	return $http.get('/user/unsubscribe/' + id);
             },
 
-             rate : function(star) {
+             rate : function(star, bid) {
               console.log("rate service");
-              return $http.get('/user/rate/' + star);
+              return $http.get('/user/rate/' + star+"/" + bid);
             },
 
             public : function(){

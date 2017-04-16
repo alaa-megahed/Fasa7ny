@@ -2,6 +2,7 @@ app.controller('businessController', function($scope, $http, Business, $location
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
   $scope.avgRate = 0;
+  $scope.sub = "Subscribe";
 console.log($routeParams.id);
 $scope.id = "58e666a20d04c180d969d591";
         Business.get($scope.id)
@@ -16,9 +17,13 @@ $scope.id = "58e666a20d04c180d969d591";
                         $scope.avgRate = d.data.result.average_rating;
                         for(var i = 0; i < d.data.result.subscribers.length; i++) {
                           if(d.data.result.subscribers[i] == d.data.user)
-                            $scope.check = 1;
+                          {
+                              $scope.check = 1;
+                              $scope.sub = "Unsubscribe";
+                          }
                         }
                       console.log($scope.check);
+                      console.log($scope.sub);
                 });
 
 
@@ -38,6 +43,8 @@ $scope.id = "58e666a20d04c180d969d591";
          	Business.subscribe(id)
          	.then(function(d) {
          		console.log("sub done");
+            $scope.sub = "Unsubscribe";
+            $scope.check = 1;
          	})
         };
 
@@ -46,17 +53,21 @@ $scope.id = "58e666a20d04c180d969d591";
            Business.unsubscribe(id)
            .then(function(d) {
              console.log("unsub done");
+             $scope.sub = "Subscribe";
+             $scope.check = 0;
            })
          };
 
-         $scope.rateBy = function (star) {
-           console.log("rating ctrl");
-           Business.rate(star)
+         $scope.rateBy = function (star, bid) {
+           console.log(star+"!");
+           Business.rate(star, bid)
            .then(function(d) {
              console.log("rating done");
              $scope.avgRate = d.data.average_rating;
-           });
+             console.log($scope.avgRate);
+             console.log(d.data.average_rating);
              $scope.ratedBy = star;
+           });
          };
 
 

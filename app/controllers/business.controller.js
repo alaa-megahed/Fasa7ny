@@ -5,9 +5,9 @@ var Rating = require('mongoose').model('Rating');
 
 var BusinessController = {
        getBusiness: function (req, res) {
-        // var name = "business1";
-        var id = req.params.id;
-        Business.findOne({ _id: id }).
+        var name = "business1";
+        // var id = req.params.id;
+        Business.findOne({ name: name }).
             exec(function (err, result) {
                 if (err)
                     console.log(err);
