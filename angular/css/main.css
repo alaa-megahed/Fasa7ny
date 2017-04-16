@@ -1670,7 +1670,7 @@ ul li input[type=radio]{
   visibility: hidden;
 }
 
-ul li label{
+	 label{
   display: block;
   position: relative;
   font-weight: 300;

@@ -15,7 +15,7 @@ angular.module('fasa7ny')
         	});
         }
                         
-     })
+     }) 
 
 .controller('bookFacilityController', function($scope, $http, $location, Offers) {
       console.log("in bookFacilityController");
@@ -23,6 +23,15 @@ angular.module('fasa7ny')
               $scope.offers = response.data;
               $scope.betengan = "Facility Booking";
         });
+      $scope.getAvailableTimings = function()
+      {
+        Occurrences.get().then(function(response){
+          $scope.timings = response.data;
+        });
+      }
+
+
+
 
 
 });

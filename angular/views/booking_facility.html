@@ -140,7 +140,7 @@
       Start About Section
         ==================================== -->
         <section id="about" class="text-center">
-            <div ng-controller="bookingController" class="container">
+            <div ng-view class="container">
 <!--                 <div class="row">
  -->                
         
@@ -154,9 +154,21 @@
                     
                    
                       <form ng-model="formData">
-                        <h3>Number of people  :  <input type="Number" ng-model="formData.count"><br></h3>
+
+                        <h3> Date  : <input type="date" ng-model="formData.day"><br></h3>
                        
                         <div> {{betengan}} </div>
+                        <h3> Timing :</h3> <br>
+
+                        <div ng-repeat="timing in timings" ng-if="timing.available > 0 && timing.day == day"> <!-- ana 3ayza el day el huwa ekhtaro foo2 -->
+
+                          <input type="radio" ng-model="formData.chosen_time" name="chosen_time" value="{{timing._id}}">
+
+                          <label>{{"Timings: "+timing.time + "  available places: "+timing.available}}</label>
+                          <br>
+
+                        </div> <br><br>
+
                         <h3> Special Offers:</h3> <br>
 
                         <div ng-repeat="offer in offers" ng-if="offer.type === 'specific audience'">
@@ -171,7 +183,7 @@
                         <button type="submit" ng-click="book()"> BOOK </button>
                        </form>
 
-                        <a href="\book_facility">CLICK ME CLICK ME</a>
+                         <div>{{chosen_offer}}</div>
                     
                 </div>
                         <!-- End row -->

@@ -7,4 +7,13 @@ angular.module('fasa7ny')
             }
 
         }
-    }]);
+    }])
+.factory('Occurrences',['$http',function($http)
+{
+	return {
+         	get : function() {
+                return $http.get('/event/viewO');
+            }
+        }
+}]);
+

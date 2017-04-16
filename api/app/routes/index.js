@@ -22,7 +22,6 @@ router.use('/reviews', reviews);
 router.use('/bookings', bookings);
 router.use('/search', search);
 router.use('/business', business);
-router.use('/event',event);
 router.use('/user', user);
 router.use('/admin', admin); 
 router.use('/contact', function(req, res) {
