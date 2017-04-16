@@ -3,6 +3,7 @@ var router   = express.Router();
 var search   = require('./search.routes.js');
 var business = require('./business.routes.js');
 var bookings = require('./bookings.routes');
+var path 	 = require('path');
 
 var reviews  = require('./reviews.routes');
 var offers   = require('./offers.routes');
@@ -29,11 +30,11 @@ router.use('/contact', function(req, res) {
 });
 
 router.get('/', function (req, res) {
-    res.render('index.ejs', {user: req.user});
+      res.sendFile(path.resolve('public/views/index.html'));
 });
 
 router.get('/loggedin', function (req, res) {
-    res.json(req.user);
+    res.json(req.user)
 });
 
 module.exports = router;

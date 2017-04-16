@@ -25,6 +25,7 @@ let AuthController =
 	},
 
   getLoginSuccess: function(req, res) {
+    console.log("helloooo");
     res.json("success");
   },
 
@@ -123,6 +124,8 @@ let AuthController =
 	},
 
 	forgotPassword: function(req, res, next) {
+    if(req.body.email){
+
   		async.waterfall([
       // generate random token of length 20, to uniquely identify each request of reseting password
     	function(done) {
@@ -139,7 +142,7 @@ let AuthController =
               if(err)
               {
                   console.log("Sorry for inconvenience, your trial to reset the password has been denied");
-                  return res.redirect('/auth/forgot');
+                  return res.json("Sorry for inconvenience, your trial to reset the password has been denied");
               }
               if(!business)
               {
@@ -147,7 +150,7 @@ let AuthController =
                 if(check == 2)    // if no user found, print error msg and redirect
                 {
                 console.log('error', 'No account with that email address exists.');
-                return res.redirect('/auth/forgot');
+                return res.json("No account with that email address exists.");
                 }
               }
               // if found, set the values of resetPasswordToken to the token generated
@@ -166,14 +169,14 @@ let AuthController =
             if(err)
               {
                   console.log("Sorry for inconvenience, your trial to reset the password has been denied");
-                  return res.redirect('/auth/forgot');
+                  return res.json("Sorry for inconvenience, your trial to reset the password has been denied");
               }
         	if (!user) {
             check++;
             if(check == 2)       // if no user found, print error msg and redirect
             {
               console.log('error', 'No account with that email address exists.');
-              return res.redirect('/auth/forgot');
+              return res.json("No account with that email address exists.");
             }
 
         	}
@@ -186,7 +189,7 @@ let AuthController =
         		  if(err)
               {
                   console.log("Sorry for inconvenience, your trial to reset the password has been denied");
-                  return res.redirect('/auth/forgot');
+                  return res.json("Sorry for inconvenience, your trial to reset the password has been denied");
               }
           	done(err, token, user);
         	});
@@ -220,9 +223,9 @@ let AuthController =
       			if(err)
             {
       				console.log("ERROR: can not send email to the entered email, please try again");
-              return res.redirect('/auth/forgot');
+              return res.json("ERROR: can not send email to the entered email, please try again");
             }
-        	console.log('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+        	return res.json("An e-mail has been sent to " + user.email + " with further instructions.");
        		done(err, 'done');
       	});
     	}
@@ -230,7 +233,8 @@ let AuthController =
     	if (err) return next(err);
     	res.redirect('/');
   	  });
-	},
+	}
+},
 
 	getReset: function(req, res) {
         var check = 0;
@@ -275,6 +279,7 @@ let AuthController =
 	},
 
 	postReset: function(req, res) {
+    if(!req.body.email) console.log("No email");
   async.waterfall([
     // recheck the validity of the token sent (it might be expired)
     function(done) {

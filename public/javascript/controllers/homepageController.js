@@ -1,6 +1,6 @@
-angular.module('homepageController', [])
+angular.module('fasa7ny')
 
-  .controller('main' , function($rootScope, $scope, $http, $modal, $log, Homepage, LoggedIn) {
+  .controller('homepageController' , function($scope, $http, $modal, $modalStack, $log, Homepage, LoggedIn) {
 
     LoggedIn.check()
            .then(function(data) {
@@ -63,11 +63,13 @@ angular.module('homepageController', [])
 
   .controller('ModalInstanceCtrl', function ($scope, $http, $window, $modalInstance, userForm, Homepage) {
       $scope.form = {};
+
       $scope.submitForm = function (formData) {
           if ($scope.form.userForm.$valid) {
 
             Homepage.signUp(formData).then(function(data)
             {
+
               if(data.data === "success")
               {
                 $window.location.reload();
@@ -91,6 +93,7 @@ angular.module('homepageController', [])
           }
       };
 
+
       $scope.cancel = function () {
           $modalInstance.dismiss('cancel');
       };
@@ -98,36 +101,93 @@ angular.module('homepageController', [])
 
 
 
-  .controller('ModalInstanceCtrl1', function ($scope, $window, $http, $modalInstance, userForm, Homepage) {
-      $scope.form = {}
-      $scope.submitForm = function (formData) {
+
+  .controller('ModalInstanceCtrl1', function ($scope, $window, $http, $modal,$modalInstance, userForm, Homepage) {
+      $scope.form = {};
+      $scope.formData = {};
+      $scope.forgot = 0;
+
+
+      $scope.submitForm = function () {
           if ($scope.form.userForm.$valid) {
-              Homepage.signIn(formData).then(function(data)
-                {
-                  if(data.data === "success")
-                  {
-                    $window.location.reload();
-                    $modalInstance.close("closed");
-                  }
+            console.log($scope.formData);
+            Homepage.signIn($scope.formData).then(function(data)
+            {
 
-                  else
-                  {
-                    $scope.err = data.data;
-                    $modalInstance.close({
-                      err : $scope.err[0]
-                    });
-                  //  $scope.signIn();
-                  }
+              if(data.data === "success")
+              {
+                $window.location.reload();
+                $modalInstance.close("closed");
+              }
 
-                }, function(data2){
+              else
+              {
+                $scope.err = data.data;
+                $modalInstance.close({
+                  err : $scope.err[0]
                 });
+              //  $scope.signIn();
+              }
 
+            }, function(data2){
+            });
 
           } else {
+
           }
       };
+
+      $scope.forgotPassword = function () {
+        $scope.forgot = 1;
+        var modalInstance = $modal.open({
+                  templateUrl: 'views/forgotpassword-form.html',
+                  controller: 'ModalInstanceCtrl2'
+              });
+
+
+      };
+
 
       $scope.cancel = function () {
           $modalInstance.dismiss('cancel');
       };
-  });
+  })
+
+
+
+  .controller('ModalInstanceCtrl2', function ($scope, $timeout, $window, $modalStack, $http,$modalInstance, Homepage) {
+        $scope.form = {};
+        $scope.submitForm = function (formData) {
+            console.log(formData);
+                Homepage.forgotPassword(formData).then(function(data)
+                  {
+                    $scope.err = "";
+                    $scope.success = "";
+
+                    console.log(JSON.stringify(data));
+                    if(data.data.startsWith("An e-mail has been sent to "))
+                    {
+                        console.log("hello");
+                        $scope.success = data.data;
+                        $timeout(function() {
+                            $modalStack.dismissAll();
+                        }, 1000);
+                    }
+
+                    else {
+                      $scope.err = data.data;
+                    }
+
+
+
+
+                  }, function(data2){
+                  });
+
+
+
+        };
+        $scope.cancel = function (reason) {
+              $modalStack.dismissAll();
+        };
+    });

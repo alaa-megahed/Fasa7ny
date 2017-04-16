@@ -1,4 +1,4 @@
-angular.module('homepageService', [])
+angular.module('fasa7ny')
 
   .factory('Homepage', function($http) {
     return {
@@ -11,6 +11,11 @@ angular.module('homepageService', [])
       signUp : function(formData) {
         return $http.post('auth/signup', formData);
       },
+      forgotPassword : function(formData) {
+        return $http.post('auth/forgot', formData);
+      }
+
+
     }
   })
 
