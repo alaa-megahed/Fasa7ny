@@ -34,4 +34,3 @@ angular.module('statsController', ["chart.js"])
         };
     }); 
 
-angular.module('route')

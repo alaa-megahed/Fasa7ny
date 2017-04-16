@@ -28,7 +28,7 @@ var BusinessController = {
                             statsController.addStat(new Date(), result._id, 'views', 1);
 
                         }
-                        res.render("view_business", { business: result });
+                        res.json(result);
                     }
 
                 }

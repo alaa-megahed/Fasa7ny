@@ -39,7 +39,12 @@ module.exports = function () {
 
     app.set('views', './app/views');
     app.set('view engine', 'ejs');
-
+    console.log(path.join(__dirname, '..')); 
+    app.use(express.static("public"));
+    app.all('/*', function (req, res, next) {
+        // Just send the index.html for other files to support HTML5Mode. Assuming your index.html is at application root
+        res.sendFile('public/views/index.html', {root: path.join(__dirname, '..')});
+    });
 
     // app.use(express.static("./uploads"));
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
@@ -56,9 +61,8 @@ module.exports = function () {
 
 
     //setting up static files 
-    app.use('/scripts', express.static(path.resolve('node_modules')));
-    console.log(path.resolve('public'));
-    app.use(express.static(path.resolve('public')));
+    // app.use('/scripts', express.static(path.resolve('node_modules')));
+    
 
 
     return app;
