@@ -1,0 +1,40 @@
+                    <div id="blog-posts">
+                        <div class="post-item" style="height:420px">
+
+                            <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+
+                              <div ng-controller="CarouselDemoCtrl" id="slides_control">
+                                <div>
+                                  <carousel interval="myInterval">
+                                    <slide ng-repeat="slide in slides" active="slide.active">
+                                      <img style="margin:auto; width: 600px; max-width:600px; max-height:400px;" ng-src="{{slide.image}}">
+                                      <div class="carousel-caption">
+                                      </div>
+                                    </slide>
+                                  </carousel>
+                                </div>
+                              </div>
+                            </article>
+
+</div>
+<h2>
+<span class="date">
+<span class="month">
+Dec
+</span>
+<span class="day">
+25
+</span>
+</span> {{ event.name }}
+</h2>
+
+<h4>Time: {{ eventocc.time}} </h4>
+<h4>    Location: {{ event.location}} </h4>
+<h4>    Description: {{ event.description}} </h4>
+<h4>    Price: {{ event.price}} </h4>
+<h4>    Capacity: {{ event.capacity}} </h4>
+<h4>    Available: {{ eventocc.available}} </h4>
+     <input type="submit" value="Book Now!" class="btn btn-transparent w3-green">
+
+</div>
+
