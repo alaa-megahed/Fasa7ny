@@ -3,6 +3,7 @@ var router   = express.Router();
 var search   = require('./search.routes.js');
 var business = require('./business.routes.js');
 var bookings = require('./bookings.routes');
+var path 	 = require('path');
 
 var reviews  = require('./reviews.routes');
 var offers   = require('./offers.routes');
@@ -11,9 +12,8 @@ var reviews = require('./reviews.routes');
 var offers = require('./offers.routes');
 var event = require('./event.routes');
 var auth = require('./auth.routes');
-var user = require('./registered_user.routes'); 
+var user = require('./registered_user.routes');
 var admin = require('./web_admin.routes');
-var path = require('path');
 
 router.use('/auth', auth);
 router.use('/event', event);
@@ -24,14 +24,17 @@ router.use('/search', search);
 router.use('/business', business);
 router.use('/event',event);
 router.use('/user', user);
-router.use('/admin', admin); 
+router.use('/admin', admin);
 router.use('/contact', function(req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
 
 router.get('/', function (req, res) {
-   // res.render('index.ejs');
-     res.sendFile(path.resolve('public/views/bookings.html'));
+      res.sendFile(path.resolve('../angular/index.html'));
+});
+
+router.get('/loggedin', function (req, res) {
+    res.json(req.user)
 });
 
 module.exports = router;
