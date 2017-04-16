@@ -2,7 +2,7 @@
 // angular.module('business', ['businessController', 'businessService']);
 
 
-var app = angular.module('fasa7ny',['ngRoute']);
+var app = angular.module('fasa7ny',['ngRoute', 'ui.bootstrap']);
 
 app.config(function($routeProvider){
 	$routeProvider
