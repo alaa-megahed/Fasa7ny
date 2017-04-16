@@ -173,7 +173,7 @@ exports.createOffer = function(req, res,notify_on_create) {
                       else
                       {
                         user.unread_notifications = user.unread_notifications + 1;
-                        user.save(); 
+                        user.save();
                         console.log(user);
                       }
                     });

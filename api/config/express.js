@@ -42,6 +42,13 @@ module.exports = function() {
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
 
+    app.use('*',function(req, res, next){
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        res.setHeader('Access-Contro-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+        res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+        next();
+    });
+
     var router = require('../app/routes');
 
     app.use(router); 
