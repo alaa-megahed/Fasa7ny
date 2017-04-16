@@ -4,7 +4,8 @@ var mongoose = require('./config/mongoose'),
     config   = require('./config/config'),
     express  = require('./config/express'),
     db       = mongoose(),
-    app      = express();
+    app      = express(),
+    cors     = require('cors');
 
 
 var Business = require('./app/models/Business');
@@ -15,6 +16,7 @@ var Business = require('./app/models/Business');
 // b.name = "Nourhan";
 // b.merchant_ID = "12345";
 // b.save(function(err){if(err) throw err;});
+// app.use(cors());
 
 app.listen(config.port);
 

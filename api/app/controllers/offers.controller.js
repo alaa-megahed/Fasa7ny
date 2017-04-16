@@ -13,7 +13,7 @@ var async = require("async");
 exports.viewOffers = function(req, res) {
  // if(typeof req.query.id != "undefined") {
     // var id = req.query.id;
-   var id = "58f0f3faaa02d151aa4c987c";
+   var id = "58f0cb2d6bfb6061efd66625";
 
    Business.findOne({_id:id}, function(err, business) 
    {
@@ -173,7 +173,7 @@ exports.createOffer = function(req, res,notify_on_create) {
                       else
                       {
                         user.unread_notifications = user.unread_notifications + 1;
-                        user.save(); 
+                        user.save();
                         console.log(user);
                       }
                     });
