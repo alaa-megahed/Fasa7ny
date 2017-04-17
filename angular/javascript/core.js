@@ -41,24 +41,11 @@ app.config(function($routeProvider){
 		templateUrl : "views/createFacility.html",
 		controller  : "facilityController"
 	})
+
+	.when("/editFacility/:facilityId", {
+		templateUrl : "views/editFacility.html",
+		
+	})
 	// $locationProvider.html5Mode(true);
 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

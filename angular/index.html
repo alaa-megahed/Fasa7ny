@@ -20,8 +20,9 @@
       <script src="javascript/controllers/CarouselDemoCtrl.js"></script>
       <script src="javascript/controllers/eventController.js"></script>
       <script src="javascript/services/eventService.js"></script>
+      <script src="javascript/directives/fileModel.js"></script>
       <script src="javascript/controllers/facilityController.js"></script>
-      <!-- <script src="javascript/services/eventService.js"></script> -->
+      <script src="javascript/services/facilityService.js"></script>
       <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 
@@ -30,11 +31,11 @@
    				var x = document.getElementById(id);
     			if (x.className.indexOf("w3-show") == -1) {
         			x.className += " w3-show";
-        			x.previousElementSibling.className = 
+        			x.previousElementSibling.className =
         			x.previousElementSibling.className.replace("w3-dark-grey", "w3-green");
-    			} else { 
+    			} else {
        				x.className = x.className.replace(" w3-show", "");
-       				x.previousElementSibling.className = 
+       				x.previousElementSibling.className =
         			x.previousElementSibling.className.replace("w3-green", "w3-dark-grey");
     			}
 			}
@@ -84,6 +85,11 @@
 
         <link rel="stylesheet" href="css/responsive.css">
 
+<link rel='stylesheet' id='custom-button-mfast-3-css'  href='blog/style.css' type='text/css' media='all' />
+<link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.css" />
+<link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
+<link rel='stylesheet' id='custom-css'  href='css/custom.css' type='text/css' media='all' />
+<link rel='stylesheet' id='google-fonts-css'  href='http://fonts.googleapis.com/css?family=Oswald%7CDroid+Sans%7CPlayfair+Display%7COpen+Sans+Condensed:300,400,800%3A300%7CRokkitt%7CShadows+Into+Light%7CMaven+Pro:400,700%7CAbel%7CMontez' type='text/css' media='all' />
 		<!--
 		Google Font
 		=========================== -->

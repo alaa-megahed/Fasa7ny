@@ -35,5 +35,10 @@
             	console.log('remove service');
             	return $http.get('http://127.0.0.1:3000/business/requestRemoval');
             }
+
+            // checkSession : function(id) {
+            //   console.log('check session service');
+            //   return $http.get('http://127.0.0.1:3000/business/checkSession')
+            // }
     	}
     }]);
