@@ -212,7 +212,7 @@ let AuthController =
         	subject: 'Fasa7ny Password Reset',
         	text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           	'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          	'http://' + req.headers.host + '/auth/reset/' + token + '\n\n' +                                    //url containing the token generated
+          	'http://' + req.headers.host + '/#!/auth/reset/' + token + '\n\n' +                                    //url containing the token generated
           	'If you did not request this, please ignore this email and your password will remain unchanged.\n'
      		};
      	  // send the email using nodeMailer, and previously specified options
