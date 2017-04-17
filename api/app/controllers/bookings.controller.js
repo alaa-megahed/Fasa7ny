@@ -1,4 +1,4 @@
- var Booking  = require('mongoose').model('Booking');
+var Booking  = require('mongoose').model('Booking');
 var Events   = require('mongoose').model('Events');
 var EventOccurrences   = require('mongoose').model('EventOccurrences');
 var RegisteredUser     = require('mongoose').model('RegisteredUser');

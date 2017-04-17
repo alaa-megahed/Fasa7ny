@@ -67,6 +67,7 @@ angular.module('fasa7ny')
 
       $scope.book = function()
       {
+        console.log($scope.chosen_facility);
           $http.post('/bookings/regusers',{count: $scope.formData.count,offer_id:$scope.formData.chosen_offer,
                                             event:$scope.formData.chosen_time.id}).then(function(data)
           {

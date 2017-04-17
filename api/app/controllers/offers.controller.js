@@ -90,15 +90,19 @@ if the business added an expiration_date that is before the start_date(which if
 
 exports.createOffer = function(req, res,notify_on_create) {
 
-  if(req.user && req.user instanceof Business) {
+  if(req.user && req.user instanceof Business) 
+  {
     var businessId = req.user.id;  //get _id from session
     var body = req.body;
     var file = req.file;
 
     // expiration date not required in case of count dependent offer
-    if(!body.name || !body.type || !body.value || !body.details ) {
+    if(!body.name || !body.type || !body.value || !body.details ) 
+    {
       res.send("please add all information");
-    } else {
+    } 
+    else 
+    {
       var newOffer = new Offer({
         name:body.name,
         type:body.type,
@@ -136,26 +140,37 @@ exports.createOffer = function(req, res,notify_on_create) {
       if(typeof file != 'undefined') {
         newOffer.image = file.filename;
       }
+
       if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length > 0) {
         newOffer.notify_subscribers = Number(body.notify_subscribers);
       }
+
       var now = new Date();
       if(typeof body.start_date != 'undefined' && body.start_date.length > 0) {
         newOffer.start_date = new Date(body.start_date);
-      } //removed else because it is set by default in mongoose
+      } 
+      else{
+        newOffer.startdate = now;
+      }
+
       var startdate = newOffer.start_date;
-      if(body.expiration_date)
+      if(body.expiration_date != 'undefined')
       {
-        var expirationdate = newOffer.expiration_date;
+        var expirationdate = body.expiration_date;
         if(startdate - expirationdate >= 0 || now - startdate > 0) 
         {
           res.send("please add a valid start_date/ expiration_date");
         }
+        else
+        {
+           console.log("last else before saving");
+           newOffer.expirationdate = expirationdate;
+        }
       
       } 
-      else 
-      {
-        newOffer.save(function(err, offer) {
+      
+        newOffer.save(function(err, offer) 
+        {
           if(err) {
             res.send("error in creating offer");
           } else 
@@ -181,9 +196,10 @@ exports.createOffer = function(req, res,notify_on_create) {
             res.send(offer);
           }
         })
-      }
-    }
-  } else {
+      
+    } //
+  } else //
+  {
     res.send("you're not a logged in business");
   }
 };
