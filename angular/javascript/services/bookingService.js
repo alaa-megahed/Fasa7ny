@@ -1,14 +1,15 @@
 
-angular.module('fasa7ny')
-.factory('Offers', ['$http', function($http) {
+var app = angular.module('fasa7ny');
+app.factory('Offers', ['$http', function($http) {
         return {
-            get : function() {
-                return $http.get('http://127.0.0.1:3000/offers/viewOffers');
-            }
+            get : function(id) {
+                return $http.get('http://127.0.0.1:3000/offers/viewOffers/'+id);
+            },
 
         }
-    }])
-.factory('Occurrences',['$http',function($http)
+    }]);
+
+app.factory('Occurrences',['$http',function($http)
 {
 	return {
          	get : function() {
