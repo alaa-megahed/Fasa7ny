@@ -430,6 +430,33 @@ exports.getOccurrences = function (req, res) {
 	}
 }
 
+
+
+exports.getAllTimings = function (req, res) {
+	//if (req.user) {
+	 // EventOccurrences.find({facility_id: req.params.facility_id}, function (err, events) {
+		EventOccurrences.find({},function (err, events) {
+			if (err) res.send(err.message);
+			if (!events) res.send('Something went wrong');
+			else res.json(events);
+		});
+	//}
+	// else {
+	// 	res.send('You are not a logged in business');
+	// }
+}
+
+exports.getAllFacilities = function(req,res)
+{
+	Facility.find({},function(err,facilities)
+	{
+		if(err)
+			res.send("error in get facilities");
+		else
+			res.json(facilities);
+	});	
+}
+
 /* A business can edit an event or an event occurrence based on the changed field. */
 
 exports.editEvent = function (req, res) {
