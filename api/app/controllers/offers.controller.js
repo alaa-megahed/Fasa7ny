@@ -11,14 +11,12 @@ var async = require("async");
  if the user is a business, he will be sent to his offer's page where he
  can update/delete the offers */
 exports.viewOffers = function(req, res) {
- // if(typeof req.query.id != "undefined") {
-    // var id = req.query.id;
-   var id = "58f0f3faaa02d151aa4c987c";
-
+ if(typeof req.params.id != "undefined") {
+    var id = req.params.id;
    Business.findOne({_id:id}, function(err, business) 
    {
       if(err || !business)
-        return res.send("error 1 in viewOffers");
+        return res.send("error in finding the business to view the offers");
       else
       { 
         Offer.find({business:id}, function(err, offers) 
@@ -30,38 +28,25 @@ exports.viewOffers = function(req, res) {
          });
       }
     });
-    // Business.findOne({_id:id}, function(err, business) {
-    //   if(err) return res.send("error in finding the business to view the offers");
-    //   else {
-    //     if(!business) return res.send("business does not exist. enter a valid one");
-    //     else {
-    //       Offer.find({business:id}, function(err, offers) {
-    //         if(err) {
-    //           return res.send("error in finding all offers");
-    //         } else {
-    //             // res.render("view_offers", {offers:offers});
-    //             res.json(offers);
-    //         }
-    //       })
-    //     }
-    //   }
-    // })
- // } else
-  //  if(req.user && req.user instanceof Business) 
-  //  {
-  //     var id = req.user.id;
-  //     Offer.find({business:id}, function(err, offers) {
-  //       if(err) {
-  //         res.send("error in finding all offers");
-  //       } else {
-  //         console.log("else")
-  //           //res.render("crudoffer", {offers:offers, id:req.user.id});
-  //       }
-  //   })
-  // } 
-  // else {
-  //   res.send("enter a business to find its offers");
-  // }
+  }
+}
+
+exports.businessViewOffers = function(){
+ if(req.user && req.user instanceof Business) 
+   {
+      var id = req.user.id;
+      Offer.find({business:id}, function(err, offers) {
+        if(err) {
+          res.send("error in finding all offers");
+        } else {
+          console.log("else")
+            //res.render("crudoffer", {offers:offers, id:req.user.id});
+        }
+    })
+  } 
+  else {
+    res.send("enter a business to find its offers"); 
+}
 }
 
 exports.getCreateOffer = function(req, res){
@@ -112,9 +97,14 @@ exports.createOffer = function(req, res,notify_on_create) {
       });
       newOffer.business = businessId;
 
-      if(req.body.expiration_date)
+      if(req.body.start_date)
       {
          newOffer.expiration_date = new Date(body.expiration_date);
+      }
+
+      if(req.body.expiration_date)
+      {
+         newOffer.start_date = new Date(body.start_date);
       }
 
       if(req.body.facility_id)
@@ -149,6 +139,7 @@ exports.createOffer = function(req, res,notify_on_create) {
       if(typeof body.start_date != 'undefined' && body.start_date.length > 0) {
         newOffer.start_date = new Date(body.start_date);
       } 
+
       else{
         newOffer.startdate = now;
       }

@@ -1,8 +1,6 @@
 
 *.log
 
-
-npm-debug.log
 /api/node_modules
 /angular/node_modules
 /angular/bower_components

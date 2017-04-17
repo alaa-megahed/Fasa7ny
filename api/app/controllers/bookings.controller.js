@@ -308,7 +308,7 @@ exports.regUserAddBooking = function(req, res, next) {
 		{
 
       if(req.body.count <= 0)
-        return res.send("Can't have negative or no count.");
+        return res.status(400).json("Can't have negative or no count.");
 
 			var date = new Date();
 	    var booking = new Booking(
@@ -316,7 +316,8 @@ exports.regUserAddBooking = function(req, res, next) {
 	        count        : req.body.count,
 	        booker       : req.user.id,
 	        event_id     : req.body.event,
-	        booking_date : date
+	        booking_date : date,
+          charge       : req.body.charge
 	      });
 
 	    booking.save(function(err,booking)
@@ -328,7 +329,7 @@ exports.regUserAddBooking = function(req, res, next) {
 						 {
 								if(err || !eve )
 								{
-									res.send("Error adding booking. Please try again!");
+									res.status(500).json("Error adding booking. Please try again!");
 									return;
 								}
 								else
@@ -337,7 +338,7 @@ exports.regUserAddBooking = function(req, res, next) {
 									if(eve.available < 0)
 									{
                     booking.remove();
-										res.send("Not enough spaces - please decrease count of booking.");
+										res.status(500).json("Not enough spaces - please decrease count of booking.");
 										return;
 									}
 									else
@@ -352,14 +353,14 @@ exports.regUserAddBooking = function(req, res, next) {
 									 if(err || !user)
 									 {
                      booking.remove();
-										 res.send("Error saving booking. Please try again.");
+										 res.status(500).json("Error saving booking. Please try again.");
 										 return;
 									 }
 									 else
 									 {
 										 user.bookings.push(booking);
 										 user.save();
-										 res.send("successful booking");
+										 res.status(200).json("successful booking");
 										 return;
 									 }
 
@@ -369,14 +370,13 @@ exports.regUserAddBooking = function(req, res, next) {
 	        }
 	        else
 					{
-						res.send("Error. Please try again.");
-						return;
+						return res.status(500).json("Error. Please try again.");
 	        }
 	    });
 	  }
 		else
 		{
-			res.send("You are not a registered user");
+			res.status(401).json("You are not a registered user");
 			return;
 		}
 
@@ -384,7 +384,7 @@ exports.regUserAddBooking = function(req, res, next) {
 	}
 	else
 	{
-		res.send("Please log in to book events");
+		res.status(401).json("Please log in to book events");
 		return;
   }
 
@@ -538,3 +538,5 @@ exports.regUserDeleteBookings = function(req,res,next){
   }
 
 }
+
+

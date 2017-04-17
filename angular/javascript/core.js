@@ -3,7 +3,7 @@ var app = angular.module('fasa7ny',['ngRoute']);
 
 app.config(function($routeProvider){
 	$routeProvider
-	
+
 	.when("/book-event", {
 		templateUrl : "views/bookings.html",
 		controller  : "bookingController"
