@@ -18,7 +18,7 @@ exports.viewOffers = function(req, res) {
    Business.findOne({_id:id}, function(err, business) 
    {
       if(err || !business)
-        return res.send("error in viewOffers");
+        return res.send("error 1 in viewOffers");
       else
       { 
         Offer.find({business:id}, function(err, offers) 

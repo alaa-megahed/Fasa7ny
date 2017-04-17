@@ -17,6 +17,10 @@ router.post('/cancel', RegularEventController.cancelEvent);
 router.post('/cancelO', RegularEventController.cancelOccurrence);
 router.post('/view', RegularEventController.getEvents);
 router.post('/viewO', RegularEventController.getOccurrences);
+router.get('/viewO',RegularEventController.getAllTimings);
+router.get('/facilities',RegularEventController.getAllFacilities);
+// router.get('/viewO/:facility_id',RegularEventController.getAllTimings);
+
 
 
 module.exports = router;
