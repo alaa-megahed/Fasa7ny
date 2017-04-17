@@ -52,6 +52,7 @@ a {
 			transition: all .3s ease-in 0s;
 }
 
+
 iframe {
     border: 0;
 }
@@ -111,6 +112,22 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-transparent:hover {
+    background-color: #6cb670;
+	border: 1px solid transparent;
+    color: #fff;
+}
+
+.btn-booking {
+	border: 1px solid #4e595f;
+	padding: 5px 20px;
+}
+
+.btn-booking:focus {
+    background-color: transparent;
+    border-color: #6cb670;
+}
+
+.btn-booking:hover {
     background-color: #6cb670;
 	border: 1px solid transparent;
     color: #fff;
@@ -1306,6 +1323,7 @@ h1, h2, h3, h4, h5, h6 {
 	font-size: 13px;
 	margin: 20px 0 0;
 	padding: 0 20px 10px;
+
 }
 
 .post-meta > span {
@@ -1314,10 +1332,12 @@ h1, h2, h3, h4, h5, h6 {
 	font-size: 12px;
 	margin: 10px 10px 0 0;
 	padding-right: 10px;
+
 }
 
 .post-meta > span:last-child {
     border-right: 0;
+
 }
 
 .post-meta > span > i {
@@ -1327,6 +1347,80 @@ h1, h2, h3, h4, h5, h6 {
 .post-meta a:hover {
 	color: #6CB670;
 }
+
+
+
+.post-meta2 {
+	background-color: #3d444a;
+	border-top: 1px solid #4e595f;
+	font-size: 13px;
+	margin: 20px 0 0;
+	padding: 0px 20px 10px;
+    vertical-align: middle;
+}
+
+.post-meta2 > span {
+	border-right: 1px solid #4e595f;
+	display: inline-block;
+	font-size: 12px;
+	margin: 10px 10px 0 0;
+	padding-right: 10px;
+	vertical-align: middle;
+
+}
+
+.post-meta2 > span:last-child {
+    border-right: 0;
+    vertical-align: middle;
+
+}
+
+.post-meta2 > span > i {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+
+
+
+.post-meta3 {
+	background-color: #3d444a;
+	border-top: 1px solid #4e595f;
+	font-size: 13px;
+	margin: 20px 0 0;
+	padding: 0px 20px 10px;
+    vertical-align: middle;
+}
+
+.post-meta3 > span {
+	border-right: 1px solid #4e595f;
+	display: inline-block;
+	font-size: 12px;
+	margin: 10px 10px 0 0;
+	padding-right: 10px;
+	vertical-align: middle;
+
+}
+
+.post-meta3 > span:last-child {
+    border-right: 0;
+    vertical-align: middle;
+
+}
+
+.post-meta3 > span > i {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.post-meta3:hover {
+    background-color: #6cb670;
+	border: 1px solid transparent;
+    color: #fff;
+}
+
+
+
 
 .post-excerpt .more {
     margin-top: 20px;

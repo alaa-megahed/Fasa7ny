@@ -26,7 +26,7 @@ let AuthController =
 
 	postLogin: function(req, res){passport.authenticate('local-login', {
 		successRedirect : '/auth/profile', 
-		failureRedirect : '/auth/login', 
+		failureRedirect : '/', 
 		failureFlash : true 
 	})(req, res);},
 
