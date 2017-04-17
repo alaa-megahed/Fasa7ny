@@ -10,7 +10,8 @@ var BookingSchema = new Schema({
     count        : {type: Number, default: 1}, // how many people
     booker       : {type: mongoose.Schema.Types.ObjectId, ref: 'RegisteredUser'},
     event_id     : {type: mongoose.Schema.Types.ObjectId, ref:'EventOccurrences'},
-    charge       : SchemaTypes.Double
+    charge       : SchemaTypes.Double,
+    stripe_charge: String
 });
 var Booking = mongoose.model('Booking', BookingSchema);
 module.exports = Booking;

@@ -262,21 +262,22 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
 
         $scope.event_price = $scope.chosen_event.price;
         $scope.min_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
-          // $http.post('/bookings/createRegUserBookings',{count: $scope.formData.count,offer_id:$scope.formData.chosen_offer,
-          //                                   event:$scope.formData.chosen_time.id}).then(function(data)
-          // {
-          //   console.log(data);
-          // });
+        
 
-          console.log("This is count :"+ $scope.formData.count);
+         console.log("This is count :"+ $scope.formData.count);
 
-          $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.min_charge, user_id: "58f0f48daa02d151aa4c987f"})
+         $http.post('http://127.0.0.1:3000/bookings/charge',{amount: $scope.min_charge}) //need to pass token
+              .then(function successCallback(response){
+                    $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:response.data, charge: $scope.min_charge, user_id: "58f0f48daa02d151aa4c987f"})
                     .then(function successCallback(response){
                       console.log(response.data);
                     }, function errorCallback(response){
                       console.log(response.data);
-                    });                                     
-
+                    }); 
+                    }, function errorCallback(response){
+                      console.log(response.data);
+                    });  
+                   }  
 
       }
 

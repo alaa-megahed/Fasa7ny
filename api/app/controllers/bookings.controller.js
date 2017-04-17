@@ -318,7 +318,8 @@ exports.regUserAddBooking = function(req, res, next) {
 	        booker       : req.body.user_id, //temporarily
 	        event_id     : req.body.event,
 	        booking_date : date,
-          charge       : req.body.charge
+          charge       : req.body.charge,
+          stripe_charge: req.body.stripe_charge
 	      });
 
 	    booking.save(function(err,booking)
@@ -544,5 +545,4 @@ exports.regUserDeleteBookings = function(req,res,next){
   }
 
 }
-
 
