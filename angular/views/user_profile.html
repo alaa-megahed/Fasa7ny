@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title> Fasa7ny | Laila Malatawy </title>
+		
+        <meta name="description" content="description">
+		
+		<!-- Mobile Specific Meta
+		================================================== -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<!-- Favicon -->
+		<link rel="shortcut icon" type="image/x-icon" href="../img/favicon.png" />
+		
+		<!-- CSS
+		================================================== -->
+		<!-- Fontawesome Icon font -->
+        <link rel="stylesheet" href="../css/font-awesome.min.css">
+		<!-- bootstrap.min css -->
+        <link rel="stylesheet" href="../css/bootstrap.min.css">
+		<!-- Animate.css -->
+        <link rel="stylesheet" href="../css/animate.css">
+		<!-- Owl Carousel -->
+        <link rel="stylesheet" href="../css/owl.carousel.css">		
+		<!-- Main Stylesheet -->
+        <link rel="stylesheet" href="../css/main.css">
+		<!-- Media Queries -->
+        <link rel="stylesheet" href="../css/responsive.css">
+        <!-- Click to Edit -->
+        <link rel="stylesheet" href="../css/click_to_edit.css">
+		
+		
+		<!--
+		Google Font
+		=========================== -->                    
+		
+		<!-- Oswald / Title Font -->
+		<link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
+		<!-- Ubuntu / Body Font -->
+		<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300' rel='stylesheet' type='text/css'>
+		
+		<!-- Modernizer Script for old Browsers -->
+        <script src="../js/modernizr-2.6.2.min.js"></script>
+        <!-- Click to Edit -->
+        <script src="../js/click_to_edit.js"></script>
+        <!-- Angular -->
+        <script src="../js/click_to_edit.js"></script>
+
+    </head>
+	
+    <body ng-app = "widgets" class="blog-page">
+	    <!--
+	    Start Preloader
+	    ==================================== -->
+		<div id="loading-mask">
+			<div class="loading-img">
+				<img alt="Meghna Preloader" src="../img/preloader.gif"  />
+			</div>
+		</div>
+        <!--
+        End Preloader
+        ==================================== -->
+        
+        <!-- 
+        Fixed Navigation
+        ==================================== -->
+        <header class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="index.html">
+						<h1 id="logo">
+							<img src="../img/logo-meghna.png" alt="Meghna" />
+						</h1>
+					</a>
+                </div>
+
+                <nav class="collapse navbar-collapse navbar-right" >
+                    <ul id="nav" class="nav navbar-nav">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="index.html#about">About Us</a></li>
+                        <li><a href="index.html#services">Services</a></li>
+                        <li><a href="index.html#our-team">Team</a></li>
+                        <li><a href="index.html#pricing">Pricing</a></li>
+                        <li><a href="index.html#showcase">Portfolio</a></li>
+                        <li><a href="index.html#blog">Blog</a></li>
+                        <li><a href="index.html#contact-us">Contact</a></li>
+                    </ul>
+
+                </nav><!-- /.navbar-collapse -->
+            </div>
+        </header>
+        <!--
+        End Fixed Navigation
+        ==================================== -->
+        
+        
+        <!-- Start Blog Banner
+        ==================================== -->
+        <link rel="stylesheet" href="../css/imagecropper.css">
+
+        <section id="blog-banner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                       
+                        <!-- edit profile pic !-->
+                        <div class="image-upload" style="float:  position: absolute; left: 0; right: 0; margin: auto">
+                            <label for="file-input">
+                                <div class="container2 image-cropper">
+                                  <img src="../img/user_profile/avatar.png" alt="Avatar" class="image" style="width:100%;">
+                                  <div class="middle">
+                                    <div style="font-size: 20px; color:lightgrey;  ">Change profile picture</div>
+                                  </div>
+                                </div>
+                            </label>
+                            <input id="file-input" type="file"/>
+                        </div>
+
+
+                        <!-- full name & email display !-->
+                        <div class="blog-title" ng-controller="WidgetsController">
+                            <h1>Laila Malatawy 
+                                <!-- <img src="../img/user_profile/edit_icon2.png" alt="edit_icon" class="image2" style=" display:inline; opacity: 0.5; padding-top: 10px">  -->
+                            </h1>
+                            <p><span class="color"> laila.malatawy@gmail.com 
+                              <!--   <img src="../img/user_profile/edit_icon2.png" alt="edit_icon" class="image2" style=" display:inline; opacity: 0.5; padding-left: 10px">  -->
+                            </p>
+                        </div>
+                        
+					</div>     <!-- End col-lg-12 -->
+				</div>	    <!-- End row -->
+			</div>       <!-- End container -->
+		</section>    <!-- End Section -->
+
+
+        <!-- Start Blog Post Section
+        ==================================== -->
+        <link rel="stylesheet" href="../css/single_post.css">
+        <section id="blog-page">
+            <div class="container">
+                <div class="row">
+
+                    <!-- LEFT Sectinon !-->
+                    <div id="blog-posts" class="col-md-8 col-sm-8">
+
+                        <!-- BOOKINGS SECTION !-->
+                        <div class="post-item">
+
+                            <!-- section title -->
+                            <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                                <h2>RECENT <span class="color">BOOKINGS</span></h2>
+                                <div class="border"></div>
+                            </div>
+                            <!-- /section title -->
+
+                           <!-- Single Post -->
+                            <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                               
+								<div class="post-excerpt">  <!-- first section beginning !-->
+
+                                    <!-- Name of Event + w/ + Name of Business !-->
+									<h3>
+                                        <a href="../single-post.html"> Jump Your Breath Out</a> 
+                                        <a href="../single-post.html"> <span class="color">w/</a> 
+                                        <a href="../single-post.html"> Breakout </a> 
+                                        <img src="../img/user_profile/rating_3.png" alt="rating" >
+                                    </h3>
+
+                                    <br>
+
+                                    <p>
+                                    The massive technology conference Techweek references past attendees and sponsors to illustrate how popular and illustrious the event is. If you don’t have big names to reference you can include testimonials and reviews from past attendees to create the same effect. One study showed that 79% of customers trust online reviews as much as personal recommendations.
+                                    </p>
+
+                                    <br>
+
+                                    <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon" class="image2" align="left">
+                                    <div style="padding-left: 23px;"> 
+                                       <p style="font-size:12px">  +201005467300, +2034857632 </p>
+                                    </div>
+
+                                    <img src="../img/user_profile/location_icon12.png" alt="location_icon" class="image2" align="left">
+                                    <div style="padding-left: 23px;"> 
+									   <p style="font-size:12px">  S El-Teseen St, Building#311, 90th Street, New Cairo, New Cairo, Cairo Governorate 11853</p>
+                                    </div>
+								</div>  <!-- first section end !-->
+
+								<div class="post-meta2" ">  <!-- second section beginning !-->
+									<span class="post-date">
+										<i class="fa fa-calendar"></i>30 jun 2014
+									</span>
+
+									<span class="author">
+										<i class="fa fa-user"></i>2 person(s)</a>
+									</span>
+
+                                    <span>
+                                        <p style="display:inline">Total: <span class="color"> 150 EGP &nbsp; </p>
+                                    </span>
+   
+                                    <div style=" display:inline;  vertical-align: middle">
+									    <a class="btn btn-booking" href="../single-post.html">Edit Booking</a>
+                                        <a class="btn btn-booking" href="../single-post.html">Cancel Booking</a> 
+                                    </div>
+								</div>  <!-- second section end !-->
+                            </article>
+                            <!-- End Single Post -->
+
+
+
+                             <!-- Single Post -->
+                            <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                               
+                                <div class="post-excerpt">  <!-- first section beginning !-->
+
+                                    <!-- Name of Event + w/ + Name of Business !-->
+                                    <h3>
+                                        <a href="../single-post.html"> Jump Your Breath Out</a> 
+                                        <a href="../single-post.html"> <span class="color">w/</a> 
+                                        <a href="../single-post.html"> Breakout </a> 
+                                        <img src="../img/user_profile/rating_3.png" alt="rating" >
+                                    </h3>
+
+                                    <br>
+
+                                    <p>
+                                    The massive technology conference Techweek references past attendees and sponsors to illustrate how popular and illustrious the event is. If you don’t have big names to reference you can include testimonials and reviews from past attendees to create the same effect. One study showed that 79% of customers trust online reviews as much as personal recommendations.
+                                    </p>
+
+                                    <br>
+
+                                    <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon" class="image2" align="left">
+                                    <div style="padding-left: 23px;"> 
+                                       <p style="font-size:12px">  +201005467300, +2034857632 </p>
+                                    </div>
+
+                                    <img src="../img/user_profile/location_icon12.png" alt="location_icon" class="image2" align="left">
+                                    <div style="padding-left: 23px;"> 
+                                       <p style="font-size:12px">  S El-Teseen St, Building#311, 90th Street, New Cairo, New Cairo, Cairo Governorate 11853</p>
+                                    </div>
+                                </div>  <!-- first section end !-->
+
+                                <div class="post-meta2" ">  <!-- second section beginning !-->
+                                    <span class="post-date">
+                                        <i class="fa fa-calendar"></i>30 jun 2014
+                                    </span>
+
+                                    <span class="author">
+                                        <i class="fa fa-user"></i>2 person(s)</a>
+                                    </span>
+
+                                    <span>
+                                        <p style="display:inline">Total: <span class="color"> 150 EGP &nbsp; </p>
+                                    </span>
+   
+                                    <div style=" display:inline;  vertical-align: middle">
+                                        <a class="btn btn-booking" href="../single-post.html">Edit Booking</a>
+                                        <a class="btn btn-booking" href="../single-post.html">Cancel Booking</a> 
+                                    </div>
+                                </div>  <!-- second section end !-->
+                            </article>
+                            <!-- End Single Post -->
+
+                        </div>
+                        <!-- End of BOOKINS SECTION!-->
+
+                    </div>
+                    
+
+
+                    <!-- RIGHT Section -->
+                    <div id="right-sidebar" class="col-md-4 col-sm-4">
+
+                        <!-- section title -->
+                        <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                            <h2> <span class="color">SUBSCRIPTIONS</span> </h2>
+                            <div class="border"></div>
+                        </div>
+                        <!-- /section title -->
+
+                        <!-- Subcscriptions Part -->
+                        <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">  
+
+                            <div class="post-meta3" style="margin-top: 4px; margin-bottom: 4px;">
+                                <span class="post-date">
+                                    <a style = "font-size: 15px"> Breakout </a>
+                                </span>
+                            </div>
+
+                             <div class="post-meta3" style="margin-top: 4px; margin-bottom: 4px;">
+                                <span class="post-date">
+                                    <a style = "font-size: 15px"> Breakout2 </a>
+                                </span>
+                            </div>
+
+                             <div class="post-meta3" style="margin-top: 4px; margin-bottom: 4px;">
+                                <span class="post-date">
+                                    <a style = "font-size: 15px"> Breakout3 </a>
+                                </span>
+                            </div>
+
+
+                                <br><br><br>
+                                <!-- section title -->
+                                <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                                    <h2>Profile <span class="color">Details</span></h2>
+                                    <div class="border"></div>
+                                </div>
+                                <!-- /section title -->
+
+
+
+
+
+
+                            <div class="post-item">
+                                <!-- Single Post -->
+                                <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                                   
+                                    <div class="post-excerpt">  <!-- first section beginning !-->
+                                        <!-- profile details !-->
+                                        <div>
+
+                                            <div style="padding-left: 23px;"> 
+                                                <a style="font-size: 20px; color:white; margin-top: 2px; margin-bottom: 2px; opacity: 0"> 
+                                                    no data
+                                                </a>
+                                            </div>
+
+
+                                            <img src="../img/user_profile/at_sign.png" alt="at_sign_icon" class="image2" align="left" style = "padding-top: 4px">
+                                            <div style="padding-left: 25px;"> 
+                                                <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                                    laila.malatawy 
+                                                    <!-- <img src="../img/user_profile/edit_icon2.png" alt="edit_icon" class="image2" style=" display:inline; opacity: 0.5; padding-left: 10px">  -->
+                                                </a>
+                                            </div>
+
+
+                                            <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon_profile" class="image2" align="left" style = "padding-top: 6px">
+                                            <div style="padding-left: 25px;"> 
+                                                <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                                    +(20)1005467300
+                                                    <<!-- img src="../img/user_profile/edit_icon2.png" alt="edit_icon" class="image2" style=" display:inline; opacity: 0.5; padding-left: 10px">  -->
+                                                </a>
+                                            </div>
+
+
+                                            <img src="../img/user_profile/bdate_icon3.png" alt="bdate_icon_" class="image2" align="left" style = "padding-top: 6px">
+                                            <div style="padding-left: 25px;"> 
+                                                <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                                    4 Feb 1996
+                                                    <!-- <img src="../img/user_profile/edit_icon2.png" alt="edit_icon" class="image2" style=" display:inline; opacity: 0.5; padding-left: 10px">  -->
+                                                </a>
+                                            </div>
+
+                                            <img src="../img/user_profile/gender_icon.png" alt="gender_icon" class="image2" align="left" style = "padding-top: 6px">
+                                            <div style="padding-left: 25px;"> 
+                                                <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                                    Female
+                                                    <!-- <img src="../img/user_profile/edit_icon2.png" alt="edit_icon" class="image2" style=" display:inline; opacity: 0.5; padding-left: 10px">  -->
+                                                </a>
+                                            </div>
+
+
+                                            <div style="padding-left: 23px;"> 
+                                                <a style="font-size: 20px; color:white; margin-top: 2px; margin-bottom: 2px; opacity: 0"> 
+                                                    no data
+                                                </a>
+                                            </div>
+
+                                        </div>
+                                    </div>  <!-- first section end !-->
+                                </article> <!-- End Single Post -->
+
+                            </div>
+                    </div> <!-- End RIGHT Section -->
+
+				</div>	    <!-- End row -->
+			</div>       <!-- End container -->
+		</section>    <!-- End Section -->
+        
+
+		<!-- Start Footer Section
+		========================================== -->
+		<footer id="footer" class="bg-one">
+			<div class="container">
+			    <div class="row wow fadeInUp" data-wow-duration="500ms">
+					<div class="col-lg-12">
+						
+						<!-- Footer Social Links -->
+						<div class="social-icon">
+							<ul>
+								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
+								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+								<li><a href="#"><i class="fa fa-youtube"></i></a></li>
+								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+								<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+								<li><a href="#"><i class="fa fa-pinterest"></i></a></li>
+							</ul>
+						</div>
+						<!--/. End Footer Social Links -->
+
+						<!-- copyright -->
+						<div class="copyright text-center">
+							<img src="../img/logo-meghna.png" alt="Meghna" /> <br />
+							<p>Copyright &copy; 2014. All Rights Reserved.</p>
+						</div>
+						<!-- /copyright -->
+						
+					</div> <!-- end col lg 12 -->
+				</div> <!-- end row -->
+			</div> <!-- end container -->
+		</footer> <!-- end footer -->
+		
+		<!-- Back to Top
+		============================== -->
+		<a href="#" id="scrollUp"><i class="fa fa-angle-up fa-2x"></i></a>
+		
+		<!-- end Footer Area
+		========================================== -->
+		
+		<!-- 
+		Essential Scripts
+		=====================================-->
+		
+		<!-- Main jQuery -->
+		<script src="../js/jquery-1.11.0.min.js"></script>
+		<!-- Bootstrap 3.1 -->
+		<script src="../js/bootstrap.min.js"></script>
+		<!-- Back to Top -->
+		<script src="../js/jquery.scrollUp.min.js"></script>
+		<script src="../js/classie.js"></script>
+		<!-- Owl Carousel -->
+		<script src="../js/owl.carousel.min.js"></script>
+		<!-- Custom Scrollbar -->
+		<script src="../js/jquery.nicescroll.min.js"></script>
+		<!-- jQuery Easing -->
+		<script src="../js/jquery.easing-1.3.pack.js"></script>
+		<!-- wow.min Script -->
+		<script src="../js/wow.min.js"></script>
+		<!-- For video responsive -->
+		<script src="../js/jquery.fitvids.js"></script>
+		<!-- Custom js -->
+		<script src="../js/custom.js"></script>
+
+    </body>
+</html>

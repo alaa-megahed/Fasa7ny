@@ -31,7 +31,7 @@ router.use('/contact', function(req, res) {
 
 router.get('/', function (req, res) {
    // res.render('index.ejs');
-     res.sendFile(path.resolve('public/views/bookings.html'));
+     res.sendFile(path.resolve('../angular/index.html'));
 });
 
 module.exports = router;
