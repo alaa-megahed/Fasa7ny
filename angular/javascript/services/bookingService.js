@@ -22,7 +22,11 @@ app.factory('Occurrences',['$http',function($http)
     return {
             get : function() {
                 return $http.get('http://127.0.0.1:3000/event/facilities');
-            }
+            },
+            
+            getEvent : function(event_id){
+            return $http.get('http://127.0.0.1:3000/event/getEvent/'+event_id);
+        }
         }
 }]);
 

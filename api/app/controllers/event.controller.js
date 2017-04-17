@@ -9,6 +9,22 @@ var async = require("async");
 var schedule = require('node-schedule');
 
 
+exports.getEvent = function(req, res)
+{
+	if(req.params.id != "undefined")
+	{
+		Events.find({"_id":req.params.id}, function(err,event){
+			if(err) return res.status(500).json("BAD REQUEST! NO SUCH EVENT EXISTS");
+			else
+				return res.status(200).json(event);
+		});
+	}
+	else
+	{
+		return res.status(500).json("BAD REQUEST");
+	}
+}
+
 
 exports.createFacility = function(req,res)
 {
