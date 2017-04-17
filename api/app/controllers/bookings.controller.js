@@ -315,7 +315,7 @@ exports.regUserAddBooking = function(req, res, next) {
 	    var booking = new Booking(
 	      {
 	        count        : req.body.count,
-	        booker       : req.body.user_id,
+	        booker       : req.body.user_id, //temporarily
 	        event_id     : req.body.event,
 	        booking_date : date,
           charge       : req.body.charge

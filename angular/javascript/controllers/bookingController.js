@@ -242,7 +242,8 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
       $scope.choose_occ = function(timing)
       {
         $scope.max_count = timing.available;
-        console.log(timing.available);
+        $scope.event = timing.event;
+        $scope.occ_id = timing._id;
       }
 
 
@@ -254,14 +255,29 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
       $scope.book = function()
       {
         console.log($scope.chosen_facility);
-        $scope.chosen_event = Facilities.getEvent($scope.formData.chosen_time.event);
+        $scope.chosen_event = Facilities.getEvent($scope.event);
+        console.log($scope.formData.chosen_time);
+        console.log($scope.formData.chosen_time.event);
+        console.log($scope.event);
+
         $scope.event_price = $scope.chosen_event.price;
         $scope.min_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
-          $http.post('/bookings/regusers',{count: $scope.formData.count,offer_id:$scope.formData.chosen_offer,
-                                            event:$scope.formData.chosen_time.id}).then(function(data)
-          {
-            console.log(data);
-          });
+          // $http.post('/bookings/createRegUserBookings',{count: $scope.formData.count,offer_id:$scope.formData.chosen_offer,
+          //                                   event:$scope.formData.chosen_time.id}).then(function(data)
+          // {
+          //   console.log(data);
+          // });
+
+          console.log("This is count :"+ $scope.formData.count);
+
+          $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.min_charge, user_id: "58f0f48daa02d151aa4c987f"})
+                    .then(function successCallback(response){
+                      console.log(response.data);
+                    }, function errorCallback(response){
+                      console.log(response.data);
+                    });                                     
+
+
       }
 
       
