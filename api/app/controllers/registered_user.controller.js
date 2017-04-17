@@ -7,7 +7,7 @@ var Rating = mongoose.model('Rating');
 exports.subscribe = function(req,res)
 {
 	// if(req.user && req.user instanceof User) {
-		var userID = "58f0c9341767d632566c9fb5";
+		var userID = "58f09946fcefb434ea0d4e22";
 		var businessID = req.params.id;
 		var subscribed_business;
 		console.log("business sub");
@@ -58,7 +58,7 @@ exports.unsubscribe = function(req,res)
 {
 	// if(req.user && req.user instanceof User) {
 		// var userID = req.user.id;
-		var userID = "58f0c9341767d632566c9fb5";
+		var userID = "58f09946fcefb434ea0d4e22";
 	    var businessID = req.params.id;
 	    var subscribed_business;
 			console.log("business unsub");

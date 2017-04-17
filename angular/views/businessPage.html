@@ -156,21 +156,66 @@
 
 
 
-<div class="w3-container">
+<!-- <div class="w3-container"> -->
 
 
 
 <button onclick="myFunction('Demo1')" class="w3-button w3-block w3-black w3-left-align">Check Our Facilities</button>
-<div id="Demo1" class="w3-hide w3-container">
-    <ul ng-repeat = "facility in facilities">
-    {{facility.name}} <br>
-    Description: {{facility.description}} <br>
-    Capacity: {{facility.capacity}} <br>
-    </ul>
 
-     <input type="submit" value="Book Now!" class="btn btn-transparent w3-green">
+<div id="Demo1" class="w3-hide w3-container">
+<br>
+  <div id="primary" class="sidebar-right">
+    <div class="container group">
+        <div class="row">
+            <!-- START CONTENT -->
+            <div ng-repeat = "facility in facilities" id="content-blog" class="span9 content group">
+
+                <div style="background-color:#2B2C30;" class="post type-post status-publish format-video sticky hentry category-web-design hentry-post group blog-small">
+                    <!-- post featured & title -->
+
+                    <div style="background-color:#2B2C30;" class="thumbnail">
+                        <div style="background-color:#2B2C30;" class="row">
+                            <!-- post featured -->
+                            <div class="image-wrap span4">
+                              <hr>
+                                <img style="width: auto\9;height: auto;max-width: 100%; vertical-align: middle;border: 0; -ms-interpolation-mode: bicubic;" width="365" height="340"
+                                 src="../img/portfolio/portfolio.jpg" class="attachment-blog_small wp-post-image" alt="3" />
+                                 <hr>
+                                 <center>
+                                  <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "goToEditFacility(facility._id)"> Edit Facility </button>
+                                 <button class="btn btn-transparent" ng-click = "deleteFacility(facility._id)"> Delete Facility </button>
+                                 <center>
+                            </div>
+
+                            <!-- post title -->
+                            <div class="span5">
+                                <h2 class="post-title">
+                                    <h3>{{facility.name}}</h3>
+                                </h2>
+                                <hr width="60%">
+                                <div class="the-content">
+                                    <p><h4>Capacity</h4> {{facility.capacity}} </p>
+                                    <hr width="60%">
+                                    <p> {{facility.description}}</p>
+
+                                </div>
+                            </div>
+
+                            <div class="clear"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+            <!-- END SIDEBAR -->
+        </div>
+    </div>
+    <input type="submit" value="Book Now!" class="btn btn-transparent w3-green">
+    <hr>
 </div>
 
+<!-- </div> -->
 <button onclick="myFunction('Demo2')" class="w3-button w3-block w3-black w3-left-align">Check Our Events</button>
 <div id="Demo2" class="w3-hide w3-container">
     <ul ng-repeat = "event in events">
@@ -197,17 +242,3 @@
 
                             </ul>
                         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-

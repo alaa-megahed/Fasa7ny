@@ -25,7 +25,7 @@ business.post('/deletePaymentMethod', businessController.deletePaymentMethod);
 business.post('/editInformation', businessController.editInformation);
 business.post('/deletePhone', businessController.deletePhone);
 business.get('/publicPage', businessController.makePagePublic);
-
+// business.get('/checkSession', businessController.checkSession);
 
 
 
