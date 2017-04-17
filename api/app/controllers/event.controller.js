@@ -2,9 +2,154 @@
 var Events = require('mongoose').model('Events');
 var EventOccurrences = require('mongoose').model('EventOccurrences');
 var Business = require('mongoose').model('Business');
-
+var Bookings = require('mongoose').model('Booking');
+var Facility = require('mongoose').model('Facility');
+var User = require('mongoose').model('RegisteredUser');
 var async = require("async");
 var schedule = require('node-schedule');
+
+
+
+exports.createFacility = function(req,res)
+{
+	if (req.user && req.user instanceof Business) 
+	{
+		var id = req.user.id;
+
+		if(!req.body.name || !req.body.description || !req.body.capacity) 
+		{
+			res.send("incomplete form");
+		}
+		else
+		{
+			var facility = new Facility(
+			{
+				name : req.body.name,
+				description:req.body.description,
+				capacity:req.body.capacity,
+				business_id: id
+			});
+
+			facility.save(function(err)
+			{
+				if(err)
+					res.send("Oops Something went wrong");
+			});
+		}
+
+
+	}
+	else
+		res.send("Not logged in Business");	
+}
+
+//don't need to edit fields in repeated events because we will always get them from facility
+exports.editFacility = function(req,res)
+{
+	if (req.user && req.user instanceof Business) 
+	{
+		var id = req.user.id;
+		var facility_id = req.body.facility_id;
+
+		Business.findById(id,function(err,business)
+		{
+			if(err || !business)
+				return res.send("Oops!! Something went wrong");
+
+			Facility.findById(facility_id,function(err,facility)
+			{
+				if(err || !facility)
+					return res.send("Oops!! Something went wrong");
+
+				else
+				{
+					//checking that edited facility belongs to logged in business
+					if(facility.business_id == id)
+					{   if(req.body.name)
+							facility.name = req.body.name;
+
+						if(req.body.description)
+							facility.description = req.body.description;
+
+						//update capacity in event and available in event occurrences
+						if(req.body.capacity)
+						{
+							var old = facility.capacity;
+							var difference = req.body.capacity - old;
+
+							Events.update({facility_id:facility_id},{ $set: { capacity: capacity+difference }},function(err)
+							{
+								if(err)
+									return res.send("error updating event");
+							});
+							EventOccurrences.update({facility_id:facility_id},{ $set: { available: available+difference }},function(err)
+							{
+								if(err)
+									return res.send("error updating eventocc");
+							});
+
+						}
+
+						facility.save();
+					}
+					else
+						return res.send("You are not authorized to perform this action");
+				}
+				
+			});
+		});		
+	}
+	else
+		res.send("Not logged in Business");
+}
+
+
+exports.deleteFacility = function(req,res)
+{
+	if (req.user && req.user instanceof Business) 
+	{
+		var id = req.user.id;
+		var facility_id = req.body.facility_id;
+
+		Business.findById(id,function(err,business)
+		{
+			if(err || !business)
+				return res.send("Oops!! Something went wrong");
+			Facility.findById(facility_id,function(err,facility)
+			{
+				if(err || !facility)
+					return res.send("Oops!! Something went wrong");
+
+				else
+				{
+					if(facility.business_id == id)
+					{   
+						Events.remove({facility_id:facility_id},function(err)
+						{
+							if(err)
+								return res.send("error removing event");
+
+						});
+
+						EventOccurrences.remove({facility_id:facility_id},function(err)
+						{
+							if(err)
+								return res.send("error removing event occurence");
+						});
+					}
+					else
+						return res.send("You are not authorized to perform this action");
+				}
+				
+			});
+		});
+		
+	}
+	else
+		res.send("Not logged in business");
+}
+	
+
 
 /* This function creates an event. An event can have two types Once or Daily specified by "repeated". 
 The function creates an event and save it in the database. If it is Daily then 30 instances of event occurrences 
@@ -12,15 +157,13 @@ will be created and saved in the database. Then I initialize a scheduling rule u
 single event occurence next month on a daily basis. 
 If the type is Once only one event occurrence is added.
 */
-
-
 exports.createEvent = function (req, res) {
 
 	if (req.user && req.user instanceof Business) {
 		var id = req.user.id;
 
-    	
-    	if(!req.body.name || !req.body.description || !req.body.location || !req.body.price || !req.body.capacity || !req.body.repeat) {
+    	//if event belongs to facility, fields will be passed from facility to event in hidden fields
+    	if(!req.body.name || !req.body.description || !req.body.price || !req.body.capacity || !req.body.repeat) {
      
         res.send("Please add all information");
 
@@ -34,7 +177,6 @@ exports.createEvent = function (req, res) {
 			let event = new Events({
 				name:req.body.name,
 				description:req.body.description,
-				location:req.body.location,
 				price:req.body.price,
 				capacity:req.body.capacity,
 				repeated: req.body.repeat,
@@ -42,6 +184,18 @@ exports.createEvent = function (req, res) {
 				business_id: id
 
 				});
+
+				//loaction not required (event can take place in many places or in business venue)
+				if(req.body.location)
+				{
+					event.location = req.body.location;
+				}
+
+				//facility not required in case of just once events
+				if(req.body.facility_id)
+				{
+					event.facility_id = req.body.facility_id;
+				}
 
 				if (typeof req.file == "undefined") {
 					event.image = " ";
@@ -90,6 +244,12 @@ exports.createEvent = function (req, res) {
 							available: req.body.capacity,
 							event: event._id
 						});
+
+						if(req.body.facility_id)
+						{
+							occurrence.facility_id = req.body.facility_id;
+						}
+
 						occurrence.save(function (err, occurrence) {
 							if (err) res.send(err.message);
 
@@ -118,6 +278,11 @@ exports.createEvent = function (req, res) {
 							available: req.body.capacity,
 							event: event._id
 						});
+
+						if(req.body.facility_id)
+						{
+							occurrence.facility_id = req.body.facility_id;
+						}
 
 						var flag = true;
 
@@ -152,7 +317,26 @@ exports.createEvent = function (req, res) {
 						});
 
 						occurrence.save(function (err, occurrence) {
-							if (err) res.send(err.message);
+							if (err) 
+								res.send(err.message);
+							else
+								{
+									var content = req.user.name + " added " + req.body.name +"        "+ Date.now(); 
+
+									async.each(req.user.subscribers, function(subscriber, callback){
+										User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
+										{
+											if(err)
+												console.log("error updating user notifications");
+											else
+											{
+												user.unread_notifications = user.unread_notifications + 1;
+												user.save();
+												console.log(user);
+											}
+										});
+									});	
+								}
 
 						});
 
@@ -169,6 +353,53 @@ exports.createEvent = function (req, res) {
 	else {
 		res.send('You are not a logged in business');
 	}
+}
+
+exports.getOnceEvents = function(req,res)
+{
+	//whoever views business page can see all "once" events, no restrictions 
+	var business_name = req.params.name;
+
+	Business.find({name:business_name},function(err,business)
+	{
+		if(err || !business)
+			res.send("Oops!! Something went wrong");
+		else
+		{
+			Events.find({business_id: business.id,repeated:"Once"},function(err,events)
+			{
+				if(err)
+					res.send("Oops!! Something went wrong");
+				else
+					res.send(events);
+			});
+		}
+		
+	});
+}
+
+exports.getFacilities = function(req,res)
+{	
+	//whoever views business page can see all facilities, no restrictions 
+	var business_name = req.params.name;
+
+	Business.find({name:business_name},function(err,business)
+	{
+		if(err || !business)
+			res.send("Oops!! Something went wrong");
+		else
+		{
+			Facility.find({business_id: business.id},function(err,facilities)
+			{
+				if(err)
+					res.send("Oops!! Something went wrong");
+				else
+					res.send(facilities);
+			});
+		}
+		
+	});
+	
 }
 
 exports.getEvents = function (req, res) {
@@ -313,9 +544,10 @@ exports.editEvent = function (req, res) {
 
 }
 
+
 /*A business can cancel an event with all its occurrences.*/
 
-exports.cancelEvent = function (req, res) {
+exports.cancelEvent = function (req, res,notify_on_cancel) {
 	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
 		var id = req.body.id;
 		var business_id = req.user.id;
@@ -327,9 +559,39 @@ exports.cancelEvent = function (req, res) {
 					Events.remove({ _id: id }, function (err) {
 						if (err) res.sen('could not delete event');
 						else {
-							EventOccurrences.remove({ event: id }, function (err) {
+							EventOccurrences.find({event:id},function (err,all_occ) {
 								if (err) res.send('could not delete occurrence');
-								else res.send('Event cancelled');
+								else 
+									{
+										async.each(all_occ, function(one_occ, callback) 
+										{
+											one_occ.remove(function(err)
+										    {
+										      if(!err)
+										      {
+											      	var bookings = one_occ.bookings;
+													var content = req.user.name + " cancelled " + event.name + "     " + Date.now(); 
+													
+													async.each(bookings, function(one_booking, cb){
+														Bookings.findById({_id:one_booking},function(err,booking)
+														{
+															User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
+															{
+																if(err)
+																	console.log("error updating user notifications");
+																else
+																	console.log(user);
+															});
+														});
+													});
+											      	// notify_on_cancel_occ(event.name,one_occ.id,req.user.name);
+										      	res.send("event canceled");
+										      }
+										  	  else
+										  	  	res.send("Something went wrong");
+										    });
+										});
+									 }
 							});
 						}
 					});
@@ -345,6 +607,7 @@ exports.cancelEvent = function (req, res) {
 
 }
 
+
 /** Removes all occurence of an event */
 exports.removeAllOccurrences = function (event_id) {
 	EventOccurrences.remove({ event: event_id }, function (err) {
@@ -355,7 +618,7 @@ exports.removeAllOccurrences = function (event_id) {
 
 /* Abusiness can cancel an event occurrence.*/
 
-exports.cancelOccurrence = function (req, res) {
+exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
 		var occurrence_id = req.body.id;
 		var business_id = req.user.id;
@@ -369,7 +632,26 @@ exports.cancelOccurrence = function (req, res) {
 
 						EventOccurrences.remove({ _id: occurrence_id }, function (err) {
 							if (err) res.send('could not delete occurrence');
-							else res.send('occurrence deleted');
+							else 
+						    {
+						    	var bookings = occ.bookings;
+								var content = req.user.name + " cancelled " + event.name + "     " + Date.now(); 
+													
+								async.each(bookings, function(one_booking, cb){
+									Bookings.findById({_id:one_booking},function(err,booking)
+									{
+										User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
+										{
+											if(err)
+												console.log("error updating user notifications");
+											else
+												console.log(user);
+										});
+									});
+								});
+								// notify_on_cancel_occ(event.name,occurrence_id,req.user.name);
+								//res.send('occurrence deleted');
+							}
 						});
 
 						res.send('Occurrence cancelled');
@@ -386,3 +668,67 @@ exports.cancelOccurrence = function (req, res) {
 
 }
 
+//================================ Notifications =====================================
+
+function notify_on_create(event_name,subscribers,business)
+{
+	//Notification:  "Business name" just added "event name".
+	var content = business + " added " + event_name +"        "+ Date.now(); 
+
+	async.each(subscribers, function(subscriber, callback){
+		User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
+		{
+			if(err)
+				console.log("error updating user notifications");
+			else
+				console.log(user);
+		});
+	});	
+}
+
+
+
+function notify_on_cancel_occ(event_name,eventocc_id,business)			    //would be exactly the same for edit event but 												
+{													//different  notification content, how to check
+													// which function am I currently executing	
+	EventOccurrences.findOne({_id:eventocc_id},function(err,eventocc)
+	{
+		if(err)
+			console.log("err in notify_on_cancel");
+		else
+		{
+			var bookings = eventocc.bookings;
+			var content = business + " cancelled " + event_name; 
+			var notification = new Notification(
+			{
+				date: new Date(),
+				content: content
+			});
+
+			notification.save(function(err,notification)
+			{
+				if(err)
+					console.log("error saving notification");
+				else
+				{
+
+					for(var i = 0; i < bookings.length; i++)
+					{
+						Bookings.findById({_id:bookings[i]},function(err,booking)
+						{
+							User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": notification}},function(err,user)
+							{
+								if(err)
+									console.log("error updating user notifications");
+								else
+									console.log(user);
+							});
+						});
+						
+					}
+				}
+			});
+
+		}
+	});
+}

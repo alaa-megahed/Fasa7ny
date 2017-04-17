@@ -32,7 +32,7 @@ SearchController = {
                 res.send(err);
             else {
                 console.log(result);
-                res.render('search.ejs', { result: result });
+                res.json(result);
             }
         });
 

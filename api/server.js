@@ -4,7 +4,8 @@ var mongoose = require('./config/mongoose'),
     config   = require('./config/config'),
     express  = require('./config/express'),
     db       = mongoose(),
-    app      = express();
+    app      = express(),
+    cors     = require('cors');
 
 
 // var admin = new WebAdmin();
@@ -14,6 +15,7 @@ var mongoose = require('./config/mongoose'),
 //   function(err)
 //     {if(err) throw err;}
 // );
+
 
 app.listen(config.port);
 

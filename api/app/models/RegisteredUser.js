@@ -3,6 +3,19 @@ var mongoose = require('mongoose'),
     bcrypt   = require('bcrypt-nodejs');
 
 var RegisteredUserSchema = new Schema({
+    name          : String,
+    username      : String,
+    password      : String,
+    email         : String,
+    phone         : String,
+    birthdate     : Date,
+    address       : String,  //url string or x and y doubles?
+    gender        : String,
+    profilePic    : String,
+    bookings      : [{type: mongoose.Schema.Types.ObjectId, ref:'Booking',default: []}],
+    subscriptions : [{type: mongoose.Schema.Types.ObjectId, ref:'Business',default: []}],
+    notifications : [String],
+    unread_notifications : {type: Number, default: 0},
     local    :
     {
         username: 

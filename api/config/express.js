@@ -39,16 +39,19 @@ module.exports = function () {
 
     app.set('views', './app/views');
     app.set('view engine', 'ejs');
-    console.log(path.join(__dirname, '..')); 
+    console.log(path.join(__dirname, '..'));
     app.use(express.static("public"));
-    app.all('/*', function (req, res, next) {
-        // Just send the index.html for other files to support HTML5Mode. Assuming your index.html is at application root
-        res.sendFile('public/views/index.html', {root: path.join(__dirname, '..')});
-    });
 
     // app.use(express.static("./uploads"));
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
+
+    app.use('*', function (req, res, next) {
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        res.setHeader('Access-Contro-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+        res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+        next();
+    });
 
     var router = require('../app/routes');
 
@@ -60,9 +63,14 @@ module.exports = function () {
 
 
 
+
     //setting up static files 
     // app.use('/scripts', express.static(path.resolve('node_modules')));
-    
+
+
+    app.use(express.static("public"));
+    app.use(express.static("./uploads"));
+
 
 
     return app;

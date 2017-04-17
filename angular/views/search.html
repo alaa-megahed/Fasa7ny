@@ -1,6 +1,200 @@
-<form action="#" id="search-form" method="get" role="search">
-    <input type="text" class="form-control" placeholder="Search..." autocomplete="on" name="seach">
-    <button type="submit" title="Search" id="search-submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-</form>
+<div class="container">
+
+    <form action="#" id="search-form" method="get" role="search">
+        <input type="text" class="form-control" placeholder="Search..." autocomplete="on" name="seach" ng-model="keyword">
+        <button type="submit" title="Search" id="search-submit">
+        <i class="fa fa-search"></i>
+    </button>
+    </form>
+    <br>
+    <h5> Filters:</h5>
+    <label for="sortOptions">Sort by: </label>
+
+    <select id="sortOptions" ng-model="sortBy"> 
+        <option value="average_rating">Rating </option>
+        <option value="area">Area</option>
+        <option value="name">Name</option>                   
+    </select>
+    <label ng-show = "sortBy != ''" for="checkbox">Sort ascending: </label>
+    <input ng-show = "sortBy != ''" id = "checkbox"type="checkbox" ng-click = "check()" ng-model="checked">
+    
+    
+    <label for="category">Category: </label>
+    <select id="category" ng-model="cat"> 
+        <option value="all">All</option>                           
+        <option value="fun">Fun </option>
+        <option value="escape rooms">Escape Rooms</option>
+        <option value="travel">Travel</option>
+        <option value="adventure">Adventure</option>                   
+                           
+    </select>
+    <label for="min-rating">Minimum rating: </label>
+    <input id="min-rating" type="number" min="0.0" max="5.0" step="0.1" ng-model="minRating">
+    <div>
+
+    </div>
+
+
+    <div ng-repeat="business in businesses | category: cat | filter: keyword | orderBy: sortBy : direction " ng-if="business.average_rating >= $parent.minRating">
+        <h3>{{business.name}} </h3>
+        <b>Description: </b> {{business.description}} <br>
+        <b>Address </b> {{business.address}} <br>
+        <b>Area: </b> {{business.area}} <br>
+        <b>Average rating: </b> {{business.average_rating}} <br>
+        <b>Category: </b>
+        <span ng-repeat="category in business.category">
+                {{category}}
+            </span>
+        <br>
+        <a href="/#!/business/{{business.name}}">View page >> </a>
+    </div>
+</div>
+
+<style>
+    /* -------------------- Select Box Styles: bavotasan.com Method (with special adaptations by ericrasch.com) */
+    /* -------------------- Source: http://bavotasan.com/2011/style-select-box-using-only-css/ */
+    
+    .styled-select {
+        background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
+        height: 29px;
+        overflow: hidden;
+        width: 240px;
+    }
+    
+    .styled-select select {
+        background: transparent;
+        border: none;
+        font-size: 14px;
+        height: 29px;
+        padding: 5px;
+        /* If you add too much padding here, the options won't show in IE */
+        width: 268px;
+    }
+    
+    .styled-select.slate {
+        background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;
+        height: 34px;
+        width: 240px;
+    }
+    
+    .styled-select.slate select {
+        border: 1px solid #ccc;
+        font-size: 16px;
+        height: 34px;
+        width: 268px;
+    }
+    /* -------------------- Rounded Corners */
+    
+    .rounded {
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+    }
+    
+    .semi-square {
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+    }
+    /* -------------------- Colors: Background */
+    
+    .slate {
+        background-color: #ddd;
+    }
+    
+    .green {
+        background-color: #779126;
+    }
+    
+    .blue {
+        background-color: #3b8ec2;
+    }
+    
+    .yellow {
+        background-color: #eec111;
+    }
+    
+    .black {
+        background-color: #000;
+    }
+    /* -------------------- Colors: Text */
+    
+    .slate select {
+        color: #000;
+    }
+    
+    .green select {
+        color: #fff;
+    }
+    
+    .blue select {
+        color: #fff;
+    }
+    
+    .yellow select {
+        color: #000;
+    }
+    
+    .black select {
+        color: #fff;
+    }
+    /* -------------------- Select Box Styles: danielneumann.com Method */
+    /* -------------------- Source: http://danielneumann.com/blog/how-to-style-dropdown-with-css-only/ */
+    
+    #mainselection select {
+        border: 0;
+        color: #EEE;
+        background: transparent;
+        font-size: 20px;
+        font-weight: bold;
+        padding: 2px 10px;
+        width: 378px;
+        *width: 350px;
+        *background: #58B14C;
+        -webkit-appearance: none;
+    }
+    
+    #mainselection {
+        overflow: hidden;
+        width: 350px;
+        -moz-border-radius: 9px 9px 9px 9px;
+        -webkit-border-radius: 9px 9px 9px 9px;
+        border-radius: 9px 9px 9px 9px;
+        box-shadow: 1px 1px 11px #330033;
+        background: #58B14C url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 319px center;
+    }
+    /* -------------------- Select Box Styles: stackoverflow.com Method */
+    /* -------------------- Source: http://stackoverflow.com/a/5809186 */
+    
+    select#soflow,
+    select#soflow-color {
+        -webkit-appearance: button;
+        -webkit-border-radius: 2px;
+        -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+        -webkit-padding-end: 20px;
+        -webkit-padding-start: 2px;
+        -webkit-user-select: none;
+        background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
+        background-position: 97% center;
+        background-repeat: no-repeat;
+        border: 1px solid #AAA;
+        color: #555;
+        font-size: inherit;
+        margin: 20px;
+        overflow: hidden;
+        padding: 5px 10px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 300px;
+    }
+    
+    select#soflow-color {
+        color: #fff;
+        background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#779126, #779126 40%, #779126);
+        background-color: #779126;
+        -webkit-border-radius: 20px;
+        -moz-border-radius: 20px;
+        border-radius: 20px;
+        padding-left: 15px;
+    }
+</style>

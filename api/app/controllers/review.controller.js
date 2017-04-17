@@ -9,7 +9,8 @@ var WebAdmin = mongoose.model('WebAdmin');
  then pushing this review to the array of reviews of the business*/
 exports.writeReview = function(req, res) {
 
-  if(req.user && req.user instanceof RegisteredUser && typeof req.body.review != "undefined" && req.body.review.length > 0 && typeof req.query.id != "undefined") {
+  if(req.user && req.user instanceof RegisteredUser && typeof req.body.review != "undefined"
+  && req.body.review.length > 0 && typeof req.query.id != "undefined") {
     var businessId = req.query.id;
     var id = req.user.id;
 
@@ -297,17 +298,23 @@ exports.deleteInappropriateReview = function(req, res) {
     // var id = req.body.id;
     // var r = req.body.review;
 
-    Reply.remove({review:r}, function(err) {
-      if(err) console.log("error in deleting the replies of the review");
+    Review.remove({_id:r}, function(err) {
+      if(err) console.log("error in deleting the review");
       else {
-        console.log("replies deleted");
-
-        Business.findByIdAndUpdate({_id:reviews.business}, {$pull:{reviews:r}},
-        function(err,updatedBusiness) {
-          if(err) console.log("error in removing the review from the business' reviews array");
+        console.log("review deleted");
+        Reply.remove({review:r}, function(err) {
+          if(err) console.log("error in deleting the replies of the review");
           else {
-            console.log("business updated");
-            console.log(updatedBusiness);
+            console.log("reply deleted");
+
+            Business.findByIdAndUpdate({_id:reviews.business}, {$pull:{reviews:r}},
+            function(err,updatedBusiness) {
+              if(err) console.log("error in removing the review from the business' reviews array");
+              else {
+                console.log("business updated");
+                console.log(updatedBusiness);
+              }
+            });
           }
         });
       }

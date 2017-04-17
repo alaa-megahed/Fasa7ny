@@ -20,19 +20,19 @@ exports.AddBusiness = function (req, res) {
         $or: [
             { 'local.username': req.body.username },
             { name: req.body.name },
-            { merchant_ID: req.body.merchant_ID }
-            //to add email
+            { merchant_ID: req.body.merchant_ID },
+             {'email': req.body.email}
         ]
     }, //check if business is unique
         function (err, resultBusiness) {
             console.log(resultBusiness);
             if (err) { return next(err); }
 
-            if (resultBusiness.length == 0) {   //if yes then check user 
+            if (resultBusiness.length == 0) {   //if yes then check user
                 User.find({
                     $or: [
-                        { 'local.username': req.body.username }
-                        //to add email 
+                        { 'local.username': req.body.username },
+                        {'email': req.body.email}
                     ]
                 },
                     function (err, resultUser) {
@@ -40,8 +40,11 @@ exports.AddBusiness = function (req, res) {
                             console.log(err);
                         else if (resultUser.length == 0) {
 
-                            WebAdmin.find({ 'local.username': req.body.username },
-                                function (err, resultAdmin) {
+                            WebAdmin.find({ $or: [
+                                    { 'local.username': req.body.username },
+                                    {'email': req.body.email}
+                                ]},
+                                    function (err, resultAdmin) {
 
                                     if (err)
                                         console.log(err);
@@ -70,6 +73,7 @@ exports.AddBusiness = function (req, res) {
                                                 StatsController.schedule(newBusiness._id);
 
                                                 //send confirmation email 
+
                                                 var smtpTransport = nodemailer.createTransport({
                                                     service: 'Gmail',
                                                     auth: {
@@ -108,7 +112,7 @@ exports.AddBusiness = function (req, res) {
                                         res.render("admin_profile", { user: req.user });
                                     }
                                 });
-                        }//end of user check 
+                        }//end of user check
                         else {
                             console.log(resultUser)
                             console.log("conflict with user");
@@ -117,7 +121,7 @@ exports.AddBusiness = function (req, res) {
                         }
                     }
                 );
-            }//end of business check 
+            }//end of business check
             else {
                 console.log(resultBusiness);
                 console.log("conflict with business");
@@ -147,23 +151,26 @@ exports.WebAdminDeleteBusiness = function (req, res) {
         Events.find({ business_id: business._id }, function (err, events) {
             if (err) throw err;
             else
-                for (var i = 0; i < events.length; i++) {
-                    EventOcc.remove({ event: events[i]._id }, function (err) {
+            {
+                async.each(events, function(event, callback){
+                    EventOcc.remove({ event: event._id }, function (err) {
                         if (err)
                             throw err;
                     });
-                }
-            Events.remove({ business_id: business._id }, function (err) {
-                if (err)
-                    throw err;
-            })
+                });
+
+                Events.remove({ business_id: business._id }, function (err) {
+                    if (err)
+                        throw err;
+                });
+            }
 
         });
 
         //remove business from subscribers
-        for (var i = 0; i < business.subscribers.length; i++) {
-            var user_id = business.subscribers[i];
-            User.findById(user_id, function (err, user) {
+
+        async.each(business.subscribers, function(subscriber, callback){
+            User.findById(subscriber, function (err, user) {
                 if (err)
                     throw err;
                 else {
@@ -171,15 +178,16 @@ exports.WebAdminDeleteBusiness = function (req, res) {
                     var index = subs.indexOf(business._id);
                     if (index > -1) {
                         subs.splice(index, 1);
-                        User.findByIdAndUpdate(user_id, { $set: { subscriptions: subs } }, function (err, userResult) {
+                        User.findByIdAndUpdate(subscriber, { $set: { subscriptions: subs } }, function (err, userResult) {
                             if (err)
                                 throw err;
 
                         });
                     }
                 }
-            });
-        }
+            }); 
+        });
+
         Business.findByIdAndRemove(req.params.id, function (err, business) {
             if (err)
                 throw err;
@@ -199,9 +207,139 @@ exports.WebAdminDeleteBusiness = function (req, res) {
 
 exports.webAdminViewRequestedDelete = function (req, res) {
 
+if(req.user && req.user instanceof WebAdmin)
+  {
     Business.find({ delete: 1 }, function (err, requests) {
         res.render('requestedDelete', { user: req.user, requests: requests });
 
+    });
+  }
+  else {
+    return res.send("Unauthorized access. Please log in.");
+  }
+    
+}
+
+
+
+
+
+
+
+
+
+//<=========================================================================ADVERTISEMENT=======================================================================>
+
+
+exports.addAdvertisement = function(req,res)
+{
+
+
+  if(req.user && req.user instanceof WebAdmin)
+  {
+
+    if(!req.body.filename || !req.body.text || !req.body.sdate || !req.body.edate)
+    {
+      return res.send("Please fill in all necessary components");
     }
-    );
+    var ad = new Advertisement(
+      {
+        image       : req.body.filename, //should be changed to req.file.filename
+        text        : req.body.text,
+        start_date  : req.body.sdate,
+        end_date    : req.body.edate
+      }
+    )
+
+    ad.save(function(err,ad){
+      if(err)
+        return res.send("error saving advertisement");
+      else
+        return res.send("successfully created advertisement");
+
+    });
+  }
+  else {
+    return res.send("Unauthorized access. Please log in.");
+  }
+
+}
+
+
+
+
+
+exports.deleteAdvertisement = function(req,res)
+{
+
+    if(req.user && req.user instanceof WebAdmin)
+    {
+      Advertisement.findByIdAndRemove(req.body.ad, function(err,ad)
+      {
+        if(err)
+          res.send("error deleting advertisement");
+        else {
+          res.send("successfully deleted advertisement");
+        }
+
+      });
+    }
+
+
+
+}
+
+
+
+
+exports.updateAvailableAdvertisements = function(req,res)
+{
+  var rule = new schedule.RecurrenceRule();
+  rule.dayOfWeek = [new schedule.Range(0,6)];
+  rule.hour = 00;
+  rule.minute = 00;
+
+
+  var j = schedule.scheduleJob(rule, function()
+  {
+    var d = new Date();
+    Advertisement.find({}, function(err, ads)
+    {
+      console.log(ads);
+      for(var i = 0; i < ads.length; i++)
+      {
+        if(ads[i].end_date < d || ads[i].start_date > d)
+        {
+          console.log("this has expired: " + ads[i]);
+          ads[i].available = 0;
+          ads[i].save();
+        }
+        else {
+          ads[i].available = 1;
+          ads[i].save();
+        }
+      }
+
+
+      res.send("successful");
+
+    })
+  });
+
+
+}
+
+exports.viewAvailableAdvertisements = function(req,res)
+{
+  if(req.user && req.user instanceof WebAdmin)
+  {
+    Advertisement.find({available : 1}, function(err, ads)
+    {
+      res.send(ads);
+    });
+  }
+  else {
+    return res.send("Unauthorized access. Please log in.");
+  }
+
 }

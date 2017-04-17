@@ -37,8 +37,7 @@ var BusinessSchema = new Schema({
     category      : [String], //or int? can be in more than one category
     location      : { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
     address: String,
-    area: String,
-    description: String,  
+    area: String,  
     average_rating: {type: SchemaTypes.Double, default: 0.0},
     public:
     {
@@ -55,7 +54,6 @@ var BusinessSchema = new Schema({
     },
     reviews : [{type: mongoose.Schema.Types.ObjectId, ref:'Review',default: []}]
 });
-
 
 //created a text index on the desired fields
 BusinessSchema.index({

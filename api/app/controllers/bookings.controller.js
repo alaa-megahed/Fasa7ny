@@ -1,8 +1,8 @@
 var Booking  = require('mongoose').model('Booking');
 var Events   = require('mongoose').model('Events');
-var EventOccurrences = require('mongoose').model('EventOccurrences');
-var RegisteredUser   = require('mongoose').model('RegisteredUser');
-var Business         = require('mongoose').model('Business');
+var EventOccurrences   = require('mongoose').model('EventOccurrences');
+var RegisteredUser     = require('mongoose').model('RegisteredUser');
+var Business           = require('mongoose').model('Business');
 
 
 //================  < BUSINESS BOOKINGS > ====================
@@ -70,7 +70,7 @@ exports.book_event = function (req,res)
                             if(err || !eventoccur)
                               res.send("Oops, something went wrong, please try again with the correct information ");
                             else
-                              res.send("Booked successfully");
+                              res.json(booking);
                           });
                       }
                       });
@@ -139,7 +139,7 @@ exports.edit_booking = function(req,res)
                          {
                             var old = booking.count;
                              //cannot book more than available number
-                             if(eventocc.available < newCount)
+                             if(eventocc.available - newCount -(-old) < 0)
                                 res.send("capacity doesn't allow more than "+ eventocc.available);
                               else
                               {
@@ -176,6 +176,7 @@ exports.edit_booking = function(req,res)
 
 exports.cancel_booking = function(req,res)
 {
+
   if(req.user && req.user instanceof Business)
   {
     var bookingID = req.body.booking_id;       //id of booking to be cancelled
@@ -297,6 +298,7 @@ exports.view_event_bookings = function(req,res)
 
 //======================= < USER > ==============================
 
+
 //Registered User adds bookings by giving count, event id. Booking date is saved as current date.
 exports.regUserAddBooking = function(req, res, next) {
 
@@ -304,7 +306,6 @@ exports.regUserAddBooking = function(req, res, next) {
   {
 		if(req.user instanceof RegisteredUser)
 		{
-
 
       if(req.body.count <= 0)
         return res.send("Can't have negative or no count.");

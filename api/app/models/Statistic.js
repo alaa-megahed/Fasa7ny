@@ -1,6 +1,5 @@
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema,
-  findOrCreate = require('mongoose-find-or-create');
+  Schema = mongoose.Schema; 
 
 
 var weekStat = new Schema({
