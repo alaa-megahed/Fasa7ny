@@ -20,7 +20,7 @@
                         <div ng-show="offers.length">
                             <h3> Special Offers:</h3> <br>
 
-                            <div ng-repeat="offer in offers" ng-if="offer.type === 'specific audience'">
+                            <div ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific audience'">
 
                               <input type="radio" ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
 

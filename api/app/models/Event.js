@@ -24,7 +24,6 @@ var EventOccurrencesSchema = mongoose.Schema({
     event : {type: mongoose.Schema.Types.ObjectId, ref:'Events'},
     facility_id  :{type: mongoose.Schema.Types.ObjectId, ref:'Facility'}
 
-
 });
 
 //creating models

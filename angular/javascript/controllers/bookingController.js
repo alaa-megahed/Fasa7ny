@@ -1,63 +1,65 @@
 
 var app = angular.module('fasa7ny');
 app.controller('bookingController', function($scope, $http, $location, Offers) {
-        $scope.business_id = "58f0cb2d6bfb6061efd66625";
+        $scope.business_id = "58f0f3faaa02d151aa4c987c";
         $scope.event = {
-                "_id" : "58f39c7850010178595ccfef",
-                "location" : "costa",
-                "name" : "RAN",
-                "description" : "ran",
-                "price" : "0.36",
-                "capacity" : 4,
-                "repeated" : "Once",
-                "business_id" : "58f0cb2d6bfb6061efd66625",
-                "daysOff" : [
-                  "5"
-                ],
-                "image" : [
-                  " "
-                ],
-                "__v" : 0
-              };
+        "_id" : "58f1605e08902a21866c2c97",
+        "location" : "lo",
+        "name" : "New event",
+        "description" : "desc",
+        "price" : "0.01",
+        "capacity" : 5,
+        "repeated" : "Once",
+        "business_id" : "58f0f3faaa02d151aa4c987c",
+        "daysOff" : [ ],
+        "image" : [
+          " "
+        ],
+        "__v" : 0
+      };
         $scope.event_occ =  {
-              "_id" : "58f39c7850010178595ccff0",
-              "day" : null,
-              "time" : "",
-              "available" : 4,
-              "event" : "58f39c7850010178595ccfef",
-              "bookings" : [ ],
-              "__v" : 0
-            };
+        "_id" : "58f4956e8840b8799d139698",
+        "day" : "2017-04-17T10:14:06.143Z",
+        "time" : "4-5",
+        "available" : 7,
+        "event" : "58f1605e08902a21866c2c97",
+        "facility_id" :"58f3bddb232f9d42f7d3a3a3",
+        "bookings" : [ ],
+        "__v" : 0
+      };
         $scope.user =  {
-              "_id" : ObjectId("58ed22fcbfe67363f0c3a41d"),
-              "gender" : "female",
-              "address" : "",
-              "birthdate" : ISODate("1997-03-30T00:00:00Z"),
-              "phone" : "",
-              "email" : "alaamegahed12@gmail.com",
-              "name" : "Alaa",
-              "subscriptions" : [ ],
-              "bookings" : [
-                ObjectId("58f0cc67081e5b62141b646d"),
-                ObjectId("58f0deeb6d170068eafec362"),
-                ObjectId("58f0e129de29ae69f213bd64"),
-                ObjectId("58f0e33c4f07bd6bca56541c"),
-                ObjectId("58f0e52c8b33b06ca02ef81a"),
-                ObjectId("58f0e6b1f134b16da839ef21")
-              ],
-              "user_type" : 1,
-              "local" : {
-                "password" : "$2a$08$HeRTDO19GFgNG.BQjbxkyugPf6wLzsS6jlJULH.lIS2bTOk2NlRPq",
-                "username" : "alaa"
-              },
-              "__v" : 8,
-              "notifications" : [
-                ObjectId("58f0e5798b33b06ca02ef81b"),
-                ObjectId("58f0e6d9f134b16da839ef22")
-              ]
-            };
+          "_id" : "58f0f48daa02d151aa4c987f",
+          "name" : "Nourhan Khaled",
+          "user_type" : 1,
+          "google" : {
+            "email" : "nourhan.kh02@gmail.com",
+            "token" : "ya29.GlstBLag8DFxjWiCAcXAheP_6gH5nXKdBrFWfmb3z6VVzz-5vq9TzVm3o7RR63o3N2F28tDe8oQoKfdUbuXD2CL7XJxwV32JFhdjrFeFgjH3hY4aLSc0wKDS6rm7",
+            "id" : "105938228902529994494"
+          },
+          "unread_notifications" : 5,
+          "notifications" : [
+            "Nourhan cancelled NAR     1492186549825",
+            "Nourhan added aywa ba2a        1492187328117",
+            "Nourhan added testing notifications    1492211858292",
+            "Nourhan added new date    1492211996137",
+            "Nourhan added please yala    20170414",
+            "Nourhan added yemken    20170414",
+            "Nourhan added try unread    20170414",
+            "Nourhan added New event        1492213854486",
+            "Nourhan added name    20170417",
+            "Nourhan added ya rab    20170417",
+            "Nourhan added ana shaghal    20170417"
+          ],
+          "subscriptions" : [
+            "58f0f3faaa02d151aa4c987c"
+          ],
+          "bookings" : [
+            "58f0f584aa02d151aa4c9881"
+          ],
+          "__v" : 2
+        };
    
-            $scope.cash = false;
+            $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
         //   if($scope.business.payment_methods[i] === "cash")
         //     $scope.cash = true;
@@ -100,7 +102,7 @@ app.controller('bookingController', function($scope, $http, $location, Offers) {
                 $scope.charge = min_charge;
                 console.log("charge   " + min_charge); 
             // });
-          $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, cahrge: min_charge})
+          $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: min_charge})
                     .then(function successCallback(responce){
                       console.log(responce.data);
                     }, function errorCallback(responce){
@@ -157,7 +159,7 @@ app.controller('bookingController', function($scope, $http, $location, Offers) {
 app.controller('bookFacilityController', function($scope, $http, $location, Offers,Occurrences,Facilities) {
       
 
-      Offers.get().then(function(response) {
+      Offers.get("58f0f3faaa02d151aa4c987c").then(function(response) {
               $scope.offers = response.data;
               $scope.betengan = "Facility Booking";
         });
