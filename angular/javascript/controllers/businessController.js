@@ -100,5 +100,10 @@ $scope.id = "58f20e01b38dec5d920104f3";
           $location.path('/createFacility/'+ id);
         };
 
+        $scope.createOneEvent = function(id) {
+          console.log("create event controller"+id);
+          $location.path('/createOneEvent/'+ id);
+        };
+
 
     });

@@ -7,7 +7,7 @@
    <input ng-if = "business.delete == 0" type="submit" value="Request Removal" ng-click = "remove()" class="btn btn-transparent">
    <input ng-if = "business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent">
    <input type="submit" value="Create a Facility" ng-click = "createFacility(business._id)" class="btn btn-transparent">
-
+   <input type="submit" value="Create One-Time Event" ng-click = "createOneEvent(business._id)" class="btn btn-transparent">
     <form action="#!/business/edit" method="get">
        <input type="submit" value="Edit Information" class="btn btn-transparent">
      </form>
