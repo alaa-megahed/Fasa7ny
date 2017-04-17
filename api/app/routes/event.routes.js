@@ -12,8 +12,8 @@ router.get('/', function(req, res){
     });
 
 router.post('/create', RegularEventController.createEvent);
-router.post('/edit', RegularEventController.editEvent);
-router.post('/cancel', RegularEventController.cancelEvent);
+router.post('/edit/:id', RegularEventController.editEvent);
+router.get('/cancel/:id', RegularEventController.cancelEvent);
 router.post('/cancelO', RegularEventController.cancelOccurrence);
 router.post('/view', RegularEventController.getEvents);
 router.post('/viewO', RegularEventController.getOccurrences);
