@@ -1,4 +1,4 @@
- var Booking  = require('mongoose').model('Booking');
+var Booking  = require('mongoose').model('Booking');
 var Events   = require('mongoose').model('Events');
 var EventOccurrences   = require('mongoose').model('EventOccurrences');
 var RegisteredUser     = require('mongoose').model('RegisteredUser');
@@ -302,9 +302,9 @@ exports.view_event_bookings = function(req,res)
 //Registered User adds bookings by giving count, event id. Booking date is saved as current date.
 exports.regUserAddBooking = function(req, res, next) {
 
-  if(req.user)
+  // if(req.user)
   {
-		if(req.user instanceof RegisteredUser)
+		// if(req.user instanceof RegisteredUser)
 		{
 
       if(req.body.count <= 0)
@@ -314,7 +314,7 @@ exports.regUserAddBooking = function(req, res, next) {
 	    var booking = new Booking(
 	      {
 	        count        : req.body.count,
-	        booker       : req.user.id,
+	        booker       : req.body.user_id,
 	        event_id     : req.body.event,
 	        booking_date : date,
           charge       : req.body.charge
@@ -348,7 +348,7 @@ exports.regUserAddBooking = function(req, res, next) {
 									}
 
 									//finds registered user and adds this event to his/her list of bookings
-									RegisteredUser.findOne({_id:req.user.id}, function(err, user)
+									RegisteredUser.findOne({_id:req.body.user_id}, function(err, user)
 								 {
 									 if(err || !user)
 									 {
@@ -374,19 +374,19 @@ exports.regUserAddBooking = function(req, res, next) {
 	        }
 	    });
 	  }
-		else
-		{
-			res.status(401).json("You are not a registered user");
-			return;
-		}
+		// else
+		// {
+		// 	res.status(401).json("You are not a registered user");
+		// 	return;
+		// }
 
 
 	}
-	else
-	{
-		res.status(401).json("Please log in to book events");
-		return;
-  }
+	// else
+	// {
+	// 	res.status(401).json("Please log in to book events");
+	// 	return;
+ //  }
 
 
 };

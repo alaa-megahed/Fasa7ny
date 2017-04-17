@@ -1,3 +1,4 @@
+    
 
         <section id="about" class="text-center">
             <div  class="container">
@@ -11,27 +12,26 @@
                     <!-- /section title -->
                     
                 <form ng-model="formData">
-                        <div> {{betengan}} </div>
-                    <h3> Facility :</h3><br>
+                       <!--  <div> {{betengan}} </div> -->
+                    <h3> Facility :</h3>
                  <!--    <div ng-repeat="facility in facilities" > --> <!--  ng-if="check business id"-->
                          <!-- <input type="radio" ng-model="$parent.chosen_facility" value="{{facility._id}}" ng-change="choose_facility(facility._id)" >
                           <label>{{facility.name}}</label><br>
                     </div> <br><br> -->
 
-                    <div class="form-group">
-                      <select width="80"  ng-model="chosen_facility">
-                          <option ng-repeat="facility in facilities" value="{{facility._id}}">{{facility.name}}</option>
+                    <div class="styled-select">                    
+                      <select  class="selectpicker"  data-style="btn-primary" ng-model="chosen_facility">
+                      <option disabled selected value>Choose One</option>                      <option ng-repeat="facility in facilities" value="{{facility._id}}">{{facility.name}}</option>
                       </select>
-                    </div>
-
+                      </div>
 
                     <h3> Date  : <input type="date" ng-model="formData.day" ng-change="choose_date(formData.day)" ><br></h3>
                        <!--  min="{{minDate | date:'yyyy-MM-dd'}}" max="{{maxDate | date:'yyyy-MM-dd'}}"  ng-min={{minDate}} ng-max={{maxDate}} -->
                         
-                    <h3> Time slot :</h3> 
+                    <h3> Pick a time slot :</h3> 
                       <div ng-repeat="timing in timings | filter : {facility_id:facility} track by $index" ng-if="timing.available > 0 && Date(timing.day) == date && Year(timing.day) == year && Month(timing.day) == month "> <!-- && d == date   -->
                       <input type="radio"  ng-model="formData.chosen_time" name="chosen_time" ng-change="choose_occ({{timing}})" value="{{timing}}">
-                       <label>{{"Timings: "+timing.time + "  available places: "+timing.available}}</label>                          
+                       <label>{{"Timings: "+timing.time + " , available: "+timing.available}}</label>                          
                       </div> <br><br>
 
                       <h3>Number of people :  
@@ -99,48 +99,14 @@
                 </div>      <!-- End row -->
             </div>      <!-- End container -->
         </section>   <!-- End section -->
-        
-        <!--
-        Start Counter Section
-        ==================================== -->        
+           
 
-         
-        <!-- Start Our Team
-        =========================================== -->
-        
-        
-        <!-- Start Twitter Feed
-        =========================================== -->
-       
-        
-        <!-- Start Pricing section
-        =========================================== -->
-        
-        <!-- Start Testimonial
-        =========================================== -->
-       
-        
-        <!--
-        Start Blog Section
-        =========================================== -->
-                
-        
-        
-        <!-- Srart Contact
-        =========================================== -->     
-               <!-- Back to Top
-        ============================== -->
         <a href="javascript:;" id="scrollUp">
             <i class="fa fa-angle-up fa-2x"></i>
         </a>
         
-        <!-- end Footer Area
-        ========================================== -->
-        
-        <!-- 
-        Essential Scripts
-        =====================================-->
-        
+
+       
         <!-- Main jQuery -->
         
          <!-- <script src="/bower_components/angular-route/angular-route.js"></script> -->

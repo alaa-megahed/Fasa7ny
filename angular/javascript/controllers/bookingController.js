@@ -29,35 +29,35 @@ app.controller('bookingController', function($scope, $http, $location, Offers) {
               "__v" : 0
             };
         $scope.user =  {
-              "_id" : ObjectId("58ed22fcbfe67363f0c3a41d"),
+              "_id" : ("58ed22fcbfe67363f0c3a41d"),
               "gender" : "female",
               "address" : "",
-              "birthdate" : ISODate("1997-03-30T00:00:00Z"),
+              // "birthdate" : ISODate("1997-03-30T00:00:00Z"),
               "phone" : "",
               "email" : "alaamegahed12@gmail.com",
               "name" : "Alaa",
               "subscriptions" : [ ],
-              "bookings" : [
-                ObjectId("58f0cc67081e5b62141b646d"),
-                ObjectId("58f0deeb6d170068eafec362"),
-                ObjectId("58f0e129de29ae69f213bd64"),
-                ObjectId("58f0e33c4f07bd6bca56541c"),
-                ObjectId("58f0e52c8b33b06ca02ef81a"),
-                ObjectId("58f0e6b1f134b16da839ef21")
-              ],
+              // "bookings" : [
+              //   ObjectId("58f0cc67081e5b62141b646d"),
+              //   ObjectId("58f0deeb6d170068eafec362"),
+              //   ObjectId("58f0e129de29ae69f213bd64"),
+              //   ObjectId("58f0e33c4f07bd6bca56541c"),
+              //   ObjectId("58f0e52c8b33b06ca02ef81a"),
+              //   ObjectId("58f0e6b1f134b16da839ef21")
+              // ],
               "user_type" : 1,
               "local" : {
                 "password" : "$2a$08$HeRTDO19GFgNG.BQjbxkyugPf6wLzsS6jlJULH.lIS2bTOk2NlRPq",
                 "username" : "alaa"
               },
               "__v" : 8,
-              "notifications" : [
-                ObjectId("58f0e5798b33b06ca02ef81b"),
-                ObjectId("58f0e6d9f134b16da839ef22")
-              ]
+              // "notifications" : [
+              //   ObjectId("58f0e5798b33b06ca02ef81b"),
+              //   ObjectId("58f0e6d9f134b16da839ef22")
+              // ]
             };
    
-            $scope.cash = false;
+            $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
         //   if($scope.business.payment_methods[i] === "cash")
         //     $scope.cash = true;
@@ -100,7 +100,7 @@ app.controller('bookingController', function($scope, $http, $location, Offers) {
                 $scope.charge = min_charge;
                 console.log("charge   " + min_charge); 
             // });
-          $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, cahrge: min_charge})
+          $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: min_charge, user_id: $scope.user._id})
                     .then(function successCallback(responce){
                       console.log(responce.data);
                     }, function errorCallback(responce){
@@ -204,6 +204,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
 
       $scope.book = function()
       {
+        console.log($scope.chosen_facility);
           $http.post('/bookings/regusers',{count: $scope.formData.count,offer_id:$scope.formData.chosen_offer,
                                             event:$scope.formData.chosen_time.id}).then(function(data)
           {
