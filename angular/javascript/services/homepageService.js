@@ -17,6 +17,9 @@ angular.module('fasa7ny')
       search : function(formData) {
         return $http.post('/search', formData);
 
+      },
+      resetUnread : function() {
+        return  $http.get('/user/resetUnread');
       }
 
 

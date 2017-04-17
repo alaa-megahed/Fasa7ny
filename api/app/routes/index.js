@@ -34,7 +34,8 @@ router.get('/', function (req, res) {
 });
 
 router.get('/loggedin', function (req, res) {
-    res.json(req.user)
+  if(req.user)
+    return res.json(req.user);
 });
 
 module.exports = router;

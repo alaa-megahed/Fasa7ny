@@ -1848,4 +1848,8 @@ li.dropdown {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+.notif:hover {
+  background-color: #6cb670;
+}
 </style>

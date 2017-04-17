@@ -2,21 +2,27 @@ angular.module('fasa7ny')
 
   .controller('homepageController' , function($scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, LoggedIn) {
 
+    $scope.err = "";
+    $scope.form = {};
+    $scope.searchAppear = 1;
+    $scope.notifcolor = {'color' : 'white'} ;
+
+
     LoggedIn.check()
            .then(function(data) {
                $scope.user = data;
+               console.log($scope.user.data.notifications);
+               $scope.user.data.notifications.reverse();
+               $scope.notifications =  $scope.user.data.notifications.slice(1,11);
+               if($scope.user.data.unread_notifications)
+                  $scope.notifcolor = {'color' : 'red'};
+
            });
     Homepage.get()
            .then(function(data) {
            });
 
 
-
-
-
-    $scope.err = "";
-    $scope.form = {};
-    $scope.searchAppear = 1;
 
     $scope.signUp = function() {
       var modalInstance = $modal.open({
@@ -73,7 +79,13 @@ angular.module('fasa7ny')
 
     }
 
-    
+    $scope.decreaseCount = function(){
+
+      $scope.notifcolor = {'color' : 'white'} ;
+      Homepage.resetUnread();
+
+    }
+
 
 
 

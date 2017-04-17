@@ -15,27 +15,27 @@ var RegisteredUserSchema = new Schema({
     bookings      : [{type: mongoose.Schema.Types.ObjectId, ref:'Booking',default: []}],
     subscriptions : [{type: mongoose.Schema.Types.ObjectId, ref:'Business',default: []}],
     notifications : [String],
-    unread_notifications : {type: Number, default: 0},
+    unread_notifications : {type: Number, default: 50},
     local    :
     {
-        username: 
+        username:
         {
             type : String
         },
-        password: 
+        password:
         {
             type : String,
         },
         resetPasswordToken: String,
-        resetPasswordExpires: Date    
+        resetPasswordExpires: Date
     },
-    facebook   : 
+    facebook   :
     {
         id     : String,
         token  : String,
         email  : String
-    }, 
-    google     : 
+    },
+    google     :
     {
         id     : String,
         token  : String,
