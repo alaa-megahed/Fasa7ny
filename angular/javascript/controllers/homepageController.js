@@ -1,6 +1,6 @@
 angular.module('fasa7ny')
 
-  .controller('homepageController' , function($scope, $http, $modal, $modalStack, $log, Homepage, LoggedIn) {
+  .controller('homepageController' , function($scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, LoggedIn) {
 
     LoggedIn.check()
            .then(function(data) {
@@ -15,6 +15,8 @@ angular.module('fasa7ny')
 
 
     $scope.err = "";
+    $scope.form = {};
+    $scope.searchAppear = 1;
 
     $scope.signUp = function() {
       var modalInstance = $modal.open({
@@ -61,6 +63,24 @@ angular.module('fasa7ny')
 
 
     }
+
+
+    $scope.search = function(){
+
+      $scope.searchAppear = 0;
+      console.log($scope.form.search);
+      $location.url('/search/'+$scope.form.search);
+
+    }
+
+    
+
+
+
+
+
+
+
   })
 
 
@@ -119,8 +139,9 @@ angular.module('fasa7ny')
 
               if(data.data === "success")
               {
-                $window.location.reload();
+
                 $modalInstance.close("closed");
+                $window.location.reload();
               }
 
               else

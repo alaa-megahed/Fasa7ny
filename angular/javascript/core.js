@@ -12,7 +12,11 @@ app.config(function($routeProvider){
 	// 	templateUrl : "views/businessPage.html",
 	// 	controller  : "businessController"
 	// })
+	.when("/search/:id", {
+		templateUrl : "views/searchtest.html",
+		controller  : "searchtestController"
 
+	})
 	.when("/:id", {
 		templateUrl : "views/businessPage.html",
 		controller  : "businessController"
@@ -22,6 +26,7 @@ app.config(function($routeProvider){
 		controller  : "businessController"
 
 	})
+
 	// $locationProvider.html5Mode(true);
 
 });

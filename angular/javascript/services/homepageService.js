@@ -13,6 +13,10 @@ angular.module('fasa7ny')
       },
       forgotPassword : function(formData) {
         return $http.post('auth/forgot', formData);
+      },
+      search : function(formData) {
+        return $http.post('/search', formData);
+
       }
 
 

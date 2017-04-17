@@ -11,7 +11,9 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
       <script src="./javascript/core.js"></script>
       <script src="./javascript/controllers/homepageController.js"></script>
+      <script src="./javascript/controllers/homepageController.js"></script>
       <script src="./javascript/services/homepageService.js"></script>
+
 
 
 
@@ -74,12 +76,9 @@
 		<!-- Modernizer Script for old Browsers -->
         <script src="js/modernizr-2.6.2.min.js"></script>
 
-
-
-
     </head>
 
-    <body id="body">
+    <body id="body" ng-cloak>
 
 
       <header id="navigation" class="navbar navbar-inverse" role = "navigation">
@@ -109,18 +108,68 @@
                   <ul id="nav" class="nav navbar-nav">
                       <li class="current"><a href="#body">Home</a></li>
                       <li><a href="#showcase">About Us</a></li>
-                      <li ng-if = "!user.data.user_type"><a href = "#navigation" ng-click = "signUp()">Sign Up</a></li>
-                      <li ng-if = "!user.data.user_type"><a href = "#navigation" ng-click = "signIn()">Sign In</a></li>
+                      <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signUp()">Sign Up</a></li>
+                      <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signIn()">Sign In</a></li>
                       <li ng-if = "user.data.user_type == 1"><a href="/auth/login"> My Profile </a></li>
                       <li ng-if = "user.data.user_type == 2"><a href="/auth/login"> My Business Page </a></li>
                       <li ng-if = "user.data.user_type == 3"><a href="/auth/login"> Admin Requests </a></li>
                       <li><a href="#contact-us">Contact Us</a></li>
                       <li ng-if = "user.data.user_type"><a href="/auth/logout">Log Out</a></li>
 
+
+                      <li><a href="#search">Search</a></li>
+                      <li class="dropdown">
+                            <a href="javascript:void(0)" class="dropbtn">Dropdown</a>
+                            <div class="dropdown-content">
+                              <a href="#">Link 1</a>
+                              <a href="#">Link 2</a>
+                              <a href="#">Link 3</a>
+                            </div>
+                      </li>
                   </ul>
               </nav>
+
+
+
+
+
+
+              <div id="search" style = "background-color: #2B2C30;" ng-if = "searchAppear" >
+                  <button type="button" class="close">×</button>
+                  <form name = "form.userForm" ng-submit = "search()">
+                      <input type="search" value="" placeholder="type keyword(s) here"  ng-model = "form.search" />
+                      <button type="submit" class="btn btn-green"  >Search</button>
+                  </form>
+              </div>
             </div>
       <!-- /main nav -->
+
+
+
+
+            <script>
+            $(function () {
+              $('a[href="#search"]').on('click', function(event) {
+              event.preventDefault();
+              $('#search').addClass('open');
+              $('#search > form > input[type="search"]').focus();
+            });
+
+            $('#search, #search button.close').on('click keyup', function(event) {
+              if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+                  $(this).removeClass('open');
+              }
+            });
+                  //Do not include! This prevents the form from submitting for DEMO purposes only
+            });
+            </script>
+
+
+
+
+
+
+
 
           </div>
       </header>
@@ -128,38 +177,39 @@
       End Fixed Navigation
       ==================================== -->
 
+<!--Start Preloader ==================================== -->
+<div id="loading-mask">
+  <div class="loading-img">
+    <img alt="Meghna Preloader" src="img/preloader.gif"  />
+  </div>
+</div>
+<!--End Preloader ==================================== -->
 
 
       <div ng-view></div>
 
 
-
+<!-- start footer -->
 		<footer id="footer" class="bg-one">
 			<div class="container">
-			    <div class="row wow fadeInUp" data-wow-duration="500ms">
-					<div class="col-lg-12">
-
 						<!-- copyright -->
-						<div class="copyright text-center">
-							<a href="index.html">
-								<img src="img/logo-meghna.png" alt="Meghna" />
-							</a>
-							<br />
+            <div class="copyright text-center">
+              <a href="index.html">
+                <img src="img/logo-meghna.png" alt="Meghna" />
+              </a>
 
-							<p>Copyright &copy; 2017. Drop The Bit.</p>
-						</div>
+              <p>Copyright &copy; 2017. Drop The Bit.</p>
+            </div>
 						<!-- /copyright -->
-
-					</div> <!-- end col lg 12 -->
-				</div> <!-- end row -->
 			</div> <!-- end container -->
-		</footer> <!-- end footer -->
+		</footer>
+    <!-- end footer -->
 
 		<!-- Back to Top
 		============================== -->
-		<!-- <a href="javascript:;" id="scrollUp"> -->
-			<!-- <i class="fa fa-angle-up fa-2x"></i> -->
-		<!-- </a> -->
+		<a href="javascript:;" id="scrollUp">
+			<i class="fa fa-angle-up fa-2x"></i>
+		 </a>
 
 		<!-- end Footer Area
 		========================================== -->
