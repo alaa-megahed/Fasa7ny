@@ -307,6 +307,7 @@ exports.regUserAddBooking = function(req, res, next) {
 		// if(req.user instanceof RegisteredUser)
 		// {
 
+
       if(req.body.count <= 0)
         return res.status(400).json("Can't have negative or no count.");
 
@@ -314,7 +315,7 @@ exports.regUserAddBooking = function(req, res, next) {
 	    var booking = new Booking(
 	      {
 	        count        : req.body.count,
-	        booker       : "58f0f48daa02d151aa4c987f",
+	        booker       : req.body.user_id,
 	        event_id     : req.body.event,
 	        booking_date : date,
           charge       : req.body.charge
@@ -348,7 +349,9 @@ exports.regUserAddBooking = function(req, res, next) {
 									}
 
 									//finds registered user and adds this event to his/her list of bookings
-									RegisteredUser.findOne({_id:"58f0f48daa02d151aa4c987f"}, function(err, user)
+
+									RegisteredUser.findOne({_id:req.body.user_id}, function(err, user)
+
 								 {
 									 if(err || !user)
 									 {
@@ -373,7 +376,9 @@ exports.regUserAddBooking = function(req, res, next) {
 						return res.status(500).json("Error. Please try again.");
 	        }
 	    });
+
 	 //  }
+
 		// else
 		// {
 		// 	res.status(401).json("You are not a registered user");
@@ -382,6 +387,7 @@ exports.regUserAddBooking = function(req, res, next) {
 
 
 	// }
+
 	// else
 	// {
 	// 	res.status(401).json("Please log in to book events");
