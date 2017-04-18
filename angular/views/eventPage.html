@@ -32,6 +32,7 @@
                             </article>
 
 </div>
+
 <h2>
 <span class="date">
 <span class="month">
@@ -41,6 +42,9 @@ Dec
 25
 </span>
 </span> {{ event.name }}
+<input ng-click = "DeleteEvent(event._id,event.business_id)" type="submit" value="Delete" class="btn btn-transparent w3-green">
+<input ng-click = "showForm(event._id)" type="submit" value="Edit" class="btn btn-transparent w3-green">
+
 </h2>
 
 <h4>Time: {{ eventocc.time}} </h4>
@@ -125,6 +129,7 @@ Dec
 
                    </article>
 
+</div>
                </div>
              </div>
            </div>

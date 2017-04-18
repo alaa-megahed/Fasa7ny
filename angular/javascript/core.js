@@ -44,4 +44,11 @@ app.config(function($routeProvider){
 
 	// $locationProvider.html5Mode(true);
 
+	.when("/createOneEvent/:businessId", {
+		templateUrl : "views/createEvent.html",
+		controller  : "onetimeController"
+	})
+
+	
+
 });
