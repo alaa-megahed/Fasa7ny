@@ -8,14 +8,14 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
             "location" : "costa",
             "name" : "RAN",
             "description" : "ran",
-            "price" : "0.36",
+            "price" : "100.00",
             "capacity" : 4,
             "repeated" : "Once",
             "business_id" : ("58f0cb2d6bfb6061efd66625"),
           };
         $scope.event_occ =  {
             "_id" : ("58f39c7850010178595ccff0"),
-            "available" : 4,
+            "available" : 5,
             "event" : ("58f39c7850010178595ccfef"),
           };
         $scope.user =  {
@@ -79,10 +79,10 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
           {
             console.log("token   "+ token);
             console.log("token.id   "+ token.id);
-            $http.post('http://127.0.0.1:3000/bookings/charge', {stripeToken: token, amount: $scope.stripe_charge})
+            $http.post('http://127.0.0.1:3000/bookings/charge', {stripeToken: token.id, amount: $scope.stripe_charge})
                     .then(function successCallback(responce){
                       console.log("success  charge in responce  "+ responce.data);
-                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.stripe_charge, charge_id: responce.data.id})
+                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, charge_id: responce.data.id, user_id: $scope.user._id})
                             .then(function successCallback(responce){
                               console.log(responce.data);
                             }, function errorCallback(responce){
@@ -94,16 +94,16 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
                     });
           }
         });
-
         $scope.open_stripe = function()
         {
           var basic_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, offers);
           var new_charge = basic_charge * 103;
-          $scope.stripe_charge = Math.round(new_charge); 
+          $scope.stripe_charge = Math.round(new_charge);
+          $scope.charge  = $scope.stripe_charge / 100; 
           console.log("charge in stripe " + $scope.stripe_charge);
           $scope.stripe_handler.open({
             name: $scope.event.name,
-            description: $scope.formData.count + " places",
+            description: $scope.formData.count + " places",       // TODO add offer
             amount: $scope.stripe_charge
           });
         }

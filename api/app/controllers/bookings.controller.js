@@ -321,6 +321,10 @@ exports.regUserAddBooking = function(req, res, next) {
           charge       : req.body.charge,
           stripe_charge: req.body.stripe_charge
 	      });
+      if(typeof charge_id != undefined)
+      {
+        booking.stripe_charge = req.body.charge_id;
+      }
 
 	    booking.save(function(err,booking)
 			 {
