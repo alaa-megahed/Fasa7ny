@@ -1,41 +1,66 @@
-<div class="container">
+<script>
 
-    <form action="#" id="search-form" method="get" role="search">
-        <input type="text" class="form-control" placeholder="Search..." autocomplete="on" name="seach" ng-model="keyword">
-        <button type="submit" title="Search" id="search-submit">
+</script>
+
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" onclick="closeNav()">&times; </a>
+    <div id="search-form">
+        <form>
+            <input type="text" class="form-control" placeholder="Search..." autocomplete="on" name="seach" ng-model="keyword">
+            <button type="submit" title="Search" id="search-submit">
         <i class="fa fa-search"></i>
     </button>
-    </form>
-    <br>
-    <h5> Filters:</h5>
-    <label for="sortOptions">Sort by: </label>
+            <div class="form-group">
+                <label for="sortOptions">Sort by: </label> <br>
+                <select width="20" id="sortOptions" ng-model="sortBy"> 
+                <option value="none">None </option>        
+                <option value="average_rating">Rating </option>
+                <option value="area">Area</option>
+                <option value="name">Name</option>                   
+            </select>
+            </div>
+            <label ng-show="sortBy != '' && sortBy != 'none'" for="checkbox">Sort ascending: </label>
+            <input ng-show="sortBy != '' && sortBy != 'none'" id="checkbox" type="checkbox" ng-click="check()" ng-model="checked">
 
-    <select id="sortOptions" ng-model="sortBy"> 
-        <option value="average_rating">Rating </option>
-        <option value="area">Area</option>
-        <option value="name">Name</option>                   
-    </select>
-    <label ng-show = "sortBy != ''" for="checkbox">Sort ascending: </label>
-    <input ng-show = "sortBy != ''" id = "checkbox"type="checkbox" ng-click = "check()" ng-model="checked">
-    
-    
-    <label for="category">Category: </label>
-    <select id="category" ng-model="cat"> 
-        <option value="all">All</option>                           
-        <option value="fun">Fun </option>
-        <option value="escape rooms">Escape Rooms</option>
-        <option value="travel">Travel</option>
-        <option value="adventure">Adventure</option>                   
-                           
-    </select>
-    <label for="min-rating">Minimum rating: </label>
-    <input id="min-rating" type="number" min="0.0" max="5.0" step="0.1" ng-model="minRating">
-    <div>
+            <div class="form-group">
+                <label for="category">Category: </label> <br>
+                <select width="20" id="category" ng-model="cat"> 
+            <option value="all">All</option>                           
+            <option value="fun">Fun </option>
+            <option value="escape rooms">Escape Rooms</option>
+            <option value="travel">Travel</option>
+            <option value="adventure">Adventure</option>                   
+        </select>
+            </div>
+
+
+        </form>
+        <br>
+
+
+
+
+        <div class="form-group">
+            <label for="area">Area:</label> <br>
+            <select width="20" id="area" ng-model="area">
+          <option ng-repeat="ar in areas" value="{{ar}}">{{ar}}</option>
+      </select>
+        </div>
+
+        <div class="form-group">
+            <label for="min-rating">Minimum rating: </label> <br>
+            <input id="min-rating" type="number" min="0.0" max="5.0" step="0.1" ng-model="minRating">
+        </div>
 
     </div>
+</div>
 
 
+<div id="main">
+    <span onclick="openNav()"> <i style="size: 50px" class="fa fa-bars"></i> </span>
     <div ng-repeat="business in businesses | category: cat | filter: keyword | orderBy: sortBy : direction " ng-if="business.average_rating >= $parent.minRating">
+        <img ng-src="/uploads/image" alt="">
+
         <h3>{{business.name}} </h3>
         <b>Description: </b> {{business.description}} <br>
         <b>Address </b> {{business.address}} <br>
@@ -51,150 +76,81 @@
 </div>
 
 <style>
-    /* -------------------- Select Box Styles: bavotasan.com Method (with special adaptations by ericrasch.com) */
-    /* -------------------- Source: http://bavotasan.com/2011/style-select-box-using-only-css/ */
-    
-    .styled-select {
-        background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
-        height: 29px;
-        overflow: hidden;
-        width: 240px;
+    #search-form {
+        margin-left: 10%;
+        margin-right: 10%;
+        margin-top: 50px;
+        border: 10px;
+        border-color: aquamarine;
+        transition: 0.2s;
     }
     
-    .styled-select select {
-        background: transparent;
-        border: none;
-        font-size: 14px;
-        height: 29px;
-        padding: 5px;
-        /* If you add too much padding here, the options won't show in IE */
-        width: 268px;
+    select {
+        border-radius: 12px;
+        color: #111;
+        outline: none;
     }
     
-    .styled-select.slate {
-        background: url(http://i62.tinypic.com/2e3ybe1.jpg) no-repeat right center;
-        height: 34px;
-        width: 240px;
-    }
     
-    .styled-select.slate select {
-        border: 1px solid #ccc;
-        font-size: 16px;
-        height: 34px;
-        width: 268px;
+    .sidenav {
+        height: 100%;
+        /* 100% Full-height */
+        width: 0;
+        /* 0 width - change this with JavaScript */
+        position: fixed;
+        /* Stay in place */
+        z-index: 1;
+        /* Stay on top */
+        top: 0;
+        left: 0;
+        background-color: #111;
+        /* Black*/
+        overflow-x: hidden;
+        /* Disable horizontal scroll */
+        padding-top: 60px;
+        /* Place content 60px from the top */
+        transition: 0.2s;
+        /* 0.5 second transition effect to slide in the sidenav */
     }
-    /* -------------------- Rounded Corners */
+    /* The navigation menu links */
     
-    .rounded {
-        -webkit-border-radius: 20px;
-        -moz-border-radius: 20px;
-        border-radius: 20px;
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: 0.3s
     }
+    /* When you mouse over the navigation links, change their color */
     
-    .semi-square {
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
+    .sidenav a:hover,
+    .offcanvas a:focus {
+        color: #f1f1f1;
     }
-    /* -------------------- Colors: Background */
+    /* Position and style the close button (top right corner) */
     
-    .slate {
-        background-color: #ddd;
+    .sidenav .closebtn {
+        position: absolute;
+        top: 0;
+        right: 25px;
+        font-size: 36px;
+        margin-left: 50px;
     }
+    /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
     
-    .green {
-        background-color: #779126;
+    #main {
+        transition: margin-left .5s;
+        padding: 20px;
     }
+    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
     
-    .blue {
-        background-color: #3b8ec2;
-    }
-    
-    .yellow {
-        background-color: #eec111;
-    }
-    
-    .black {
-        background-color: #000;
-    }
-    /* -------------------- Colors: Text */
-    
-    .slate select {
-        color: #000;
-    }
-    
-    .green select {
-        color: #fff;
-    }
-    
-    .blue select {
-        color: #fff;
-    }
-    
-    .yellow select {
-        color: #000;
-    }
-    
-    .black select {
-        color: #fff;
-    }
-    /* -------------------- Select Box Styles: danielneumann.com Method */
-    /* -------------------- Source: http://danielneumann.com/blog/how-to-style-dropdown-with-css-only/ */
-    
-    #mainselection select {
-        border: 0;
-        color: #EEE;
-        background: transparent;
-        font-size: 20px;
-        font-weight: bold;
-        padding: 2px 10px;
-        width: 378px;
-        *width: 350px;
-        *background: #58B14C;
-        -webkit-appearance: none;
-    }
-    
-    #mainselection {
-        overflow: hidden;
-        width: 350px;
-        -moz-border-radius: 9px 9px 9px 9px;
-        -webkit-border-radius: 9px 9px 9px 9px;
-        border-radius: 9px 9px 9px 9px;
-        box-shadow: 1px 1px 11px #330033;
-        background: #58B14C url("http://i62.tinypic.com/15xvbd5.png") no-repeat scroll 319px center;
-    }
-    /* -------------------- Select Box Styles: stackoverflow.com Method */
-    /* -------------------- Source: http://stackoverflow.com/a/5809186 */
-    
-    select#soflow,
-    select#soflow-color {
-        -webkit-appearance: button;
-        -webkit-border-radius: 2px;
-        -webkit-box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
-        -webkit-padding-end: 20px;
-        -webkit-padding-start: 2px;
-        -webkit-user-select: none;
-        background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#FAFAFA, #F4F4F4 40%, #E5E5E5);
-        background-position: 97% center;
-        background-repeat: no-repeat;
-        border: 1px solid #AAA;
-        color: #555;
-        font-size: inherit;
-        margin: 20px;
-        overflow: hidden;
-        padding: 5px 10px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        width: 300px;
-    }
-    
-    select#soflow-color {
-        color: #fff;
-        background-image: url(http://i62.tinypic.com/15xvbd5.png), -webkit-linear-gradient(#779126, #779126 40%, #779126);
-        background-color: #779126;
-        -webkit-border-radius: 20px;
-        -moz-border-radius: 20px;
-        border-radius: 20px;
-        padding-left: 15px;
+    @media screen and (max-height: 450px) {
+        .sidenav {
+            padding-top: 15px;
+        }
+        .sidenav a {
+            font-size: 18px;
+        }
     }
 </style>
