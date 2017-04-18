@@ -1,4 +1,21 @@
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.slitslider.js"></script>
+<script src="js/jquery.ba-cond.min.js"></script>
+<script src="js/jquery.parallax-1.1.3.js"></script>
+<script src="js/owl.carousel.min.js"></script>
+<script src="js/jquery.mixitup.min.js"></script>
+<script src="js/jquery.nicescroll.min.js"></script>
+<script src="js/jquery.appear.js"></script>
+<script src="js/easyPieChart.js"></script>
+<script src="js/jquery.easing-1.3.pack.js"></script>
+<script src="js/jquery.nav.js"></script>
+<script src="js/jquery.sticky.js"></script>
+<script src="js/jquery.fitvids.js"></script>
+<script src="js/custom.js"></script>
 
+<!-- <script src="js/jquery.scrollUp.min.js"></script> -->
+<!-- <script src="js/classie.js"></script> -->
 
   <div class="w3-sidebar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;background-color:#2B2C30;" id="rightMenu">
     <!-- <div class="w3-grey"> -->
@@ -42,34 +59,55 @@
             <div class="container">
                 <div class="row">
 
-                    <div id="blog-posts" class="col-md-8 col-sm-8">
-                        <div class="post-item" style="height:700px">
+                  <div id="blog-posts" class="col-md-8 col-sm-8">
+                      <div class="post-item">
 
-                            <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
-
-                              <div ng-controller="CarouselDemoCtrl" id="slides_control">
-                                <div>
-                                  <carousel interval="myInterval">
-                                    <slide ng-repeat="slide in slides" active="slide.active">
-                                      <img style="margin:auto; width: 600px; max-width:600px; max-height:400px;" ng-src="{{slide.image}}">
-                                      <div class="carousel-caption">
+                          <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                              <div id="post-thumb" class="post-thumb owl-carousel owl-theme" style="display: block; opacity: 1;">
+                                <!-- <div class="owl-wrapper-outer autoHeight" style="height: 422px;"><div class="owl-wrapper" style="width: 2992px; left: 0px; display: block;"> -->
+                                  <!-- <div class="owl-item" style="width: 748px;"> -->
+                                    <div ng-repeat = "image in images" >
+                                      <div class="item">
+                                        <center>
+                                          <img src="http://127.0.0.1:3000/api/public/uploads/{{ image }}" alt="business image" class="img-responsive">
+                                        </center>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" ng-click="deleteImage(image)"> Delete Image </button>
                                       </div>
-                                    </slide>
-                                  </carousel>
-                                </div>
+                                    </div>
+                                  <!-- </div> -->
+                                <!-- </div> -->
+                              <!-- </div> -->
+                                  <!-- <div class="item">
+                                    <center>
+                                      <img src="../img/portfolio/port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                    </center>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" onclick="deleteImage(image)"> Delete Image </button>
+                                  </div>
+                                  <div class="item">
+                                    <center>
+                                      <img src="../img/portfolio/portfolio.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                    </center>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" onclick="deleteImage(image)"> Delete Image </button>
+                                  </div>
+                                  <div class="item">
+                                    <center>
+                                      <img src="../img/portfolio/wide-port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                    </center>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" onclick="deleteImage(image)"> Delete Image </button>
+                                  </div> -->
+                              </div>
+                              &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" ng-click="addImage()"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
+                              <hr width="40%">
+                              <div class="post-excerpt">
+                                  <p>{{ business.description }}</p>
+
                               </div>
 
-                                <div class="post-excerpt" style="height:200px">
-                                </div>
-                                <div class="post-excerpt" style="height:200px">
-                                    <h3>Description</h3>
-                                    <p>{{ business.description }}</p>
-                                </div>
+                          </article>
+                          <!-- End Single Post -->
 
-                            </article>
-
-                        </div>
-                    </div>
+                      </div>
+                  </div>
 
                     <!-- Widget Section -->
                     <div id="right-sidebar" class="col-md-4 col-sm-4">
@@ -160,7 +198,7 @@
 
 
 
-<button onclick="myFunction('Demo1')" class="w3-button w3-block w3-black w3-left-align">Check Our Facilities</button>
+<button onclick="myFunction('Demo1')" class="btn btn-transparent" >Check Our Facilities</button>
 
 <div id="Demo1" class="w3-hide w3-container">
 <br>
@@ -183,7 +221,9 @@
                                  <hr>
                                  <center>
                                   <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "goToEditFacility(facility._id)"> Edit Facility </button>
-                                 <button class="btn btn-transparent" ng-click = "deleteFacility(facility._id)"> Delete Facility </button>
+                                 <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "deleteFacility(facility._id)"> Delete Facility </button>
+                                 <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "deleteFacility(facility._id)"> Add Event </button>
+                                 <hr style="border: 0.5px solid #90EE90">
                                  <center>
                             </div>
 
@@ -214,10 +254,11 @@
     <input type="submit" value="Book Now!" class="btn btn-transparent w3-green">
     <hr>
 </div>
-
+<br>
 <!-- </div> -->
-<button onclick="myFunction('Demo2')" class="w3-button w3-block w3-black w3-left-align">Check Our Events</button>
+<button onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <div id="Demo2" class="w3-hide w3-container">
+  <p>yasso</p>
     <ul ng-repeat = "event in events">
         <!-- <a onclick = "getEvent(business._id, event._id)" href="/eventPage/{{business._id}}/{{event._id}}">{{event.name}}</a> <br> -->
         <button ng-click = "getEvent(business._id, event._id)">{{event.name}} </button>
@@ -226,7 +267,11 @@
     Location: {{event.location}} <br>
     </ul>
 </div>
-
+<br>
+<button onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Offers&nbsp;&nbsp;&nbsp;&nbsp;</button>
+<div id="Demo2" class="w3-hide w3-container">
+  <p>please</p>
+</div>
 </div>
 
 

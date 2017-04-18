@@ -14,6 +14,8 @@ router.get('/', function(req, res){
 
 router.post('/createFacility', upload.single('img'), RegularEventController.createFacility);
 router.post('/editFacility/:facilityId', upload.single('img'), RegularEventController.editFacility);
+router.get('/deleteFacility/:facilityId', RegularEventController.deleteFacility);
+
 router.post('/create', RegularEventController.createEvent);
 router.post('/edit/:id', RegularEventController.editEvent);
 router.get('/cancel/:id', RegularEventController.cancelEvent);

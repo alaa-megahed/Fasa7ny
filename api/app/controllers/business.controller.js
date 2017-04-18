@@ -77,7 +77,7 @@ requestRemoval: function(req,res) {
         // if (req.user && req.user instanceof Business) {
             // var businessId = req.user.id;
             console.log('public');
-            var businessId = "58f20e01b38dec5d920104f3";
+            var businessId = "58e666a20d04c180d969d591";
             Business.findByIdAndUpdate(businessId, { $set: { public: 1 } },
                 function (err) {
                     if (err) {
@@ -95,9 +95,9 @@ requestRemoval: function(req,res) {
     editInformation: function (req, res) {
 
         // if (req.user && req.user instanceof Business) {
-            var id = "58f20e01b38dec5d920104f3";
+            var id = "58e666a20d04c180d969d591";
             console.log("ana fl backend");
-
+            console.log(req.file);
             Business.findById(id, function (err, business) {
                 if (err) res.send(err.message);
                 else if (!business) res.send('Something went wrong');
@@ -133,6 +133,10 @@ requestRemoval: function(req,res) {
                     }
                     if (typeof req.body.payment_methods != "undefined" && req.body.payment_methods.length > 0) {
                         business.payment_methods.push(req.body.payment_methods);
+                    }
+
+                    if(typeof req.file != "undefined") {
+                      business.images.push(req.file.filename);
                     }
 
                     business.save();
@@ -249,6 +253,23 @@ requestRemoval: function(req,res) {
             res.send('You are not a logged in business');
         }
 
+    },
+
+    deleteImage: function(req, res) {
+      if(req.user && req.user instanceof business) {
+        var id = req.user._id;
+        var image = req.params.image;
+
+        Business.findByIdAndUpdate(id, {$pull: {"images" : image}},{safe:true, upsert: true, new:true},
+        function(err, newBusiness) {
+          if(err) {
+            console.log("error in deleting image");
+          } else {
+            console.log("image deleted");
+            console.log(newBusiness);
+          }
+        });
+      }
     }
 }
 

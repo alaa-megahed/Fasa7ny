@@ -25,6 +25,12 @@ app.factory('Facility', ['$http', function($http) {
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
       });
+    },
+
+    deleteFacility : function(facilityId) {
+      console.log("delete facility service");
+
+      return $http.get('http://127.0.0.1:3000/event/deleteFacility/' + facilityId);
     }
   }
 }]);

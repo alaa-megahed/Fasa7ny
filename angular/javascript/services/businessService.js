@@ -34,7 +34,26 @@
             remove : function(){
             	console.log('remove service');
             	return $http.get('http://127.0.0.1:3000/business/requestRemoval');
+            },
+
+            deleteImage : function(image) {
+              console.log('delete image service');
+              return $http.get('http://127.0.0.1:3000/business/deleteImage/' + image);
+            },
+
+            addImage : function(data) {
+              console.log('add image service');
+              var fd = new FormData();
+              for(var key in data)
+                fd.append(key, data[key]);
+
+              console.log(fd);
+              return $http.post('http://127.0.0.1:3000/business/editInformation', fd, {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+              });
             }
+
 
             // checkSession : function(id) {
             //   console.log('check session service');
