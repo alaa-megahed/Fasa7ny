@@ -1,5 +1,7 @@
 
 var app = angular.module('fasa7ny');
+
+
 app.controller('bookingController', function($scope, $http, $location, Offers) {
         $scope.business_id = "58f0f3faaa02d151aa4c987c";
         $scope.event = {
@@ -105,7 +107,6 @@ app.controller('bookingController', function($scope, $http, $location, Offers) {
             amount: charge
           });
         }
-
 
         $scope.book_cash = function()
         {   
@@ -291,11 +292,9 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
                     }, function errorCallback(response){
                       console.log(response.data);
                     });  
-                   }  
-
-      }
-
+          }  
       
+
        
 });
 
