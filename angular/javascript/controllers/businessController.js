@@ -1,3 +1,4 @@
+var app = angular.module('fasa7ny');
 app.controller('businessController', function($scope, $http, Business, $location, $routeParams, $modal, $log, $window) {
 
   $scope.maxRating = 5;

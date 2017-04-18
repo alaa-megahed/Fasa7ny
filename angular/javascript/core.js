@@ -16,9 +16,11 @@ app.config(function($routeProvider){
 		templateUrl : "views/booking_event.html",
 		controller  : "bookingEventController"
 	})
+	
 	.when("/book_facility", { //I want the facility name to be passed in the url
 		templateUrl : "views/booking_facility.html",
 		controller  : "bookFacilityController"
+	})
 
 	.when("/:id", {
 		templateUrl : "views/businessPage.html",
