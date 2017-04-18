@@ -2,7 +2,7 @@
 var app = angular.module('fasa7ny');
 app.controller('bookingEventController', function($scope, $http, $location, Offers) 
 {
-        $scope.business_id = "58f0f3faaa02d151aa4c987c";
+        $scope.business_id = "58f0cb2d6bfb6061efd66625";
         $scope.event = {
             "_id" : ("58f39c7850010178595ccfef"),
             "location" : "costa",
@@ -58,20 +58,16 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
           var min_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, offers);
           $scope.charge = min_charge;
           console.log("charge   " + min_charge); 
-          $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: min_charge, user_id: $scope.user._id})
+          $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, user_id: $scope.user._id})
                     .then(function successCallback(responce){
                       console.log(responce.data);
                     }, function errorCallback(responce){
                       console.log(responce.data);
                     }); 
         }        
-
-        Offers.getPublishKey().then(function(responce){
-          console.log("PK  "+responce.data);
-          $scope.publish_key = responce.data;
-        });
         
-        $scope.stripe_handler = StripeCheckout.configure({
+        $scope.stripe_handler = StripeCheckout.configure(
+        {
           key: "pk_test_O1Gn3Rl11nLaHckNqvJOzaYz",
           locale: 'auto',
           currency : "egp",
@@ -82,7 +78,7 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
             $http.post('http://127.0.0.1:3000/bookings/charge', {stripeToken: token.id, amount: $scope.stripe_charge})
                     .then(function successCallback(responce){
                       console.log("success  charge in responce  "+ responce.data);
-                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, charge_id: responce.data.id, user_id: $scope.user._id})
+                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, stripe_charge: responce.data.id, user_id: $scope.user._id})
                             .then(function successCallback(responce){
                               console.log(responce.data);
                             }, function errorCallback(responce){
