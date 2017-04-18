@@ -1,32 +1,10 @@
 
-/**
- * ============================================	
- * 			ANIMATIONS FOR SEARCH SIDEBAR
- * ============================================	 * 
- */
-
-
-/* Set the width of the side navigation to 250px and the left margin of the page content to 250px */
-function openNav() {
-	document.getElementById("mySidenav").style.width = "250px";
-	document.getElementById("main").style.marginLeft = "250px";
-}
-
-/* Set the width of the side navigation to 0 and the left margin of the page content to 0 */
-function closeNav() {
-	document.getElementById("mySidenav").style.width = "0";
-	document.getElementById("main").style.marginLeft = "0";
-}
-
-
-
-jQuery(function ($) {
-	"use strict";
-
+jQuery(function ($) { "use strict";
+	
 	/* ========================================================================= */
 	/*	Page Preloader
 	/* ========================================================================= */
-
+	
 	window.onload = function () {
 		document.getElementById('loading-mask').style.display = 'none';
 	}
@@ -34,10 +12,10 @@ jQuery(function ($) {
 	/* =========================================================================== */
 	/*	FitVids js
 	/* =========================================================================== */
-
+	
 	$(".media-wrapper").fitVids();
 
-
+	
 	/* ========================================================================= */
 	/*	Nice Scroll - Custom Scrollbar
 	/* ========================================================================= */
@@ -55,26 +33,18 @@ jQuery(function ($) {
 	/* ========================================================================= */
 	/*	Scroll Up / Back to top
 	/* ========================================================================= */
-
-<<<<<<< HEAD
-	$(window).scroll(function () {
-=======
+	
 	$(window).scroll(function() {
->>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 		if ($(window).scrollTop() > 400) {
 			$("#scrollUp").fadeIn(200);
 		} else {
 			$("#scrollUp").fadeOut(200);
 		}
 	});
-
-<<<<<<< HEAD
-	$('#scrollUp').click(function () {
-=======
+	
 	$('#scrollUp').click(function() {
->>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 		$('html, body').stop().animate({
-			scrollTop: 0
+			scrollTop : 0
 		}, 1500, 'easeInOutExpo');
 	});
 
@@ -82,26 +52,26 @@ jQuery(function ($) {
 	/* ========================================================================= */
 	/*	Post image slider
 	/* ========================================================================= */
-
+	
 	$("#post-thumb, #gallery-post").owlCarousel({
 
-		navigation: true,
-		pagination: false,
-		slideSpeed: 800,
-		autoHeight: true,
-		paginationSpeed: 800,
-		singleItem: true,
-		navigationText: ["<i class='fa fa-angle-left fa-2x'></i>", "<i class='fa fa-angle-right fa-2x'></i>"]
+		navigation : true,
+		pagination : false,
+		slideSpeed : 800,
+		autoHeight : true,
+		paginationSpeed : 800,
+		singleItem:true,
+		navigationText : ["<i class='fa fa-angle-left fa-2x'></i>","<i class='fa fa-angle-right fa-2x'></i>"]
 
 	});
-
+	
 	$("#features").owlCarousel({
-		navigation: false,
-		pagination: true,
-		slideSpeed: 800,
-		singleItem: true,
-		transitionStyle: "fadeUp",
-		paginationSpeed: 800,
+		navigation : false,
+		pagination : true,
+		slideSpeed : 800,
+		singleItem : true,
+		transitionStyle : "fadeUp",
+		paginationSpeed : 800,
 	});
 
 
@@ -111,9 +81,9 @@ jQuery(function ($) {
 
 
 	$("#navigation").sticky({
-		topSpacing: 0
+		topSpacing : 0
 	});
-
+	
 	$('#nav').onePageNav({
 		currentClass: 'current',
 		changeHash: false,
@@ -122,57 +92,51 @@ jQuery(function ($) {
 		filter: '',
 		easing: 'easeInOutExpo'
 	});
-
+	
 
 
 	/* ========================================================================= */
 	/*	Fix Slider Height
-	/* ========================================================================= */
+	/* ========================================================================= */	
 
 	var slideHeight = $(window).height();
-<<<<<<< HEAD
-=======
-
+	
 	$('#slitSlider, .sl-slider, .sl-content-wrapper').css('height',slideHeight);
->>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 
-	$('#slitSlider, .sl-slider, .sl-content-wrapper').css('height', slideHeight);
-
-	$(window).resize(function () {
-		'use strict',
-			$('#slitSlider, .sl-slider, .sl-content-wrapper').css('height', slideHeight);
+	$(window).resize(function(){'use strict',
+		$('#slitSlider, .sl-slider, .sl-content-wrapper').css('height',slideHeight);
 	});
-
-
+	
+	
 
 	/* ========================================================================= */
 	/*	Timer count
 	/* ========================================================================= */
 
-	(function () {
+	(function() {
 		var count = {
-			initialized: false,
-			initialize: function () {
-				if (this.initialized)
-					return;
-				this.initialized = true;
-				this.build();
-			},
-			build: function () {
-				this.animations();
-			},
-			animations: function () {
-				// Count To
-				$(".counters-item [data-to]").each(function () {
-					var $this = $(this);
-					$this.appear(function () {
-						$this.countTo({});
-					}, {
-							accX: 0,
-							accY: -150
-						});
-				});
-			},
+		  initialized : false,
+		  initialize : function() {
+			if (this.initialized)
+			  return;
+			this.initialized = true;
+			this.build();
+		  },
+		  build : function() {
+			this.animations();
+		  },
+		  animations : function() {
+			// Count To
+			$(".counters-item [data-to]").each(function() {
+			  var $this = $(this);
+			  $this.appear(function() {
+				$this.countTo({});
+			  }, {
+				accX : 0,
+				accY : -150
+			  });
+			});
+		  },
 		};
 		count.initialize();
 	})();
@@ -194,17 +158,17 @@ jQuery(function ($) {
 			}
 		})
 	});
-
-
+	
+	
 	/* ========================================================================= */
 	/*	Twitter Feed
 	/* ========================================================================= */
-
+	
 	$(".tweet").twittie({
-		dateFormat: "%b. %d, %Y",
-		template: "{{tweet}}",
-		count: 1
-	});
+        dateFormat: "%b. %d, %Y",
+        template: "{{tweet}}",
+        count: 1
+    });
 
 
 	/* ========================================================================= */
@@ -214,19 +178,19 @@ jQuery(function ($) {
 	$('#og-grid').mixItUp(); // Portfolio filter
 
 	Grid.init(); //Portfolio Grid Expand
-
-
+	
+	
 	/* ========================================================================= */
 	/*	Testimonial Carousel
 	/* =========================================================================  */
-
+ 
 	//Init the carousel
 	$("#testimonials").owlCarousel({
 		slideSpeed: 500,
 		paginationSpeed: 500,
 		singleItem: true,
-		pagination: true,
-		transitionStyle: "backSlide"
+		pagination : true,
+		transitionStyle : "backSlide"
 	});
 
 
@@ -252,10 +216,10 @@ jQuery(function ($) {
 		where VARIABLE is the variable we are checking (like name, email),
 		length is a JavaScript function to get the number of characters.
 		And as you can see if the num of characters is 0 we set the error
-		variable to true and show the name_error div with the fadeIn effect.
+		variable to true and show the name_error div with the fadeIn effect. 
 		if it's not 0 then we fadeOut the div( that's if the div is shown and
-		the error is fixed it fadesOut.
-
+		the error is fixed it fadesOut. 
+		
 		The only difference from these checks is the email checking, we have
 		email.indexOf('@') which checks if there is @ in the email input field.
 		This JavaScript function will return -1 if no occurrence have been found.*/
@@ -442,103 +406,65 @@ jQuery(function ($) {
 /*	On scroll fade/bounce fffect
 /* ========================================================================= */
 
-<<<<<<< HEAD
-wow = new WOW({
-	animateClass: 'animated',
-	offset: 120
-});
-wow.init();
-=======
 	wow = new WOW({
 		animateClass: 'animated',
 		offset: 120
 	});
 	wow.init();
->>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
-
+	
 
 /* ========================================================================= */
 /*	Home page Slider
 /* ========================================================================= */
 
-$(function () {
+$(function() {
 
-	var Page = (function () {
+	var Page = (function() {
 
-<<<<<<< HEAD
-		var $navArrows = $('#nav-arrows'),
-			$nav = $('#nav-dots > span'),
-			slitslider = $('#slitSlider').slitslider({
-=======
 		var $navArrows = $( '#nav-arrows' ),
 			$nav = $( '#nav-dots > span' ),
 			slitslider = $( '#slitSlider' ).slitslider( {
-
-			    speed : 1600,
-
+			
+			    speed : 1600,
+			
 				onBeforeChange : function( slide, pos ) {
->>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 
-				speed: 1600,
-
-				onBeforeChange: function (slide, pos) {
-
-					$nav.removeClass('nav-dot-current');
-					$nav.eq(pos).addClass('nav-dot-current');
+					$nav.removeClass( 'nav-dot-current' );
+					$nav.eq( pos ).addClass( 'nav-dot-current' );
 
 				}
-			}),
+			} ),
 
-<<<<<<< HEAD
-			init = function () {
-=======
 			init = function() {
->>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
-				initEvents();
+				initEvents();				
 			},
-			initEvents = function () {
+			initEvents = function() {
 				// add navigation events
-				$navArrows.children(':last').on('click', function () {
+				$navArrows.children( ':last' ).on( 'click', function() {
 					slitslider.next();
 					return false;
-				});
+				} );
 
-<<<<<<< HEAD
-				$navArrows.children(':first').on('click', function () {
-=======
-				$navArrows.children( ':first' ).on( 'click', function() {
->>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
+				$navArrows.children( ':first' ).on( 'click', function() {					
 					slitslider.previous();
 					return false;
 				});
 
-<<<<<<< HEAD
-				$nav.each(function (i) {
-					$(this).on('click', function (event) {
-						var $dot = $(this);
-						if (!slitslider.isActive()) {
-							$nav.removeClass('nav-dot-current');
-							$dot.addClass('nav-dot-current');
-						}
-
-						slitslider.jump(i + 1);
-=======
-				$nav.each( function( i ) {
-					$( this ).on( 'click', function( event ) {
-						var $dot = $( this );
+				$nav.each( function( i ) {				
+					$( this ).on( 'click', function( event ) {						
+						var $dot = $( this );						
 						if( !slitslider.isActive() ) {
 							$nav.removeClass( 'nav-dot-current' );
-							$dot.addClass( 'nav-dot-current' );
+							$dot.addClass( 'nav-dot-current' );						
 						}
-
+						
 						slitslider.jump( i + 1 );
->>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 						return false;
-
-					});
+					
+					});					
 				});
 			};
-		return { init: init };
+			return { init : init };
 
 	})();
 
@@ -562,5 +488,5 @@ function parallaxInit() {
 }
 
 $(window).bind("load", function () {
-	parallaxInit()
+    parallaxInit()
 });

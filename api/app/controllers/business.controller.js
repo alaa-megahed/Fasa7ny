@@ -92,7 +92,7 @@ var BusinessController = {
         // if (req.user && req.user instanceof Business) {
         // var businessId = req.user.id;
         console.log('public');
-        var businessId = "58e666a20d04c180d969d591";
+        var businessId = "58f0f8312ffb434813227cc0";
         Business.findByIdAndUpdate(businessId, { $set: { public: 1 } },
             function (err) {
                 if (err) {
@@ -110,7 +110,7 @@ var BusinessController = {
     editInformation: function (req, res) {
 
         // if (req.user && req.user instanceof Business) {
-        var id = "58e666a20d04c180d969d591";
+        var id = "58f0f8312ffb434813227cc0";
         console.log("ana fl backend");
         console.log(req.file);
         Business.findById(id, function (err, business) {
@@ -177,7 +177,7 @@ var BusinessController = {
         // if (req.user && req.user instanceof Business) {
         if (typeof req.params.phone != "undefined") {
             // var id = req.user.id;
-            var id = "58e666a20d04c180d969d591";
+            var id = "58f0f8312ffb434813227cc0";
             console.log("ana fl backend delete phone");
             var phone = req.params.phone;
             Business.findOne({ _id: id }, function (err, business) {
@@ -229,7 +229,7 @@ var BusinessController = {
         // if (req.user && req.user instanceof Business) {
         if (typeof req.params.method != "undefined") {
             // var id = req.user.id;
-            var id = "58e666a20d04c180d969d591";
+            var id = "58f0f8312ffb434813227cc0";
             var payment = req.params.method;
             console.log("ana fl backend delete method");
             Business.findOne({ _id: id }, function (err, business) {
@@ -277,7 +277,7 @@ var BusinessController = {
     deleteImage: function (req, res) {
         // if(req.user && req.user instanceof business) {
         // var id = req.user._id;
-        var id = "58e666a20d04c180d969d591";
+        var id = "58f0f8312ffb434813227cc0";
         console.log("ana fl backend delete image");
         var image = req.params.image;
 
