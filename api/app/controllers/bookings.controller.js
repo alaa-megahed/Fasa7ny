@@ -315,7 +315,8 @@ exports.regUserAddBooking = function(req, res, next) {
 	    var booking = new Booking(
 	      {
 	        count        : req.body.count,
-	        booker       : req.body.user_id, //temporarily
+	        // booker       : req.body.user_id, //temporarily
+          booker       : req.user.id,
 	        event_id     : req.body.event,
 	        booking_date : date,
           charge       : req.body.charge,
@@ -354,8 +355,9 @@ exports.regUserAddBooking = function(req, res, next) {
 									}
 
 									//finds registered user and adds this event to his/her list of bookings
+                  RegisteredUser.findOne({_id:req.user.id}, function(err, user)
 
-									RegisteredUser.findOne({_id:req.body.user_id}, function(err, user)
+									// RegisteredUser.findOne({_id:req.body.user_id}, function(err, user)
 
 								 {
 									 if(err || !user)
