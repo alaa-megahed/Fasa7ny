@@ -126,6 +126,7 @@ var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacit
     $scope.formData = {}
     $scope.submitForm = function () {
     	console.log('Add Form');
+			// console.log($scope.formData.starttime.getHours()+":"+$scope.formData.starttime.getMinutes()+"-"+$scope.formData.endtime.getHours()+":"+$scope.formData.endtime.getMinutes());
         Facility.addDaily(fid,description,capacity,$scope.formData)
         .then(function(d){
         	console.log('add daily');
@@ -138,4 +139,3 @@ var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacit
         $modalInstance.dismiss('cancel');
     };
 };
-
