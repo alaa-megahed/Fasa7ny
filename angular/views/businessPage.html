@@ -251,8 +251,7 @@
                 </div>
             </div>
         </div>
-            <!-- END SIDEBAR -->
-        </div>
+      </div>
     </div>
     <input type="submit" value="Book Now!" class="btn btn-transparent w3-green">
     <hr>
@@ -261,13 +260,56 @@
 <!-- </div> -->
 <button onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <div id="Demo2" class="w3-hide w3-container">
+<br>
+  <div id="primary" class="sidebar-right">
+    <div class="container group">
+        <div class="row">
+            <!-- START CONTENT -->
+            <div ng-repeat = "event in events" id="content-blog" class="span9 content group">
+
+                <div style="background-color:#2B2C30;" class="post type-post status-publish format-video sticky hentry category-web-design hentry-post group blog-small">
+                    <!-- post featured & title -->
+
+                    <div style="background-color:#2B2C30;" class="thumbnail">
+                        <div style="background-color:#2B2C30;" class="row">
+                            <!-- post featured -->
+                            <div class="image-wrap span4">
+                                 <center><button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "getEvent(business._id, event._id)"> View Event </button>
+                                 <hr style="border: 0.5px solid #90EE90">
+                                 <center>
+                            </div>
+
+                            <!-- post title -->
+                            <div class="span5">
+                                <h2 class="post-title">
+                                    <h3>{{event.name}}</h3>
+                                </h2>
+                                <hr width="60%">
+                                <div class="the-content">
+                                    <p><h4>Location</h4> {{event.location}} </p>
+                                    <hr width="60%">
+                                    <p> {{event.description}}</p>
+
+                                </div>
+                            </div>
+
+                            <div class="clear"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
   <!-- <p>yasso</p> -->
-    <ul ng-repeat = "event in events">
-        <a ng-click = "getEvent(business._id, event._id)">{{event.name}}</a> <br>
+    <!-- <ul ng-repeat = "event in events">
+        <a ng-click = "getEvent(business._id, event._id)">{{event.name}}</a> <br> -->
         <!-- <button ng-click = "getEvent(business._id, event._id)">{{event.name}} </button> -->
     <!-- <a onclick = "getEvent(business._id, event._id)">{{event.name}}</a> <br> -->
-    Description: {{event.description}} <br>
-    Location: {{event.location}} <br>
+    <!-- Description: {{event.description}} <br>
+    Location: {{event.location}} <br> -->
     </ul>
 </div>
 <br>
