@@ -6,7 +6,7 @@ var Facility = require('mongoose').model('Facility');
 
 var BusinessController = {
        getBusiness: function (req, res) {
-        var name = "Habiiba";
+        var name = "business1";
         // var id = req.params.id;
         Business.findOne({ name: name }).
             exec(function (err, result) {
@@ -278,7 +278,8 @@ requestRemoval: function(req,res) {
       // }
     // }
       // }
-    // }
+    }
 }
+
 
 module.exports = BusinessController;

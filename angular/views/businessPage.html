@@ -172,10 +172,12 @@
                                 <li>Area: {{ business.area }}</li>
                                 <li>Address: {{ business.address }}</li>
                                 <li>Phone Numbers: </li>
-                                <li ng-repeat = "phone in phones"> {{ phone }} <button ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)" style="color:#000;"> delete <button> </li>
+                                <!-- <li ng-repeat = "phone in phones"> {{ phone }} <button ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)" style="color:#000;"> delete <button> </li> -->
+                                  <li ng-repeat = "phone in phones"> {{ phone }} <a ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)"><span class="glyphicon glyphicon-trash"></span> </a> </li>
                                 <li>Email: {{ business.email }}</li>
                                 <li>Payment Methods: </li>
-                                <li ng-repeat = "method in methods"> {{ method }} <button ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)" style="color:#000;"> delete <button></li>
+                                <!-- <li ng-repeat = "method in methods"> {{ method }} <button ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)" style="color:#000;"> delete <button></li> -->
+                                  <li ng-repeat = "method in methods"> {{ method }} <a ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)"><span class="glyphicon glyphicon-trash"></span> </a> </li>
                             </div>
                             <div class="widget-content">
                                 <!-- <form ng-if = "user.data.user_type == 2" action="/business/edit" method="get"> -->
@@ -259,10 +261,10 @@
 <!-- </div> -->
 <button onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <div id="Demo2" class="w3-hide w3-container">
-  <p>yasso</p>
+  <!-- <p>yasso</p> -->
     <ul ng-repeat = "event in events">
-        <a onclick = "getEvent(business._id, event._id)" href="/eventPage/{{business._id}}/{{event._id}}">{{event.name}}</a> <br>
-        <button ng-click = "getEvent(business._id, event._id)">{{event.name}} </button>
+        <a onclick = "getEvent(business._id, event._id)">{{event.name}}</a> <br>
+        <!-- <button ng-click = "getEvent(business._id, event._id)">{{event.name}} </button> -->
     <!-- <a onclick = "getEvent(business._id, event._id)">{{event.name}}</a> <br> -->
     Description: {{event.description}} <br>
     Location: {{event.location}} <br>

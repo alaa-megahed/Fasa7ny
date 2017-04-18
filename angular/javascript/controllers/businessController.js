@@ -1,4 +1,4 @@
-app.controller('businessController', function($scope, $http, Business, $location, $routeParams, $modal, $log) {
+app.controller('businessController', function($scope, $http, Business, $location, $routeParams, $modal, $log, $window) {
 
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
@@ -35,6 +35,8 @@ app.controller('businessController', function($scope, $http, Business, $location
           $scope.check = 1;
           $scope.sub = "Unsubscribe";
       }
+
+      $window.name = $scope.business.name;
     }
 
 

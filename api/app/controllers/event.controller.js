@@ -15,7 +15,7 @@ exports.createFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58f20e01b38dec5d920104f3";
+		var id = "58e666a20d04c180d969d591";
 		console.log(req.body);
 		console.log(req.file.filename);
 		if(!req.body.name || !req.body.description || !req.body.capacity)
@@ -64,7 +64,7 @@ exports.editFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58f20e01b38dec5d920104f3";
+		var id = "58e666a20d04c180d969d591";
 		var facility_id = req.params.facilityId;
 		console.log(req.body);
 		console.log();
@@ -127,7 +127,7 @@ exports.deleteFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58f20e01b38dec5d920104f3";
+		var id = "58e666a20d04c180d969d591";
 		var facility_id = req.params.facilityId;
 		console.log("delete facility backend");
 		Business.findById(id,function(err,business)
@@ -184,7 +184,7 @@ exports.createEvent = function (req, res) {
 
 	// if (req.user && req.user instanceof Business) {
 	// 	var id = req.user.id;
-		var id = "58f20e01b38dec5d920104f3";
+		var id = "58e666a20d04c180d969d591";
 
     	//if event belongs to facility, fields will be passed from facility to event in hidden fields
     	if(!req.body.name || !req.body.description || !req.body.price || !req.body.capacity || !req.body.repeat) {
@@ -346,7 +346,7 @@ exports.createEvent = function (req, res) {
 
 							// else
 							// 	{
-							// 		var content = req.user.name + " added " + req.body.name +"        "+ Date.now(); 
+							// 		var content = req.user.name + " added " + req.body.name +"        "+ Date.now();
 							// 		async.each(req.user.subscribers, function(subscriber, callback){
 							// 			User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
 							// 			{
@@ -359,7 +359,7 @@ exports.createEvent = function (req, res) {
 							// 					console.log(user);
 							// 				}
 							// 			});
-							// 		});	
+							// 		});
 							// 	}
 
 
@@ -375,7 +375,7 @@ exports.createEvent = function (req, res) {
 
 				});
 
-				
+
 			}
 			else res.send('Incorrect input');
 		}
@@ -628,8 +628,8 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 										   //    if(!err)
 										   //    {
 											  //     	var bookings = one_occ.bookings;
-													// var content = req.user.name + " cancelled " + event.name + "     " + Date.now(); 
-													
+													// var content = req.user.name + " cancelled " + event.name + "     " + Date.now();
+
 													// async.each(bookings, function(one_booking, cb){
 													// 	Bookings.findById({_id:one_booking},function(err,booking)
 													// 	{
@@ -648,7 +648,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 											  //     		if(!business) console.log("No business");
 											  //     		res.json(business);
 											  //     	});
-										      	
+
 										   //    }
 										  	  // else
 
