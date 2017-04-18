@@ -25,8 +25,10 @@ router.use('/business', business);
 router.use('/event', event);
 router.use('/user', user);
 router.use('/admin', admin);
+
 router.use('/contact', function (req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
 router.use('/stats', stats); 
+
 module.exports = router;

@@ -8,17 +8,17 @@ var passport = require('passport'),
     configAuth = require('../../config/auth'),
     xoauth2 = require('xoauth2');
 
-let AuthController = 
+let AuthController =
 {
 	// ============================
-	// 			   HOME PAGE 
+	// 			   HOME PAGE
 	// ============================
 	home: function(req, res) {
-		res.render('index.ejs'); 
+		res.render('index.ejs');
 	},
 
 	// ============================
-	// 		    	LOGIN 
+	// 		    	LOGIN
 	// ============================
 	getLogin: function(req, res) {
 
@@ -26,26 +26,26 @@ let AuthController =
 	},
 
 	postLogin: function(req, res){passport.authenticate('local-login', {
-		successRedirect : '/auth/profile', 
-		failureRedirect : '/auth/login', 
-		failureFlash : true 
+		successRedirect : '/', 
+		failureRedirect : '/auth/login',
+		failureFlash : true
 	})(req, res);},
 
 	// ============================
-	//           SIGNUP 
+	//           SIGNUP
 	// ============================
 	getSignup: function(req, res) {
 		res.render('signup.ejs', { message: req.flash('signupMessage') });
 	},
 
 	postSignup: function(req, res){passport.authenticate('local-signup', {
-		successRedirect : '/auth/profile', 
-		failureRedirect : '/auth/signup', 
-		failureFlash : true 
+		successRedirect : '/auth/profile',
+		failureRedirect : '/auth/signup',
+		failureFlash : true
 	})(req, res);},
 
 	// ============================
-	// 	    PROFILE SECTION 
+	// 	    PROFILE SECTION
 	// ============================
 	getProfile: function(req, res){
 		if (req.isAuthenticated())
@@ -54,7 +54,7 @@ let AuthController =
 			{
         res.redirect('http://localhost:3000/user/customize');
         // res.render('user_profile.ejs', {
-        // user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });  
+        // user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });
 			}
 			else if(req.user.user_type == 2)  // business
 			{
@@ -64,8 +64,8 @@ let AuthController =
 			else if(req.user.user_type == 3)  // admin
 			{
 				res.render('admin_profile.ejs', {
-				user : req.user}); 	
-			}	
+				user : req.user});
+			}
 		}
 		else
     {
@@ -74,17 +74,17 @@ let AuthController =
 	},
 
 	// =====================================
-	// 				     LOGOUT 
+	// 				     LOGOUT
 	// =====================================
 	logout: function(req, res) {
 		req.logout();
 		req.session.destroy(function (err) {
-    res.redirect('/'); 
+    res.redirect('/');
   });
 	},
 
 	// =====================================
-	// 			     	FACEBOOK 
+	// 			     	FACEBOOK
 	// =====================================
 	facebookLogin   : function(req, res){
 		passport.authenticate('facebook', { scope : 'email' })(req, res);},
@@ -95,9 +95,9 @@ let AuthController =
             						failureRedirect : '/'
        							   })(req, res);
 								},
-									
+
 	// =====================================
-	// 			      	GOOGLE 
+	// 			      	GOOGLE
 	// =====================================
 	googleLogin : function(req, res){
 		passport.authenticate('google', { scope : ['profile', 'email'] })(req, res);
@@ -108,7 +108,7 @@ let AuthController =
 	},
 
 	// =====================================
-	// 		     FORGOT PASSWORD 
+	// 		     FORGOT PASSWORD
 	// =====================================
 	getForgetPassword: function(req, res){
 		res.render('frogetPassword.ejs');
@@ -116,7 +116,7 @@ let AuthController =
 
 	forgotPassword: function(req, res, next) {
   		async.waterfall([
-      // generate random token of length 20, to uniquely identify each request of reseting password  
+      // generate random token of length 20, to uniquely identify each request of reseting password
     	function(done) {
       	crypto.randomBytes(20, function(err, buf) {
         	var token = buf.toString('hex');
@@ -144,15 +144,15 @@ let AuthController =
               }
               // if found, set the values of resetPasswordToken to the token generated
               else
-               { 
+               {
                  business.local.resetPasswordToken = token;
                  business.local.resetPasswordExpires = Date.now() + 3600000;    // expires after one hour
                  business.save(function(err){
-                
+
                  done(err, token, business);
               });
             }
-        });  
+        });
         // then search the registeredusers collection
       		User.findOne({ email: req.body.email }, function(err, user) {
             if(err)
@@ -167,7 +167,7 @@ let AuthController =
               console.log('error', 'No account with that email address exists.');
               return res.redirect('/auth/forgot');
             }
-                                           
+
         	}
           // if found, set the values of resetPasswordToken to the token generated
           else
@@ -185,9 +185,9 @@ let AuthController =
           }
       	});
     	},
-      
+
       // the next function actually sends the email with the reset url
-    	function(token, user, done) {  
+    	function(token, user, done) {
         // first login via our Gmail account, (this might be modified to use XOAuth2 later)
         var smtpTransport = nodemailer.createTransport({
         service:'Gmail',
@@ -226,7 +226,7 @@ let AuthController =
 
 	getReset: function(req, res) {
         var check = 0;
-        // check the validity of the token sent in the url 
+        // check the validity of the token sent in the url
         // first search the business collection
         Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
         if(!business)
@@ -235,7 +235,7 @@ let AuthController =
           if(check == 2)      // if no user found, print error msg and redirect
           {
           console.log('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('/auth/forgot'); 
+          return res.redirect('/auth/forgot');
           }
         }
         else
@@ -254,7 +254,7 @@ let AuthController =
       {
         console.log('error', 'Password reset token is invalid or has expired.');
       return res.redirect('/auth/forgot');
-      }  
+      }
     	}
       else
       {
@@ -289,7 +289,7 @@ let AuthController =
               business.local.resetPasswordExpires = undefined;
               business.save(function(err, business){
                  if(err)
-                 { 
+                 {
                   console.log("error: can not update the password, please try again");
                   return res.redirect('/auth/login');
                  }
@@ -313,7 +313,7 @@ let AuthController =
         user.local.resetPasswordExpires = undefined;
         user.save(function(err,user) {
             if(err)
-            { 
+            {
               console.log("error: can not update the password, please try again");
               return res.redirect('/auth/login');
             }
@@ -358,6 +358,3 @@ let AuthController =
 }
 
 module.exports = AuthController;
-
-
-

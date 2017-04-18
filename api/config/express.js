@@ -37,9 +37,11 @@ module.exports = function () {
 
 
 
-    app.use(express.static("public"));
+    app.set('views', './public/views');
+    app.set('view engine', 'ejs');
 
-    // app.use(express.static("./uploads"));
+
+
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
 
@@ -53,7 +55,6 @@ module.exports = function () {
     var router = require('../app/routes');
 
     app.use(router);
-
 
 
     require('./passport')(passport);                                     // pass passport for passport configuration

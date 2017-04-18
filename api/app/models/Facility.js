@@ -6,7 +6,7 @@ var FacilitySchema = new mongoose.Schema(
 	name: String,
     description: String,
     capacity: Number,
-    image: [String],
+    image: String,
     business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'}
 
 });

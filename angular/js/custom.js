@@ -1,3 +1,4 @@
+
 /**
  * ============================================	
  * 			ANIMATIONS FOR SEARCH SIDEBAR
@@ -55,7 +56,11 @@ jQuery(function ($) {
 	/*	Scroll Up / Back to top
 	/* ========================================================================= */
 
+<<<<<<< HEAD
 	$(window).scroll(function () {
+=======
+	$(window).scroll(function() {
+>>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 		if ($(window).scrollTop() > 400) {
 			$("#scrollUp").fadeIn(200);
 		} else {
@@ -63,7 +68,11 @@ jQuery(function ($) {
 		}
 	});
 
+<<<<<<< HEAD
 	$('#scrollUp').click(function () {
+=======
+	$('#scrollUp').click(function() {
+>>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 		$('html, body').stop().animate({
 			scrollTop: 0
 		}, 1500, 'easeInOutExpo');
@@ -121,6 +130,11 @@ jQuery(function ($) {
 	/* ========================================================================= */
 
 	var slideHeight = $(window).height();
+<<<<<<< HEAD
+=======
+
+	$('#slitSlider, .sl-slider, .sl-content-wrapper').css('height',slideHeight);
+>>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 
 	$('#slitSlider, .sl-slider, .sl-content-wrapper').css('height', slideHeight);
 
@@ -238,10 +252,10 @@ jQuery(function ($) {
 		where VARIABLE is the variable we are checking (like name, email),
 		length is a JavaScript function to get the number of characters.
 		And as you can see if the num of characters is 0 we set the error
-		variable to true and show the name_error div with the fadeIn effect. 
+		variable to true and show the name_error div with the fadeIn effect.
 		if it's not 0 then we fadeOut the div( that's if the div is shown and
-		the error is fixed it fadesOut. 
-		
+		the error is fixed it fadesOut.
+
 		The only difference from these checks is the email checking, we have
 		email.indexOf('@') which checks if there is @ in the email input field.
 		This JavaScript function will return -1 if no occurrence have been found.*/
@@ -428,11 +442,19 @@ jQuery(function ($) {
 /*	On scroll fade/bounce fffect
 /* ========================================================================= */
 
+<<<<<<< HEAD
 wow = new WOW({
 	animateClass: 'animated',
 	offset: 120
 });
 wow.init();
+=======
+	wow = new WOW({
+		animateClass: 'animated',
+		offset: 120
+	});
+	wow.init();
+>>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 
 
 /* ========================================================================= */
@@ -443,9 +465,19 @@ $(function () {
 
 	var Page = (function () {
 
+<<<<<<< HEAD
 		var $navArrows = $('#nav-arrows'),
 			$nav = $('#nav-dots > span'),
 			slitslider = $('#slitSlider').slitslider({
+=======
+		var $navArrows = $( '#nav-arrows' ),
+			$nav = $( '#nav-dots > span' ),
+			slitslider = $( '#slitSlider' ).slitslider( {
+
+			    speed : 1600,
+
+				onBeforeChange : function( slide, pos ) {
+>>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 
 				speed: 1600,
 
@@ -457,7 +489,11 @@ $(function () {
 				}
 			}),
 
+<<<<<<< HEAD
 			init = function () {
+=======
+			init = function() {
+>>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 				initEvents();
 			},
 			initEvents = function () {
@@ -467,11 +503,16 @@ $(function () {
 					return false;
 				});
 
+<<<<<<< HEAD
 				$navArrows.children(':first').on('click', function () {
+=======
+				$navArrows.children( ':first' ).on( 'click', function() {
+>>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 					slitslider.previous();
 					return false;
 				});
 
+<<<<<<< HEAD
 				$nav.each(function (i) {
 					$(this).on('click', function (event) {
 						var $dot = $(this);
@@ -481,6 +522,17 @@ $(function () {
 						}
 
 						slitslider.jump(i + 1);
+=======
+				$nav.each( function( i ) {
+					$( this ).on( 'click', function( event ) {
+						var $dot = $( this );
+						if( !slitslider.isActive() ) {
+							$nav.removeClass( 'nav-dot-current' );
+							$dot.addClass( 'nav-dot-current' );
+						}
+
+						slitslider.jump( i + 1 );
+>>>>>>> 8b3851090aa15037e93f5402c24ed0b59df6d27f
 						return false;
 
 					});
