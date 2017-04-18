@@ -55,7 +55,7 @@ exports.refund = function(req, res)
 		}, function(err, refund) {
 		  if(err)
 		  {
-		  	res.json(400).json(err.message);
+		  	res.status(400).json(err.message);
 		  }
 		  else
 		  {
