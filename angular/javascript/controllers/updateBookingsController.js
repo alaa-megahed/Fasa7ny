@@ -3,13 +3,13 @@ var app = angular.module('fasa7ny');
 app.controller('cancelUserBookingController',function($scope, $http, $location, Offers) {
 
   $scope.booking = {
-  "_id" : "58f65103f6d41a349188ea09",
+  "_id" : "58f6820aa3923145fefa325a",
   "booker" : "58f0f48daa02d151aa4c987f",
-  "event_id" : "58f3bff994d8e6442165260d",
-  "booking_date" : "2017-04-18T17:46:43.170Z",
-  "charge" : 103,
-  "stripe_charge" : "ch_1AA0PWDEq0aAGUbxYrpDAZOE",
-  "count" : 1,
+  "event_id" : "58f67f8abb9da2392c465628",
+  "booking_date" : "2017-04-18T21:15:54.003Z",
+  "charge" : 206,
+  "stripe_charge" : "ch_1AA3fyDEq0aAGUbxr0SAq7rj",
+  "count" : 2,
   "__v" : 0
 }
   $scope.stripe_charge = $scope.booking.stripe_charge;
