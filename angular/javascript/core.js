@@ -1,4 +1,4 @@
-var app = angular.module('fasa7ny', ['ngRoute', 'ngFileUpload', 'chart.js', '720kb.socialshare']);
+var app = angular.module('fasa7ny', ['ngRoute', 'ngFileUpload', 'chart.js', 'sn.addthis']);
 
 app.config(function ($routeProvider) {
     $routeProvider
