@@ -14,6 +14,12 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
            $scope.timings = response.data;
       });
 
+      $scope.cash = true;
+        // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
+        //   if($scope.business.payment_methods[i] === "cash")
+        //     $scope.cash = true;
+        // }
+        
       $scope.choose_facility = function(facility_id)
       {
         $scope.facility = facility_id;
@@ -49,7 +55,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
       today.setMonth(today.getMonth()+1);
       $scope.maxDate = new Date(today.getFullYear(),today.getMonth() , today.getDate());
 
-      $scope.book = function()
+      $scope.book_cash = function()
       {
         console.log($scope.chosen_facility);
         $scope.chosen_event = Facilities.getEvent($scope.event);
@@ -66,7 +72,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
 
          $http.post('http://127.0.0.1:3000/bookings/charge',{amount: $scope.min_charge}) //need to pass token
               .then(function successCallback(response){
-                    $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:response.data, charge: $scope.min_charge, user_id: "58f0f48daa02d151aa4c987f"})
+                    $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.charge, charge_id: responce.data.id, user_id: "58f0f48daa02d151aa4c987f"})
                     .then(function successCallback(response){
                       console.log(response.data);
                     }, function errorCallback(response){
@@ -75,9 +81,55 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
                     }, function errorCallback(response){
                       console.log(response.data);
                     });  
-                   }  
+      }
 
-      });
+      $scope.stripe_handler = StripeCheckout.configure({
+          key: "pk_test_O1Gn3Rl11nLaHckNqvJOzaYz",
+          locale: 'auto',
+          currency : "egp",
+          token: function(token) 
+          {
+            console.log("token   "+ token);
+            console.log("token.id   "+ token.id);
+            $http.post('http://127.0.0.1:3000/bookings/charge', {stripeToken: token.id, amount: $scope.stripe_charge})
+                    .then(function successCallback(responce){
+                      console.log("success  charge in responce  "+ responce.data);
+                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:response.data, charge: $scope.min_charge, user_id: "58f0f48daa02d151aa4c987f"})
+                            .then(function successCallback(responce){
+                              console.log(responce.data);
+                            }, function errorCallback(responce){
+                              console.log(responce.data);
+                            }); 
+
+                    }, function errorCallback(responce){
+                      console.log(responce.data);
+                    });
+          }
+        });
+        $scope.open_stripe = function()
+        {
+          console.log($scope.chosen_facility);
+          $scope.chosen_event = Facilities.getEvent($scope.event);
+
+          console.log($scope.formData.chosen_time);
+          console.log($scope.formData.chosen_time.event);
+          console.log($scope.event);
+
+          $scope.event_price = $scope.chosen_event.price;
+    
+          var basic_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
+          var new_charge = basic_charge * 103;
+          $scope.stripe_charge = Math.round(new_charge);
+          $scope.charge  = $scope.stripe_charge / 100; 
+          console.log("charge in stripe " + $scope.stripe_charge);
+          $scope.stripe_handler.open({
+            name: $scope.event.name,
+            description: $scope.formData.count + " places",       // TODO add offer
+            amount: $scope.stripe_charge
+          });
+        }  
+
+});
 
 var apply_best_offer_facility = function(facility, event_occ, price, capacity, count, chosen_offer, offers)
 {
