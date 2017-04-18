@@ -11,8 +11,7 @@ var StatsController = {
     in the WeekStats, MonthStats and YearStats
   */
   addStat: function (date, businessID, statType, amount) {
-    console.log('hi hi hi');
-    var now = date;
+    var now = date.setHours(0, 0, 0, 0);
     //update week stats
     //check if there is an entry for this business for this week
     WeekStat.findOne({
@@ -77,8 +76,6 @@ var StatsController = {
       if (err) throw err;
       else {
         if (stat != null) {
-          console.log('betengaaaannnnn');
-          console.log(stat);
           var query = helper.updateQuery(stat, statType, amount);
           console.log(query);
           stat.update(query).exec(function (err, result) {
@@ -127,48 +124,92 @@ var StatsController = {
     });
   },
   getWeekStats: function (req, res) {
-    if (req.user && req.user instanceof Business) {
-      var id = req.user.id;
-      var startDate = req.body.startDate;
-      var endDate = req.body.endDate;
 
-      WeekStat.find({
-        startDate: { $lte: startDate },
-        endDate: { $gte: endDate },
-        business: id
-      }, function (err, result) {
-        if (err)
-          throw err;
-        else
-          res.json(result);
-      });
-    } else {
-      res.json(null);
-    }
+    var businessID = req.body.businessID;
+    var startDate = helper.calculateWeek(new Date(req.body.startDate)).startDate;
+    var endDate = helper.calculateWeek(new Date(req.body.endDate)).endDate;
+    WeekStat.find({
+      $or: [
+        { startDate: { $gte: startDate } },
+        { endDate: { $lte: endDate } },
+      ],
+      business: businessID
+    }, function (err, result) {
+      if (err) {
+        console.log(err);
+      }
+      else {
+        console.log(result);
+        res.json(result);
+      }
+    });
+
 
   },
   getMothStats: function (req, res) {
-    if (req.user && req.user instanceof Business) {
-      var id = req.user.id;
-      var startMonth = req.body.startMonth;
-      var startYear = req.body.startYear;
-      var endMonth = req.body.endMonth;
-      var endYear = req.body.endYear;
-      MonthStat.find({
-        month: { $lte: startMonth, $gte: endMonth },
-        year: { $lte: startYear, $gte: endYear },
-        business: businessID
-      }, function (err, result) {
-        if (err)
-          throw err;
-        else
-          res.json(result);
-      }); 
+    console.log(req.body);
 
-    }
-  }, 
-  getYeatStats: function(req, res) {
-    
+    var businessID = req.body.businessID;
+    var startMonth = parseInt(req.body.startMonth);
+    var startYear = parseInt(req.body.startYear);
+    var endMonth = parseInt(req.body.endMonth);
+    var endYear = parseInt(req.body.endYear);
+
+    var query = MonthStat.find({
+      $or: [
+        {
+          $and: [
+            { year: { $gt: startYear } },
+            { year: { $lt: endYear } }
+          ]
+        },
+        {
+          $and: [
+            { year: startYear },
+            { month: { $gte: startMonth } }
+          ]
+        },
+        {
+          $and: [
+            { year: endYear },
+            { month: { $lte: endMonth } }
+          ]
+        }
+      ],
+
+      business: businessID
+    }).sort({ year: 1, month: 1 });
+    query.exec(function (err, result) {
+      if (err)
+        throw err;
+      else {
+        console.log(result);
+        res.json(result);
+
+      }
+    });
+
+
+  },
+  getYearStats: function (req, res) {
+
+    var businessID = req.body.businessID;
+    var startYear = parseInt(req.body.startYear);
+    var endYear = parseInt(req.body.endYear);
+    var query = YearStat.find({
+      year: { $gte: startYear, $lte: endYear },
+      business: businessID
+    }).sort('year');
+
+    query.exec(
+      function (err, result) {
+        if (err) {
+          console.log(err);
+          res.send('Could not retrieve statistics.');
+        } else {
+          res.json(result);
+        }
+      });
   }
 }
 
@@ -210,8 +251,8 @@ var helper = {
     startDate.setMonth(startMonth);
     startDate.setDate(startDay);
     startDate.setFullYear(startYear);
-    console.log(startDay + " " + startMonth + " " + startYear);
-    ;
+    startDate.setHours(0, 0, 0, 0);
+
     //calculate end date of this week
     var endDate = new Date();
     var thisMonth = this.daysOfMonth(month);
@@ -226,12 +267,15 @@ var helper = {
         endYear++;
       }
     }
-    console.log(endDay + " " + endMonth + " " + endYear);
+
 
 
     endDate.setDate(endDay);
     endDate.setMonth(endMonth);
     endDate.setFullYear(endYear);
+    endDate.setHours(0, 0, 0, 0);
+    console.log(startDate);
+    console.log(endDate);
 
     return {
       startDate: startDate,
