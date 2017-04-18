@@ -2,7 +2,7 @@
 var app = angular.module('fasa7ny');
 app.controller('bookingEventController', function($scope, $http, $location, Offers) 
 {
-        $scope.business_id = "58f0f3faaa02d151aa4c987c";
+        $scope.business_id = "58f0cb2d6bfb6061efd66625";
         $scope.event = {
         "_id" : "58f15ed24452f7209873d9ce",
         "location" : "loc",
@@ -87,16 +87,16 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
           var min_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, offers);
           $scope.charge = min_charge;
           console.log("charge   " + min_charge); 
-          $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: min_charge, user_id: $scope.user._id})
+          $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, user_id: $scope.user._id})
                     .then(function successCallback(responce){
                       console.log(responce.data);
                     }, function errorCallback(responce){
                       console.log(responce.data);
                     }); 
         }        
-
         
-        $scope.stripe_handler = StripeCheckout.configure({
+        $scope.stripe_handler = StripeCheckout.configure(
+        {
           key: "pk_test_O1Gn3Rl11nLaHckNqvJOzaYz",
           locale: 'auto',
           currency : "egp",

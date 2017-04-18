@@ -309,7 +309,7 @@ exports.regUserAddBooking = function(req, res, next) {
 
 
       if(req.body.count <= 0)
-        return res.status(400).json("Can't have negative or no count.");
+        return res.status(400).json("Can't have negative or no count.  hena 5");
 
 			var date = new Date();
 	    var booking = new Booking(
@@ -332,7 +332,7 @@ exports.regUserAddBooking = function(req, res, next) {
 						 {
 								if(err || !eve )
 								{
-									res.status(500).json("Error adding booking. Please try again!");
+									res.status(500).json("Error adding booking. Please try again!  hena4");
 									return;
 								}
 								else
@@ -341,7 +341,7 @@ exports.regUserAddBooking = function(req, res, next) {
 									if(eve.available < 0)
 									{
                     booking.remove();
-										res.status(500).json("Not enough spaces - please decrease count of booking.");
+										res.status(500).json("Not enough spaces - please decrease count of booking.   hena3");
 										return;
 									}
 									else
@@ -359,7 +359,7 @@ exports.regUserAddBooking = function(req, res, next) {
 									 if(err || !user)
 									 {
                      booking.remove();
-										 res.status(500).json("Error saving booking. Please try again.");
+										 res.status(500).json("Error saving booking. Please try again.  hena2");
 										 return;
 									 }
 									 else
@@ -376,7 +376,7 @@ exports.regUserAddBooking = function(req, res, next) {
 	        }
 	        else
 					{
-						return res.status(500).json("Error. Please try again.");
+						return res.status(500).json("Error. Please try again. hena1");
 	        }
 	    });
 
