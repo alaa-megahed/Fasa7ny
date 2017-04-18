@@ -6,7 +6,7 @@ var Facility = require('mongoose').model('Facility');
 
 var BusinessController = {
        getBusiness: function (req, res) {
-        var name = "business1";
+        var name = "Habiiba";
         // var id = req.params.id;
         Business.findOne({ name: name }).
             exec(function (err, result) {
@@ -16,7 +16,7 @@ var BusinessController = {
                     console.log(result);
 //in case there is a user logged in
                     if(!result); //return error message business does not exist
-                    Rating.findOne({user_ID: "58f09946fcefb434ea0d4e22" , business_ID: result._id}, function(err, rate) {
+                    Rating.findOne({user_ID: "58f0c9341767d632566c9fb5" , business_ID: result._id}, function(err, rate) {
                       if(err) console.log("error in finding rate");
                       // if(!rate) //dont forget this return zero rating
                       else {
@@ -29,10 +29,10 @@ var BusinessController = {
 
                                 Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
                                     if(err) console.log("error in finding once events");
-                                    if(!onceevents) res.json({result:result, user:"58f09946fcefb434ea0d4e22",
+                                    if(!onceevents) res.json({result:result, user:"58f0c9341767d632566c9fb5",
                                             rate:rate.rating, facilities:facilities, events:[]});
                                     else {
-                                        res.json({result:result, user:"58f09946fcefb434ea0d4e22",
+                                        res.json({result:result, user:"58f0c9341767d632566c9fb5",
                                             rate:rate.rating, facilities:facilities, events:onceevents});
                                     }
                                 });
@@ -57,7 +57,7 @@ requestRemoval: function(req,res) {
         // if(req.user && req.user instanceof Business){
         // var id = req.user.id;
         console.log('removal');
-        var id = "58f20e01b38dec5d920104f3";
+        var id = "58e666a20d04c180d969d591";
         Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
             if(err) res.send("error in request removal");
             else res.send("Requested!");
@@ -275,7 +275,9 @@ requestRemoval: function(req,res) {
             console.log(newBusiness);
           }
         });
-      }
+      // }
+    // }
+      // }
     // }
 }
 

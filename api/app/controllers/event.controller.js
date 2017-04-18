@@ -15,7 +15,7 @@ exports.createFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f20e01b38dec5d920104f3";
 		console.log(req.body);
 		console.log(req.file.filename);
 		if(!req.body.name || !req.body.description || !req.body.capacity)
@@ -64,7 +64,7 @@ exports.editFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f20e01b38dec5d920104f3";
 		var facility_id = req.params.facilityId;
 		console.log(req.body);
 		console.log();
@@ -127,7 +127,7 @@ exports.deleteFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f20e01b38dec5d920104f3";
 		var facility_id = req.params.facilityId;
 		console.log("delete facility backend");
 		Business.findById(id,function(err,business)

@@ -1,4 +1,5 @@
 app.controller('businessController', function($scope, $http, Business, $location, $routeParams, $modal, $log) {
+
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
   $scope.avgRate = 0;
@@ -100,21 +101,54 @@ app.controller('businessController', function($scope, $http, Business, $location
          };
 
 
-         $scope.public = function(){
-         	console.log('public ctrl');
-         	Business.public()
-         	.then(function(d){
-         		console.log('public done');
-         	})
-        };
+        //  $scope.public = function(){
+        //  	console.log('public ctrl');
+        //  	Business.public()
+        //  	.then(function(d){
+        //  		console.log('public done');
+        //  	})
+        // };
 
-          $scope.remove = function(){
-         	console.log('remove ctrl');
-         	Business.remove()
-         	.then(function(d){
-         		console.log('remove done');
-         	})
-         };
+
+        $scope.public = function () {
+        $scope.message = "Public Button Clicked";
+        console.log($scope.message);
+        var modalInstance = $modal.open({
+            templateUrl: 'views/publicPop.html',
+            controller: Public,
+            scope: $scope
+
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+            });
+    };
+
+         //  $scope.remove = function(){
+         // 	console.log('remove ctrl');
+         // 	Business.remove()
+         // 	.then(function(d){
+         // 		console.log('remove done');
+         // 	})
+         // };
+
+
+        $scope.remove = function () {
+        $scope.message = "Remove Button Clicked";
+        console.log($scope.message);
+        var modalInstance = $modal.open({
+            templateUrl: 'views/removePop.html',
+            controller: Remove,
+            scope: $scope
+
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+            });
+    };
+
 
          $scope.getEvent = function(businessId, eventId) {
           console.log("get Event ctrl");
@@ -145,7 +179,7 @@ app.controller('businessController', function($scope, $http, Business, $location
         };
 
         $scope.addImage = function () {
-            $scope.message = "Show delete Form Button Clicked";
+            $scope.message = "Show image Form Button Clicked";
             console.log($scope.message);
             var modalInstance = $modal.open({
                 templateUrl: 'views/addImage.html',
@@ -209,6 +243,44 @@ app.controller('businessController', function($scope, $http, Business, $location
 
     });
 
+
+var Public = function ($scope, $modalInstance,Business,$route) {
+    $scope.form = {}
+    $scope.submitForm = function () {
+      console.log('Public Form');
+        Business.public()
+        .then(function(d){
+          console.log('pub');
+        });
+        $route.reload();
+        $modalInstance.close('closed');
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+
+
+var Remove = function ($scope, $modalInstance,Business,$route) {
+    $scope.form = {}
+    $scope.submitForm = function () {
+      console.log('Remove Form');
+        Business.remove()
+        .then(function(d){
+          console.log('rem');
+        });
+        $route.reload();
+        $modalInstance.close('closed');
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+
+
+
     var deleteImageCtrl = function ($scope, $modalInstance, Business, $route) {
         $scope.form = {}
         $scope.yes = function (image) {
@@ -244,7 +316,6 @@ app.controller('businessController', function($scope, $http, Business, $location
             $modalInstance.dismiss('cancel');
         };
     };
-
 
     var deletePhoneCtrl = function ($scope, $modalInstance, Business, $route) {
         $scope.yes = function (phone) {

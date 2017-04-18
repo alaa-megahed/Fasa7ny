@@ -31,6 +31,15 @@ app.factory('Facility', ['$http', function($http) {
       console.log("delete facility service");
 
       return $http.get('http://127.0.0.1:3000/event/deleteFacility/' + facilityId);
-    }
+    },
+
+     addDaily : function(fid,description,capacity,formData){
+          console.log("add daily service"+formData);
+          formData.repeat = "Daily";
+          formData.description = description;
+          formData.capacity = capacity;
+          formData.facility_id = fid;
+          return $http.post('http://127.0.0.1:3000/event/create', formData);
+        }
   }
 }]);
