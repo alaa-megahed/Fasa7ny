@@ -28,14 +28,19 @@ router.use('/admin', admin);
 router.use('/contact', function(req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
-
-router.get('/', function (req, res) {
-      res.sendFile(path.resolve('../angular/index.html'));
-});
+//
+// router.get('/', function (req, res) {
+//       res.sendFile(path.resolve('../angular/index.html'));
+// });
 
 router.get('/loggedin', function (req, res) {
-  if(req.user)
-    return res.json(req.user);
+
+    console.log("this is req.user  " + req.user);
+    res.json(req.user);
+});
+
+router.get('/loggedin1', function (req1, res1) {
+  res1.json(req1.user);
 });
 
 module.exports = router;

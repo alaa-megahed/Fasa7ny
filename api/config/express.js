@@ -31,6 +31,9 @@ module.exports = function() {
         secret: 'OurSuperSecretCookieSecret'
     }));
 
+    require('./passport')(passport);
+
+
     app.use(passport.initialize());
     app.use(passport.session());
 
@@ -43,11 +46,26 @@ module.exports = function() {
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
 
     app.use('*',function(req, res, next){
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
+        res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
         res.setHeader('Access-Contro-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-        res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+        res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization, Accept, X-HTTP-Method-Override");
+        res.setHeader('Access-Control-Allow-Credentials', true);
         next();
     });
+
+
+
+    // app.use(function(req, res, next) {
+    // res.header('Access-Control-Allow-Origin', req.headers.origin);
+    // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    // res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+    // res.header('Access-Control-Allow-Credentials', true);
+    // if ('OPTIONS' == req.method) {
+    //      res.send(200);
+    //  } else {
+    //      next();
+    //  }
+    // });
 
     var router = require('../app/routes');
 
@@ -55,7 +73,7 @@ module.exports = function() {
 
 
 
-    require('./passport')(passport);                                     // pass passport for passport configuration
+                                // pass passport for passport configuration
 
     app.use( express.static("../angular") );
     app.use( express.static("./uploads") );

@@ -1,27 +1,38 @@
 angular.module('fasa7ny')
 
-  .controller('homepageController' , function($scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, LoggedIn) {
+  .controller('homepageController' , function($scope, $http, $location, $window, $modal, $modalStack, $log, Homepage) {
 
+    $scope.user = {};
     $scope.err = "";
     $scope.form = {};
     $scope.searchAppear = 1;
     $scope.notifcolor = {'color' : 'white'} ;
 
 
-    LoggedIn.check()
-           .then(function(data) {
-               $scope.user = data;
-               console.log($scope.user.data.notifications);
-               $scope.user.data.notifications.reverse();
-               $scope.notifications =  $scope.user.data.notifications.slice(1,11);
-               if($scope.user.data.unread_notifications)
-                  $scope.notifcolor = {'color' : 'red'};
 
-           });
-    Homepage.get()
-           .then(function(data) {
-           });
+    $http({
+     url: 'http://127.0.0.1:3000/loggedin',
+     method: "GET",
+     withCredentials: true,
+     headers: {
+                 'Content-Type': 'application/json; charset=utf-8'
+     }
+   }).then(function(result)
+       {
+         $scope.user = result;
+         console.log("Data is " + JSON.stringify(result));
+         if($scope.user.data)
+         {
+            console.log($scope.user.data.notifications);
+            $scope.user.data.notifications.reverse();
+            $scope.notifications =  $scope.user.data.notifications.slice(1,11);
+            if($scope.user.data.unread_notifications)
+                $scope.notifcolor = {'color' : 'red'};
+          }
 
+
+
+       })
 
 
     $scope.signUp = function() {
@@ -86,6 +97,10 @@ angular.module('fasa7ny')
 
     }
 
+    $scope.searchCategory = function(category){
+      console.log("category issss" + category);
+    }
+
 
 
 
@@ -146,27 +161,28 @@ angular.module('fasa7ny')
       $scope.submitForm = function () {
           if ($scope.form.userForm.$valid) {
             console.log($scope.formData);
-            Homepage.signIn($scope.formData).then(function(data)
-            {
+              $http({
+               url: 'http://127.0.0.1:3000/auth/login',
+               method: "POST",
+               withCredentials: true,
+               data: {username : $scope.formData.username, password : $scope.formData.password},
+               headers: {
+                           'Content-Type': 'application/x-www-form-urlencoded'
+               },
+               transformRequest: function(obj) {
+                   var str = [];
+                   for(var p in obj)
+                   str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                   return str.join("&");
+               }
+             }).then(function(data){
+               console.log(JSON.stringify(data));
+               $window.location.reload();
+               $modalInstance.close("closed");
 
-              if(data.data === "success")
-              {
 
-                $modalInstance.close("closed");
-                $window.location.reload();
-              }
+             });
 
-              else
-              {
-                $scope.err = data.data;
-                $modalInstance.close({
-                  err : $scope.err[0]
-                });
-              //  $scope.signIn();
-              }
-
-            }, function(data2){
-            });
 
           } else {
 

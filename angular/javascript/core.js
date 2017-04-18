@@ -26,7 +26,17 @@ app.config(function($routeProvider){
 		controller  : "businessController"
 
 	})
+	.when("/auth/reset/:id", {
+		templateUrl : "views/resetPassword.html",
+		controller  : "resetPasswordController"
+
+	})
+
 
 	// $locationProvider.html5Mode(true);
 
 });
+
+app.config(['$httpProvider', function($httpProvider) {
+  $httpProvider.defaults.withCredentials = true;
+}]);

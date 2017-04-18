@@ -11,7 +11,8 @@
       <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
       <script src="./javascript/core.js"></script>
       <script src="./javascript/controllers/homepageController.js"></script>
-      <script src="./javascript/controllers/homepageController.js"></script>
+      <script src="./javascript/controllers/searchtestController.js"></script>
+      <script src="./javascript/controllers/resetPasswordController.js"></script>
       <script src="./javascript/services/homepageService.js"></script>
 
 
@@ -29,6 +30,25 @@
 			    document.getElementById("rightMenu").style.display = "none";
 			}
 		</script>
+
+    <script>
+    $(function () {
+      $('a[href="#search"]').on('click', function(event) {
+      event.preventDefault();
+      $('#search').addClass('open');
+      $('#search > form > input[type="search"]').focus();
+    });
+
+    $('#search, #search button.close').on('click keyup', function(event) {
+      if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+          $(this).removeClass('open');
+      }
+    });
+    });
+    </script>
+
+
+
 
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="description" content="Meghna One page parallax responsive HTML Template">
@@ -80,7 +100,6 @@
 
     <body id="body" ng-cloak>
 
-
       <header id="navigation" class="navbar navbar-inverse" role = "navigation">
           <div class="container">
               <div class="navbar-header">
@@ -91,15 +110,15 @@
                       <span class="icon-bar"></span>
                       <span class="icon-bar"></span>
                   </button>
-        <!-- /responsive nav button -->
+            <!-- /responsive nav button -->
 
-        <!-- logo -->
+            <!-- logo -->
                   <a class="navbar-brand" href="#body">
-          <h1 id="logo">
-            <img src="img/logo-meghna.png" alt="Meghna" />
-          </h1>
-        </a>
-        <!-- /logo -->
+                    <h1 id="logo">
+                      <img src="img/logo-meghna.png" alt="Meghna" />
+                    </h1>
+                  </a>
+            <!-- /logo -->
               </div>
 
       <!-- main nav -->
@@ -118,71 +137,39 @@
 
 
                       <li><a href="#search">Search</a></li>
+
                       <li class="dropdown" ng-if = "user.data.user_type == 1" >
                             <a href=""  ng-mouseover = "decreaseCount()" class="dropbtn" ng-style = notifcolor>Notifications</a>
-                            <div class="dropdown-content" style = "background-color: #2B2C30;" ng-if = "user.data.notifications.length != 0">
-                              <center>
-                              <h4 class = "notif" style = "color : white" href = "" ng-repeat = "notification in user.data.notifications track by $index"> {{notification}} </h4>
-                            </center>
-                            </div>
-
-                            <div class="dropdown-content" ng-if = "user.data.notifications.length == 0" style = "background-color: #2B2C30;">
-                              <center>
-                              <h4 class = "notif" style = "color : white"> No notifications to show </h4>
-                            </center>
-
-                            </div>
+                              <div class="dropdown-content" style = "background-color: #2B2C30;" ng-if = "user.data.notifications.length != 0">
+                                <center>
+                                  <h4 class = "notif" style = "color : white" href = "" ng-repeat = "notification in user.data.notifications track by $index"> {{notification}} </h4>
+                                </center>
+                              </div>
+                              <div class="dropdown-content" ng-if = "user.data.notifications.length == 0" style = "background-color: #2B2C30;">
+                                <center>
+                                  <h4 class = "notif" style = "color : white"> No notifications to show </h4>
+                                </center>
+                              </div>
                       </li>
-                  </ul>
-              </nav>
+                    </ul>
+                  </nav>
 
-
-
-
-
-
-              <div id="search" style = "background-color: #2B2C30;" ng-if = "searchAppear" >
-                  <button type="button" class="close">×</button>
-                  <form name = "form.userForm" ng-submit = "search()">
-                      <input type="search" value="" placeholder="type keyword(s) here"  ng-model = "form.search" />
-                      <button type="submit" class="btn btn-green"  >Search</button>
-                  </form>
-              </div>
+                  <div id="search" style = "background-color: #2B2C30;" ng-if = "searchAppear" >
+                    <button type="button" class="close">×</button>
+                      <form name = "form.userForm" ng-submit = "search()">
+                        <input type="search" value="" placeholder="type keyword(s) here"  ng-model = "form.search" />
+                        <button type="submit" class="btn btn-green"  >Search</button>
+                      </form>
+                 </div>
             </div>
       <!-- /main nav -->
 
-
-
-
-            <script>
-            $(function () {
-              $('a[href="#search"]').on('click', function(event) {
-              event.preventDefault();
-              $('#search').addClass('open');
-              $('#search > form > input[type="search"]').focus();
-            });
-
-            $('#search, #search button.close').on('click keyup', function(event) {
-              if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
-                  $(this).removeClass('open');
-              }
-            });
-                  //Do not include! This prevents the form from submitting for DEMO purposes only
-            });
-            </script>
-
-
-
-
-
-
-
-
           </div>
       </header>
-      <!--
-      End Fixed Navigation
-      ==================================== -->
+  <!--End Fixed Navigation==================================== -->
+
+
+
 
 <!--Start Preloader ==================================== -->
 <div id="loading-mask">

@@ -3,37 +3,27 @@ angular.module('fasa7ny')
   .factory('Homepage', function($http) {
     return {
       get: function() {
-        return $http.get('/');
+        return $http.get('http://127.0.0.1:3000/');
       },
-      signIn : function(formData) {
-        return $http.post('auth/login', formData);
-      },
+  
+
       signUp : function(formData) {
-        return $http.post('auth/signup', formData);
+        return $http.post('http://127.0.0.1:3000/auth/signup', formData);
       },
       forgotPassword : function(formData) {
-        return $http.post('auth/forgot', formData);
+        return $http.post('http://127.0.0.1:3000/auth/forgot', formData);
       },
       search : function(formData) {
-        return $http.post('/search', formData);
+        return $http.post('http://127.0.0.1:3000/search', formData);
 
       },
       resetUnread : function() {
-        return  $http.get('/user/resetUnread');
-      }
-
-
-    }
-  })
-
-
-  .factory('LoggedIn', function($http) {
-    return {
+        return  $http.get('http://127.0.0.1:3000/user/resetUnread');
+      },
       check: function() {
-        return $http.get('/loggedin');
+        return $http.get('http://localhost:3000/loggedin');
       }
+
+
     }
-
-
-
   })
