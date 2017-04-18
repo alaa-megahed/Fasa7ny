@@ -23,6 +23,9 @@ var EventOccurrencesSchema = mongoose.Schema({
     bookings : [{type: mongoose.Schema.Types.ObjectId,ref: 'Booking',default: [] }],
     event : {type: mongoose.Schema.Types.ObjectId, ref:'Events'},
     facility_id  :{type: mongoose.Schema.Types.ObjectId, ref:'Facility'}
+    facility_id  :{type: mongoose.Schema.Types.ObjectId, ref:'Facility'},
+    business_id:{type: mongoose.Schema.Types.ObjectId, ref:'Business'}
+
 
 });
 
@@ -35,4 +38,3 @@ module.exports = {
     Events: Events,
     EventOccurrences: EventOccurrences
 };
-
