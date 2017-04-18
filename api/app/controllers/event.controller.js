@@ -124,45 +124,52 @@ exports.editFacility = function(req,res)
 
 exports.deleteFacility = function(req,res)
 {
-	if (req.user && req.user instanceof Business)
-	{
-		var id = req.user.id;
-		var facility_id = req.body.facility_id;
-
+	// if (req.user && req.user instanceof Business)
+	// {
+		// var id = req.user.id;
+		var id = "58e666a20d04c180d969d591";
+		var facility_id = req.params.facilityId;
+		console.log("delete facility backend");
 		Business.findById(id,function(err,business)
 		{
 			if(err || !business)
-				return res.send("Oops!! Something went wrong");
+				return res.json({err:"Oops!! Something went wrong"});
 			Facility.findById(facility_id,function(err,facility)
 			{
 				if(err || !facility)
-					return res.send("Oops!! Something went wrong");
+					return res.json({err:"Oops!! Something went wrong"});
 
 				else
 				{
 					if(facility.business_id == id)
 					{
+						Facility.remove({_id:facility_id}, function(err) {
+							if(err) return res.json({err:"error removing facility"});
+							console.log("et");
+						});
+
 						Events.remove({facility_id:facility_id},function(err)
 						{
 							if(err)
-								return res.send("error removing event");
+								return res.json({err:"error removing event"});
 
 						});
 
 						EventOccurrences.remove({facility_id:facility_id},function(err)
 						{
 							if(err)
-								return res.send("error removing event occurence");
+								return res.json({err:"error removing event occurence"});
+								else console.log("delete done");
 						});
 					}
 					else
-						return res.send("You are not authorized to perform this action");
+						return res.json({err:"You are not authorized to perform this action"});
 				}
 			});
 		});
-	}
-	else
-		res.send("Not logged in business");
+	// }
+	// else
+		// res.send("Not logged in business");
 }
 
 

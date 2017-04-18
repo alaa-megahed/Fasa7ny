@@ -42,10 +42,6 @@ app.config(function($routeProvider){
 		controller  : "facilityController"
 	})
 
-	.when("/editFacility/:facilityId", {
-		templateUrl : "views/editFacility.html",
-		
-	})
 	// $locationProvider.html5Mode(true);
 
 });

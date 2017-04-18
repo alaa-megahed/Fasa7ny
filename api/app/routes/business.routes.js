@@ -2,6 +2,8 @@
 var business = require('express').Router();
 var businessController = require('../controllers/business.controller.js');
 var path 	 = require('path');
+var multer = require('multer');
+var upload = multer({ dest: 'public/uploads/' });
 
 business.use('/makepagepublic', function(req, res) {
   res.render("makePagePublic.ejs", {user:req.user});
@@ -22,9 +24,10 @@ business.use('/makepagepublic', function(req, res) {
 business.get('/b/:id', businessController.getBusiness);
 business.get('/requestRemoval',businessController.requestRemoval)
 business.post('/deletePaymentMethod', businessController.deletePaymentMethod);
-business.post('/editInformation', businessController.editInformation);
+business.post('/editInformation', upload.single('img'), businessController.editInformation);
 business.post('/deletePhone', businessController.deletePhone);
 business.get('/publicPage', businessController.makePagePublic);
+business.get('/deleteImage/:image', businessController.deleteImage);
 // business.get('/checkSession', businessController.checkSession);
 
 

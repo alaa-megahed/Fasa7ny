@@ -1,4 +1,4 @@
-app.controller('businessController', function($scope, $http, Business, $location, $routeParams) {
+app.controller('businessController', function($scope, $http, Business, $location, $routeParams, $modal, $log) {
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
   $scope.avgRate = 0;
@@ -13,6 +13,7 @@ $scope.id = "58f20e01b38dec5d920104f3";
                         $scope.categories = d.data.result.category;
                         $scope.user = d.data.user;
                         $scope.methods = d.data.result.payment_methods;
+                        $scope.images = d.data.result.images;
 
                         $scope.facilities = d.data.facilities;
                         $scope.events = d.data.events; //once events
@@ -36,6 +37,7 @@ $scope.id = "58f20e01b38dec5d920104f3";
          	console.log("controller");
          	Business.edit($scope.formData)
          	.then(function(d) {
+            console.log(d.data);
          		console.log(d.data.business._id);
             $location.path('/'+ d.data.business._id);
          	})
@@ -100,9 +102,72 @@ $scope.id = "58f20e01b38dec5d920104f3";
           $location.path('/createFacility/'+ id);
         };
 
-        // $scope.goToEditFacility = function(facilityId) {
-        //   console.log("edit facility controller");
-        //   $locatin.path('/editFacility/' + facilityId);
-        // }
+        $scope.deleteImage = function (image) {
+            $scope.message = "Show delete Form Button Clicked";
+            console.log($scope.message);
+            $scope.image = image;
+            var modalInstance = $modal.open({
+                templateUrl: 'views/deleteImage.html',
+                controller: deleteImageCtrl,
+                scope: $scope
+            });
 
+            modalInstance.result.then(function (selectedItem) {
+                $scope.selected = selectedItem;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
+
+        $scope.addImage = function () {
+            $scope.message = "Show delete Form Button Clicked";
+            console.log($scope.message);
+            var modalInstance = $modal.open({
+                templateUrl: 'views/addImage.html',
+                controller: addImageCtrl,
+                scope: $scope
+            });
+
+            modalInstance.result.then(function (selectedItem) {
+                $scope.selected = selectedItem;
+            }, function () {
+                $log.info('Modal dismissed at: ' + new Date());
+            });
+        };
     });
+
+    var deleteImageCtrl = function ($scope, $modalInstance, Business, $route) {
+        $scope.form = {}
+        $scope.yes = function (image) {
+            // if ($scope.form.editForm.$valid) {
+                console.log('user form is in scope');
+    						console.log(image);
+    						Business.deleteImage(image)
+    						.then(function(d) {
+    							console.log("done deleting image");
+    						});
+    						$route.reload();
+                $modalInstance.close('closed');
+        };
+
+        $scope.no = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    };
+
+    var addImageCtrl = function ($scope, $modalInstance, Business, $route) {
+        $scope.addImage = function (formData) {
+                console.log('add image is in scope');
+                Business.addImage(formData)
+                .then(function(d) {
+                  console.log("done adding image");
+                });
+                console.log("eh yasta?");
+                $route.reload();
+                $modalInstance.close('closed');
+        };
+
+        $scope.no = function () {
+            $modalInstance.dismiss('cancel');
+        };
+    };

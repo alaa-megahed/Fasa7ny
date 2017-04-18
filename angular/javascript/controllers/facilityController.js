@@ -30,6 +30,28 @@ app.controller('facilityController', function($scope, $http, Facility, $location
 			});
 	};
 
+	$scope.deleteFacility = function (facilityId) {
+			$scope.message = "Show edit Form Button Clicked";
+			console.log($scope.message);
+			$scope.facilityId = facilityId;
+			var modalInstance = $modal.open({
+					templateUrl: 'views/deleteFacility.html',
+					controller: deleteCtrl,
+					scope: $scope,
+					resolve: {
+							deleteForm: function () {
+									return $scope.deleteForm;
+							}
+					}
+			});
+
+			modalInstance.result.then(function (selectedItem) {
+					$scope.selected = selectedItem;
+			}, function () {
+					$log.info('Modal dismissed at: ' + new Date());
+			});
+	};
+
 });
 
 var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
@@ -48,6 +70,26 @@ var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
     };
 
     $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+
+var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route) {
+    $scope.form = {}
+    $scope.yes = function (facilityId) {
+        // if ($scope.form.editForm.$valid) {
+            console.log('user form is in scope');
+						console.log(facilityId+"!!");
+						Facility.deleteFacility(facilityId)
+						.then(function(d) {
+							console.log("done deleting facility");
+						});
+						console.log("delete done");
+						$route.reload();
+            $modalInstance.close('closed');
+    };
+
+    $scope.no = function () {
         $modalInstance.dismiss('cancel');
     };
 };
