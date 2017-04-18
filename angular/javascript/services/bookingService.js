@@ -16,6 +16,7 @@ app.factory('Occurrences',['$http',function($http)
             }
         }
 }])
+
 .factory('Facilities',['$http',function($http)
 {
     return {

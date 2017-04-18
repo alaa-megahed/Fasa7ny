@@ -8,12 +8,11 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
         });
       Facilities.get().then(function(response){
            $scope.facilities = response.data;
-           console.log("facilities response :"+response);
       });
       Occurrences.get().then(function(response){
            $scope.timings = response.data;
       });
-
+      $scope.chosen_event = "Batta";
       $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
         //   if($scope.business.payment_methods[i] === "cash")
@@ -46,9 +45,15 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
       {
         $scope.max_count = timing.available;
         $scope.event = timing.event;
+        console.log("this is $scope.event in choose occ "+$scope.event);
         $scope.occ_id = timing._id;
-      }
 
+        Facilities.getEvent($scope.event).then(function(response)
+        {
+            $scope.chosen_event = response.data;
+            console.log("this is response.data in choose_occ "+response.date);
+        });
+      }
 
       $scope.minDate = new Date();
       var today = new Date();
@@ -58,29 +63,26 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
       $scope.book_cash = function()
       {
         console.log($scope.chosen_facility);
-        $scope.chosen_event = Facilities.getEvent($scope.event);
-
+        
         console.log($scope.formData.chosen_time);
         console.log($scope.formData.chosen_time.event);
         console.log($scope.event);
+        console.log("This is scope.event: "+$scope.event);
 
         $scope.event_price = $scope.chosen_event.price;
+        console.log("chosen eventprice in book cash is "+$scope.event_price);
         $scope.min_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
         
-
+        
          console.log("This is count :"+ $scope.formData.count);
-
-         $http.post('http://127.0.0.1:3000/bookings/charge',{amount: $scope.min_charge}) //need to pass token
-              .then(function successCallback(response){
-                    $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.charge, charge_id: responce.data.id, user_id: "58f0f48daa02d151aa4c987f"})
+  
+         $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.charge, user_id: "58f0f48daa02d151aa4c987f"})
                     .then(function successCallback(response){
                       console.log(response.data);
                     }, function errorCallback(response){
                       console.log(response.data);
                     }); 
-                    }, function errorCallback(response){
-                      console.log(response.data);
-                    });  
+                    
       }
 
       $scope.stripe_handler = StripeCheckout.configure({
@@ -94,7 +96,8 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
             $http.post('http://127.0.0.1:3000/bookings/charge', {stripeToken: token.id, amount: $scope.stripe_charge})
                     .then(function successCallback(responce){
                       console.log("success  charge in responce  "+ responce.data);
-                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:response.data, charge: $scope.min_charge, user_id: "58f0f48daa02d151aa4c987f"})
+                      console.log("success  charge in responce  "+ responce.data.id);
+                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:responce.data.id, charge: $scope.min_charge, user_id: "58f0f48daa02d151aa4c987f"})
                             .then(function successCallback(responce){
                               console.log(responce.data);
                             }, function errorCallback(responce){
@@ -109,14 +112,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
         $scope.open_stripe = function()
         {
           console.log($scope.chosen_facility);
-          $scope.chosen_event = Facilities.getEvent($scope.event);
-
-          console.log($scope.formData.chosen_time);
-          console.log($scope.formData.chosen_time.event);
-          console.log($scope.event);
-
-          $scope.event_price = $scope.chosen_event.price;
-    
+          $scope.event_price = $scope.chosen_event.price;          
           var basic_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
           var new_charge = basic_charge * 103;
           $scope.stripe_charge = Math.round(new_charge);
@@ -134,6 +130,9 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
 var apply_best_offer_facility = function(facility, event_occ, price, capacity, count, chosen_offer, offers)
 {
                 var original_charge = price * count;
+                console.log("price :"+price );
+                console.log("count :"+count );
+
                 console.log("original_charge "+original_charge);
                 var min_charge = original_charge;
                 if(typeof chosen_offer != 'undefined')
@@ -175,6 +174,3 @@ var apply_best_offer_facility = function(facility, event_occ, price, capacity, c
 }
                         
      
-
-
-
