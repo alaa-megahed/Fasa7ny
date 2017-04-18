@@ -52,6 +52,18 @@
                 transformRequest: angular.identity,
                 headers: { 'Content-Type': undefined }
               });
+            },
+
+            deletePhone : function(phone) {
+              console.log('delete phone service');
+              console.log(phone);
+              return $http.get('http://127.0.0.1:3000/business/deletePhone/' + phone);
+            },
+
+            deletePaymentMethod : function(method) {
+              console.log('delete payment method service');
+              console.log(method);
+              return $http.get('http://127.0.0.1:3000/business/deletePaymentMethod/' + method);
             }
 
 

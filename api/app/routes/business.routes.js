@@ -23,11 +23,12 @@ business.use('/makepagepublic', function(req, res) {
 //     });
 business.get('/b/:id', businessController.getBusiness);
 business.get('/requestRemoval',businessController.requestRemoval)
-business.post('/deletePaymentMethod', businessController.deletePaymentMethod);
+business.get('/deletePaymentMethod/:method', businessController.deletePaymentMethod);
 business.post('/editInformation', upload.single('img'), businessController.editInformation);
-business.post('/deletePhone', businessController.deletePhone);
+business.get('/deletePhone/:phone', businessController.deletePhone);
 business.get('/publicPage', businessController.makePagePublic);
 business.get('/deleteImage/:image', businessController.deleteImage);
+
 // business.get('/checkSession', businessController.checkSession);
 
 

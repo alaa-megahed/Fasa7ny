@@ -159,10 +159,12 @@ requestRemoval: function(req,res) {
     one can be deleted. If the business entered a wrong phone number a message is sent to the business
     saying that the phone number was not found.*/
     deletePhone: function (req, res) {
-        if (req.user && req.user instanceof Business) {
-            if (typeof req.body.phone != "undefined") {
-                var id = req.user.id;
-                var phone = req.body.phone;
+        // if (req.user && req.user instanceof Business) {
+            if (typeof req.params.phone != "undefined") {
+                // var id = req.user.id;
+                var id = "58e666a20d04c180d969d591";
+                console.log("ana fl backend delete phone");
+                var phone = req.params.phone;
                 Business.findOne({ _id: id }, function (err, business) {
                     if (err) res.send('couldnt find a business');
                     else if (!business) res.send('Something went wrong');
@@ -181,7 +183,7 @@ requestRemoval: function(req,res) {
                                 Business.findByIdAndUpdate(id, { $pull: { "phones": phone } }, function (err, info) {
                                     if (err) res.send('Could not delete');
                                     if (!info) res.send('Something went wrong');
-                                    else res.send('phone deleted');
+                                    else{ res.send('phone deleted'); console.log("phone deleted");}
                                 });
                             }
                             else {
@@ -195,11 +197,11 @@ requestRemoval: function(req,res) {
                 });
             }
             else res.send('Enter a phone numebr to be deleted');
-        }
+        // }
 
-        else {
-            res.send('You are not a logged in business');
-        }
+        // else {
+            // res.send('You are not a logged in business');
+        // }
 
     },
 
@@ -209,10 +211,12 @@ requestRemoval: function(req,res) {
     saying that the payment method was not found.*/
 
     deletePaymentMethod: function (req, res) {
-        if (req.user && req.user instanceof Business) {
-            if (typeof req.body.payment != "undefined") {
-                var id = req.user.id;
-                var payment = req.body.payment;
+        // if (req.user && req.user instanceof Business) {
+            if (typeof req.params.method != "undefined") {
+                // var id = req.user.id;
+                var id = "58e666a20d04c180d969d591";
+                var payment = req.params.method;
+                console.log("ana fl backend delete method");
                 Business.findOne({ _id: id }, function (err, business) {
                     if (err) res.send('couldnt find a business');
                     else if (!business) res.send('Something went wrong');
@@ -232,7 +236,7 @@ requestRemoval: function(req,res) {
                                 Business.findByIdAndUpdate(id, { $pull: { "payment_methods": payment } }, function (err, info) {
                                     if (err) res.send('Could not delete');
                                     if (!info) res.send('Something went wrong');
-                                    else res.send('payment method deleted');
+                                    else {res.send('payment method deleted'); console.log("payment method deleted");}
                                 });
 
                             }
@@ -248,16 +252,18 @@ requestRemoval: function(req,res) {
             else {
                 res.send('Enter a payment method to be deleted');
             }
-        }
-        else {
-            res.send('You are not a logged in business');
-        }
+        // }
+        // else {
+            // res.send('You are not a logged in business');
+        // }
 
     },
 
     deleteImage: function(req, res) {
-      if(req.user && req.user instanceof business) {
-        var id = req.user._id;
+      // if(req.user && req.user instanceof business) {
+        // var id = req.user._id;
+        var id = "58e666a20d04c180d969d591";
+        console.log("ana fl backend delete image");
         var image = req.params.image;
 
         Business.findByIdAndUpdate(id, {$pull: {"images" : image}},{safe:true, upsert: true, new:true},
@@ -270,7 +276,7 @@ requestRemoval: function(req,res) {
           }
         });
       }
-    }
+    // }
 }
 
 module.exports = BusinessController;

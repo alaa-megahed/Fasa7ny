@@ -4,6 +4,7 @@ app.controller('facilityController', function($scope, $http, Facility, $location
 		Facility.createFacility($scope.formData)
 		.then(function(d) {
 			console.log("create facility success");
+			$location.path('/');
 		});
 	};
 

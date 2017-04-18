@@ -63,38 +63,38 @@
                       <div class="post-item">
 
                           <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
-                              <div id="post-thumb" class="post-thumb owl-carousel owl-theme" style="display: block; opacity: 1;">
-                                <!-- <div class="owl-wrapper-outer autoHeight" style="height: 422px;"><div class="owl-wrapper" style="width: 2992px; left: 0px; display: block;"> -->
-                                  <!-- <div class="owl-item" style="width: 748px;"> -->
-                                    <div ng-repeat = "image in images" >
-                                      <div class="item">
-                                        <center>
-                                          <img src="http://127.0.0.1:3000/api/public/uploads/{{ image }}" alt="business image" class="img-responsive">
+                              <div id="post-thumb">
+                                      <div ng-if = "image1" class="item">
+                                        <center ng-if = "image1" >
+                                          <img ng-if = "image1" src="../img/blog/bicycle.jpg" alt="business image" class="img-responsive">
+                                          <!-- <img src="http://127.0.0.1:3000/api/public/uploads/{{ image }}" alt="business image" class="img-responsive"> -->
                                         </center>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" ng-click="deleteImage(image)"> Delete Image </button>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "image1" class="btn btn-transparent" ng-click="deleteImage(image1)"> Delete Image </button>
                                       </div>
-                                    </div>
-                                  <!-- </div> -->
-                                <!-- </div> -->
-                              <!-- </div> -->
-                                  <!-- <div class="item">
-                                    <center>
-                                      <img src="../img/portfolio/port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                  <div ng-if = "image2" class="item">
+                                    <center ng-if = "image2" >
+                                      <img ng-if = "image2" src="../img/portfolio/port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
                                     </center>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" onclick="deleteImage(image)"> Delete Image </button>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image2" class="btn btn-transparent" onclick="deleteImage(image2)"> Delete Image </button>
                                   </div>
-                                  <div class="item">
-                                    <center>
-                                      <img src="../img/portfolio/portfolio.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                  <div ng-if = "image3" class="item">
+                                    <center ng-if = "image3">
+                                      <img ng-if = "image3" src="../img/portfolio/portfolio.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
                                     </center>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" onclick="deleteImage(image)"> Delete Image </button>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image3" class="btn btn-transparent" onclick="deleteImage(image3)"> Delete Image </button>
                                   </div>
-                                  <div class="item">
-                                    <center>
-                                      <img src="../img/portfolio/wide-port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                  <div  ng-if = "image4" class="item">
+                                    <center ng-if = "image4">
+                                      <img ng-if = "image4" src="../img/portfolio/wide-port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
                                     </center>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" onclick="deleteImage(image)"> Delete Image </button>
-                                  </div> -->
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image4" class="btn btn-transparent" onclick="deleteImage(image4)"> Delete Image </button>
+                                  </div>
+                                  <div  ng-if = "image5" class="item">
+                                    <center ng-if = "image5">
+                                      <img ng-if = "image5" src="../img/portfolio/wide-port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                    </center>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image5" class="btn btn-transparent" onclick="deleteImage(image5)"> Delete Image </button>
+                                  </div>
                               </div>
                               &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" ng-click="addImage()"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
                               <hr width="40%">
@@ -107,6 +107,8 @@
                           <!-- End Single Post -->
 
                       </div>
+
+
                   </div>
 
                     <!-- Widget Section -->
@@ -162,7 +164,6 @@
                             </div>
                         </aside>
                         <!-- End Single Widget -->
-
                          <aside class="widget wow fadeInDown">
                             <div class="widget-title">
                                <h3>Business' Information</h3>
@@ -171,10 +172,10 @@
                                 <li>Area: {{ business.area }}</li>
                                 <li>Address: {{ business.address }}</li>
                                 <li>Phone Numbers: </li>
-                                <li ng-repeat = "phone in phones"> {{ phone }}</li>
+                                <li ng-repeat = "phone in phones"> {{ phone }} <button ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)" style="color:#000;"> delete <button> </li>
                                 <li>Email: {{ business.email }}</li>
                                 <li>Payment Methods: </li>
-                                <li ng-repeat = "method in methods"> {{ method }}</li>
+                                <li ng-repeat = "method in methods"> {{ method }} <button ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)" style="color:#000;"> delete <button></li>
                             </div>
                             <div class="widget-content">
                                 <!-- <form ng-if = "user.data.user_type == 2" action="/business/edit" method="get"> -->
@@ -194,7 +195,7 @@
 
 
 
-<!-- <div class="w3-container"> -->
+<div class="w3-container">
 
 
 
@@ -260,7 +261,7 @@
 <div id="Demo2" class="w3-hide w3-container">
   <p>yasso</p>
     <ul ng-repeat = "event in events">
-        <!-- <a onclick = "getEvent(business._id, event._id)" href="/eventPage/{{business._id}}/{{event._id}}">{{event.name}}</a> <br> -->
+        <a onclick = "getEvent(business._id, event._id)" href="/eventPage/{{business._id}}/{{event._id}}">{{event.name}}</a> <br>
         <button ng-click = "getEvent(business._id, event._id)">{{event.name}} </button>
     <!-- <a onclick = "getEvent(business._id, event._id)">{{event.name}}</a> <br> -->
     Description: {{event.description}} <br>
@@ -268,10 +269,7 @@
     </ul>
 </div>
 <br>
-<button onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Offers&nbsp;&nbsp;&nbsp;&nbsp;</button>
-<div id="Demo2" class="w3-hide w3-container">
-  <p>please</p>
-</div>
+
 </div>
 
 
