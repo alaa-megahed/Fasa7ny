@@ -1,9 +1,15 @@
 
 var app = angular.module('fasa7ny');
+
 app.controller('bookingEventController', function($scope, $http, $location, Offers) 
 {
         $scope.business_id = "58f0cb2d6bfb6061efd66625";
-        $scope.event = {
+        $scope.current_user = "";
+        $scope.current_business = "";
+
+
+        $scope.event = 
+        {
         "_id" : "58f15ed24452f7209873d9ce",
         "location" : "loc",
         "name" : "Testing unread",
@@ -19,22 +25,22 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
         "__v" : 0
       };
         $scope.event_occ =  {
-      "_id" : "58f15ed24452f7209873d9cf",
-      "day" : null,
-      "time" : "",
-      "available" : 3,
-      "event" : "58f15ed24452f7209873d9ce",
-      "bookings" : [ ],
-      "__v" : 0
-    };
+        "_id" : "58f15ed24452f7209873d9cf",
+        "day" : null,
+        "time" : "",
+        "available" : 3,
+        "event" : "58f15ed24452f7209873d9ce",
+        "bookings" : [ ],
+        "__v" : 0
+      };
         $scope.user = {
-      "_id" : "58f0f48daa02d151aa4c987f",
-      "name" : "Nourhan Khaled",
-      "user_type" : 1,
-      "google" : {
-        "email" : "nourhan.kh02@gmail.com",
-        "token" : "ya29.GlstBLag8DFxjWiCAcXAheP_6gH5nXKdBrFWfmb3z6VVzz-5vq9TzVm3o7RR63o3N2F28tDe8oQoKfdUbuXD2CL7XJxwV32JFhdjrFeFgjH3hY4aLSc0wKDS6rm7",
-        "id" : "105938228902529994494"
+        "_id" : "58f0f48daa02d151aa4c987f",
+        "name" : "Nourhan Khaled",
+        "user_type" : 1,
+        "google" : {
+          "email" : "nourhan.kh02@gmail.com",
+          "token" : "ya29.GlstBLag8DFxjWiCAcXAheP_6gH5nXKdBrFWfmb3z6VVzz-5vq9TzVm3o7RR63o3N2F28tDe8oQoKfdUbuXD2CL7XJxwV32JFhdjrFeFgjH3hY4aLSc0wKDS6rm7",
+          "id" : "105938228902529994494"
       },
       "unread_notifications" : 5,
       "notifications" : [
@@ -70,6 +76,7 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
         //   if($scope.business.payment_methods[i] === "cash")
         //     $scope.cash = true;
         // }
+
         $scope.min = 1;
         $scope.max = $scope.event_occ.available;
         var offers;
@@ -79,7 +86,6 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
                        $scope.offers = response.data;
                        $scope.betengan = "Roody";
                    });
-
         $scope.book_cash = function()
         {   
           var chosen_offer = $scope.formData.chosen_offer;
@@ -87,12 +93,24 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
           var min_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, offers);
           $scope.charge = min_charge;
           console.log("charge   " + min_charge); 
+
+          //if($scope.current_user)
           $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, user_id: $scope.user._id})
                     .then(function successCallback(responce){
                       console.log(responce.data);
                     }, function errorCallback(responce){
                       console.log(responce.data);
                     }); 
+
+          //else if($scope.current_business)
+          // {
+             // $http.post('http://127.0.0.1:3000/bookings/book_event', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, user_id: $scope.user._id})
+             //        .then(function successCallback(responce){
+             //          console.log(responce.data);
+             //        }, function errorCallback(responce){
+             //          console.log(responce.data);
+             //        }); 
+          // }
         }        
         
         $scope.stripe_handler = StripeCheckout.configure(
