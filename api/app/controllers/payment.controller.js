@@ -4,7 +4,7 @@ var configAuth = require("../../config/auth"),
 // Token is created using Stripe.js or Checkout!
 // Get the payment token submitted by the form:
 
-exports.
+
 var token = request.body.stripeToken; // Using Express
 
 // Charge the user's card:

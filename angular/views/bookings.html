@@ -1,4 +1,3 @@
-
         <section id="about" class="text-center">
             <div ng-controller="bookingController" class="container">
 <!--                 <div class="row">
@@ -32,9 +31,10 @@
                         <div ng-show="cash">
                         <button type="submit" class="btn btn-transparent" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
                         </div>
-                        <button type="submit" class="btn btn-transparent" ng-click="book_stripe()"> BOOK NOW WITH STRIPE</button>
-                       </form>
+                        <button type="submit" class="btn btn-transparent" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
 
+                       </form>
+                       <br><br>
                         <a href="#!/book_facility">CLICK ME CLICK ME</a>
                     
                 </div>
@@ -87,4 +87,3 @@
                 </div>      <!-- End row -->
             </div>      <!-- End container -->
         </section>   <!-- End section -->
-        

@@ -354,6 +354,11 @@ let AuthController =
   });
 },
 
+getStripePK: function(req, res)
+{
+  return res.status(200).json(configAuth.stripe.publicKey);
+}
+
 
 }
 

@@ -1,0 +1,226 @@
+<!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+ -->
+
+ <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://js.stripe.com/v2/"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+ <script src="https://js.stripe.com/v3/"></script>
+<style>
+    body {
+        margin: 8px;
+    }
+    .modal-dialog {
+        width: 350px;
+    }
+    .modal-header {
+        border: none;
+        padding: 0;
+    }
+    .modal-content {
+        padding: 10px;
+    }
+</style>
+
+
+        <section id="about" class="text-center">
+            <div ng-controller="bookingController" class="container">
+<!--                 <div class="row">
+ -->                
+        
+                    <!-- section title -->
+                    <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
+                        
+                        <h2>Book<span class="color">ING</span></h2>
+                        <div class="border"></div>
+                    </div>
+                    <!-- /section title -->
+                    
+                   
+                      <form ng-model="formData">
+                        <h3>Number of people  :  <input type="Number" ng-model="formData.count" min = {{min}} max = {{max}}><br></h3>
+                       
+                        <div> {{betengan}} </div>
+                        <div ng-show="offers.length">
+                            <h3> Special Offers:</h3> <br>
+
+                            <div ng-repeat="offer in offers" ng-if="offer.type === 'specific audience'">
+
+                              <input type="radio" ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
+
+                              <label>{{"Offer: "+offer.name + "  details: "+offer.details +" value: "+ offer.value}}</label>
+                              <br>
+
+                            </div> <br>
+                        </div>
+                        <div ng-show="cash">
+                        <button type="submit" class="btn btn-transparent" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
+                        </div>
+                        <button type="submit" class="btn btn-transparent" ng-click="book_stripe()" data-toggle="modal" data-target="#checkout"> BOOK NOW WITH STRIPE</button>
+                        
+                        <br>
+                        <form action = "/charge" method = "POST">
+                        in form
+                        <script 
+                        src = "https://checkout.stripe.com/checkout.js"
+                        class = "stripe-button"
+                        data-key = "pk_test_O1Gn3Rl11nLaHckNqvJOzaYz"
+                        data-amount = "3000"
+                        data-name = "test"
+                        data-description = "balabizo"
+                        data-locale = "auto"
+                        data-currency = "egp"
+                        ></script>
+                        </form>
+
+
+                       </form>
+                       <br><br>
+                        <a href="#!/book_facility">CLICK ME CLICK ME</a>
+                    
+                </div>
+                        <!-- End row -->
+
+            </div>      <!-- End container -->
+        </section>   <!-- End section -->
+        
+        <!--
+        Start Main Features
+        ==================================== -->
+        <section id="main-features">
+            <div class="container">
+                <div class="row">
+                    
+                    <!-- features item -->
+                    <div id="features">
+                        <div class="item">
+                            
+                            <div class="features-item">
+                                
+                               
+
+                                
+                                <!-- features content -->
+                                
+                                <!-- /features content -->
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="features-item">
+                                                            
+                                <!-- features content -->
+                                <div class="col-md-6 feature-desc wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+                                    <h3>Details:</h3>
+                                    <p>Details of facility/event to be booked goes here</p>
+                                  
+                                    <a href="#" class="btn btn-transparent">Learn More</a>
+                                    <a href="#" class="btn btn-transparent">Purchase Theme</a>
+                                </div>
+                                <!-- /features content -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /features item -->
+                    
+                </div>      <!-- End row -->
+            </div>      <!-- End container -->
+        </section>   <!-- End section -->
+        
+
+
+<!-- <div class="modal fade" id="checkout">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form id="form" action="/charge" method="POST" class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-credit-card"></span></span>
+                                <input id="card-num" class="form-control" type="text" size="16" placeholder="Card number" autofocus="autofocus" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                <input id="card-exp" class="form-control" type="text" size="5" placeholder="MM/YY" />
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                                <input id="card-cvc" class="form-control" type="text" size="4" placeholder="CVC" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button id="submit" type="button" class="btn btn-transparent col-sm-12"
+                           data-progress-text="<span class='glyphicon glyphicon-refresh fa-spin'></span>"
+                           data-success-text="<span class='glyphicon glyphicon-ok'></span>"
+                >
+                    Pay
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://js.stripe.com/v2/"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    Stripe.setPublishableKey('pk_MY_PUBLISHABLE_KEY');
+
+    var $btn = $('#submit');
+    $btn.on('click', function() {
+        $btn.prop('disabled', true);
+        $btn.button('progress');
+
+        var cardNum = $('#card-num').val();
+        var cardExp = $('#card-exp').val().split('/');
+        var cardCVC = $('#card-cvc').val();
+
+        // First submit the card information to Stripe to get back a token
+        Stripe.card.createToken({
+            number: cardNum,
+            exp_month: cardExp[0],
+            exp_year: cardExp[1],
+            cvc: cardCVC
+        }, function(status, response) {
+            var $form = $('#form');
+            var token = response.id;
+
+            // Save the token into a hidden input field
+            $form.append($('<input type="hidden" name="stripeToken" />').val(token));
+
+            // Now submit the form to our server so it can make the charge against the token
+            $form.get(0).submit();
+
+            // All done!
+            $btn.addClass('btn-success').removeClass('btn-primary');
+            $btn.button('success');
+            setTimeout(function() {
+                $('#checkout').modal('hide');
+            }, 250);
+        });
+
+        return false;
+    });
+</script>         -->
