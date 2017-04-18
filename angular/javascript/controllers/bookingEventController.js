@@ -71,6 +71,50 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
       ],
       "__v" : 9
       };
+//         $scope.event = {
+//           "_id" : ("58f39c7850010178595ccfef"),
+//           "location" : "costa",
+//           "name" : "RAN",
+//           "description" : "ran",
+//           "price" : 100,
+//           "capacity" : 4,
+//           "repeated" : "Once",
+//           "business_id" : ("58f0cb2d6bfb6061efd66625"),
+//           "daysOff" : [
+//             "5"
+//           ],
+//           "image" : [
+//             " "
+//           ],
+//           "__v" : 0
+//         };
+        
+//         $scope.event_occ =  {
+//           "_id" : ("58f39c7850010178595ccff0"),
+//           "day" : null,
+//           "time" : "",
+//           "available" : 1,
+//           "event" : ("58f39c7850010178595ccfef"),
+//           "availble" : 5
+//         };
+        
+//         $scope.user = {
+      
+//   "_id" : ("58ed22fcbfe67363f0c3a41d"),
+//   "gender" : "female",
+//   "address" : "",
+//   "birthdate" : ("1997-03-30T00:00:00Z"),
+//   "phone" : "",
+//   "email" : "alaamegahed12@gmail.com",
+//   "name" : "Alaa",
+//   "user_type" : 1,
+//   "local" : {
+//     "password" : "$2a$08$HeRTDO19GFgNG.BQjbxkyugPf6wLzsS6jlJULH.lIS2bTOk2NlRPq",
+//     "username" : "alaa"
+//   },
+ 
+// };
+// >>>>>>> 62c263a62d53cc6f742021b5718ec747716b4590
             $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
         //   if($scope.business.payment_methods[i] === "cash")
