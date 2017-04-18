@@ -45,4 +45,23 @@ exports.pay = function(req,res)
 	});
 }
 
+exports.refund = function(req, res)
+{
+	var charge_id = req.body.charge_id;
+	var amount = req.body.amount;
+	var refund = stripe.refunds.create({
+		  charge: charge_id,
+
+		}, function(err, refund) {
+		  if(err)
+		  {
+		  	res.json(400).json(err.message);
+		  }
+		  else
+		  {
+		  	res.status(200).json("refund successfully completed");
+		  }
+		});
+}
+
 

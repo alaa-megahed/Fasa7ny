@@ -34,7 +34,8 @@ var payment    = require('../controllers/payment.controller');
     });
 
     router.post('/charge', payment.pay);
-    
+    router.post('/refund', payment.refund);
+
     router.post('/createRegUserBookings', booking.regUserAddBooking);
 
     router.post('/viewRegUserBookings', booking.regUserViewBookings);
