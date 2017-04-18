@@ -244,7 +244,7 @@ exports.createEvent = function (req, res) {
 						now.setDate(now.getDate() + 1);
 						var tflag = true;
 
-						for (l = 0; l < req.body.day.length; l++) {
+						for (l = 0; req.body.day && l < req.body.day.length; l++) {
 							var y = Number(req.body.day[l]);
 
 							if (y == now.getDay()) {
@@ -266,7 +266,8 @@ exports.createEvent = function (req, res) {
 							day: date,
 							time: req.body.timing,
 							available: req.body.capacity,
-							event: event._id
+							event: event._id,
+							business_id: id
 						});
 
 						if(req.body.facility_id)
@@ -300,7 +301,8 @@ exports.createEvent = function (req, res) {
 							day: d,
 							time: req.body.timing,
 							available: req.body.capacity,
-							event: event._id
+							event: event._id,
+							business_id: id
 						});
 
 						if(req.body.facility_id)
@@ -310,7 +312,7 @@ exports.createEvent = function (req, res) {
 
 						var flag = true;
 
-						for (i = 0; i < req.body.day.length; i++) {
+						for (i = 0; req.body.day && i < req.body.day.length; i++) {
 							var x = Number(req.body.day[i]);
 
 							if (x == day) {
@@ -337,45 +339,19 @@ exports.createEvent = function (req, res) {
 							day: req.body.date,
 							time: req.body.timing,
 							available: req.body.capacity,
-							event: event._id
+							event: event._id,
+							business_id: id
 						});
 
 						occurrence.save(function (err, occurrence) {
 							if (err)
 								res.send(err.message);
-
-							// else
-							// 	{
-							// 		var content = req.user.name + " added " + req.body.name +"        "+ Date.now();
-							// 		async.each(req.user.subscribers, function(subscriber, callback){
-							// 			User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
-							// 			{
-							// 				if(err)
-							// 					console.log("error updating user notifications");
-							// 				else
-							// 				{
-							// 					user.unread_notifications = user.unread_notifications + 1;
-							// 					user.save();
-							// 					console.log(user);
-							// 				}
-							// 			});
-							// 		});
-							// 	}
-
-
-
 						});
-
-
 					}
-
 				Business.find({_id:id},function(err,business){
 					if(err) res.send(err.message);
 					else res.json(business);
-
 				});
-
-
 			}
 			else res.send('Incorrect input');
 		}
@@ -455,16 +431,28 @@ exports.getFacilities = function(req,res)
 }
 
 exports.getEvents = function (req, res) {
-	if (req.user && req.user instanceof Business) {
-		Events.find({ business_id: req.user.id }, function (err, events) {
+	// if (req.user && req.user instanceof Business) {
+		var id = "58e666a20d04c180d969d591";
+		Events.find({ business_id: id }, function (err, events) {
 			if (err) res.send(err.message);
 			else if (!events) res.send('Something went wrong');
-			else res.send(events);
+			else {
+
+				EventOccurrences.find({business_id:id}, function(err, eventocc) {
+					if(err) res.send(err.message);
+					else if(!eventocc) res.send('something went wrong');
+					else {
+						console.log('events/eventocc retrieved')
+						res.json({events:events, eventocc:eventocc});
+					}
+				})
+
+			}
 		});
-	}
-	else {
-		res.send('You are not a logged in business');
-	}
+	// }
+	// else {
+	// 	res.send('You are not a logged in business');
+	// }
 
 }
 

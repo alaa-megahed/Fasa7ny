@@ -263,7 +263,7 @@
 <div id="Demo2" class="w3-hide w3-container">
   <!-- <p>yasso</p> -->
     <ul ng-repeat = "event in events">
-        <a onclick = "getEvent(business._id, event._id)">{{event.name}}</a> <br>
+        <a ng-click = "getEvent(business._id, event._id)">{{event.name}}</a> <br>
         <!-- <button ng-click = "getEvent(business._id, event._id)">{{event.name}} </button> -->
     <!-- <a onclick = "getEvent(business._id, event._id)">{{event.name}}</a> <br> -->
     Description: {{event.description}} <br>
@@ -271,7 +271,7 @@
     </ul>
 </div>
 <br>
-
+<button ng-click="schedule(business._id)" class="btn btn-transparent"> Check my schedule </button>
 </div>
 
 

@@ -237,6 +237,10 @@ app.controller('businessController', function($scope, $http, Business, $location
           $location.path('/createOneEvent/'+ id);
         };
 
+        $scope.schedule = function(id) {
+           console.log("schedule controller");
+           $location.path('/schedule/' + id);
+       }
 
         // $scope.goToEditFacility = function(facilityId) {
         //   console.log("edit facility controller");

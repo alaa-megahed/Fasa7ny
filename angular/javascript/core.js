@@ -49,6 +49,11 @@ app.config(function($routeProvider){
 		controller  : "onetimeController"
 	})
 
+	.when("/schedule/:id", {
+		templateUrl : "views/schedule.html",
+		controller  : "scheduleController"
+	})
+
 
 
 });
