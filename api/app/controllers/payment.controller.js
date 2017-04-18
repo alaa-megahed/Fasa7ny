@@ -21,7 +21,7 @@ exports.pay = function(req,res)
 			    err.message = "Card Error. Please try again" ; // => e.g. "Your card's expiration year is invalid."
 			    break;
 			  case 'StripeInvalidRequestError':
-			     err.message = "Invalid Input" ;// Invalid parameters were supplied to Stripe's API
+			     // err.message = "Invalid Input" ;// Invalid parameters were supplied to Stripe's API
 			    break;
 			  case 'StripeAPIError':
 			     err.message = "Oops!! Something went wrong. Please try again.";// An error occurred internally with Stripe's API
