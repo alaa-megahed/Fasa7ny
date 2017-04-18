@@ -51,7 +51,7 @@
                         <button type="submit" class="btn btn-transparent" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
                 </form>
 
-                  <button class="btn btn-transparent" ng-click="refund()"> BOOK NOW WITH STRIPE</button>
+                  <button class="btn btn-transparent" ng-controller="cancelUserBookingController" ng-click="refund()"> refund </button>
                     
                 </div>
                         <!-- End row -->
@@ -115,9 +115,9 @@
         
          <!-- <script src="/bower_components/angular-route/angular-route.js"></script> -->
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-        <script src="javascript/core.js"></script>
+        <!-- <script src="javascript/core.js"></script>
         <script src="javascript/controllers/bookingController.js"></script> 
-        <script src="javascript/services/bookingService.js"></script> 
+        <script src="javascript/services/bookingService.js"></script> --> 
        
 
     </body>

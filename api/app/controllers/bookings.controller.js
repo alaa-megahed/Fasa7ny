@@ -497,10 +497,10 @@ exports.regUserEditBookings = function(req,res,next){
 //Registered User deletes bookings
 exports.regUserDeleteBookings = function(req,res,next){
 
-  if(req.user)
-  {
-		if(req.user instanceof RegisteredUser)
-		{
+  // if(req.user)
+  // {
+		// if(req.user instanceof RegisteredUser)
+		// {
 			Booking.findById(req.body.bookingD, function(err,booking)
 			{
 				if(err || !booking)
@@ -510,12 +510,12 @@ exports.regUserDeleteBookings = function(req,res,next){
 				}
 				else
 				{
-					if(booking.booker == req.user.id)
-					{
-						RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
-						{
-							if(err || !user ) return res.send("Error");
-						});
+					// if(booking.booker == req.user.id)
+					// {
+						// RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
+						// {
+						// 	if(err || !user ) return res.send("Error");
+						// });
 						EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.bookingD}}, function(err,eve)
 						{
 							if(err || !eve) return res.send("Error.");
@@ -526,25 +526,25 @@ exports.regUserDeleteBookings = function(req,res,next){
 						});
 
 					}
-					else
-					{
-						res.send("Not one of your bookings.");
-						return;
-					}
-				}
+					// else
+					// {
+					// 	res.send("Not one of your bookings.");
+					// 	return;
+					// }
+		// 		}
 
-			});
-		}
-		else
-		{
-			res.send("Not a registered user.");
-		}
+		 	});
+		// }
+		// else
+		// {
+		// 	res.send("Not a registered user.");
+		// }
 
-  }
-  else
-  {
-    res.send("Please log in to delete bookings");
-  }
+  // }
+  // else
+  // {
+  //   res.send("Please log in to delete bookings");
+  // }
 
 }
 
