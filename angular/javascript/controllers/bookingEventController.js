@@ -2,7 +2,7 @@
 var app = angular.module('fasa7ny');
 app.controller('bookingEventController', function($scope, $http, $location, Offers) 
 {
-        $scope.business_id = "58f0cb2d6bfb6061efd66625";
+        $scope.business_id = "58f0f3faaa02d151aa4c987c";
         $scope.event = {
             "_id" : ("58f39c7850010178595ccfef"),
             "location" : "costa",
