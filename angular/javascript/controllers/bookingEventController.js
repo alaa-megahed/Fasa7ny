@@ -4,67 +4,49 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
 {
         $scope.business_id = "58f0cb2d6bfb6061efd66625";
         $scope.event = {
-        "_id" : "58f15ed24452f7209873d9ce",
-        "location" : "loc",
-        "name" : "Testing unread",
-        "description" : "You see, but you do not observe, the distinction is clear.",
-        "price" : "101",
-        "capacity" : 3,
-        "repeated" : "Once",
-        "business_id" : "58f0f3faaa02d151aa4c987c",
-        "daysOff" : [ ],
-        "image" : [
-          " "
-        ],
-        "__v" : 0
-      };
+          "_id" : ("58f39c7850010178595ccfef"),
+          "location" : "costa",
+          "name" : "RAN",
+          "description" : "ran",
+          "price" : 100,
+          "capacity" : 4,
+          "repeated" : "Once",
+          "business_id" : ("58f0cb2d6bfb6061efd66625"),
+          "daysOff" : [
+            "5"
+          ],
+          "image" : [
+            " "
+          ],
+          "__v" : 0
+        };
+        
         $scope.event_occ =  {
-      "_id" : "58f15ed24452f7209873d9cf",
-      "day" : null,
-      "time" : "",
-      "available" : 3,
-      "event" : "58f15ed24452f7209873d9ce",
-      "bookings" : [ ],
-      "__v" : 0
-    };
+          "_id" : ("58f39c7850010178595ccff0"),
+          "day" : null,
+          "time" : "",
+          "available" : 1,
+          "event" : ("58f39c7850010178595ccfef"),
+          "availble" : 5
+        };
+        
         $scope.user = {
-      "_id" : "58f0f48daa02d151aa4c987f",
-      "name" : "Nourhan Khaled",
-      "user_type" : 1,
-      "google" : {
-        "email" : "nourhan.kh02@gmail.com",
-        "token" : "ya29.GlstBLag8DFxjWiCAcXAheP_6gH5nXKdBrFWfmb3z6VVzz-5vq9TzVm3o7RR63o3N2F28tDe8oQoKfdUbuXD2CL7XJxwV32JFhdjrFeFgjH3hY4aLSc0wKDS6rm7",
-        "id" : "105938228902529994494"
-      },
-      "unread_notifications" : 5,
-      "notifications" : [
-        "Nourhan cancelled NAR     1492186549825",
-        "Nourhan added aywa ba2a        1492187328117",
-        "Nourhan added testing notifications    1492211858292",
-        "Nourhan added new date    1492211996137",
-        "Nourhan added please yala    20170414",
-        "Nourhan added yemken    20170414",
-        "Nourhan added try unread    20170414",
-        "Nourhan added New event        1492213854486",
-        "Nourhan added name    20170417",
-        "Nourhan added ya rab    20170417",
-        "Nourhan added ana shaghal    20170417"
-      ],
-      "subscriptions" : [
-        "58f0f3faaa02d151aa4c987c"
-      ],
-      "bookings" : [
-        "58f0f584aa02d151aa4c9881",
-        "58f50d0f02e15549cdd9bea5",
-        "58f52adeaea3165b27179f0b",
-        "58f62f4bb2ba0c26d6622b98",
-        "58f630dbb2ba0c26d6622b99",
-        "58f6347ec5de562864ae76e6",
-        "58f63812a44c6629f464af99",
-        "58f638d266181d2a97087a2f"
-      ],
-      "__v" : 9
-      };
+      
+  "_id" : ("58ed22fcbfe67363f0c3a41d"),
+  "gender" : "female",
+  "address" : "",
+  "birthdate" : ("1997-03-30T00:00:00Z"),
+  "phone" : "",
+  "email" : "alaamegahed12@gmail.com",
+  "name" : "Alaa",
+  "user_type" : 1,
+  "local" : {
+    "password" : "$2a$08$HeRTDO19GFgNG.BQjbxkyugPf6wLzsS6jlJULH.lIS2bTOk2NlRPq",
+    "username" : "alaa"
+  },
+ 
+};
+
    
             $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
