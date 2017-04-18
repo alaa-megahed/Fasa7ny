@@ -7,7 +7,7 @@ app.controller('cancelUserBookingController',function($scope, $http, $location, 
   $scope.amount = $scope.booking.charge;
   $http.post('http://127.0.0.1:3000/bookings/refund', {charge_id: $scope.stripe_charge, amount: $scope.amount})
       .then(function successCallback(responce){
-          $http.post('http://127.0.0.1:3000/bookings/regUserDeleteBookings/',{bookingD: $scope.booking_id})
+          $http.post('http://127.0.0.1:3000/bookings/regUserDeleteBookings/',{bookingD: $scope.booking._id})
               .then(function successCallback(response){
                               console.log(response.data);
                             }, function errorCallback(response){

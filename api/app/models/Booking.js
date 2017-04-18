@@ -12,8 +12,6 @@ var BookingSchema = new Schema({
     event_id     : {type: mongoose.Schema.Types.ObjectId, ref:'EventOccurrences'},
     charge       : SchemaTypes.Double,		//amount
     stripe_charge: String,					//token for refund
-    original_charge: SchemaTypes.Double,
-    offer_id     : String
 });
 var Booking = mongoose.model('Booking', BookingSchema);
 module.exports = Booking;
