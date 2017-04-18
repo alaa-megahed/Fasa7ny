@@ -77,7 +77,7 @@ requestRemoval: function(req,res) {
         // if (req.user && req.user instanceof Business) {
             // var businessId = req.user.id;
             console.log('public');
-            var businessId = "58e666a20d04c180d969d591";
+            var businessId = "58f20e01b38dec5d920104f3";
             Business.findByIdAndUpdate(businessId, { $set: { public: 1 } },
                 function (err) {
                     if (err) {
@@ -95,7 +95,7 @@ requestRemoval: function(req,res) {
     editInformation: function (req, res) {
 
         // if (req.user && req.user instanceof Business) {
-            var id = "58e666a20d04c180d969d591";
+            var id = "58f20e01b38dec5d920104f3";
             console.log("ana fl backend");
             console.log(req.file);
             Business.findById(id, function (err, business) {
@@ -256,8 +256,9 @@ requestRemoval: function(req,res) {
     },
 
     deleteImage: function(req, res) {
-      if(req.user && req.user instanceof business) {
-        var id = req.user._id;
+      // if(req.user && req.user instanceof business) {
+        // var id = req.user._id;
+        var id = "58f20e01b38dec5d920104f3"
         var image = req.params.image;
 
         Business.findByIdAndUpdate(id, {$pull: {"images" : image}},{safe:true, upsert: true, new:true},
@@ -269,7 +270,7 @@ requestRemoval: function(req,res) {
             console.log(newBusiness);
           }
         });
-      }
+      // }
     }
 }
 

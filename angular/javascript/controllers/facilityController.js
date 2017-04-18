@@ -52,6 +52,32 @@ app.controller('facilityController', function($scope, $http, Facility, $location
 			});
 	};
 
+		$scope.addDaily = function (facilityId,description,capacity) {
+			$scope.message = "Show add Form Button Clicked";
+			console.log($scope.message);
+			$scope.facilityId = facilityId;
+			var modalInstance = $modal.open({
+					templateUrl: 'views/addDailyEvent.html',
+					controller: addDaily,
+					scope: $scope,
+					resolve: {
+							fid: function () {
+									return facilityId;
+							},
+							description: function(){
+								return description;
+							},
+							capacity : function(){
+								return capacity;
+							}
+					}
+			});
+
+			modalInstance.result.then(function (selectedItem) {
+					$scope.selected = selectedItem;
+			});
+	}
+
 });
 
 var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
@@ -93,3 +119,22 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route)
         $modalInstance.dismiss('cancel');
     };
 };
+
+var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacity,$route) {
+    $scope.form = {}
+    $scope.formData = {}
+    $scope.submitForm = function () {
+    	console.log('Add Form');
+        Facility.addDaily(fid,description,capacity,$scope.formData)
+        .then(function(d){
+        	console.log('add daily');
+        });
+        $route.reload();
+        $modalInstance.close('closed');
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+

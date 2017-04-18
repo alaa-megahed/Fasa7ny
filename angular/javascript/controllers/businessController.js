@@ -155,7 +155,7 @@ $scope.id = "58f20e01b38dec5d920104f3";
         };
 
         $scope.addImage = function () {
-            $scope.message = "Show delete Form Button Clicked";
+            $scope.message = "Show image Form Button Clicked";
             console.log($scope.message);
             var modalInstance = $modal.open({
                 templateUrl: 'views/addImage.html',
