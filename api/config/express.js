@@ -37,9 +37,6 @@ module.exports = function () {
 
 
 
-    app.set('views', './app/views');
-    app.set('view engine', 'ejs');
-    console.log(path.join(__dirname, '..'));
     app.use(express.static("public"));
 
     // app.use(express.static("./uploads"));

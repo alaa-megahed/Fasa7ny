@@ -14,7 +14,7 @@ var auth = require('./auth.routes');
 var user = require('./registered_user.routes');
 var admin = require('./web_admin.routes');
 var path = require('path');
-
+var stats = require('./stats.routes'); 
 router.use('/auth', auth);
 router.use('/event', event);
 router.use('/offers', offers);
@@ -28,5 +28,5 @@ router.use('/admin', admin);
 router.use('/contact', function (req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
-
+router.use('/stats', stats); 
 module.exports = router;
