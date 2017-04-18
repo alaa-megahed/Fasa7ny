@@ -65,7 +65,6 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
       ],
       "__v" : 9
       };
-   
             $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
         //   if($scope.business.payment_methods[i] === "cash")
