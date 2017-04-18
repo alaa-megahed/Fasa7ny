@@ -1,4 +1,4 @@
-app.controller('businessController', function($scope, $http, Business, $location, $routeParams) {
+app.controller('businessController', function($scope, $http, Business, $location, $routeParams, $modal) {
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
   $scope.avgRate = 0;
@@ -74,21 +74,54 @@ $scope.id = "58f20e01b38dec5d920104f3";
          };
 
 
-         $scope.public = function(){
-         	console.log('public ctrl');
-         	Business.public()
-         	.then(function(d){
-         		console.log('public done');
-         	})
-        };
+        //  $scope.public = function(){
+        //  	console.log('public ctrl');
+        //  	Business.public()
+        //  	.then(function(d){
+        //  		console.log('public done');
+        //  	})
+        // };
 
-          $scope.remove = function(){
-         	console.log('remove ctrl');
-         	Business.remove()
-         	.then(function(d){
-         		console.log('remove done');
-         	})
-         };
+
+        $scope.public = function () {
+        $scope.message = "Public Button Clicked";
+        console.log($scope.message);
+        var modalInstance = $modal.open({
+            templateUrl: 'views/publicPop.html',
+            controller: Public,
+            scope: $scope
+       
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+            });
+    };
+
+         //  $scope.remove = function(){
+         // 	console.log('remove ctrl');
+         // 	Business.remove()
+         // 	.then(function(d){
+         // 		console.log('remove done');
+         // 	})
+         // };
+
+
+        $scope.remove = function () {
+        $scope.message = "Remove Button Clicked";
+        console.log($scope.message);
+        var modalInstance = $modal.open({
+            templateUrl: 'views/removePop.html',
+            controller: Remove,
+            scope: $scope
+       
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+            });
+    };
+
 
          $scope.getEvent = function(businessId, eventId) {
           console.log("get Event ctrl");
@@ -114,3 +147,40 @@ $scope.id = "58f20e01b38dec5d920104f3";
 
 
     });
+
+var Public = function ($scope, $modalInstance,Business,$route) {
+    $scope.form = {}
+    $scope.submitForm = function () {
+      console.log('Public Form');
+        Business.public()
+        .then(function(d){
+          console.log('pub');
+        });
+        $route.reload();
+        $modalInstance.close('closed');
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+
+
+var Remove = function ($scope, $modalInstance,Business,$route) {
+    $scope.form = {}
+    $scope.submitForm = function () {
+      console.log('Remove Form');
+        Business.remove()
+        .then(function(d){
+          console.log('rem');
+        });
+        $route.reload();
+        $modalInstance.close('closed');
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+
+

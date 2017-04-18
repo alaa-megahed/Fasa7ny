@@ -10,13 +10,38 @@ console.log("event eventController");
 		console.log(d.data);
 	});
 
-	$scope.DeleteEvent = function(id,bid){
-		console.log('delete event ctrl');
-		Event.delete(id)
-		.then(function(d){
-			$location.path('/'+bid);
-		})
-	};
+	// $scope.DeleteEvent = function(id,bid){
+	// 	console.log('delete event ctrl');
+	// 	Event.delete(id)
+	// 	.then(function(d){
+	// 		$location.path('/'+bid);
+	// 	})
+	// };
+
+	$scope.showDelete = function (id,bid) {
+        $scope.message = "Show Delete Button Clicked";
+        console.log($scope.message);
+        console.log("Delete");
+        var modalInstance = $modal.open({
+            templateUrl: 'views/deletePopUp.html',
+            controller: DeletePopUp,
+            scope: $scope,
+            resolve: {
+                    bid: function () {
+                        return bid;
+                    },
+                    id: function(){
+                    	return id;
+                    }
+                }
+       
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+            });
+    };
+
 
     $scope.showForm = function (id) {
         $scope.message = "Show Form Button Clicked";
@@ -40,6 +65,25 @@ console.log("event eventController");
     }
             
 });
+var DeletePopUp = function ($scope, $modalInstance,Event,id,bid,$route) {
+    $scope.form = {}
+    $scope.submitForm = function () {
+    	console.log('Delete Form');
+        Event.delete(id,bid)
+        .then(function(d){
+        	console.log('del');
+        });
+        $route.reload();
+        $modalInstance.close('closed');
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+
+
+
 var ModalInstanceCtrl = function ($scope, $modalInstance,Event,id,$route) {
     $scope.form = {}
     $scope.formData = {}
