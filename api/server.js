@@ -71,7 +71,6 @@ app.listen(config.port);
 // });
 // E.save();
 
-app.listen(config.port);
 
 
 module.exports = app;

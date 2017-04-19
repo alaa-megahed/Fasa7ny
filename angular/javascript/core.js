@@ -7,10 +7,10 @@ var app = angular.module('fasa7ny',['ngRoute', 'ui.bootstrap']);
 app.config(function($routeProvider){
 	$routeProvider
 
-	.when("/", {
-		templateUrl : "views/businessPage.html",
-		controller  : "businessController"
-	})
+	// .when("/", {
+	// 	templateUrl : "views/businessPage.html",
+	// 	controller  : "businessController"
+	// })
 
 	.when("/book-event", {
 		templateUrl : "views/booking_event.html",
@@ -54,14 +54,12 @@ app.config(function($routeProvider){
 		templateUrl : "views/schedule.html",
 		controller  : "scheduleController"
 	})
-
-
-	.when('/webAdminProfile',
-	{
-		templateUrl : 'views/webAdmin.html',
-		controller  : 'webAdminController'
+//webAdminProfile
+	.when("/", {
+		templateUrl : "views/webAdmin.html",
+		controller  : "webAdminController"
 	})
-	
+
 
 });	
 
