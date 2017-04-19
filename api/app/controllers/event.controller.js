@@ -15,7 +15,7 @@ exports.createFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f20e01b38dec5d920104f3";
 		console.log(req.body);
 		console.log(req.file.filename);
 		if(!req.body.name || !req.body.description || !req.body.capacity)
@@ -64,7 +64,7 @@ exports.editFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f20e01b38dec5d920104f3";
 		var facility_id = req.params.facilityId;
 		console.log(req.body);
 		console.log();
@@ -127,7 +127,7 @@ exports.deleteFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f20e01b38dec5d920104f3";
 		var facility_id = req.params.facilityId;
 		console.log("delete facility backend");
 		Business.findById(id,function(err,business)
@@ -184,7 +184,7 @@ exports.createEvent = function (req, res) {
 
 	// if (req.user && req.user instanceof Business) {
 	// 	var id = req.user.id;
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f20e01b38dec5d920104f3";
 		var now = new Date();
 		console.log(req.body);
     	//if event belongs to facility, fields will be passed from facility to event in hidden fields
@@ -442,7 +442,7 @@ exports.getFacilities = function(req,res)
 
 exports.getEvents = function (req, res) {
 	// if (req.user && req.user instanceof Business) {
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f20e01b38dec5d920104f3";
 		Events.find({ business_id: id }, function (err, events) {
 			if (err) res.send(err.message);
 			else if (!events) res.send('Something went wrong');
@@ -468,7 +468,7 @@ exports.getEvents = function (req, res) {
 
 exports.getDailyEvents = function (req, res) {
 	// if (req.user && req.user instanceof Business) {
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f20e01b38dec5d920104f3";
 
 		var facilityId = req.params.facilityId;
 		Events.find({ facility_id: facilityId}, function (err, events) {
@@ -514,16 +514,18 @@ exports.editEvent = function (req, res) {
 
 		var id = req.params.id;
 		// var business_id = req.user.id;
-		var business_id = "58e666a20d04c180d969d591";
+
+		var business_id = "58f20e01b38dec5d920104f3";
 		console.log("ana fl backend edit");
+		console.log(req.body.day);
 		console.log(id);
 
 		Events.findById(id, function (err, event) {
+			console.log("ana fl event");
 			if (err) res.send(err.message);
 			else if (!event) res.send('Something went wrong');
 			else {
 				if (event.business_id == business_id) {
-
 					if (typeof req.body.name != "undefined" && req.body.name.length > 0) {
 						event.name = req.body.name;
 						console.log('Namee'+event.name);
@@ -532,7 +534,8 @@ exports.editEvent = function (req, res) {
 					if (typeof req.body.location != "undefined" && req.body.location.length > 0) {
 						event.location = req.body.location;
 					}
-					if (typeof req.body.price != "undefined" && req.body.price.length > 0) {
+					if (req.body.price) {
+						console.log("Price"+req.body.price);
 						event.price = req.body.price;
 					}
 
@@ -591,7 +594,7 @@ exports.editEvent = function (req, res) {
 					if (typeof req.body.description != "undefined" && req.body.description.length > 0) {
 						event.description = req.body.description;
 					}
-					if (typeof req.body.day != "undefined" && req.body.day.length > 0) {
+					if (req.body.day) {
 						event.daysOff = req.body.day;
 					}
 					if ( req.body.date && req.body.date.length > 0) {
@@ -631,7 +634,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 	// if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
 		var id = req.params.id;
 		// var business_id = req.user.id;
-		var business_id = "58e666a20d04c180d969d591";
+		var business_id = "58f20e01b38dec5d920104f3";
 		console.log("backend cancel event");
 		Events.findById(id, function (err, event) {
 			if (!event) res.send('Something went wrong');
@@ -650,7 +653,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 										{
 											one_occ.remove(function(err)
 										    {
-													console.log("removed");
+													
 										   //    if(!err)
 										   //    {
 											  //     	var bookings = one_occ.bookings;

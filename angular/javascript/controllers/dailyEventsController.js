@@ -6,8 +6,8 @@ console.log($routeParams.facilityId);
 	.then(function(d) {
     $scope.events = d.data.events;
     $scope.eventocc = d.data.eventocc;
-    $scope.name1 = $scope.events[0].name.substring(0, $scope.events[0].name.length/2 + 1);
-    $scope.name2 = $scope.events[0].name.substring($scope.events[0].name.length/2 + 1);
+    $scope.name1 = $scope.events[0].name.substring(0, $scope.events[0].name.length/2);
+    $scope.name2 = $scope.events[0].name.substring($scope.events[0].name.length/2);
 
     for(var i = 0; i < $scope.events.length; i++)
       for(var j = 0; j < $scope.eventocc.length; j++)
@@ -59,6 +59,27 @@ console.log($routeParams.facilityId);
               });
       };
 
+      $scope.editDailyEvent = function (eventId) {
+        $scope.message = "Show Form Button Clicked";
+        console.log($scope.message);
+        console.log("1"+$scope.formData);
+        var modalInstance = $modal.open({
+            templateUrl: 'views/editDailyEvent.html',
+            controller: editDailyEvent,
+            scope: $scope,
+            resolve: {
+                    eventId: function () {
+                        return eventId;
+                    }
+                }
+       
+        });
+
+        modalInstance.result.then(function (selectedItem) {
+            $scope.selected = selectedItem;
+            });
+    }
+
 
 });
 
@@ -69,6 +90,70 @@ var DeletePopUp = function ($scope, $modalInstance,dailyEvents,eventId,$route) {
         dailyEvents.delete(eventId)
         .then(function(d){
         	console.log('del');
+        });
+        $route.reload();
+        $modalInstance.close('closed');
+    };
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+    };
+};
+
+
+var editDailyEvent = function ($scope, $modalInstance,dailyEvents,eventId,$route) {
+    $scope.form = {}
+    $scope.formData = {}
+    $scope.submitForm = function () {
+      console.log('Submit Form'+$scope.formData);
+
+      var daysOff = [];
+      var day = 0;
+      if($scope.formData.day0 == true)
+      {
+        daysOff[day] = 0;
+        day++;
+      }
+
+      if($scope.formData.day1 == true)
+      {
+        daysOff[day] = 1;
+        day++;
+      }
+
+      if($scope.formData.day2 == true)
+      {
+        daysOff[day] = 2;
+        day++;
+      }
+
+      if($scope.formData.day3 == true)
+      {
+        daysOff[day] = 3;
+        day++;
+      }
+
+      if($scope.formData.day4 == true)
+      {
+        daysOff[day] = 4;
+        day++;
+      }
+
+      if($scope.formData.day5 == true)
+      {
+        daysOff[day] = 5;
+        day++;
+      }
+
+      if($scope.formData.day6 == true)
+      {
+        daysOff[day] = 6;
+      }
+
+      $scope.formData.day = daysOff;
+        dailyEvents.edit($scope.formData,eventId)
+        .then(function(d){
+          console.log('yas');
         });
         $route.reload();
         $modalInstance.close('closed');
