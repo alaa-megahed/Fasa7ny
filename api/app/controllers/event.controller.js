@@ -248,11 +248,13 @@ exports.createEvent = function (req, res) {
 							var y = Number(req.body.day[l]);
 
 							if (y == now.getDay()) {
+								// console.log(y);
 								tflag = false;
 							}
 						}
 						if (tflag) {
 							arr[i] = new Date(now);
+							console.log(arr[i] + "------" + arr[i].getDay());
 							i++;
 						}
 					}

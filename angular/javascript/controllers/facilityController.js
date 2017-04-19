@@ -126,13 +126,58 @@ var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacit
     $scope.formData = {}
     $scope.submitForm = function () {
     	console.log('Add Form');
-			// console.log($scope.formData.starttime.getHours()+":"+$scope.formData.starttime.getMinutes()+"-"+$scope.formData.endtime.getHours()+":"+$scope.formData.endtime.getMinutes());
-        Facility.addDaily(fid,description,capacity,$scope.formData)
-        .then(function(d){
-        	console.log('add daily');
-        });
-        $route.reload();
-        $modalInstance.close('closed');
+
+			var daysOff = [];
+			var day = 0;
+    	if($scope.formData.day0 == true)
+    	{
+				daysOff[day] = 0;
+				day++;
+			}
+
+    	if($scope.formData.day1 == true)
+    	{
+				daysOff[day] = 1;
+				day++;
+			}
+
+    	if($scope.formData.day2 == true)
+    	{
+				daysOff[day] = 2;
+				day++;
+			}
+
+    	if($scope.formData.day3 == true)
+    	{
+				daysOff[day] = 3;
+				day++;
+			}
+
+    	if($scope.formData.day4 == true)
+    	{
+				daysOff[day] = 4;
+				day++;
+			}
+
+    	if($scope.formData.day5 == true)
+    	{
+				daysOff[day] = 5;
+				day++;
+			}
+
+    	if($scope.formData.day6 == true)
+    	{
+				daysOff[day] = 6;
+			}
+
+    	$scope.formData.day = daysOff;
+
+      Facility.addDaily(fid,description,capacity,$scope.formData)
+      .then(function(d){
+      	console.log('add daily');
+      });
+      $route.reload();
+      $modalInstance.close('closed');
     };
 
     $scope.cancel = function () {

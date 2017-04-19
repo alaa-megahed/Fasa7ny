@@ -40,7 +40,7 @@ app.factory('Facility', ['$http', function($http) {
           formData.capacity = capacity;
           formData.facility_id = fid;
           formData.timing = formData.starttime.getHours()+":"+formData.starttime.getMinutes()+"-"+formData.endtime.getHours()+":"+formData.endtime.getMinutes();
-          console.log(formData.timing);
+          console.log(formData.day);
           return $http.post('http://127.0.0.1:3000/event/create', formData);
         }
   }

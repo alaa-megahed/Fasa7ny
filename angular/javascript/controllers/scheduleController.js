@@ -15,8 +15,8 @@ app.controller('scheduleController', function($scope, $http, Schedule, $location
 						var startevent = new Date($scope.eventocc[j].day);
 						var endevent = new Date($scope.eventocc[j].day);
 
-						startevent.setDate(startevent.getDate() - 1);
-						endevent.setDate(endevent.getDate() - 1);
+						// startevent.setDate(startevent.getDate() - 1);
+						// endevent.setDate(endevent.getDate() - 1);
 
 						var time = $scope.eventocc[j].time;
 						console.log(startevent);
