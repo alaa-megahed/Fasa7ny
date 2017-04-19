@@ -15,7 +15,8 @@ exports.createFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58f20e01b38dec5d920104f3";
+		// var id = "58f20e01b38dec5d920104f3";
+		var id = "58e666a20d04c180d969d591";
 		console.log(req.body);
 		console.log(req.file.filename);
 		if(!req.body.name || !req.body.description || !req.body.capacity)
@@ -64,7 +65,8 @@ exports.editFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58f20e01b38dec5d920104f3";
+		// var id = "58f20e01b38dec5d920104f3";
+		var id = "58e666a20d04c180d969d591";
 		var facility_id = req.params.facilityId;
 		console.log(req.body);
 		console.log();
@@ -127,7 +129,8 @@ exports.deleteFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58f20e01b38dec5d920104f3";
+		// var id = "58f20e01b38dec5d920104f3";
+		var id = "58e666a20d04c180d969d591";
 		var facility_id = req.params.facilityId;
 		console.log("delete facility backend");
 		Business.findById(id,function(err,business)
@@ -184,7 +187,8 @@ exports.createEvent = function (req, res) {
 
 	// if (req.user && req.user instanceof Business) {
 	// 	var id = req.user.id;
-		var id = "58f20e01b38dec5d920104f3";
+		// var id = "58f20e01b38dec5d920104f3";
+		var id = "58e666a20d04c180d969d591";
 		var now = new Date();
 		console.log(req.body);
     	//if event belongs to facility, fields will be passed from facility to event in hidden fields
@@ -442,7 +446,8 @@ exports.getFacilities = function(req,res)
 
 exports.getEvents = function (req, res) {
 	// if (req.user && req.user instanceof Business) {
-		var id = "58f20e01b38dec5d920104f3";
+		// var id = "58f20e01b38dec5d920104f3";
+		var id = "58e666a20d04c180d969d591";
 		Events.find({ business_id: id }, function (err, events) {
 			if (err) res.send(err.message);
 			else if (!events) res.send('Something went wrong');
@@ -468,7 +473,8 @@ exports.getEvents = function (req, res) {
 
 exports.getDailyEvents = function (req, res) {
 	// if (req.user && req.user instanceof Business) {
-		var id = "58f20e01b38dec5d920104f3";
+		// var id = "58f20e01b38dec5d920104f3";
+		var id = "58e666a20d04c180d969d591";
 
 		var facilityId = req.params.facilityId;
 		Events.find({ facility_id: facilityId}, function (err, events) {
@@ -494,17 +500,16 @@ exports.getDailyEvents = function (req, res) {
 }
 
 exports.getOccurrences = function (req, res) {
-	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
-		EventOccurrences.find({ event: req.body.id }, function (err, events) {
+	// if (req.user && req.user instanceof Business && typeof req.params.eventId != "undefined") {
+		EventOccurrences.find({ event: req.params.eventId }, function (err, events) {
 			if (err) res.send(err.message);
 			if (!events) res.send('Something went wrong');
-			else res.send(events);
+			else res.json({eventocc:events});
 		});
-
-	}
-	else {
-		res.send('You are not a logged in business');
-	}
+	// }
+	// else {
+		// res.send('You are not a logged in business');
+	// }
 }
 
 /* A business can edit an event or an event occurrence based on the changed field. */
@@ -515,7 +520,8 @@ exports.editEvent = function (req, res) {
 		var id = req.params.id;
 		// var business_id = req.user.id;
 
-		var business_id = "58f20e01b38dec5d920104f3";
+		// var business_id = "58f20e01b38dec5d920104f3";
+		var business_id = "58e666a20d04c180d969d591";
 		console.log("ana fl backend edit");
 		console.log(req.body.day);
 		console.log(id);
@@ -634,7 +640,8 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 	// if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
 		var id = req.params.id;
 		// var business_id = req.user.id;
-		var business_id = "58f20e01b38dec5d920104f3";
+		// var business_id = "58f20e01b38dec5d920104f3";
+		var business_id = "58e666a20d04c180d969d591";
 		console.log("backend cancel event");
 		Events.findById(id, function (err, event) {
 			if (!event) res.send('Something went wrong');
@@ -653,7 +660,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 										{
 											one_occ.remove(function(err)
 										    {
-													
+
 										   //    if(!err)
 										   //    {
 											  //     	var bookings = one_occ.bookings;
@@ -711,9 +718,10 @@ exports.removeAllOccurrences = function (event_id) {
 /* Abusiness can cancel an event occurrence.*/
 
 exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
-	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
-		var occurrence_id = req.body.id;
-		var business_id = req.user.id;
+	// if (req.user && req.user instanceof Business && typeof req.params.eventoccId != "undefined") {
+		var occurrence_id = req.params.occId;
+		// var business_id = req.user.id;
+		var business_id = "58e666a20d04c180d969d591";
 		EventOccurrences.findById(occurrence_id, function (err, occ) {
 			if (!occ) res.send('Something went wrong');
 
@@ -724,26 +732,26 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 
 						EventOccurrences.remove({ _id: occurrence_id }, function (err) {
 							if (err) res.send('could not delete occurrence');
-							else
-						    {
-						    	var bookings = occ.bookings;
-								var content = req.user.name + " cancelled " + event.name + "     " + Date.now();
-
-								async.each(bookings, function(one_booking, cb){
-									Bookings.findById({_id:one_booking},function(err,booking)
-									{
-										User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
-										{
-											if(err)
-												console.log("error updating user notifications");
-											else
-												console.log(user);
-										});
-									});
-								});
-								// notify_on_cancel_occ(event.name,occurrence_id,req.user.name);
-								//res.send('occurrence deleted');
-							}
+							// else
+						  //   {
+						  //   	var bookings = occ.bookings;
+							// 	var content = req.user.name + " cancelled " + event.name + "     " + Date.now();
+							//
+							// 	async.each(bookings, function(one_booking, cb){
+							// 		Bookings.findById({_id:one_booking},function(err,booking)
+							// 		{
+							// 			User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
+							// 			{
+							// 				if(err)
+							// 					console.log("error updating user notifications");
+							// 				else
+							// 					console.log(user);
+							// 			});
+							// 		});
+							// 	});
+							// 	// notify_on_cancel_occ(event.name,occurrence_id,req.user.name);
+							// 	//res.send('occurrence deleted');
+							// }
 						});
 
 						res.send('Occurrence cancelled');
@@ -753,10 +761,10 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 					}
 			});
 		});
-	}
-	else {
-		res.send('You are not a logged in business');
-	}
+	// }
+	// else {
+	// 	res.send('You are not a logged in business');
+	// }
 
 }
 

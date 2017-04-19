@@ -72,13 +72,19 @@ console.log($routeParams.facilityId);
                         return eventId;
                     }
                 }
-       
+
         });
 
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
             });
-    }
+    };
+
+		$scope.viewOccurences = function(eventId) {
+			console.log("view occurences daily event controller");
+			$location.path('/viewOccurences/' + eventId);
+
+		}
 
 
 });

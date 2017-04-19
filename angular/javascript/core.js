@@ -1,7 +1,3 @@
-// angular.module('homepage', ['homepageController', 'homepageService']);
-// angular.module('business', ['businessController', 'businessService']);
-
-
 var app = angular.module('fasa7ny',['ngRoute', 'ui.bootstrap']);
 
 app.config(function($routeProvider){
@@ -57,6 +53,11 @@ app.config(function($routeProvider){
 	.when("/viewEvents/:facilityId", {
 			templateUrl : "views/viewEvents.html",
 			controller  : "dailyEventsController"
+	})
+
+	.when("/viewOccurences/:eventId", {
+			templateUrl : "views/viewOccurences.html",
+			controller  : "viewOccurencesController"
 	})
 
 });

@@ -19,7 +19,7 @@
 <br>
 
 <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
-      <h2>{{name1}}<span class="color">{{name2}}</span></h2>
+      <h2>{{time}}<span class="color"></span></h2>
       <div class="border"></div>
 </div>
 <section id="blog-page">
@@ -31,14 +31,11 @@
 
                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
 
-                       <div ng-repeat="event in events">
-                        Time:  {{event.time}} <br>
-                        Price: {{event.price}} EGP <br>
-                        Days Off: {{event.days}} <br>
-                          <button class="btn btn-transparent" ng-click="viewOccurences(event._id)">View Occurences</button>
-                          <button class="btn btn-transparent" ng-click="editDailyEvent(event._id)">Edit Event</button>
-                          <button class="btn btn-transparent" ng-click="deleteEvent(event._id)">Delete Event</button>
-                          <hr width="40%">
+                       <div ng-repeat="occ in eventocc | orderBy : 'day'">
+                         {{occ.day | date}} <br>
+                          <button class="btn btn-transparent" ng-click="viewBookings(occ._id)">View Bookings</button>
+                          <button class="btn btn-transparent" ng-click="deleteEvent(occ._id)">Delete Occurence</button>
+                          <hr width="60%">
                        </div>
                    </article>
                  </div>

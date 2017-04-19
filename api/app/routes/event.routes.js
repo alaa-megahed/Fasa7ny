@@ -20,9 +20,9 @@ router.get('/getEvents/:facilityId', RegularEventController.getDailyEvents);
 router.post('/create', RegularEventController.createEvent);
 router.post('/edit/:id', RegularEventController.editEvent);
 router.get('/cancel/:id', RegularEventController.cancelEvent);
-router.post('/cancelO', RegularEventController.cancelOccurrence);
+router.get('/cancelO/:occId', RegularEventController.cancelOccurrence);
 router.get('/view', RegularEventController.getEvents);
-router.post('/viewO', RegularEventController.getOccurrences);
+router.get('/viewO/:eventId', RegularEventController.getOccurrences);
 router.get('/getOnceEventDetails/:businessId/:eventId', RegularEventController.getOnceEventDetails);
 
 module.exports = router;

@@ -6,7 +6,8 @@ var Facility = require('mongoose').model('Facility');
 
 var BusinessController = {
        getBusiness: function (req, res) {
-        var name = "Habiiba";
+        // var name = "Habiiba";
+        var name = "business1";
         // var id = req.params.id;
         Business.findOne({ name: name }).
             exec(function (err, result) {
@@ -57,7 +58,8 @@ requestRemoval: function(req,res) {
         // if(req.user && req.user instanceof Business){
         // var id = req.user.id;
         console.log('removal');
-        var id = "58f20e01b38dec5d920104f3";
+        // var id = "58f20e01b38dec5d920104f3";
+        var id = "58e666a20d04c180d969d591";
         Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
             if(err) res.send("error in request removal");
             else res.send("Requested!");
@@ -77,7 +79,8 @@ requestRemoval: function(req,res) {
         // if (req.user && req.user instanceof Business) {
             // var businessId = req.user.id;
             console.log('public');
-            var businessId = "58f20e01b38dec5d920104f3";
+            // var businessId = "58f20e01b38dec5d920104f3";
+            var businessId = "58e666a20d04c180d969d591";
             Business.findByIdAndUpdate(businessId, { $set: { public: 1 } },
                 function (err) {
                     if (err) {
@@ -95,7 +98,8 @@ requestRemoval: function(req,res) {
     editInformation: function (req, res) {
 
         // if (req.user && req.user instanceof Business) {
-            var id = "58f20e01b38dec5d920104f3";
+            // var id = "58f20e01b38dec5d920104f3";
+            var id = "58e666a20d04c180d969d591";
             console.log("ana fl backend");
             console.log(req.file);
             Business.findById(id, function (err, business) {
@@ -162,7 +166,8 @@ requestRemoval: function(req,res) {
         // if (req.user && req.user instanceof Business) {
             if (typeof req.params.phone != "undefined") {
                 // var id = req.user.id;
-                var id = "58f20e01b38dec5d920104f3";
+                // var id = "58f20e01b38dec5d920104f3";
+                var id = "58e666a20d04c180d969d591";
                 console.log("ana fl backend delete phone");
                 var phone = req.params.phone;
                 Business.findOne({ _id: id }, function (err, business) {
@@ -214,7 +219,8 @@ requestRemoval: function(req,res) {
         // if (req.user && req.user instanceof Business) {
             if (typeof req.params.method != "undefined") {
                 // var id = req.user.id;
-                var id = "58f20e01b38dec5d920104f3";
+                // var id = "58f20e01b38dec5d920104f3";
+                var id = "58e666a20d04c180d969d591";
                 var payment = req.params.method;
                 console.log("ana fl backend delete method");
                 Business.findOne({ _id: id }, function (err, business) {
@@ -262,7 +268,8 @@ requestRemoval: function(req,res) {
     deleteImage: function(req, res) {
       // if(req.user && req.user instanceof business) {
         // var id = req.user._id;
-        var id = "58f20e01b38dec5d920104f3";
+        // var id = "58f20e01b38dec5d920104f3";
+        var id = "58e666a20d04c180d969d591";
         console.log("ana fl backend delete image");
         var image = req.params.image;
 
