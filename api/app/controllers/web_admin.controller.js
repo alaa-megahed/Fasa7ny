@@ -202,12 +202,13 @@ exports.webAdminViewRequestedDelete = function (req, res) {
 if(req.user && req.user instanceof WebAdmin)
   {
     Business.find({ delete: 1 }, function (err, requests) {
-        res.render('requestedDelete', { user: req.user, requests: requests });
-
+     //   res.render('requestedDelete', { user: req.user, requests: requests });
+        res.json(requests);
     });
   }
   else {
     return res.send("Unauthorized access. Please log in.");
+      
   }
     
 }
