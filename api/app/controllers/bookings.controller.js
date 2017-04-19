@@ -302,93 +302,64 @@ exports.view_event_bookings = function(req,res)
 //Registered User adds bookings by giving count, event id. Booking date is saved as current date.
 exports.regUserAddBooking = function(req, res, next) {
 
-  if(req.user)
-  {
-		if(req.user instanceof RegisteredUser)
-		{
+  if(req.body.count <= 0)
+    return res.send("Can't have negative or no count.");
 
-      if(req.body.count <= 0)
-        return res.send("Can't have negative or no count.");
+  var date = new Date();
+  var booking = new Booking(
+    {
+      count        : req.body.count,
+      booker       : "58f626120e95ef2ac66449d8",
+      event_id     : req.body.event,
+      booking_date : date
+    });
 
-			var date = new Date();
-	    var booking = new Booking(
-	      {
-	        count        : req.body.count,
-	        booker       : req.user.id,
-	        event_id     : req.body.event,
-	        booking_date : date
-	      });
+  booking.save(function(err,booking)
+   {
+      if (!err)
+      {
+        //decreases capacity of event occurence and stores booking in event occurence's list of bookings
+         EventOccurrences.findOne({_id:req.body.event},  function(err,eve)
+         {
+            if(err || !eve )
+            {
+              res.send("Error adding booking. Please try again!");
+              return;
+            }
+            else
+            {
+              eve.available = eve.available - req.body.count;
+              if(eve.available < 0)
+              {
+                booking.remove();
+                res.send("Not enough spaces - please decrease count of booking.");
+                return;
+              }
+              else
+              {
+                  eve.bookings.push(booking);
+                  eve.save();
+              }
 
-	    booking.save(function(err,booking)
-			 {
-	        if (!err)
-					{
-						//decreases capacity of event occurence and stores booking in event occurence's list of bookings
-						 EventOccurrences.findOne({_id:req.body.event},  function(err,eve)
-						 {
-								if(err || !eve )
-								{
-									res.send("Error adding booking. Please try again!");
-									return;
-								}
-								else
-								{
-									eve.available = eve.available - req.body.count;
-									if(eve.available < 0)
-									{
-                    booking.remove();
-										res.send("Not enough spaces - please decrease count of booking.");
-										return;
-									}
-									else
-									{
-											eve.bookings.push(booking);
-											eve.save();
-									}
+              //finds registered user and adds this event to his/her list of bookings
+                          //      RegisteredUser.findOne({_id:req.user.id}, function(err, user)
 
-									//finds registered user and adds this event to his/her list of bookings
-									RegisteredUser.findOne({_id:req.user.id}, function(err, user)
-								 {
-									 if(err || !user)
-									 {
-                     booking.remove();
-										 res.send("Error saving booking. Please try again.");
-										 return;
-									 }
-									 else
-									 {
-										 user.bookings.push(booking);
-										 user.save();
-										 res.send("successful booking");
-										 return;
-									 }
-
-								 });
-								}
-						 });
-	        }
-	        else
-					{
-						res.send("Error. Please try again.");
-						return;
-	        }
-	    });
-	  }
-		else
-		{
-			res.send("You are not a registered user");
-			return;
-		}
-
-
-	}
-	else
-	{
-		res.send("Please log in to book events");
-		return;
-  }
-
-
+              RegisteredUser.findOne({_id:"58f626120e95ef2ac66449d8"}, function(err, user)
+             {
+                 user.bookings.push(booking);
+                 user.save();
+                 res.send("successful booking");
+             });
+            }
+         });
+      }
+      else
+      {
+        res.send("Error. Please try again.");
+        return;
+      }
+  });
+    
 };
 
 
@@ -398,32 +369,32 @@ exports.regUserViewBookings = function(req,res,next){
 
   if(req.user)
   {
-		if(req.user instanceof RegisteredUser)
-		{
-			RegisteredUser.findOne({_id:req.user.id}).populate('bookings').exec(function(err, bookings)
-			{
-				if(err || !bookings)
-				{
-					res.send("Error finding bookings or possibly no bookings");
-					return;
-				}
-				else
-				{
-					res.send(bookings.bookings);
-					return;
-				}
-	    });
-		}
-		else
-		{
-			res.send("You are not a registered user.");
-			return;
-		}
+    if(req.user instanceof RegisteredUser)
+    {
+      RegisteredUser.findOne({_id:req.user.id}).populate('bookings').exec(function(err, bookings)
+      {
+        if(err || !bookings)
+        {
+          res.send("Error finding bookings or possibly no bookings");
+          return;
+        }
+        else
+        {
+          res.send(bookings.bookings);
+          return;
+        }
+      });
+    }
+    else
+    {
+      res.send("You are not a registered user.");
+      return;
+    }
   }
  else
   {
     res.send("Please log in to view upcoming bookings.");
-		return;
+    return;
   }
 
 };
@@ -436,44 +407,44 @@ exports.regUserEditBookings = function(req,res,next){
 
   if(req.user)
   {
-		if(req.user instanceof RegisteredUser)
-		{
-			Booking.findById(req.body.bookingE, function(err,booking)
-			{
-				if(err || !booking)
-					res.send("Error editing booking");
-				else
-				{
-					if(booking.booker == req.user.id)
-					{
-						//updates available places
-						EventOccurrences.findOne(booking.event_id, function(err, eve)
-						{
+    if(req.user instanceof RegisteredUser)
+    {
+      Booking.findById(req.body.bookingE, function(err,booking)
+      {
+        if(err || !booking)
+          res.send("Error editing booking");
+        else
+        {
+          if(booking.booker == req.user.id)
+          {
+            //updates available places
+            EventOccurrences.findOne(booking.event_id, function(err, eve)
+            {
               if(err || !eve)
                 return res.send("Error!");
-							eve.available = eve.available + booking.count - req.body.count;
-							if(eve.available < 0 || req.body.count == 0)
-								res.send("Invalid amount. Please try again.");
-							else
-							{
-								eve.save();
-								booking.count = req.body.count;
-								booking.save();
-								res.send("successful edit");
-							}
-						});
-					}
-					else
-					{
-						res.send("Not one of your bookings.");
-					}
-				}
-	    });
-		}
-		else
-		{
-			res.send("You are not a registered user.");
-		}
+              eve.available = eve.available + booking.count - req.body.count;
+              if(eve.available < 0 || req.body.count == 0)
+                res.send("Invalid amount. Please try again.");
+              else
+              {
+                eve.save();
+                booking.count = req.body.count;
+                booking.save();
+                res.send("successful edit");
+              }
+            });
+          }
+          else
+          {
+            res.send("Not one of your bookings.");
+          }
+        }
+      });
+    }
+    else
+    {
+      res.send("You are not a registered user.");
+    }
   }
   else
   {
@@ -490,46 +461,46 @@ exports.regUserDeleteBookings = function(req,res,next){
 
   if(req.user)
   {
-		if(req.user instanceof RegisteredUser)
-		{
-			Booking.findById(req.body.bookingD, function(err,booking)
-			{
-				if(err || !booking)
-				{
-					res.send("Error deleting booking. Please recheck information and try again.");
-					return;
-				}
-				else
-				{
-					if(booking.booker == req.user.id)
-					{
-						RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
-						{
-							if(err || !user ) return res.send("Error");
-						});
-						EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.bookingD}}, function(err,eve)
-						{
-							if(err || !eve) return res.send("Error.");
-							eve.available = eve.available + booking.count;
-							eve.save();
+    if(req.user instanceof RegisteredUser)
+    {
+      Booking.findById(req.body.bookingD, function(err,booking)
+      {
+        if(err || !booking)
+        {
+          res.send("Error deleting booking. Please recheck information and try again.");
+          return;
+        }
+        else
+        {
+          if(booking.booker == req.user.id)
+          {
+            RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
+            {
+              if(err || !user ) return res.send("Error");
+            });
+            EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.bookingD}}, function(err,eve)
+            {
+              if(err || !eve) return res.send("Error.");
+              eve.available = eve.available + booking.count;
+              eve.save();
               booking.remove();
-							res.send(booking);
-						});
+              res.send(booking);
+            });
 
-					}
-					else
-					{
-						res.send("Not one of your bookings.");
-						return;
-					}
-				}
+          }
+          else
+          {
+            res.send("Not one of your bookings.");
+            return;
+          }
+        }
 
-			});
-		}
-		else
-		{
-			res.send("Not a registered user.");
-		}
+      });
+    }
+    else
+    {
+      res.send("Not a registered user.");
+    }
 
   }
   else

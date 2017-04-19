@@ -26,11 +26,11 @@ router.use('/event',event);
 router.use('/user', user);
 router.use('/admin', admin);
 router.use('/contact', function(req, res) {
-    res.send('Contact us with a business proposal at fasa7ny@gmail.com');
+res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
 
 router.get('/', function (req, res) {
-    res.sendfile('public/views/index.html');
+    res.render('login.ejs')
     // res.render('index0.ejs');
 });
 

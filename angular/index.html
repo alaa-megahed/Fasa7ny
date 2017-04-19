@@ -2,8 +2,6 @@
 
 <html class="no-js" ng-app = "fasa7ny">
     <head>
-
-
       <script src="js/jquery-1.11.0.min.js"></script>
   		<!-- Bootstrap 3.1 -->
   		<script src="js/bootstrap.min.js"></script>
@@ -43,10 +41,10 @@
   		<!-- Custom js -->
   		<script src="js/custom.js"></script>
 
+
   		<script src="js/jquery.scrollUp.min.js"></script>
   		<script src="js/classie.js"></script>
 
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <!-- <base href="/"> -->
@@ -58,6 +56,8 @@
 
       <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
       <link src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"></link>
+
+      <!-- OUR JAVASCRIPTS !-->
 
       <script src="javascript/core.js"></script>
 
@@ -72,45 +72,50 @@
       <script src="javascript/controllers/onetimeController.js"></script>
       <script src="javascript/services/onetimeeventService.js"></script>
 
+      <script src="javascript/controllers/userController.js"></script>
+      <script src="javascript/services/userService.js"></script>
+
       <!-- <script src="javascript/services/eventService.js"></script> -->
 
       <script src="javascript/services/facilityService.js"></script>
       <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
-        <script>
-			function myFunction(id) {
-   				var x = document.getElementById(id);
-    			if (x.className.indexOf("w3-show") == -1) {
-        			x.className += " w3-show";
-        			x.previousElementSibling.className =
-        			x.previousElementSibling.className.replace("w3-dark-grey", "w3-green");
-    			} else {
-       				x.className = x.className.replace(" w3-show", "");
-       				x.previousElementSibling.className =
-        			x.previousElementSibling.className.replace("w3-green", "w3-dark-grey");
-    			}
-			}
-		</script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
-	   <script>
 
-			function openRightMenu() {
-			    document.getElementById("rightMenu").style.display = "block";
-			}
-			function closeRightMenu() {
-			    document.getElementById("rightMenu").style.display = "none";
-			}
-		</script>
+      <script>
+  			function myFunction(id) {
+     				var x = document.getElementById(id);
+      			if (x.className.indexOf("w3-show") == -1) {
+          			x.className += " w3-show";
+          			x.previousElementSibling.className =
+          			x.previousElementSibling.className.replace("w3-dark-grey", "w3-green");
+      			} else {
+         				x.className = x.className.replace(" w3-show", "");
+         				x.previousElementSibling.className =
+          			x.previousElementSibling.className.replace("w3-green", "w3-dark-grey");
+      			}
+  			}
+		  </script>
 
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="description" content="Meghna One page parallax responsive HTML Template">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	    <script>
+  			function openRightMenu() {
+  			    document.getElementById("rightMenu").style.display = "block";
+  			}
+  			function closeRightMenu() {
+  			    document.getElementById("rightMenu").style.display = "none";
+  			}
+		  </script>
 
-        <title>Fasa7ny</title>
+		  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="description" content="Meghna One page parallax responsive HTML Template">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+      <title>Fasa7ny</title>
 
 		<!-- Mobile Specific Meta
 		================================================== -->
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- Favicon -->
 		<link rel="shortcut icon" type="image/x-icon" href="img/favicon.png"/>
@@ -133,104 +138,96 @@
         <link rel="stylesheet" href="css/main.css">
 		<!-- Media Queries -->
         <link rel="stylesheet" href="css/media-queries.css">
+    <!-- Click to Edit/ User_Profile -->  
+        <link rel="stylesheet" href="css/click_to_edit.css">
+    <!-- Image Cropper/ User_Profile -->
+        <link rel="stylesheet" href="css/imagecropper.css">
+    <!-- Single Post/ User_Profile -->   
+        <link rel="stylesheet" href="css/single_post.css">
 
         <link rel="stylesheet" href="css/responsive.css">
 
-<link rel='stylesheet' id='custom-button-mfast-3-css'  href='cdd/blog/style.css' type='text/css' media='all' />
-<link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.css" />
-<link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
-<link rel='stylesheet' id='custom-css'  href='css/custom.css' type='text/css' media='all' />
-		<!--
-		Google Font
+        <link rel='stylesheet' id='custom-button-mfast-3-css'  href='css/blog/style.css' type='text/css' media='all' />
+        <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.css" />
+        <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
+        <link rel='stylesheet' id='custom-css'  href='css/custom.css' type='text/css' media='all' />
+
+		<!--Google Font
 		=========================== -->
 
-		<!-- Oswald / Title Font -->
-		<link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
-		<!-- Ubuntu / Body Font -->
-		<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300' rel='stylesheet' type='text/css'>
-
-		<!-- Modernizer Script for old Browsers -->
+    <!-- Oswald / Title Font -->
+    		<link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
+    <!-- Ubuntu / Body Font -->
+    		<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300' rel='stylesheet' type='text/css'>
+    <!-- Modernizer Script for old Browsers -->
         <script src="js/modernizr-2.6.2.min.js"></script>
-
-
-
-
     </head>
 
     <body id="body">
-
 
       <header id="navigation" class="navbar navbar-inverse" role = "navigation">
           <div class="container">
               <div class="navbar-header">
                   <!-- responsive nav button -->
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                      <span class="sr-only">Toggle navigation</span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                      <span class="icon-bar"></span>
-                  </button>
-        <!-- /responsive nav button -->
+                  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                <span class="sr-only">Toggle navigation</span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                                <span class="icon-bar"></span>
+                   </button>
+                  <!-- /responsive nav button -->
 
-        <!-- logo -->
+                  <!-- logo -->
                   <a class="navbar-brand" href="#body">
-          <h1 id="logo">
-            <img src="img/logo-meghna.png" alt="Meghna" />
-          </h1>
-        </a>
-        <!-- /logo -->
+                    <h1 id="logo">
+                      <img src="img/logo-meghna.png" alt="Meghna" />
+                    </h1>
+                  </a>
+                  <!-- /logo -->
               </div>
 
-      <!-- main nav -->
-
+              <!-- main nav -->
               <nav class="collapse navbar-collapse navbar-right" role="Navigation">
                   <ul id="nav" class="nav navbar-nav">
-                      <li><a href="#body">Home</a></li>
-                      <li><a href="#showcase">About Us</a></li>
-                      <li ng-if = "!user.data.user_type"><a href="/auth/signup">Sign Up</a></li>
-                      <li ng-if = "!user.data.user_type"><a href="/auth/login">Sign In</a></li>
-                      <li ng-if = "user.data.user_type == 1"><a href="/auth/login"> My Profile </a></li>
-                      <li ng-if = "user.data.user_type == 2"><a href="/auth/login"> My Business Page </a></li>
-                      <li ng-if = "user.data.user_type == 3"><a href="/auth/login"> Admin Requests </a></li>
-                      <li><a href="#contact-us">Contact Us</a></li>
-                      <li ng-if = "user.data.user_type"><a href="/auth/logout">Log Out</a></li>
-
+                      <li class="current"><a href="#body">Home</a></li>
+                      <li><a href="#about">About Us</a></li>
+                      <li><a href="#services">Services</a></li>
+                      <li><a href="#showcase">Portfolio</a></li>
+                      <li><a href="#our-team">Team</a></li>
+                      <li><a href="#pricing">Pricing</a></li>
+                      <li><a href="#blog">Blog</a></li>
+                      <li><a href="#contact-us">Contact</a></li>
+                      <li><a href="#login">Login</a></li>
                   </ul>
               </nav>
-      <!-- /main nav -->
-
+              <!-- /main nav -->
           </div>
       </header>
-      <!--
-      End Fixed Navigation
+      <!-- End Fixed Navigation
       ==================================== -->
-
-
 
       <div ng-view></div>
 
+  		<footer id="footer" class="bg-one">
+  			<div class="container">
+  			    <div class="row wow fadeInUp" data-wow-duration="500ms">
+  					<div class="col-lg-12">
 
+  						<!-- copyright -->
+  						<div class="copyright text-center">
+  							<a href="index.html">
+  								<img src="img/logo-meghna.png" alt="Meghna" />
+  							</a>
+  							<br />
 
-		<footer id="footer" class="bg-one">
-			<div class="container">
-			    <div class="row wow fadeInUp" data-wow-duration="500ms">
-					<div class="col-lg-12">
+  							<p>Copyright &copy; 2017. Drop The Bit.</p>
+  						</div>
+  						<!-- /copyright -->
 
-						<!-- copyright -->
-						<div class="copyright text-center">
-							<a href="index.html">
-								<img src="img/logo-meghna.png" alt="Meghna" />
-							</a>
-							<br />
-
-							<p>Copyright &copy; 2017. Drop The Bit.</p>
-						</div>
-						<!-- /copyright -->
-
-					</div> <!-- end col lg 12 -->
-				</div> <!-- end row -->
-			</div> <!-- end container -->
-		</footer> <!-- end footer -->
+  					</div> <!-- end col lg 12 -->
+  				</div> <!-- end row -->
+  			</div> <!-- end container -->
+  		</footer> <!-- end footer -->
 
 		<!-- Back to Top
 		============================== -->

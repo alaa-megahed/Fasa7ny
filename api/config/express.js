@@ -36,7 +36,7 @@ module.exports = function() {
 
 
 
-    app.set('views', './public/views');
+    app.set('views', './public');
     app.set('view engine', 'ejs');
 
 
@@ -56,7 +56,7 @@ module.exports = function() {
 
     require('./passport')(passport);                                     // pass passport for passport configuration
 
-    app.use( express.static("public") );
+    app.use( express.static("../angular") );
     app.use( express.static("./uploads") );
 
 

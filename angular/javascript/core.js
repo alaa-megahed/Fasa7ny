@@ -12,8 +12,8 @@ app.config(function($routeProvider){
 	// })
 
 	.when("/", {
-		templateUrl : "views/businessPage.html",
-		controller  : "businessController"
+		templateUrl : "views/user_profile.html",
+		controller  : "userController"
 	})
 
 	// .when("/", {

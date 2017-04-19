@@ -1,13 +1,98 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('RegisteredUser');
+var Booking = mongoose.model('Booking');
+var Event = mongoose.model('Events');
+var EventOccurrence = mongoose.model('EventOccurrences');
 var Business = mongoose.model('Business');
 var Rating = mongoose.model('Rating');
+
+
+
+
+exports.getUserDetails =  function (req, res) {
+        var user_id = req.params.id;
+
+	    User.findById(user_id, function(err, user) {
+	        if(err) 
+	        	console.log("error in finding user");
+	        else {
+	        	console.log(user);
+	        	res.json({user:user});
+	        }
+	    });
+}
+
+
+exports.getBookingDetails =  function (req, res) {
+        var user_id = "58f7bf25a609f6396ec3d286";
+        var booking_id = req.params.booking;
+        console.log("This is the booking id in user controller :"+ booking_id);
+
+	    Booking.findById(booking_id, function(err, booking) {
+	        if(err) 
+	        	console.log("error in finding booking");
+	        else {
+	        	console.log("This is booking in node "+ booking);
+	        	if(booking) {
+	        		EventOccurrence.findById(booking.event_id, function(err, eventocc) {
+	        			if(err)
+	        				console.log("error in finding event occurrence");
+	        			else {
+	        				if(eventocc) {
+	        					Event.findById(eventocc.event, function(err, event) {
+	        						if(err)
+	        							console.log("error in finding event");
+	        						else {
+			    						if(event) {
+				        					Business.findById(event.business_id, function(err, business) {
+				        						if(err)
+				        							console.log("error in finding business");
+				        						else {
+				        							// console.log(booking); 
+				        							// console.log(eventocc); 
+				        							res.json({booking: booking, eventocc: eventocc, event: event, business: business});
+				        						}
+				        					});	 	        							
+	        							}
+	    
+	        						}
+       						
+	        					});
+
+	        				}
+	        			}
+	        		});
+	        	}
+	        }
+	    });
+}
+
+
+
+exports.getSubscribedBusiness =  function (req, res) {
+        var user_id = "58f7bf25a609f6396ec3d286";
+        var business_id = req.params.business_id;
+
+		Business.findById(business_id, function(err, business) {
+			if(err)
+				console.log("error in finding business subscription");
+			else {
+				console.log("This is business in node subscriptions "+ business);
+				res.json({business: business});
+			}
+		});	 	        							
+	
+}
+
+
+
+
 
 
 exports.subscribe = function(req,res)
 {
 	// if(req.user && req.user instanceof User) {
-		var userID = "58f09946fcefb434ea0d4e22";
+		var userID = "58f7bf25a609f6396ec3d286";
 		var businessID = req.params.id;
 		var subscribed_business;
 		console.log("business sub");
@@ -58,7 +143,7 @@ exports.unsubscribe = function(req,res)
 {
 	// if(req.user && req.user instanceof User) {
 		// var userID = req.user.id;
-		var userID = "58f09946fcefb434ea0d4e22";
+		var userID = "58f7bf25a609f6396ec3d286";
 	    var businessID = req.params.id;
 	    var subscribed_business;
 			console.log("business unsub");
@@ -118,7 +203,7 @@ exports.addRating = function(req, res)
 {
 
 	//  if(req.user && req.user instanceof User) {
-		 var userID = "58f0c9341767d632566c9fb5";
+		 var userID = "58f7bf25a609f6396ec3d286";
 		// var userID = req.user.id;              // from passport session; changed to body temporarily for testing
 	    var businessID = req.params.bid;        // from url parameters; changed from param to body
 
@@ -219,31 +304,33 @@ exports.customize = function(req,res)
 /* A user can edit his personal information. He can edit name, birthdate,
 phone, gender, address, email or profilePic.*/
 exports.editInformation = function(req, res) {
-	if(req.user && req.user instanceof User) {
-		var id = req.user.id;
+	// if(req.user && req.user instanceof User) {
+		console.log("yasso");
+		var id = req.params.userID;
 		var body = req.body;
-		var file = req.file;
+		console.log("!!!!!!!!!");
+		console.log(body.name);
+		// var file = req.file;
 
-		User.findOne({_id:id}, function(err, user) {
+		User.findById(id, function(err, user) {
 			if(err)  res.send("error");
 			else {
 				if(!user) res.send("user not found");
 				else {
-					if(typeof body.name != "undefined" && body.name.length > 0) user.name = body.name;
-					if(typeof body.birthdate != "undefined" && body.birthdate.length > 0) user.birthdate = new Date(body.birthdate);
+					console.log("ANA GOWA");
+					if(body.name) {
+						console.log("Ana fl name");
+						user.name = body.name;}
+					if(body.birthdate) user.birthdate = new Date(body.birthdate);
 					if(typeof body.phone != "undefined" && body.phone.length > 0) user.phone = body.phone;
 					if(typeof body.gender != "undefined" && body.gender.length > 0) user.gender = body.gender;
 					if(typeof body.address != "undefined" && body.address.length > 0) user.address = body.address;
 					if(typeof body.email != "undefined" && body.email.length > 0) user.email = body.email;
 					if(typeof file != "undefined") user.profilePic = file.filename;
-
-					user.save(function(err, updateduser) {
-						if(err) res.send("error in saving the user");
-						else if(!updateduser) res.send("user does not exist");
-						else res.send(updateduser);
-					});
+					console.log(user);
+					user.save(function(err) if(err) res.status(500).json(err.message));
 				}
 			}
 		});
-	} else res.send("you are not authorized to view this page");
+	// } else res.send("you are not authorized to view this page");
 }
