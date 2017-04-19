@@ -15,9 +15,15 @@
                 <input style="color:#000;" class="w3-input w3-border w3-round"  type="number" ng-model = "formData.capacity" required></input> <br>
                 <h3>Date</h3> <br>
                 <input style="color:#000;" class="w3-input w3-border w3-round" type="date" ng-model = "formData.date" required></input> <br>
-                <h3>Time</h3> <br>
-                <input style="color:#000;" class="w3-input w3-border w3-round" type="text" ng-model = "formData.timing" required></input> <br>
-                <h6>Format: start-time - end-time</h6>
+
+                <label style="color:#000;">StartTime</label>
+                <input type="time" class="form-control" ng-model="formData.starttime" required><br>
+                <label style="color:#000;">EndTime</label>
+                <input type="time" class="form-control" ng-model="formData.endtime" required><br>
+
+                <!-- <h3>Time</h3> <br> -->
+                <!-- <input style="color:#000;" class="w3-input w3-border w3-round" type="text" ng-model = "formData.timing" required></input> <br> -->
+                <!-- <h6>Format: start-time - end-time</h6> -->
                 <input type="submit" ng-click = "goToCreateEvent()" class="btn btn-transparent" value="Create">
             </form>
             </div>

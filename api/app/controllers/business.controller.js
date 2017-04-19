@@ -143,6 +143,10 @@ requestRemoval: function(req,res) {
                       business.images.push(req.file.filename);
                     }
 
+                    if(typeof req.body.password != "undefined" && req.body.password > 0) {
+                      business.password = business.generateHash(req.body.password);
+                    }
+                    
                     business.save();
                     res.json({business:business});
                     // res.sendFile('/business/b');
