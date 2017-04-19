@@ -8,6 +8,6 @@ router.get('/upvoteReview', ReviewController.upvoteReview); //change to get
 router.get('/downvoteReview', ReviewController.downvoteReview); //change to get
 router.get('/viewReviews', ReviewController.viewReviews);
 router.post('/replyReview', ReviewController.replyReview);
-router.get('/deleteReview', ReviewController.deleteInappropriateReview);
+router.post('/deleteReview', ReviewController.deleteReview);
 
 module.exports = router;

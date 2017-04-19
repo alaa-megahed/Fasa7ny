@@ -11,7 +11,9 @@ var StatsController = {
     in the WeekStats, MonthStats and YearStats
   */
   addStat: function (date, businessID, statType, amount) {
-    var now = date.setHours(0, 0, 0, 0);
+    var now = date;
+    now.setHours(0, 0, 0, 0);
+
     //update week stats
     //check if there is an entry for this business for this week
     WeekStat.findOne({
@@ -40,6 +42,7 @@ var StatsController = {
         newWeekStat.save(function (err) { if (err) { throw err; } });
       }
     });
+    console.log(now);
 
     MonthStat.findOne({
       business: businessID,

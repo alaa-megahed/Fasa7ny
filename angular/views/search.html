@@ -2,8 +2,8 @@
 
 </script>
 
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" onclick="closeNav()">&times; </a>
+<div id="rightMenu" class="w3-sidebar w3-black w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;background-color:#2B2C30;">
+    <button onclick="closeRightMenu()" class=" w3-button w3-large" style="background-color:#2B2C30;">&times;</button>
     <div id="search-form">
         <form>
             <input type="text" class="form-control" placeholder="Search..." autocomplete="on" name="seach" ng-model="keyword">
@@ -57,8 +57,8 @@
 
 
 <div id="main">
-    <span onclick="openNav()"> <i style="size: 50px" class="fa fa-bars"></i> </span>
-    <div ng-repeat="business in businesses | category: cat | filter: keyword | orderBy: sortBy : direction " ng-if="business.average_rating >= $parent.minRating">
+    <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()">&#9776;</button>
+    <div ng-repeat="business in businesses track by $index | category: cat | filter: keyword | orderBy: sortBy : direction " ng-if="business.average_rating >= $parent.minRating">
         <img ng-src="/uploads/image" alt="">
 
         <h3>{{business.name}} </h3>
@@ -90,7 +90,6 @@
         color: #111;
         outline: none;
     }
-    
     
     .sidenav {
         height: 100%;

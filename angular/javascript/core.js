@@ -2,10 +2,13 @@ var app = angular.module('fasa7ny', ['ngRoute', 'ui.bootstrap', 'chart.js', 'sn.
 
 app.config(function ($routeProvider) {
     $routeProvider
-
-        .when("/", {
-            templateUrl: "views/businessPage.html",
-            controller: "businessController"
+        .when('/statistics', {
+            templateUrl: 'views/statistics.html',
+            controller: 'StatsController'
+        })
+        .when('/view-all', {
+            templateUrl: 'views/search.html',
+            controller: 'SearchController'
         })
 
         .when("/:id", {
@@ -35,11 +38,6 @@ app.config(function ($routeProvider) {
             templateUrl: "views/createEvent.html",
             controller: "onetimeController"
         })
-
-        .when('/view-all', {
-            templateUrl: 'views/search.html',
-            controller: 'SearchController'
-        })
         .when('/business/:name', {
             templateUrl: 'views/test.html',
             controller: 'BusinessController'
@@ -48,10 +46,11 @@ app.config(function ($routeProvider) {
             templateUrl: 'views/upload.html',
             controller: 'UploadController'
         })
-        .when('/statistics', {
-            templateUrl: 'views/statistics.html',
-            controller: 'StatsController'
+        .when("/", {
+            templateUrl: "views/businessPage.html",
+            controller: "businessController"
         })
+
 
 
 });

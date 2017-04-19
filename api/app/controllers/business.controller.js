@@ -6,52 +6,60 @@ var Rating = require('mongoose').model('Rating');
 var Facility = require('mongoose').model('Facility');
 
 var BusinessController = {
-       getBusiness: function (req, res) {
-        var name = "business1";
+    getBusiness: function (req, res) {
+        var name = "Habiiba";
         // var id = req.params.id;
         Business.findOne({ name: name }).
             exec(function (err, result) {
                 if (err)
                     console.log(err);
-                else{
+                else {
                     console.log(result);
-//in case there is a user logged in
-                    if(!result); //return error message business does not exist
+                    //in case there is a user logged in
+                    if (!result)
+                        return res.send("Not found");
+                    //return error message business does not exist
                     //adding page count cookie 
                     var cookieName = 'fasa7ny.' + name;
-                        if (typeof req.cookies[cookieName] === 'undefined') {
-                            console.log('NO COOKIES');
-                            var value = 1;
-                            res.cookie(cookieName, value, { maxAge: 30 * 1000, httpOnly: true });
+                    if (typeof req.cookies[cookieName] === 'undefined') {
+                        console.log('NO COOKIES');
+                        var value = 1;
+                        res.cookie(cookieName, value, { maxAge: 30 * 1000, httpOnly: true });
+                        //add page view
+                        statsController.addStat(new Date(), result._id, 'views', 1);
 
-                            //add page view
-                            var date = new Date('2017-04-15');
-                            statsController.addStat(new Date(), result._id, 'views', 1);
+                    }
+                    Rating.findOne({ user_ID: "58f6f803100dc825040a880c", business_ID: result._id }, function (err, rate) {
+                        if (err) console.log("error in finding rate");
+                        // if(!rate) //dont forget this return zero rating
+                        else {
+                            var rating = '';
+                            if (rate != null)
+                                rating = rate.rating;
+                            console.log(rate);
+                            //condition if business exists exists
+                            Facility.find({ business_id: result._id }, function (err, facilities) {
+                                if (err) console.log("error in finding facilities");
+                                else {
+                                    console.log(facilities);
 
+                                    Events.find({ business_id: result._id, repeated: "Once" }, function (err, onceevents) {
+                                        if (err) console.log("error in finding once events");
+
+                                        if (!onceevents) res.json({
+                                            result: result, user: "58f6f803100dc825040a880c",
+                                            rate: rating, facilities: facilities, events: [], 
+                                        });
+                                        else {
+                                            res.json({
+                                                result: result, user: "58f6f803100dc825040a880c",
+                                                rate: rating, facilities: facilities, events: onceevents
+                                            });
+                                        }
+                                    });
+                                }
+                            });
                         }
-                    Rating.findOne({user_ID: "58f0c9341767d632566c9fb5" , business_ID: result._id}, function(err, rate) {
-                      if(err) console.log("error in finding rate");
-                      // if(!rate) //dont forget this return zero rating
-                      else {
-                        console.log(rate);
-//condition if business exists exists
-                        Facility.find({business_id:result._id}, function(err, facilities) {
-                            if(err) console.log("error in finding facilities");
-                            else {
-                                console.log(facilities);
-
-                                Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
-                                    if(err) console.log("error in finding once events");
-                                    if(!onceevents) res.json({result:result, user:"58f0c9341767d632566c9fb5",
-                                            rate:rate.rating, facilities:facilities, events:[]});
-                                    else {
-                                        res.json({result:result, user:"58f0c9341767d632566c9fb5",
-                                            rate:rate.rating, facilities:facilities, events:onceevents});
-                                    }
-                                });
-                            }
-                        });
-                      }
                     })
 
                     // res.json({result:result, user:"58f09946fcefb434ea0d4e22"});
@@ -70,7 +78,7 @@ var BusinessController = {
         // if(req.user && req.user instanceof Business){
         // var id = req.user.id;
         console.log('removal');
-        var id = "58e666a20d04c180d969d591";
+        var id = "58f0f8312ffb434813227cc0";
         Business.findByIdAndUpdate(id, { $set: { delete: 1 } }, function (err, business) {
             if (err) res.send("error in request removal");
             else res.send("Requested!");

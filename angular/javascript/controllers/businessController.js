@@ -4,13 +4,13 @@ app.controller('businessController', function ($scope, $http, Business, $locatio
     $scope.ratedBy = 0;
     $scope.avgRate = 0;
     $scope.sub = "Subscribe";
-    console.log($routeParams.id);
-    $scope.id = "58f0f8312ffb434813227cc0";
+
+    $scope.id = "58f7693c51294567b2d8b083";
+    $scope.userID = "58f6f803100dc825040a880c";
     Business.get($scope.id)
         .then(function (d) {
-            console.log(d.data.result);
-            $scope.business = d.data.result;
 
+            $scope.business = d.data.result;
             $scope.phones = d.data.result.phones;
             $scope.phonelength = 0; //zero means that the business has more than one phone number
             if ($scope.phones.length == 1) $scope.phonelength = 1;
@@ -19,10 +19,10 @@ app.controller('businessController', function ($scope, $http, Business, $locatio
             $scope.paymentlength = 0; //zero means that the business has more than one payment method
             if ($scope.methods.length == 1) $scope.paymentlength = 1;
 
-            console.log($scope.paymentlength);
+
             $scope.categories = d.data.result.category;
             $scope.user = d.data.user;
-            // $scope.images = d.data.result.images;
+            console.log($scope.user);
 
             $scope.facilities = d.data.facilities;
             $scope.events = d.data.events; //once events
@@ -237,11 +237,43 @@ app.controller('businessController', function ($scope, $http, Business, $locatio
         $location.path('/createOneEvent/' + id);
     };
 
+    $scope.addReview = function () {
+        Business.addReview({
+            review: $scope.reviewBody,
+            userID: $scope.userID,
+            businessID: $scope.id
+        })
+            .then(function (res) {
+                $scope.business = res.data;
+                $scope.reviewBody = "";
+            });
+    };
+    $scope.deleteReview = function (review) {
+        Business.deleteReview({
+            userID: $scope.userID,
+            reviewUser: review.user.id,
+            businessID: $scope.id,
+            review: review
+        })
+            .then(function (res) {
+                $scope.business = res.data;
+            });
+    };
 
-    // $scope.goToEditFacility = function(facilityId) {
-    //   console.log("edit facility controller");
-    //   $locatin.path('/editFacility/' + facilityId);
-    // }
+    $scope.addReply = function (reviewID, reply) {
+        Business.addReply({
+            userID: $scope.userID,
+            businessID = $scope.id,
+            reviewID: reviewID,
+            reply: replyBody
+        })
+            .then(function (res) {
+                $scope.business = res.data;
+                $scope.replyBody = '';
+            })
+    }
+
+
 
 });
 
@@ -352,4 +384,5 @@ var deletePaymentMethodCtrl = function ($scope, $modalInstance, Business, $route
     $scope.no = function () {
         $modalInstance.dismiss('cancel');
     };
+
 };
