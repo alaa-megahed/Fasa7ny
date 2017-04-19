@@ -24,7 +24,7 @@ console.log("event eventController");
         console.log("Delete");
         var modalInstance = $modal.open({
             templateUrl: 'views/deletePopUp.html',
-            controller: DeletePopUp,
+            controller: DeletePopUp2,
             scope: $scope,
             resolve: {
                     bid: function () {
@@ -34,7 +34,7 @@ console.log("event eventController");
                     	return id;
                     }
                 }
-       
+
         });
 
         modalInstance.result.then(function (selectedItem) {
@@ -56,16 +56,16 @@ console.log("event eventController");
                         return id;
                     }
                 }
-       
+
         });
 
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
             });
     }
-            
+
 });
-var DeletePopUp = function ($scope, $modalInstance,Event,id,bid,$route) {
+var DeletePopUp2 = function ($scope, $modalInstance,Event,id,bid,$route) {
     $scope.form = {}
     $scope.submitForm = function () {
     	console.log('Delete Form');
@@ -101,7 +101,3 @@ var ModalInstanceCtrl = function ($scope, $modalInstance,Event,id,$route) {
         $modalInstance.dismiss('cancel');
     };
 };
-
-	
-
-

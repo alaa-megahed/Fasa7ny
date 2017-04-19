@@ -41,19 +41,17 @@ console.log($routeParams.facilityId);
           $scope.message = "Show Daily Delete Button Clicked";
           console.log($scope.message);
           console.log("Delete");
+					console.log(eventId);
           var modalInstance = $modal.open({
               templateUrl: 'views/deleteDailyPopUp.html',
-              controller: DeletePopUp,
+              controller: DeletePopUp1,
               scope: $scope,
               resolve: {
-
-                      eventId: function(){
+                      eventId: function() {
                       	return eventId;
                       }
                   }
-
           });
-
           modalInstance.result.then(function (selectedItem) {
               $scope.selected = selectedItem;
               });
@@ -62,7 +60,7 @@ console.log($routeParams.facilityId);
       $scope.editDailyEvent = function (eventId) {
         $scope.message = "Show Form Button Clicked";
         console.log($scope.message);
-        console.log("1"+$scope.formData);
+        // console.log("1"+$scope.formData);
         var modalInstance = $modal.open({
             templateUrl: 'views/editDailyEvent.html',
             controller: editDailyEvent,
@@ -89,7 +87,7 @@ console.log($routeParams.facilityId);
 
 });
 
-var DeletePopUp = function ($scope, $modalInstance,dailyEvents,eventId,$route) {
+var DeletePopUp1 = function ($scope, $modalInstance,dailyEvents,eventId,$route) {
     $scope.form = {}
     $scope.submitForm = function () {
     	console.log('Delete Daily Form');
