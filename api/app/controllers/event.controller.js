@@ -194,18 +194,18 @@ exports.createEvent = function (req, res) {
         }
         else if(req.body.repeat != "Once" && req.body.repeat!="Daily"){
         res.send("Repitition type can either be Daily or Once");
-    	}
+    		}
         else {
 
         	if(req.body.capacity > 0 && req.body.price > 0){
-			let event = new Events({
-				name:req.body.name,
-				description:req.body.description,
-				price:req.body.price,
-				capacity:req.body.capacity,
-				repeated: req.body.repeat,
-				daysOff: req.body.day,
-				business_id: id
+						let event = new Events({
+							name:req.body.name,
+							description:req.body.description,
+							price:req.body.price,
+							capacity:req.body.capacity,
+							repeated: req.body.repeat,
+							daysOff: req.body.day,
+							business_id: id
 
 				});
 
@@ -238,10 +238,12 @@ exports.createEvent = function (req, res) {
 				if (req.body.repeat == "Daily") {
 
 					var now = new Date();
+					if(req.body.date) {
+						now = new Date(req.body.date);
+					}
 					var arr = [];
 
 					for (var i = 0; i < 30;) {
-						now.setDate(now.getDate() + 1);
 						var tflag = true;
 
 						for (l = 0; req.body.day && l < req.body.day.length; l++) {
@@ -257,6 +259,7 @@ exports.createEvent = function (req, res) {
 							console.log(arr[i] + "------" + arr[i].getDay());
 							i++;
 						}
+						now.setDate(now.getDate() + 1);
 					}
 
 

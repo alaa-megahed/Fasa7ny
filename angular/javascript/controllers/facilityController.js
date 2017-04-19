@@ -53,7 +53,7 @@ app.controller('facilityController', function($scope, $http, Facility, $location
 			});
 	};
 
-		$scope.addDaily = function (facilityId,description,capacity) {
+		$scope.addDaily = function (facilityId,description,capacity, name) {
 			$scope.message = "Show add Form Button Clicked";
 			console.log($scope.message);
 			$scope.facilityId = facilityId;
@@ -70,6 +70,9 @@ app.controller('facilityController', function($scope, $http, Facility, $location
 							},
 							capacity : function(){
 								return capacity;
+							},
+							name : function(){
+								return name;
 							}
 					}
 			});
@@ -121,7 +124,7 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route)
     };
 };
 
-var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacity,$route) {
+var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacity,name,$route) {
     $scope.form = {}
     $scope.formData = {}
     $scope.submitForm = function () {
@@ -172,7 +175,7 @@ var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacit
 
     	$scope.formData.day = daysOff;
 
-      Facility.addDaily(fid,description,capacity,$scope.formData)
+      Facility.addDaily(fid,description,capacity,name,$scope.formData)
       .then(function(d){
       	console.log('add daily');
       });

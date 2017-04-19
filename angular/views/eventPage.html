@@ -42,10 +42,10 @@ Dec
 25
 </span>
 
-</span> {{ event.name }}  
+</span> {{ event.name }}
 <!<input ng-click = "DeleteEvent(event._id,event.business_id)" type="submit" value="Delete" class="btn btn-transparent w3-green">
  -->
-<!-- 
+<!--
 </span> {{ event.name }}
 <input ng-click = "showForm(event._id)" type="submit" value="Edit" class="btn btn-transparent w3-green">
 <input ng-click = "showDelete(event._id,event.business_id)" type="submit" value="Delete" class="btn btn-transparent w3-green">
@@ -65,7 +65,7 @@ Dec
 </div> -->
 <br>
 <br>
-<br> 
+<br>
 <section id="blog-page">
      <div class="container">
          <div class="row">
@@ -111,6 +111,9 @@ Dec
                        <hr width="40%">
                        <div class="post-excerpt">
 
+                         <!-- <p class="calendar">7 <em>February</em></p> -->
+
+
                          <h2>
                          <span class="date">
                          <span class="month">
@@ -123,7 +126,7 @@ Dec
                          </h2>
 
 
-                         <h4>Time: {{ eventocc.time}} </h4>
+                         <h4>    Time: {{ eventocc.time}} </h4>
                          <h4>    Location: {{ event.location}} </h4>
                          <h4>    Description: {{ event.description}} </h4>
                          <h4>    Price: {{ event.price}} </h4>
@@ -132,8 +135,8 @@ Dec
                          <input type="submit" value="Book Now!" class="btn btn-transparent w3-green">
                          <input ng-click = "showForm(event._id)" type="submit" value="Edit" class="btn btn-transparent w3-green">
                         <input ng-click = "showDelete(event._id,event.business_id)" type="submit" value="Delete" class="btn btn-transparent w3-green">
-<br>
-<br>
+                        <br>
+                        <br>
                        </div>
 
                    </article>
