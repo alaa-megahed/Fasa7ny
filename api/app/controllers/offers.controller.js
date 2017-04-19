@@ -11,14 +11,12 @@ var async = require("async");
  if the user is a business, he will be sent to his offer's page where he
  can update/delete the offers */
 exports.viewOffers = function(req, res) {
- // if(typeof req.query.id != "undefined") {
-    // var id = req.query.id;
-   var id = "58f0cb2d6bfb6061efd66625";
-
+ if(typeof req.params.id != "undefined") {
+    var id = req.params.id;
    Business.findOne({_id:id}, function(err, business) 
    {
       if(err || !business)
-        return res.send("error in viewOffers");
+        return res.send("error in finding the business to view the offers");
       else
       { 
         Offer.find({business:id}, function(err, offers) 
@@ -30,38 +28,25 @@ exports.viewOffers = function(req, res) {
          });
       }
     });
-    // Business.findOne({_id:id}, function(err, business) {
-    //   if(err) return res.send("error in finding the business to view the offers");
-    //   else {
-    //     if(!business) return res.send("business does not exist. enter a valid one");
-    //     else {
-    //       Offer.find({business:id}, function(err, offers) {
-    //         if(err) {
-    //           return res.send("error in finding all offers");
-    //         } else {
-    //             // res.render("view_offers", {offers:offers});
-    //             res.json(offers);
-    //         }
-    //       })
-    //     }
-    //   }
-    // })
- // } else
-  //  if(req.user && req.user instanceof Business) 
-  //  {
-  //     var id = req.user.id;
-  //     Offer.find({business:id}, function(err, offers) {
-  //       if(err) {
-  //         res.send("error in finding all offers");
-  //       } else {
-  //         console.log("else")
-  //           //res.render("crudoffer", {offers:offers, id:req.user.id});
-  //       }
-  //   })
-  // } 
-  // else {
-  //   res.send("enter a business to find its offers");
-  // }
+  }
+}
+
+exports.businessViewOffers = function(){
+ if(req.user && req.user instanceof Business) 
+   {
+      var id = req.user.id;
+      Offer.find({business:id}, function(err, offers) {
+        if(err) {
+          res.send("error in finding all offers");
+        } else {
+          console.log("else")
+            //res.render("crudoffer", {offers:offers, id:req.user.id});
+        }
+    })
+  } 
+  else {
+    res.send("enter a business to find its offers"); 
+}
 }
 
 exports.getCreateOffer = function(req, res){
@@ -90,15 +75,19 @@ if the business added an expiration_date that is before the start_date(which if
 
 exports.createOffer = function(req, res,notify_on_create) {
 
-  if(req.user && req.user instanceof Business) {
+  if(req.user && req.user instanceof Business) 
+  {
     var businessId = req.user.id;  //get _id from session
     var body = req.body;
     var file = req.file;
 
     // expiration date not required in case of count dependent offer
-    if(!body.name || !body.type || !body.value || !body.details ) {
+    if(!body.name || !body.type || !body.value || !body.details ) 
+    {
       res.send("please add all information");
-    } else {
+    } 
+    else 
+    {
       var newOffer = new Offer({
         name:body.name,
         type:body.type,
@@ -108,9 +97,14 @@ exports.createOffer = function(req, res,notify_on_create) {
       });
       newOffer.business = businessId;
 
-      if(req.body.expiration_date)
+      if(req.body.start_date)
       {
          newOffer.expiration_date = new Date(body.expiration_date);
+      }
+
+      if(req.body.expiration_date)
+      {
+         newOffer.start_date = new Date(body.start_date);
       }
 
       if(req.body.facility_id)
@@ -136,26 +130,38 @@ exports.createOffer = function(req, res,notify_on_create) {
       if(typeof file != 'undefined') {
         newOffer.image = file.filename;
       }
+
       if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length > 0) {
         newOffer.notify_subscribers = Number(body.notify_subscribers);
       }
+
       var now = new Date();
       if(typeof body.start_date != 'undefined' && body.start_date.length > 0) {
         newOffer.start_date = new Date(body.start_date);
-      } //removed else because it is set by default in mongoose
+      } 
+
+      else{
+        newOffer.startdate = now;
+      }
+
       var startdate = newOffer.start_date;
-      if(body.expiration_date)
+      if(body.expiration_date != 'undefined')
       {
-        var expirationdate = newOffer.expiration_date;
+        var expirationdate = body.expiration_date;
         if(startdate - expirationdate >= 0 || now - startdate > 0) 
         {
           res.send("please add a valid start_date/ expiration_date");
         }
+        else
+        {
+           console.log("last else before saving");
+           newOffer.expirationdate = expirationdate;
+        }
       
       } 
-      else 
-      {
-        newOffer.save(function(err, offer) {
+      
+        newOffer.save(function(err, offer) 
+        {
           if(err) {
             res.send("error in creating offer");
           } else 
@@ -181,9 +187,10 @@ exports.createOffer = function(req, res,notify_on_create) {
             res.send(offer);
           }
         })
-      }
-    }
-  } else {
+      
+    } //
+  } else //
+  {
     res.send("you're not a logged in business");
   }
 };

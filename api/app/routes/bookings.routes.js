@@ -6,6 +6,8 @@ var path 	 = require('path');
 var router   = express.Router();
 
 var booking    = require('../controllers/bookings.controller');
+var payment    = require('../controllers/payment.controller');
+
 
     //below belongs to business
     router.get('/', function(req, res){
@@ -30,6 +32,10 @@ var booking    = require('../controllers/bookings.controller');
     router.get('/regusers', function(req, res){
         res.sendFile(path.resolve('app/views/regusersbookingtest.html'));
     });
+
+    router.post('/charge', payment.pay);
+    
+    router.post('/refund', payment.refund);
 
     router.post('/createRegUserBookings', booking.regUserAddBooking);
 

@@ -302,21 +302,25 @@ exports.view_event_bookings = function(req,res)
 //Registered User adds bookings by giving count, event id. Booking date is saved as current date.
 exports.regUserAddBooking = function(req, res, next) {
 
-  if(req.user)
-  {
-		if(req.user instanceof RegisteredUser)
-		{
+  // if(req.user)
+  // {
+		// if(req.user instanceof RegisteredUser)
+		// {
+
 
       if(req.body.count <= 0)
-        return res.send("Can't have negative or no count.");
+        return res.status(400).json("Can't have negative or no count.  hena 5");
 
 			var date = new Date();
 	    var booking = new Booking(
 	      {
 	        count        : req.body.count,
-	        booker       : req.user.id,
+	        booker       : req.body.user_id, //temporarily
+          // booker       : req.user.id,
 	        event_id     : req.body.event,
-	        booking_date : date
+	        booking_date : date,
+          charge       : req.body.charge,
+          stripe_charge: req.body.stripe_charge
 	      });
 
 	    booking.save(function(err,booking)
@@ -328,7 +332,7 @@ exports.regUserAddBooking = function(req, res, next) {
 						 {
 								if(err || !eve )
 								{
-									res.send("Error adding booking. Please try again!");
+									res.status(500).json("Error adding booking. Please try again!  hena4");
 									return;
 								}
 								else
@@ -337,7 +341,7 @@ exports.regUserAddBooking = function(req, res, next) {
 									if(eve.available < 0)
 									{
                     booking.remove();
-										res.send("Not enough spaces - please decrease count of booking.");
+										res.status(500).json("Not enough spaces - please decrease count of booking.   hena3");
 										return;
 									}
 									else
@@ -347,19 +351,22 @@ exports.regUserAddBooking = function(req, res, next) {
 									}
 
 									//finds registered user and adds this event to his/her list of bookings
-									RegisteredUser.findOne({_id:req.user.id}, function(err, user)
+                  // RegisteredUser.findOne({_id:req.user.id}, function(err, user)
+
+									RegisteredUser.findOne({_id:req.body.user_id}, function(err, user)
+
 								 {
 									 if(err || !user)
 									 {
                      booking.remove();
-										 res.send("Error saving booking. Please try again.");
+										 res.status(500).json("Error saving booking. Please try again.  hena2");
 										 return;
 									 }
 									 else
 									 {
 										 user.bookings.push(booking);
 										 user.save();
-										 res.send("successful booking");
+										 res.status(200).json("successful booking");
 										 return;
 									 }
 
@@ -369,24 +376,26 @@ exports.regUserAddBooking = function(req, res, next) {
 	        }
 	        else
 					{
-						res.send("Error. Please try again.");
-						return;
+						return res.status(500).json("Error. Please try again. hena1");
 	        }
 	    });
-	  }
-		else
-		{
-			res.send("You are not a registered user");
-			return;
-		}
+
+	 //  }
+
+		// else
+		// {
+		// 	res.status(401).json("You are not a registered user");
+		// 	return;
+		// }
 
 
-	}
-	else
-	{
-		res.send("Please log in to book events");
-		return;
-  }
+	// }
+
+	// else
+	// {
+	// 	res.status(401).json("Please log in to book events");
+	// 	return;
+ //  }
 
 
 };
@@ -488,10 +497,10 @@ exports.regUserEditBookings = function(req,res,next){
 //Registered User deletes bookings
 exports.regUserDeleteBookings = function(req,res,next){
 
-  if(req.user)
-  {
-		if(req.user instanceof RegisteredUser)
-		{
+  // if(req.user)
+  // {
+		// if(req.user instanceof RegisteredUser)
+		// {
 			Booking.findById(req.body.bookingD, function(err,booking)
 			{
 				if(err || !booking)
@@ -501,12 +510,12 @@ exports.regUserDeleteBookings = function(req,res,next){
 				}
 				else
 				{
-					if(booking.booker == req.user.id)
-					{
-						RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
-						{
-							if(err || !user ) return res.send("Error");
-						});
+					// if(booking.booker == req.user.id)
+					// {
+						// RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
+						// {
+						// 	if(err || !user ) return res.send("Error");
+						// });
 						EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.bookingD}}, function(err,eve)
 						{
 							if(err || !eve) return res.send("Error.");
@@ -517,24 +526,25 @@ exports.regUserDeleteBookings = function(req,res,next){
 						});
 
 					}
-					else
-					{
-						res.send("Not one of your bookings.");
-						return;
-					}
-				}
+					// else
+					// {
+					// 	res.send("Not one of your bookings.");
+					// 	return;
+					// }
+		// 		}
 
-			});
-		}
-		else
-		{
-			res.send("Not a registered user.");
-		}
+		 	});
+		// }
+		// else
+		// {
+		// 	res.send("Not a registered user.");
+		// }
 
-  }
-  else
-  {
-    res.send("Please log in to delete bookings");
-  }
+  // }
+  // else
+  // {
+  //   res.send("Please log in to delete bookings");
+  // }
 
 }
+
