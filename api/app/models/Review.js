@@ -6,7 +6,10 @@ var mongoose = require('mongoose'),
 var ReplySchema = new Schema({
   reply: String,
   timestamp: { type: Date, default: new Date() },
-  authorType: String,
+  authorType: {
+    type: String,
+    enum: ['user', 'business']
+  },
   user: RegisteredUserSchema,
   review: { type: mongoose.Schema.Types.ObjectId, ref: 'Review' }
 });

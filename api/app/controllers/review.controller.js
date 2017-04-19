@@ -56,78 +56,6 @@ array and decrementing the array then add such user to the upvotes array and
 the upvotes will be incremented*/
 exports.upvoteReview = function (req, res) {
 
-  if (req.user && req.user instanceof RegisteredUser && typeof req.query.review != "undefined") {
-    var rev = req.query.review;
-    var id = req.user.id;
-    // var id = req.body.id;
-    // var rev = req.body.review;
-
-    Review.findOne({ _id: rev }, function (err, review) {
-      if (err) {
-        console.log("cannot find review to be upvoted");
-      } else {
-        var flag = true;
-        for (var i = 0; i < review.upvotes.length; i++) {
-          if (review.upvotes[i] == id) flag = false;
-        }
-
-        if (flag == true) {
-          // review.upvotes.push(id);
-
-          Review.findByIdAndUpdate(rev, { $push: { "upvotes": id } }, { safe: true, upsert: true, new: true },
-            function (err, newrev) {
-              if (err) {
-                console.log("error in upvoting the review");
-              } else {
-                console.log("upvoted1");
-              }
-            });
-
-          Review.findByIdAndUpdate(rev, { $set: { upvote: review.upvote + 1 } },
-            function (err, updatedReview) {
-              if (err) {
-                console.log("error in upvoting");
-              } else {
-                console.log("upvoted2");
-                console.log(updatedReview);
-
-                for (var i = 0; i < review.downvotes.length; i++) {
-                  if (review.downvotes[i] == id) {
-                    flag = false;
-                  }
-                }
-
-                if (flag == false) {
-                  // review.downvotes.pull(id);
-
-                  Review.findByIdAndUpdate(rev, { $pull: { "downvotes": id } }, { safe: true, upsert: true, new: true },
-                    function (err, newreview) {
-                      if (err) {
-                        console.log("error in updating downvotes array");
-                      } else {
-                        console.log("upvotes array updated");
-                      }
-                    });
-
-                  Review.findByIdAndUpdate(rev, { $set: { downvote: review.downvote - 1 } },
-                    function (err, updatedReview) {
-                      if (err) {
-                        console.log("error in decrementing downvotes");
-                      } else {
-                        console.log("downvotes decremented");
-                        console.log(updatedReview);
-                      }
-                    });
-                }
-              }
-            });
-
-        } else {
-          console.log("cannot vote more than once");
-        }
-      }
-    })
-  }
 }
 
 /*A user can downvote a review about a business. Any user can downvote only once,
@@ -231,7 +159,7 @@ exports.replyReview = function (req, res) {
   var userID = req.body.userID;
   var businessID = req.body.businessID;
   var reply = req.body.reply;
-
+  var reviewID = req.body.reviewID;
   // if (req.user && typeof req.body.reply != "undefined" && typeof req.query.id != "undefined") {
   if (typeof reply != 'undefined' && req.body.reply.length > 0 && userID != null && businessID != null) {
 
@@ -242,13 +170,71 @@ exports.replyReview = function (req, res) {
       if (err)
         console.log(err);
       else {
-        
+        if (business.reviews.id(reviewID) != null) {
+          if (userID != businessID) { //if user is replying to user review
+            RegisteredUser.findById(userID, function (err, user) {
+              if (err)
+                console.log(err);
+              else {
+                var newReply = new Reply();
+                newReply.user = user;
+                newReply.authorType = 'user';
+                newReply.reply = reply;
+                business.reviews.id(reviewID).replies.push(newReply);
+                business.save(function (err, updatedBusiness) {
+                  if (err)
+                    console.log(err);
+                  else {
+                    res.json(updatedBusiness);
+                  }
+                })
+              }
+            });
+          } else { //if business if replying to review about itself 
+            var newReply = new Reply();
+            newReply.authorType = 'business';
+            newReply.reply = reply;
+            business.reviews.id(reviewID).replies.push(newReply);
+            business.save(function (err, updatedBusiness) {
+              if (err) {
+                console.log(err);
+              } else {
+                res.json(updatedBusiness);
+              }
+            });
+
+          }
+        }
       }
     })
 
   }
 }
 
+exports.deleteReply = function (req, res) {
+  var userID = req.body.userID
+  var businessID = req.body.businessID;
+  var reviewID = req.body.review._id;
+  var replyUser = req.body.reply.user._id;
+  var replyID = req.body.reply._id;
+  if (userID == replyUser) {
+    Business.findById(businessID, function (err, business) {
+      if (err)
+        console.log(err);
+      else if (business.reviews.id(reviewID) != null && business.reviews.id(reviewID).replies.id(replyID) != null) {
+        business.reviews.id(reviewID).replies.id(replyID).remove();
+        business.save(function (err, updatedBusiness) {
+          if (err)
+            console.log(err);
+          else {
+            res.json(updatedBusiness);
+          }
+        });
+      }
+    });
+  }
+
+}
 /* A webadmin can delete a review if it is inappropriate. So first we must
 if he is a webadmin because otherwise the review cannot be deleted.
 When the review is deleted, all the replies must be deleted as well as the
@@ -260,14 +246,13 @@ exports.deleteReview = function (req, res) {
   var reviewID = req.body.review._id;
   var businessID = req.body.businessID;
   // if (req.user && req.user instanceof WebAdmin && req.query.review != "undefined") {
-  if (userID == reviewUser) {
+  if (userID == reviewUser) { //use can only delete his/her own reviews 
     // var id = req.user.id; //WebAdmin's ID
     // var r = req.query.review;
     Business.findById(businessID, function (err, business) {
       if (err)
         console.log(err);
-      else {
-        console.log(business);
+      else if (business.reviews.id(reviewID) != null) {
         business.reviews.id(reviewID).remove();
         business.save(function (err, updatedBusiness) {
           if (err)

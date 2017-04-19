@@ -260,10 +260,10 @@ app.controller('businessController', function ($scope, $http, Business, $locatio
             });
     };
 
-    $scope.addReply = function (reviewID, reply) {
+    $scope.addReply = function (reviewID, replyBody) {
         Business.addReply({
             userID: $scope.userID,
-            businessID = $scope.id,
+            businessID: $scope.id,
             reviewID: reviewID,
             reply: replyBody
         })
@@ -271,6 +271,18 @@ app.controller('businessController', function ($scope, $http, Business, $locatio
                 $scope.business = res.data;
                 $scope.replyBody = '';
             })
+    }
+
+    $scope.deleteReply = function (review, reply) {
+        Business.deleteReply({
+            userID: $scope.userID,
+            businessID: $scope.id,
+            review: review,
+            reply: reply
+        })
+            .then(function (res) {
+                $scope.business = res.data;
+            });
     }
 
 

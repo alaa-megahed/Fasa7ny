@@ -9,5 +9,5 @@ router.get('/downvoteReview', ReviewController.downvoteReview); //change to get
 router.get('/viewReviews', ReviewController.viewReviews);
 router.post('/replyReview', ReviewController.replyReview);
 router.post('/deleteReview', ReviewController.deleteReview);
-
+router.post('/deleteReply', ReviewController.deleteReply);   
 module.exports = router;

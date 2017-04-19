@@ -302,13 +302,13 @@
                                 <div class="comment-box">
 
                                     <div class="comment-head">
-                                        <h6 class="comment-name by-author">{{review.user.name}}</h6>
-                                        <span>{{review.timestamp}}</span>
+                                        <h6 class="comment-name">{{review.user.name}}</h6>
+                                        <span>{{review.timestamp}} <i ng-click="deleteReview(review)" class="delete glyphicon glyphicon-trash"></i></span>
 
-                                        <i class="fa fa-chevron-up"></i> <br>
-                                        <i class="fa"> 10 </i> <br>
-                                        <i class="fa fa-chevron-down"></i>
-                                        <i ng-click="deleteReview(review)" id="delete" class="glyphicon glyphicon-trash"></i>
+                                        <i class="vote fa fa-chevron-up"></i> <br>
+                                        <i class="fa"> {{review.upvote - review.downvote}} </i> <br>
+                                        <i class="vote fa fa-chevron-down"></i>
+
                                     </div>
                                     <div class="comment-content">
                                         {{review.review}}
@@ -323,8 +323,11 @@
                                     <!-- Contenedor del Comentario -->
                                     <div class="comment-box">
                                         <div class="comment-head">
-                                            <h6 class="comment-name">{{reply.author}}</h6>
-                                            <span>{{reply.timestamp}}</span>
+                                            <h6 ng-if="reply.authorType == 'user'" class="comment-name">{{reply.user.name}}</h6>
+                                            <h6 ng-if="reply.authorType == 'business'" class="comment-name by-author"> {{business.name}}</h6>
+                                            <span>{{reply.timestamp}} <i ng-click="deleteReply(review, reply)" class="delete glyphicon glyphicon-trash"></i></span>
+
+
                                         </div>
                                         <div class="comment-content">
                                             {{reply.reply}}
@@ -593,8 +596,12 @@
         transition: color 0.3s ease;
     }
     
-    .comment-box .comment-head i:hover {
+    .comment-box .comment-head .vote:hover {
         color: #03658c;
+    }
+    
+    .comment-box .comment-head .delete:hover {
+        color: red;
     }
     
     .comment-box .comment-name {
@@ -633,7 +640,7 @@
     }
     
     .comment-box .comment-name.by-author:after {
-        content: 'autor';
+        content: 'business';
         background: #03658c;
         color: #FFF;
         font-size: 12px;

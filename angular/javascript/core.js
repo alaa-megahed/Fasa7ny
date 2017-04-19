@@ -40,7 +40,7 @@ app.config(function ($routeProvider) {
         })
         .when('/business/:name', {
             templateUrl: 'views/test.html',
-            controller: 'BusinessController'
+            controller: 'businessController'
         })
         .when('/upload', {
             templateUrl: 'views/upload.html',
