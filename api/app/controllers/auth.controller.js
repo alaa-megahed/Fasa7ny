@@ -5,7 +5,8 @@ var passport = require('passport'),
     Business   = require('../models/Business'),
     nodemailer = require("nodemailer"),
     configAuth = require('../../config/auth'),
-    xoauth2 = require('xoauth2');
+    xoauth2 = require('xoauth2'),
+    fbuser;
 let AuthController =
 {
 	// ============================
@@ -26,7 +27,8 @@ let AuthController =
     res.json("success");
   },
 
-	postLogin: function(req, res){passport.authenticate('local-login', {
+	postLogin: function(req, res){
+    passport.authenticate('local-login', {
 		successRedirect : '/auth/successLogIn',
 		failureRedirect : '/auth/failLogIn',
 		failureFlash : true
@@ -44,7 +46,9 @@ let AuthController =
 	},
 
 
-	postSignup: function(req, res){passport.authenticate('local-signup', {
+	postSignup: function(req, res){
+
+    passport.authenticate('local-signup', {
 		successRedirect : '/auth/successSignUp',
 		failureRedirect : '/auth/failSignUp',
 		failureFlash : true
@@ -91,7 +95,13 @@ let AuthController =
     res.redirect('/');
   });
 	},
-
+  setUser : function(user) {
+    console.log("User is" + user);
+    fbuser = user;
+  },
+  getUser : function(user) {
+    return user;
+  },
 	// =====================================
 	// 			     	FACEBOOK
 	// =====================================
@@ -99,11 +109,24 @@ let AuthController =
 		passport.authenticate('facebook', { scope : 'email' })(req, res);},
 
 	facebookCallback: function(req, res){
-		passport.authenticate('facebook', {
-            						successRedirect : '/auth/profile',
-            						failureRedirect : '/'
-       							   })(req, res);
-								},
+    passport.authenticate('facebook', function(err, user, info) {
+          if (err) { return next(err); }
+          if (!user) { return res.json("error"); }
+          req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            req.session.save(function(){
+             return res.redirect("http://localhost:8000/");
+           });
+          });
+        })(req, res);
+
+
+		},
+
+
+
+
+
 
 	// =====================================
 	// 			      	GOOGLE
@@ -113,7 +136,8 @@ let AuthController =
 	},
 
 	googleCallback: function(req, res){
-		passport.authenticate('google', { failureRedirect: 'http://localhost:3000', successRedirect :'http://localhost:3000/auth/profile'})(req, res);
+    console.log("ana fe goofle");
+		passport.authenticate('google', { failureRedirect: 'http://localhost:8000/#!/', successRedirect :'http://localhost:8000/#!/'})(req, res);
 	},
 
 	// =====================================

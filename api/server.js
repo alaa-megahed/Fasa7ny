@@ -5,7 +5,6 @@ var mongoose = require('./config/mongoose'),
     express  = require('./config/express'),
     db       = mongoose(),
     app      = express();
-    // cors     = require('cors');
 
 
 var Business = require('./app/models/Business');
@@ -20,18 +19,18 @@ var Business = require('./app/models/Business');
 
 app.listen(config.port);
 
-// app.use(cors);
-// app.use(function(req, res, next) {
-// res.header('Access-Control-Allow-Origin', req.headers.origin);
-// res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-// res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-// res.header('Access-Control-Allow-Credentials', true);
-// if ('OPTIONS' == req.method) {
-//      res.send(200);
-//  } else {
-//      next();
-//  }
-// });
+app.all('*', function(req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'accept, content-type, x-parse-application-id, x-parse-rest-api-key, x-parse-session-token');
+     // intercept OPTIONS method
+    if ('OPTIONS' == req.method) {
+      res.send(200);
+    }
+    else {
+      next();
+    }
+});
 
 
 

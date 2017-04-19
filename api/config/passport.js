@@ -5,6 +5,7 @@ var LocalStrategy = require('passport-local').Strategy,
     Business = require('../app/models/Business'),
     Admin = require('../app/models/WebAdmin'),
     configAuth = require('./auth');
+
 // using async waterfall ?
 
 module.exports = function(passport)
@@ -52,6 +53,7 @@ module.exports = function(passport)
       },
       function(req, username, password, done)
       {
+          console.log(req.body);
           var check = 0;
           // check weather the username entered is unique
           // search the registered users collection
