@@ -5,7 +5,7 @@ app.config(function($routeProvider){
 	$routeProvider
 	.when("/",{
 		templateUrl : "views/landingpage.html",
-		controller  : "homepageController"
+		controller  : "navbarController"
 	})
 
 	// .when("/", {

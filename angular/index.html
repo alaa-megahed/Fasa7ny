@@ -13,6 +13,7 @@
       <script src="./javascript/controllers/homepageController.js"></script>
       <script src="./javascript/controllers/searchtestController.js"></script>
       <script src="./javascript/controllers/resetPasswordController.js"></script>
+      <script src="./javascript/controllers/navbarController.js"></script>
       <script src="./javascript/services/homepageService.js"></script>
 
 
@@ -122,7 +123,7 @@
               </div>
 
       <!-- main nav -->
-            <div ng-controller = "homepageController">
+            <div ng-controller = "navbarController">
               <nav class="collapse navbar-collapse navbar-right" role="Navigation" >
                   <ul id="nav" class="nav navbar-nav">
                       <li class="current"><a href="#body">Home</a></li>
@@ -133,7 +134,7 @@
                       <li ng-if = "user.data.user_type == 2"><a href="/auth/login"> My Business Page </a></li>
                       <li ng-if = "user.data.user_type == 3"><a href="/auth/login"> Admin Requests </a></li>
                       <li><a href="#contact-us">Contact Us</a></li>
-                      <li ng-if = "user.data.user_type"><a href="/auth/logout">Log Out</a></li>
+                      <li ng-if = "user.data.user_type"><a href="http://localhost:3000/auth/logout">Log Out</a></li>
 
 
                       <li><a href="#search">Search</a></li>
