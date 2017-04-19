@@ -248,7 +248,19 @@
         Start Blog Section
         =========================================== -->
                 
-        
+        <div ng-controller = 'webAdminController' class= 'container'>
+        Username: 
+        <input type="text" data-ng-model= "business.username"/>
+        <br />
+        Password: 
+        <input type="text" data-ng-model="business.password">
+        <br />
+        Email:
+        <input type="text" data-ng-model="business.email">
+        <br />
+        <button data-ng-click= "addBusiness()"> Add Business </button>
+        </div>
+
         
         <!-- Srart Contact
         =========================================== -->     
@@ -435,7 +447,7 @@
         <script src="javascript/controllers/bookingController.js"></script> 
         <script src="javascript/services/bookingService.js"></script> 
         <script src="javascript/controllers/webAdminController.js"></script> 
-        
+        <script src="javascript/services/webAdminService.js"></script> 
 
     </body>
 </html>

@@ -13,4 +13,11 @@ app.config(function($routeProvider){
 		controller  : "bookingController"
 	})
 
+	.when('/webAdminProfile',
+	{
+		templateUrl : 'views/webAdmin.html',
+		controller  : 'webAdminController'
+	})
+	
+
 });	
