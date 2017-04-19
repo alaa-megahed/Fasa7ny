@@ -92,7 +92,7 @@ let AuthController =
 	logout: function(req, res) {
 		req.logout();
 		req.session.destroy(function (err) {
-    res.redirect('/');
+    res.redirect('http://localhost:8000');
   });
 	},
   setUser : function(user) {
@@ -135,10 +135,21 @@ let AuthController =
 		passport.authenticate('google', { scope : ['profile', 'email'] })(req, res);
 	},
 
-	googleCallback: function(req, res){
-    console.log("ana fe goofle");
-		passport.authenticate('google', { failureRedirect: 'http://localhost:8000/#!/', successRedirect :'http://localhost:8000/#!/'})(req, res);
-	},
+  googleCallback: function(req, res){
+    passport.authenticate('google', function(err, user, info) {
+          if (err) { return next(err); }
+          if (!user) { return res.json("error"); }
+          req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            req.session.save(function(){
+             return res.redirect("http://localhost:8000/");
+           });
+          });
+        })(req, res);
+
+
+		},
+
 
 	// =====================================
 	// 		     FORGOT PASSWORD
