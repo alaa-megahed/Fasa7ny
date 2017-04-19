@@ -39,8 +39,9 @@ app.controller('scheduleController', function($scope, $http, Schedule, $location
 
 						endevent.setHours(Number(endhour));
 						endevent.setMinutes(Number(endmin));
-
-						$scope.events2.push({title:$scope.events[i].name, start:startevent, end:endevent})
+// <a ng-click="eventoptions()"> $scope.events[i]</a>
+						$scope.events2.push({title:$scope.events[i].name, start:startevent, end:endevent});
+						// $scope.events2.push({title:'<a href="/">' +  $scope.events[i] + '</a>', start:startevent, end:endevent})
 					}
 				}
 			}

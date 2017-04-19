@@ -466,6 +466,33 @@ exports.getEvents = function (req, res) {
 
 }
 
+exports.getDailyEvents = function (req, res) {
+	// if (req.user && req.user instanceof Business) {
+		var id = "58e666a20d04c180d969d591";
+
+		var facilityId = req.params.facilityId;
+		Events.find({ facility_id: facilityId}, function (err, events) {
+			if (err) res.send(err.message);
+			else if (!events) res.send('Something went wrong');
+			else {
+				console.log(events+"eventsss");
+				EventOccurrences.find({facility_id: facilityId}, function(err, eventocc) {
+					if(err) res.send(err.message);
+					else if(!eventocc) res.send('something went wrong');
+					else {
+						console.log('events/eventocc retrieved for facility')
+						res.json({events:events, eventocc:eventocc});
+					}
+				});
+			}
+		});
+	// }
+	// else {
+	// 	res.send('You are not a logged in business');
+	// }
+
+}
+
 exports.getOccurrences = function (req, res) {
 	if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
 		EventOccurrences.find({ event: req.body.id }, function (err, events) {
@@ -487,7 +514,7 @@ exports.editEvent = function (req, res) {
 
 		var id = req.params.id;
 		// var business_id = req.user.id;
-		var business_id = "58f20e01b38dec5d920104f3";
+		var business_id = "58e666a20d04c180d969d591";
 		console.log("ana fl backend edit");
 		console.log(id);
 
@@ -604,8 +631,8 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 	// if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
 		var id = req.params.id;
 		// var business_id = req.user.id;
-		var business_id = "58f20e01b38dec5d920104f3";
-		console.log("backend");
+		var business_id = "58e666a20d04c180d969d591";
+		console.log("backend cancel event");
 		Events.findById(id, function (err, event) {
 			if (!event) res.send('Something went wrong');
 			else
@@ -614,6 +641,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 					Events.remove({ _id: id }, function (err) {
 						if (err) res.sen('could not delete event');
 						else {
+							console.log("event removed");
 							EventOccurrences.find({event:id},function (err,all_occ) {
 								if (err) res.send('could not delete occurrence');
 								else
@@ -622,7 +650,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 										{
 											one_occ.remove(function(err)
 										    {
-
+													console.log("removed");
 										   //    if(!err)
 										   //    {
 											  //     	var bookings = one_occ.bookings;
@@ -649,9 +677,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 
 										   //    }
 										  	  // else
-
-
-										  	  	res.send("Something went wrong");
+										  	  	// res.send("Something went wrong");
 										    });
 										});
 									 }

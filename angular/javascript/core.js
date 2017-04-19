@@ -54,6 +54,9 @@ app.config(function($routeProvider){
 		controller  : "scheduleController"
 	})
 
-
+	.when("/viewEvents/:facilityId", {
+			templateUrl : "views/viewEvents.html",
+			controller  : "dailyEventsController"
+	})
 
 });

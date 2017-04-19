@@ -80,6 +80,11 @@ app.controller('facilityController', function($scope, $http, Facility, $location
 			modalInstance.result.then(function (selectedItem) {
 					$scope.selected = selectedItem;
 			});
+	};
+
+	$scope.viewEvents = function(facilityId) {
+		// Global.facilityId = facilityId;
+		$location.path('/viewEvents/' + facilityId);
 	}
 
 });
