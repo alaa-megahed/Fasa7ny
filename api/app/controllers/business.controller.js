@@ -13,19 +13,19 @@ var BusinessController = {
                 if (err)
                     console.log(err);
                 else{
-                    console.log(result);
+                    // console.log(result);
 //in case there is a user logged in
                     if(!result); //return error message business does not exist
                     Rating.findOne({user_ID: "58f0c9341767d632566c9fb5" , business_ID: result._id}, function(err, rate) {
                       if(err) console.log("error in finding rate");
                       // if(!rate) //dont forget this return zero rating
                       else {
-                        console.log(rate);
+                        // console.log(rate);
 //condition if business exists exists
                         Facility.find({business_id:result._id}, function(err, facilities) {
                             if(err) console.log("error in finding facilities");
                             else {
-                                console.log(facilities);
+                                // console.log(facilities);
 
                                 Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
                                     if(err) console.log("error in finding once events");

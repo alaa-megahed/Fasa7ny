@@ -15,8 +15,9 @@
 		var events1 = angular.element('#calendar').scope().events;
 		var eventocc = angular.element('#calendar').scope().eventocc;
 		var events2 = angular.element('#calendar').scope().events2;
+		var date = angular.element('#calendar').scope().now;
 
-		alert(events2);
+		alert(date);
 
 		$('#calendar').fullCalendar({
 			header: {
@@ -34,7 +35,7 @@
 			},
 
 			defaultView: 'listWeek',
-			defaultDate: '2017-04-12',
+			defaultDate: date,
 			navLinks: true, // can click day/week names to navigate views
 			editable: true,
 			eventLimit: true, // allow "more" link when too many events

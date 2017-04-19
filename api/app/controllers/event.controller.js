@@ -185,9 +185,10 @@ exports.createEvent = function (req, res) {
 	// if (req.user && req.user instanceof Business) {
 	// 	var id = req.user.id;
 		var id = "58e666a20d04c180d969d591";
-
+		var now = new Date();
+		console.log(req.body);
     	//if event belongs to facility, fields will be passed from facility to event in hidden fields
-    	if(!req.body.name || !req.body.description || !req.body.price || !req.body.capacity || !req.body.repeat) {
+    	if(!req.body.name || !req.body.description || !req.body.date || !req.body.price || !req.body.capacity || !req.body.repeat) {
 
         res.send("Please add all information");
 
@@ -195,6 +196,10 @@ exports.createEvent = function (req, res) {
         else if(req.body.repeat != "Once" && req.body.repeat!="Daily"){
         res.send("Repitition type can either be Daily or Once");
     		}
+				else if(now - (new Date(req.body.date)) >= 0) {
+					console.log("enter a valid start date");
+					res.send("enter a valid start date");
+				}
         else {
 
         	if(req.body.capacity > 0 && req.body.price > 0){

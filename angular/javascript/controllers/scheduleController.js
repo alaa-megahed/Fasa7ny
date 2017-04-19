@@ -7,7 +7,9 @@ app.controller('scheduleController', function($scope, $http, Schedule, $location
 		$scope.eventocc = d.data.eventocc;
 
 		$scope.events2 = [];
-
+		var date = new Date();
+		// console.log(date. getFullYear());
+		$scope.now = date. getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 		for(var i = 0; i < $scope.events.length; i++) {
 				for(var j = 0; j < $scope.eventocc.length; j++) {
 					if($scope.events[i]._id == $scope.eventocc[j].event) {
