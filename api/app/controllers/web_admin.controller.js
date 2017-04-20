@@ -136,7 +136,7 @@ exports.AddBusiness = function (req, res) {
 exports.WebAdminDeleteBusiness = function (req, res) {
 
 
-    Business.findById(req.body.id, function (err, business) {
+    Business.findById(req.params.id, function (err, business) {
         if(err) res.status(500).json(err.message);
 
         //remove offers
@@ -200,19 +200,19 @@ exports.WebAdminDeleteBusiness = function (req, res) {
 
 exports.webAdminViewRequestedDelete = function (req, res) {
 
-if(req.user && req.user instanceof WebAdmin)
-  {
+// if(req.user && req.user instanceof WebAdmin)
+//   {
     Business.find({ delete: 1 }, function (err, requests) {
         //res.render('requestedDelete', { user: req.user, requests: requests });
         res.status(200).json(requests);
     });
   }
-  else {
-    return res.status(200).json("Unauthorized access. Please log in."); 
-    //res.send("Unauthorized access. Please log in.");
-  }
+  // else {
+  //   return res.status(200).json("Unauthorized access. Please log in."); 
+  //   //res.send("Unauthorized access. Please log in.");
+  // }
     
-}
+// }
 
 
 

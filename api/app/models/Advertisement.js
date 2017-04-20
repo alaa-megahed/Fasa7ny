@@ -4,10 +4,10 @@ var mongoose = require('mongoose'),
 
 
 var AdvertisementSchema = new Schema({
-    image       : type :String,
-    text        : type : String,
-    start_date  : type :Date,
-    end_date    : type : Date,
+    image       : String,
+    text        : String,
+    start_date  : Date,
+    end_date    :  Date,
     available   : {type: Number, default: 1}
     //payment goes here
 

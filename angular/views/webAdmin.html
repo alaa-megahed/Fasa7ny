@@ -7,22 +7,31 @@
 <!--                 <div class="row">
 
  -->                
-                            ADD Business
-                            <br><br>
+                            <!-- ADD Business -->
+      <!--                       <br><br>
         Username: 
         <input style="color:#000;" class="w3-input w3-border w3-round" type="text" data-ng-model= "business.username"/>
         <br >
-        Password: 
-        <input style="color:#000;" class="w3-input w3-border w3-round" type="text" data-ng-model="business.password">
+        Name: 
+        <input style="color:#000;" class="w3-input w3-border w3-round" type="text" data-ng-model="business.name">
         <br >
         Email:
         <input style="color:#000;" class="w3-input w3-border w3-round" type="text" data-ng-model="business.email">
         <br >
+        Merchant_ID:
+        <input style="color:#000;" class="w3-input w3-border w3-round" type="text" data-ng-model="business.merchant_ID">
+        <br >
+        Category:
+        <input style="color:#000;" class="w3-input w3-border w3-round" type="text" data-ng-model="business.category">
+        <br >
         <button  data-ng-click= "addBusiness()"> Add Business </button>
-        <br>
+        <br> -->
 
+ <button class="btn btn-transparent" ng-click="addBusinesspop()"> Add Business </button>
 <br>
-                        Add Ads
+
+<button class="btn btn-transparent" ng-click="addAdspop()"> Add Advertisement </button>
+  <!--                       Add Ads
 <br>
 <br>
                        
@@ -39,11 +48,11 @@
         <br >
         <button  data-ng-click= "addAds()"> Add Advertisment </button>
         <br>
-
+ -->
         <br> <br>
         <!-- <button data-ng-click= "viewDeletedBusinesses" > Show Removal Requests </button>   -->
         <ul>
-                <li data-ng-repeat= "request in requests">{{ request.username }}</li>
+                <li data-ng-repeat= "request in requests">{{ request.username }} <button data-ng-click = "deleteBusiness(request)"> Delete</button></li>
             </ul>
         
 

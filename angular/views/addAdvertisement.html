@@ -1,0 +1,30 @@
+<h3 style="color:#000;"> &nbsp;&nbsp; Add Advertisement</h3>
+<hr>
+
+    <div class="modal-body" >
+
+
+        <div class="form-group">
+            <label style="color:#000;" >Text</label>
+            <input type="text" name="text" class="form-control w3-round" data-ng-model="advertisement.text"/>
+             <label style="color:#000;" >Image</label>
+            <input type="text" name="image" class="form-control w3-round" data-ng-model="advertisement.filename"/>
+             <label style="color:#000;" >Start Date </label>
+            <input type="date" name= "sdate" ng-model="advertisement.sdate" class= "form-control w3-round" required  ><br>
+            <label style="color:#000;" >End Date </label>
+             <input type="date" name= "edate" ng-model="advertisement.edate" class= "form-control w3-round" required  ><br>
+            
+            
+            
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button style="color:#000;"  type="submit" class="btn btn-primary" data-ng-click= "addAds()"> Add </button>
+       <!-- <a style="color:#000;" class="btn btn-warning" ng-click="cancel()">Cancel</a> -->
+    </div>
+
+
+
+ 
+  
