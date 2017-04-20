@@ -13,7 +13,18 @@
 <script src="js/jquery.sticky.js"></script>
 <script src="js/jquery.fitvids.js"></script>
 <script src="js/custom.js"></script>
+<script>
+    var image2 = document.getElementById('profilepic');
+    var buttonUpload = document.getElementById('uploadButton');
 
+    image2.addEventListener('click', function() {
+      buttonUpload.style.display = "inline-block";
+    });
+
+    buttonUpload.addEventListener('click', function() {
+        buttonUpload.style.display = "none";
+    });
+</script>
 <!-- <script src="js/jquery.scrollUp.min.js"></script> -->
 <!-- <script src="js/classie.js"></script> -->
 
@@ -34,9 +45,42 @@
 </div>
 
 
+<section id="blog-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center uploadPic">
+               <form id="hiddenForm" onsubmit="javascript: return false;">
+                    <!-- edit profile pic !-->
+                    <div class="image-upload" style="float: left: 0; right: 0; margin: 0 auto;" >
+                        <label for="file-input">
+                            <div class="container2 image-cropper" >
+                              <img ng-src='img/avatar.png' alt="Avatar" id = "profilepic" class="image" style="width:100%;"> 
+                              <div class="middle">
+                                <div style="font-size: 20px; color:lightgrey;"> Change profile picture</div>
+                              </div>
+                            </div>
+                        </label>
+                        <input id="file-input" type="file" file-model="formData.img"/>
+                        <br>
+                        <button class="btn btn-booking" id = "uploadButton" ng-click = "changeImage(user._id)" style = "display:block; margin: 0 auto; display: none;"> Upload  </button>
+                    
+                        <!-- full name & email display !-->
+                        <div class="blog-title" style="margin: 0 auto;">
+                            <h1> {{ business.name }} </h1>
+                        </div>
+                    </div>
+
+                </form>
+  
+      </div>     <!-- End col-lg-12 -->
+    </div>      <!-- End row -->
+  </div>       <!-- End container -->
+</section>    <!-- End Section -->
+
+
 </div>
 
-        <section id="blog-banner">
+<!--         <section id="blog-banner">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 text-center">
@@ -50,10 +94,10 @@
                            </h1>
                         </div>
 
-                    </div>     <!-- End col-lg-12 -->
-                </div>      <!-- End row -->
-            </div>       <!-- End container -->
-        </section>    <!-- End Section -->
+                    </div>    
+                </div>      
+            </div>  
+        </section>    -->
 
        <section id="blog-page">
             <div class="container">

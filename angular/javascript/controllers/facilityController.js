@@ -1,10 +1,14 @@
 app.controller('facilityController', function($scope, $http, Facility, $location, $routeParams, $modal, $log) {
 
 	$scope.goToCreate = function() {
+		$scope.error = "";
 		Facility.createFacility($scope.formData)
-		.then(function(d) {
+		.then(function successCallback(d) {
 			console.log("create facility success");
 			$location.path('/');
+		},
+		function errorCallback(d){
+			$scope.error = d.data;
 		});
 	};
 
@@ -132,60 +136,31 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route)
 var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacity,name,$route) {
     $scope.form = {}
     $scope.formData = {}
+    $scope.error = "";
     $scope.submitForm = function () {
     	console.log('Add Form');
 
 			var daysOff = [];
 			var day = 0;
-    	if($scope.formData.day0 == true)
-    	{
-				daysOff[day] = 0;
-				day++;
-			}
-
-    	if($scope.formData.day1 == true)
-    	{
-				daysOff[day] = 1;
-				day++;
-			}
-
-    	if($scope.formData.day2 == true)
-    	{
-				daysOff[day] = 2;
-				day++;
-			}
-
-    	if($scope.formData.day3 == true)
-    	{
-				daysOff[day] = 3;
-				day++;
-			}
-
-    	if($scope.formData.day4 == true)
-    	{
-				daysOff[day] = 4;
-				day++;
-			}
-
-    	if($scope.formData.day5 == true)
-    	{
-				daysOff[day] = 5;
-				day++;
-			}
-
-    	if($scope.formData.day6 == true)
-    	{
-				daysOff[day] = 6;
-			}
+    	if($scope.formData.day0 == true){daysOff[day] = 0; day++; }
+    	if($scope.formData.day1 == true){daysOff[day] = 1; day++; }
+    	if($scope.formData.day2 == true){daysOff[day] = 2; day++; }
+    	if($scope.formData.day3 == true){ daysOff[day] = 3; day++;}
+    	if($scope.formData.day4 == true){ daysOff[day] = 4; day++;}
+    	if($scope.formData.day5 == true){ daysOff[day] = 5; day++;}
+    	if($scope.formData.day6 == true){ daysOff[day] = 6;}
 
     	$scope.formData.day = daysOff;
 
       Facility.addDaily(fid,description,capacity,name,$scope.formData)
-      .then(function(d){
+      .then(function successCallback(d){
       	console.log('add daily');
-      });
-      $route.reload();
-      $modalInstance.close('closed');
+      	$route.reload();
+        $modalInstance.close('closed');
+     },
+      function errorCallback(d){
+			$scope.error = d.data;
+	  });
     };
 
     $scope.cancel = function () {

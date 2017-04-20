@@ -1,4 +1,4 @@
-app.controller('eventController', function($scope, $http, Event, $location, $routeParams, $modal) {
+app.controller('eventController', function($scope, $http, Event, $location, $routeParams, $modal,$window) {
 
 console.log("event eventController");
 	Event.get($routeParams.businessId, $routeParams.eventId)
@@ -61,20 +61,25 @@ console.log("event eventController");
 
         modalInstance.result.then(function (selectedItem) {
             $scope.selected = selectedItem;
+            $window.location.reload();
             });
     }
 
 });
-var DeletePopUp2 = function ($scope, $modalInstance,Event,id,bid,$route) {
+var DeletePopUp2 = function ($scope, $modalInstance,Event,id,bid,$route,$window) {
     $scope.form = {}
     $scope.submitForm = function () {
     	console.log('Delete Form');
         Event.delete(id,bid)
         .then(function(d){
-        	console.log('del');
+        
+
         });
-        $route.reload();
-        $modalInstance.close('closed');
+            console.log('del');
+            $modalInstance.close('closed');
+            $window.location =" http://localhost:8000/#!/";
+       
+
     };
 
     $scope.cancel = function () {
@@ -87,14 +92,22 @@ var DeletePopUp2 = function ($scope, $modalInstance,Event,id,bid,$route) {
 var ModalInstanceCtrl = function ($scope, $modalInstance,Event,id,$route) {
     $scope.form = {}
     $scope.formData = {}
+    $scope.error = "";
     $scope.submitForm = function () {
-    	console.log('Submit Form'+$scope.formData);
-        Event.edit($scope.formData,id)
-        .then(function(d){
-        	console.log('yas');
-        });
-        $route.reload();
-        $modalInstance.close('closed');
+         if(($scope.formData.starttime && !$scope.formData.endtime) || (!$scope.formData.starttime && $scope.formData.endtime)){
+            $scope.error = "Must enter both a start date and end date";
+        }
+        else {
+        	console.log('Submit Form'+$scope.formData);
+            Event.edit($scope.formData,id)
+            .then(function successCallback(d){
+            	console.log('yas');
+                 $route.reload();
+                $modalInstance.close('closed');
+            }, function errorCallback(d) {
+                $scope.error = d.data;
+            });
+        }
     };
 
     $scope.cancel = function () {

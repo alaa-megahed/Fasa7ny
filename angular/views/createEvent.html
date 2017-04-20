@@ -2,6 +2,8 @@
        <section id = "blog-page">
             <div style="max-width: 400px;" ng-app = "fasa7ny" ng-controller = "onetimeController">
                 <form ng-model = "formData" name = "form.userForm">
+                 
+
                   <h3>Name</h3> <br>
                 <input style="color:#000;" class="w3-input w3-border w3-round"  type="text" ng-model = "formData.name" required></input> <br>
                   <h3>Description </h3><br>
@@ -17,13 +19,16 @@
                 <input style="color:#000;" class="w3-input w3-border w3-round" type="date" ng-model = "formData.date" required></input> <br>
 
                 <h3>StartTime</h3> <br>
-                <input type="time" class="w3-input w3-border w3-round" ng-model="formData.starttime" required><br>
+                <input style="color:#000;" type="time" class="w3-input w3-border w3-round" ng-model="formData.starttime" required><br>
                 <h3>EndTime</h3> <br>
-                <input type="time" class="w3-input w3-border w3-round" ng-model="formData.endtime" required><br>
+                <input style="color:#000;" type="time" class="w3-input w3-border w3-round" ng-model="formData.endtime" required><br>
 
                 <!-- <h3>Time</h3> <br> -->
                 <!-- <input style="color:#000;" class="w3-input w3-border w3-round" type="text" ng-model = "formData.timing" required></input> <br> -->
                 <!-- <h6>Format: start-time - end-time</h6> -->
+                <div style = "color:#ff0000">
+                 {{error}}   
+                </div>
                 <input ng-disabled="form.userForm.$invalid" type="submit" ng-click = "goToCreateEvent()" class="btn btn-transparent" value="Create">
             </form>
             </div>

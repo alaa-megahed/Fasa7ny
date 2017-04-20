@@ -31,14 +31,19 @@
             <label style="color:#000;">Date</label>
             <input type="date" class="form-control" ng-model="formData.date">
         </div>
-         <div class="form-group">
-            <label style="color:#000;">Time</label>
-            <input type="text" class="form-control" ng-model="formData.timing"><br>
-            <h4 style="color:#000;">Format: starttime-endtime</h4>
-        </div>
+         
+         <h3>StartTime</h3> <br>
+         <input style="color:#000;" type="time" class="w3-input w3-border w3-round" ng-model="formData.starttime"><br>
+          <h3>EndTime</h3> <br>
+          <input style="color:#000;" type="time" class="w3-input w3-border w3-round" ng-model="formData.endtime"><br>
+
 
     </div>
     <div class="modal-footer">
-        <button type="submit" class="btn btn-primary" ng-disabled="form.userForm.$invalid" style="color:#000;">Edit</button>
+        <div style = "color:#ff0000">
+            {{error}}   
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="color:#000;">Edit</button>
         <button class="btn btn-warning" ng-click="cancel()" style="color:#000;">Cancel</button>
     </div>

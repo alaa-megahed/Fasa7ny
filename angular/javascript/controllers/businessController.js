@@ -268,6 +268,14 @@ if($scope.business.images){
         $scope.schedule = function(id) {
            console.log("schedule controller");
            $location.path('/schedule/' + id);
+       };
+
+       $scope.changeImage = function() {
+        console.log("changeImage controller");
+        Business.changeImage($scope.formDate)
+        .then(function(d) {
+          console.log("changeImage done")
+        })
        }
 
         // $scope.goToEditFacility = function(facilityId) {

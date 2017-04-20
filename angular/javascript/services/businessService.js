@@ -41,7 +41,7 @@
               return $http.get('http://127.0.0.1:3000/business/deleteImage/' + image);
             },
 
-            addImage : function(data) {
+            addImage : function(data) { //for slider
               console.log('add image service');
               var fd = new FormData();
               for(var key in data)
@@ -64,6 +64,18 @@
               console.log('delete payment method service');
               console.log(method);
               return $http.get('http://127.0.0.1:3000/business/deletePaymentMethod/' + method);
+            },
+
+            changeImage : function(formData) {
+              var fd = new FormData();
+              for(var key in data)
+                fd.append(key, data[key]);
+
+              console.log(fd);
+              return $http.post('http://127.0.0.1:3000/business/changeProfilePicture', fd, {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+              });
             }
 
 
