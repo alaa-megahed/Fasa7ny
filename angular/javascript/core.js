@@ -26,7 +26,7 @@ app.config(function($routeProvider){
 		controller  : "businessController"
 
 	})
-	.when("/auth/reset/:id", {
+	.when("/auth/reset/:token", {
 		templateUrl : "views/resetPassword.html",
 		controller  : "resetPasswordController"
 

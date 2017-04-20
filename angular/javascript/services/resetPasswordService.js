@@ -1,8 +1,8 @@
 angular.module('fasa7ny')
 .factory('resetPassword', function($http) {
   return {
-    reset: function(id) {
-      return $http.get('/auth/reset/:' + id);
+    reset: function(token, formData) {
+      return $http.post('http://localhost:3000/auth/reset/' + token, formData);
     }
   }
 

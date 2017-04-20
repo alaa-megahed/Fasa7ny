@@ -90,9 +90,12 @@ let AuthController =
 	// 				     LOGOUT
 	// =====================================
 	logout: function(req, res) {
-		req.logout();
+
 		req.session.destroy(function (err) {
-    res.redirect('http://localhost:8000');
+
+    console.log("in logout");
+    req.logOut();
+    res.json("Successful logout");
   });
 	},
 	// =====================================

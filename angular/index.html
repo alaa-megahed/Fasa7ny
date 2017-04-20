@@ -16,6 +16,8 @@
       <script src="./javascript/controllers/navbarController.js"></script>
       <script src="./javascript/services/statusService.js"></script>
       <script src="./javascript/services/homepageService.js"></script>
+      <script src="./javascript/services/resetPasswordService.js"></script>
+      <script src="./javascript/services/statusService.js"></script>
 
 
 
@@ -131,11 +133,12 @@
                       <li><a href="#showcase">About Us</a></li>
                       <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signUp()">Sign Up</a></li>
                       <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signIn()">Sign In</a></li>
-                      <li ng-if = "user.data.user_type == 1"><a href="/auth/login"> My Profile </a></li>
-                      <li ng-if = "user.data.user_type == 2"><a href="/auth/login"> My Business Page </a></li>
-                      <li ng-if = "user.data.user_type == 3"><a href="/auth/login"> Admin Requests </a></li>
+                      <li ng-if = "user.data.user_type == 1"><a href=""> My Profile </a></li>
+                      <li ng-if = "user.data.user_type == 2"><a href=""> My Business Page </a></li>
+                      <li ng-if = "user.data.user_type == 3"><a href=""> Admin Requests </a></li>
                       <li><a href="#contact-us">Contact Us</a></li>
                       <li ng-if = "user.data.user_type"><a href="" ng-click = "logout()">Log Out</a></li>
+
 
 
                       <li><a href="#search">Search</a></li>

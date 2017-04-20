@@ -22,38 +22,6 @@ angular.module('fasa7ny')
          }
        })
       },
-      facebook: function(){
-        return $http({
-         url: 'http://127.0.0.1:3000/auth/facebook',
-         method: "GET",
-         withCredentials: true,
-         headers: {
-                     'Content-Type': 'application/x-www-form-urlencoded'
-         },
-         transformRequest: function(obj) {
-             var str = [];
-             for(var p in obj)
-             str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-             return str.join("&");
-         }
-       })
-     },
-     google: function(){
-       $http({
-        url: 'http://127.0.0.1:3000/auth/google',
-        method: "GET",
-        withCredentials: true,
-        headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-        },
-        transformRequest: function(obj) {
-            var str = [];
-            for(var p in obj)
-            str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-            return str.join("&");
-          }
-        })
-      },
       signUp : function(formData) {
         return $http({
          url: 'http://127.0.0.1:3000/auth/signup',
@@ -81,25 +49,9 @@ angular.module('fasa7ny')
       resetUnread : function() {
         return  $http.get('http://127.0.0.1:3000/user/resetUnread');
       },
-      check: function() {
-        return $http({
-         url: 'http://127.0.0.1:3000/loggedin',
-         method: "GET",
-         withCredentials: true,
-         headers: {
-                     'Content-Type': 'application/x-www-form-urlencoded'
-         },
-         transformRequest: function(obj) {
-             var str = [];
-             for(var p in obj)
-             str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-             return str.join("&");
-         }
-       })
-     },
-     logout : function() {
-       return $http.get('http://localhost:3000/auth/logout');
-     }
+      logout: function() {
+        return $http.get('http://127.0.0.1:3000/auth/logout');
+      }
 
 
     }

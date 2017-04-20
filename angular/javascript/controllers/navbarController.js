@@ -48,7 +48,6 @@ angular.module('fasa7ny')
               }
 
 
-
            });
 
 
@@ -198,9 +197,21 @@ angular.module('fasa7ny')
           if ($scope.form.userForm.$valid) {
             console.log($scope.formData);
               Homepage.signIn($scope.formData).then(function(data){
-               console.log("this is the return data " +  JSON.stringify(data));
-               $modalInstance.close("closed");
-               $window.location.reload();
+                console.log("Return data "  + JSON.stringify(data));
+                if(data.data === "success")
+                {
+                  $window.location.reload();
+                  $modalInstance.close("closed");
+                }
+
+                else
+                {
+                  $scope.err = data.data;
+                  $modalInstance.close({
+                    err : $scope.err[0]
+                  });
+                //  $scope.signIn();
+                }
 
 
 
