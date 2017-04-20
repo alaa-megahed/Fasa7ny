@@ -31,8 +31,25 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
       $scope.error_message = "";
       $scope.createOffer = function()
       {
-      	$http.post('http://127.0.0.1:3000/offers/createOffer', $scope.formData)
-			.then(function successCallback(response){
+      	console.log($scope.formData);
+      	 var fd = new FormData();
+		  for(var key in $scope.formData)
+		  {
+		    console.log($scope.formData[key]);
+		    if($scope.formData[key] != null)
+		    fd.append(key, $scope.formData[key]);
+		  }
+		  console.log("image controller offer");
+		  if($scope.formData.facility_id == null) $scope.formData.facility_id = "";
+		  if($scope.formData.event_id == null) $scope.formData.event_id = "";
+
+		 console.log($scope.formData.facility_id);
+		 console.log($scope.formData.event_id);
+
+      	$http.post('http://127.0.0.1:3000/offers/createOffer', fd,{
+        transformRequest: angular.identity,
+        headers: { 'Content-Type': undefined }
+      }).then(function successCallback(response){
                       console.log(response.data);
                       $location.path('/');
                     }, function errorCallback(response){
@@ -84,12 +101,37 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,offerType, $modal
 	$scope.offerType = offerType;
     $scope.submitForm = function (formData, facilityId) {
        		console.log(formData);	
-			$http.post('http://127.0.0.1:3000/offers/updateOffer', {id:offerId, name:formData.name, value:formData.value , details:formData.details})
-			.then(function successCallback(response){
+       		var fd = new FormData();
+		  for(var key in formData)
+		  {
+		    console.log(formData[key]);
+		    if(formData[key] != null)
+		    fd.append(key, formData[key]);
+		  }
+		  console.log("image controller offer");
+		  
+		 
+
+		 fd.append("id",offerId);
+		 console.log(fd);
+
+      	$http.post('http://127.0.0.1:3000/offers/updateOffer', fd,{
+        transformRequest: angular.identity,
+        headers: { 'Content-Type': undefined }
+      }).then(function successCallback(response){
                       console.log(response.data);
+                      $location.path('/');
                     }, function errorCallback(response){
                       console.log(response.data);
-                    }); 
+                      $scope.error_message = response.data;
+                    });
+
+			// $http.post('http://127.0.0.1:3000/offers/updateOffer', {id:offerId, name:formData.name, value:formData.value , details:formData.details})
+			// .then(function successCallback(response){
+   //                    console.log(response.data);
+   //                  }, function errorCallback(response){
+   //                    console.log(response.data);
+   //                  }); 
 
 						$route.reload();
             $modalInstance.close('closed');
