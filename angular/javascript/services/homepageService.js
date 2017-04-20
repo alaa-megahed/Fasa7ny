@@ -96,7 +96,10 @@ angular.module('fasa7ny')
              return str.join("&");
          }
        })
-      }
+     },
+     logout : function() {
+       return $http.get('http://localhost:3000/auth/logout');
+     }
 
 
     }

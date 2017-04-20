@@ -1,6 +1,6 @@
 angular.module('fasa7ny')
 
-  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage) {
+  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status) {
 
     $scope.user = {};
     $scope.err = "";
@@ -9,31 +9,26 @@ angular.module('fasa7ny')
     $scope.notifcolor = {'color' : 'white'} ;
 
 
-    Homepage.check().then(function(result)
-         {
-           $scope.user = result;
-           console.log("Data is " + JSON.stringify(result));
-           if($scope.user.data)
+    status.local().then(
+      function(result)
            {
-              console.log($scope.user.data.notifications);
-              $scope.user.data.notifications.reverse();
-              $scope.notifications =  $scope.user.data.notifications.slice(1,11);
-              if($scope.user.data.unread_notifications)
-                  $scope.notifcolor = {'color' : 'red'};
-            }
+             $scope.user = result;
+             console.log("Data is " + JSON.stringify(result));
+             if($scope.user.data)
+             {
+                console.log($scope.user.data.notifications);
 
+                $scope.user.data.notifications.reverse();
+                $scope.notifications =  $scope.user.data.notifications.slice(1,11);
+                if($scope.user.data.unread_notifications)
+                    $scope.notifcolor = {'color' : 'red'};
+              }
 
-
-         });
-
-
-            if($scope.user && !$scope.user.data)
-            {
-              var deferred = $q.defer();
-                $http.get('http://localhost:3000/loggedin').then(function(result){
-
+              if(!$scope.user.data)
+              {
+                var deferred = $q.defer();
+                status.foreign().then(function(result){
                   $scope.user = result;
-                  console.log("Data is " + JSON.stringify(result));
                   if($scope.user.data)
                   {
                      console.log($scope.user.data.notifications);
@@ -49,9 +44,12 @@ angular.module('fasa7ny')
                   deferred.reject();
                   $location.path('/');
                 });
-            }
+
+              }
 
 
+
+           });
 
 
 
@@ -133,6 +131,10 @@ angular.module('fasa7ny')
 
     $scope.google = function(){
        $window.location = $window.location.protocol + "//" + "localhost:3000" + $window.location.pathname + "auth/google";
+    }
+
+    $scope.logout = function(){
+      Homepage.logout();
     }
 
 
