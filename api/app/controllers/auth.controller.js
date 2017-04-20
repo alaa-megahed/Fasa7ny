@@ -95,13 +95,6 @@ let AuthController =
     res.redirect('http://localhost:8000');
   });
 	},
-  setUser : function(user) {
-    console.log("User is" + user);
-    fbuser = user;
-  },
-  getUser : function(user) {
-    return user;
-  },
 	// =====================================
 	// 			     	FACEBOOK
 	// =====================================
@@ -273,6 +266,27 @@ let AuthController =
 
 	getReset: function(req, res) {
         var check = 0;
+        console.log(req.param.token);
+
+        // search the registeredusers collection
+   User.findOne({ "local.resetPasswordToken": req.params.token,"local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
+     if (!user) {
+       console.log("nope");
+      check++;
+      if(check == 2)      // if no user found, print error msg and redirect
+      {
+        console.log('error', 'Password reset token is invalid or has expired.1');
+      return res.json('Password reset token is invalid or has expired.');
+      }
+      }
+      else
+      {
+      return  res.json({
+        user: req.user,
+        token: req.params.token
+      });
+    }
+      });
         // check the validity of the token sent in the url
         // first search the business collection
         Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
@@ -281,8 +295,8 @@ let AuthController =
           check++;
           if(check == 2)      // if no user found, print error msg and redirect
           {
-          console.log('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('/auth/forgot');
+          console.log('error', 'Password reset token is invalid or has expired.2');
+          return res.json( 'Password reset token is invalid or has expired.');
           }
         }
         else
@@ -293,30 +307,14 @@ let AuthController =
           });
         }
       });
-        // search the registeredusers collection
- 	 User.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
-   	 if (!user) {
-      check++;
-      if(check == 2)      // if no user found, print error msg and redirect
-      {
-        console.log('error', 'Password reset token is invalid or has expired.');
-      return res.redirect('/auth/forgot');
-      }
-    	}
-      else
-      {
-    	res.render('reset', {
-      	user: req.user,
-      	token: req.params.token
-    	});
-    }
-  	  });
+
 	},
 
 	postReset: function(req, res) {
-    if(!req.body.email) console.log("No email");
+  console.log("info " + JSON.stringify(req.body));
   async.waterfall([
     // recheck the validity of the token sent (it might be expired)
+
     function(done) {
       var check = 0;
           Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
@@ -326,7 +324,7 @@ let AuthController =
               if(check == 2)
               {
               console.log('error', 'Password reset token is invalid or has expired.');
-              return res.redirect('/auth/forgot');
+              return res.json('Password reset token is invalid or has expired.');
               }
             }
             // save the new password, and reset token related attributes
@@ -339,18 +337,20 @@ let AuthController =
                  if(err)
                  {
                   console.log("error: can not update the password, please try again");
-                  return res.redirect('/auth/login');
+                  return res.json("error: can not update the password, please try again");
                  }
               });
             }
           });
       User.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
         if (!user) {
+
+          console.log(req.params.token);
           check++;
               if(check == 2)
               {
               console.log('error', 'Password reset token is invalid or has expired.');
-              return res.redirect('/auth/forgot');
+              return res.json('Password reset token is invalid or has expired.');
               }
         }
         // save the new password, and reset token related attributes
@@ -362,8 +362,8 @@ let AuthController =
         user.save(function(err,user) {
             if(err)
             {
-              console.log("error: can not update the password, please try again");
-              return res.redirect('/auth/login');
+             console.log("error: can not update the password, please try again");
+             return res.json("error: can not update the password, please try again");
             }
             done(err, user);
         });
@@ -391,14 +391,14 @@ let AuthController =
         if(err)
         {
           console.log("ERROR: can not send email to the entered email, please try again");
-          return res.redirect('/auth/forgot');
+          return res.redirect("ERROR: can not send email to the entered email, please try again");
         }
-        console.log('success', 'Success! Your password has been changed.');
+        res.json('Success! Your password has been changed.');
         done(err);
       });
     }
   ], function(err) {
-    res.redirect('/auth/login');
+    res.redirect('http://localhost:8000/');
   });
 },
 
