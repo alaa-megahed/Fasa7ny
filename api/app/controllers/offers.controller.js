@@ -75,9 +75,10 @@ if the business added an expiration_date that is before the start_date(which if
 
 exports.createOffer = function(req, res,notify_on_create) {
 
-  if(req.user && req.user instanceof Business) 
-  {
-    var businessId = req.user.id;  //get _id from session
+  // if(req.user && req.user instanceof Business) 
+  // {
+  //  var businessId = req.user.id;  //get _id from session
+    var businessId = "58f0f3faaa02d151aa4c987c"; 
     var body = req.body;
     var file = req.file;
 
@@ -97,19 +98,19 @@ exports.createOffer = function(req, res,notify_on_create) {
       });
       newOffer.business = businessId;
 
-      if(req.body.start_date)
-      {
-         newOffer.expiration_date = new Date(body.expiration_date);
-      }
+      // if(req.body.expiration_date)
+      // {
+      //    newOffer.expiration_date = new Date(body.expiration_date);
+      // }
 
-      if(req.body.expiration_date)
-      {
-         newOffer.start_date = new Date(body.start_date);
-      }
+      // if(req.body.start_date)
+      // {
+      //    newOffer.start_date = new Date(body.start_date);
+      // }
 
       if(req.body.facility_id)
       {
-            newOffer.facility_id = facility.id;
+            newOffer.facility_id = req.body.facility_id;
       }
 
       if(req.body.lucky_first)
@@ -131,34 +132,42 @@ exports.createOffer = function(req, res,notify_on_create) {
         newOffer.image = file.filename;
       }
 
-      if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length > 0) {
-        newOffer.notify_subscribers = Number(body.notify_subscribers);
-      }
+      // if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length > 0) {
+      //   newOffer.notify_subscribers = Number(body.notify_subscribers);
+      // }
 
       var now = new Date();
-      if(typeof body.start_date != 'undefined' && body.start_date.length > 0) {
-        newOffer.start_date = new Date(body.start_date);
+      // if(typeof body.start_date != 'undefined' && body.start_date.length > 0 && new Date(body.start_date).getTime() >= new Date(now).getTime()) {
+      //   newOffer.start_date = new Date(body.start_date);
+      // } 
+
+      // else{
+      //   newOffer.startdate = now;
+      // }
+
+      // var startdate = newOffer.start_date;
+      console.log("expiration date : "+ body.expiration_date);
+       if( (!body.expiration_date  || !body.start_date) && body.type === "duration")
+      {
+        return res.status(400).json("Please add a valid start/end date. [1]");
       } 
-
-      else{
-        newOffer.startdate = now;
-      }
-
-      var startdate = newOffer.start_date;
-      if(body.expiration_date != 'undefined')
+      if(body.type === "duration") //checking undefined was not working even though it was undefined
       {
         var expirationdate = body.expiration_date;
-        if(startdate - expirationdate >= 0 || now - startdate > 0) 
+        if(new Date(body.start_date).getTime() >= new Date(expirationdate).getTime() || new Date(body.start_date).getTime() < new Date(now).getTime()) 
         {
-          res.send("please add a valid start_date/ expiration_date");
+          console.log("please add a valid start_date/ expiration_date");
+          return res.status(400).json("Please add a valid start/end date.[2]");
         }
         else
         {
            console.log("last else before saving");
            newOffer.expirationdate = expirationdate;
+           newOffer.startdate = body.start_date;
         }
       
       } 
+     
       
         newOffer.save(function(err, offer) 
         {
@@ -167,32 +176,32 @@ exports.createOffer = function(req, res,notify_on_create) {
           } else 
           {
            // notify_on_create(body.name,req.user.subscribers,req.user.name);
-               var rightNow = new Date();
-               var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");    
-               var content = req.user.name + " added " + req.body.name +"    "+ date; 
+               // var rightNow = new Date();
+               // var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");    
+               // var content = req.user.name + " added " + req.body.name +"    "+ date; 
 
-                  async.each(req.user.subscribers, function(subscriber, callback){
-                    User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
-                    {
-                      if(err)
-                        console.log("error updating user notifications");
-                      else
-                      {
-                        user.unread_notifications = user.unread_notifications + 1;
-                        user.save();
-                        console.log(user);
-                      }
-                    });
-                  }); 
-            res.send(offer);
+               //    async.each(req.user.subscribers, function(subscriber, callback){
+               //      User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
+               //      {
+               //        if(err)
+               //          console.log("error updating user notifications");
+               //        else
+               //        {
+               //          user.unread_notifications = user.unread_notifications + 1;
+               //          user.save();
+               //          console.log(user);
+               //        }
+               //      });
+               //    }); 
+            res.status(200).json(offer);
           }
         })
       
     } //
-  } else //
-  {
-    res.send("you're not a logged in business");
-  }
+  // } else //
+  // {
+  //   res.send("you're not a logged in business");
+  // }
 };
 
 /* this function is used by the business to update the offers either by
@@ -204,10 +213,11 @@ At the beginning before updating anything, we check if such offer belongs to
 the following business or not */
 exports.updateOffer = function(req, res) {
 
-  if(req.user && req.user instanceof Business && typeof req.query.id != "undefined") {
+  // if(req.user && req.user instanceof Business && typeof req.query.id != "undefined") {
     var body = req.body;
-    var businessId = req.user.id;
-    var id = req.query.id;
+ //   var businessId = req.user.id;
+    var businessId = "58f0f3faaa02d151aa4c987c";
+    var id = req.body.id;
     var file = req.file;
 
     Offer.findOne({_id:id}, function(err, offer) {
@@ -254,23 +264,23 @@ exports.updateOffer = function(req, res) {
 
               offer.save(function(err, updatedoffer) {
                 if(err) res.send("error");
-                else res.send(error + "----" +updatedoffer);
+                else res.json(updatedoffer);
               })
 
           } else res.send("you must update only your offers");
         }
       }
     })
-  } else res.send("you're not a logged in business");
+  // } else res.send("you're not a logged in business");
 };
 
 
 
 /* a business can delete an offer.*/
 exports.deleteOffer = function(req, res) {
-  if(req.user && req.user instanceof Business && typeof req.query.id != "undefined") {
-    var id = req.query.id;
-    var businessId = req.user.id;
+  // if(req.user && req.user instanceof Business && typeof req.query.id != "undefined") {
+    var id = req.params.id;
+    var businessId = "58f0f3faaa02d151aa4c987c";
     var d = new Date();
     Offer.findOne({_id:id}, function(err, offer) {
       if(err)
@@ -303,9 +313,9 @@ exports.deleteOffer = function(req, res) {
         }
       }
     })
-  } else {
-    res.send("you're not a logged in business");
-  }
+  // } else {
+  //   res.send("you're not a logged in business");
+  // }
 };
     
 //==================================== Notifications =================================================

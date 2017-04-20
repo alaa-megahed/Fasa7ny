@@ -17,7 +17,7 @@ app.factory('Occurrences',['$http',function($http)
         }
 }])
 
-.factory('Facilities',['$http',function($http)
+app.factory('Facilities',['$http',function($http)
 {
     return {
             get : function() {

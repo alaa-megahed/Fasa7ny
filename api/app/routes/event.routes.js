@@ -25,6 +25,7 @@ router.post('/viewO', RegularEventController.getOccurrences);
 router.get('/viewO',RegularEventController.getAllTimings);
 router.get('/facilities',RegularEventController.getAllFacilities);
 router.get('/getEvent/:id', RegularEventController.getEvent);
+router.get('/getOnceEvents/:id',RegularEventController.getOnceEvents);
 // router.get('/viewO/:facility_id',RegularEventController.getAllTimings);
 
 

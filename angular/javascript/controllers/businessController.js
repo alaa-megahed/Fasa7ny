@@ -7,6 +7,7 @@ app.controller('businessController', function($scope, $http, Business, $location
   $scope.sub = "Subscribe";
   console.log($routeParams.id);
   $scope.id = "58f0cb2d6bfb6061efd66625";
+
   Business.get($scope.id)
   .then(function(d) {
     console.log(d.data.result);
@@ -184,6 +185,12 @@ app.controller('businessController', function($scope, $http, Business, $location
         $scope.createFacility = function(id) {
           console.log("create facility controller");
           $location.path('/createFacility/'+ id);
+        };
+
+
+        $scope.createOffer = function(id) {
+          console.log("create offer controller");
+          $location.path('/createOffer/'+ id);
         };
 
         $scope.deleteImage = function (image) {

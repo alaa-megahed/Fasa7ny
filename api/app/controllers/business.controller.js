@@ -24,6 +24,7 @@ var BusinessController = {
                       var r = 0;
                       if(rate) r = rate.rating;//dont forget this return zero rating
                       else {
+
                         console.log(rate);
 //condition if business exists exists
                         Facility.find({business_id:result._id}, function(err, facilities) {

@@ -17,24 +17,26 @@
                          <!-- <input type="radio" ng-model="$parent.chosen_facility" value="{{facility._id}}" ng-change="choose_facility(facility._id)" >
                           <label>{{facility.name}}</label><br>
                     </div> <br><br> -->
-                     <h3> Facility :</h3>
+                     <h3> Facility </h3>
                     <div class="styled-select">                    
-                      <select  class="selectpicker" required re data-style="btn-primary" ng-model="chosen_facility">
-                      <option disabled selected value>Choose One</option>                      <option ng-repeat="facility in facilities" value="{{facility._id}}">{{facility.name}}</option>
+                      <select  class="selectpicker" style="width: 300px;color:#000;" required re data-style="btn-primary" ng-model="chosen_facility">
+                      <h3><option disabled selected value>Choose One</option></h3>                 
+                      <option ng-repeat="facility in facilities" value="{{facility._id}}">{{facility.name}}</option>
                       </select>
-                      </div>
+                    </div>
 
-                    <h3> Date  : <input type="date" ng-model="formData.day" required ng-change="choose_date(formData.day)"   ><br></h3>
+                    <h3> Date <br><br><input type="date" style="color:#000;width: 300px;" ng-model="formData.day" required ng-change="choose_date(formData.day)"><br></h3>
                        <!--  min="{{minDate | date:'yyyy-MM-dd'}}" max="{{maxDate | date:'yyyy-MM-dd'}}"  ng-min={{minDate}} ng-max={{maxDate}} -->
+                       
                         
-                    <h3> Pick a time slot :</h3> 
+                    <h3> Time slot(s) available :</h3> 
                       <div ng-repeat="timing in timings | filter : {facility_id:facility} track by $index" ng-if="timing.available > 0 && Date(timing.day) == date && Year(timing.day) == year && Month(timing.day) == month "> <!-- && d == date   -->
                       <input type="radio" required ng-model="formData.chosen_time" name="chosen_time" ng-change="choose_occ({{timing}})" value="{{timing}}">
                        <label><h4>{{"Timings: "+timing.time + " , available: "+timing.available}}</h4></label>                          
                       </div> <br>
 
-                      <h3>Number of people :  
-                           <input type="number" style="width: 80px;" required  min="1" max={{max_count}} ng-model="formData.count"></h3>
+                      <h3>Booking for 
+                           <input type="number" style="width: 70px; color:#000;" required  min="1" max={{max_count}} ng-model="formData.count"> person(s).</h3>
 
                      <h3> Special Offers:</h3> <br>
                         <div ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific audience'">
@@ -43,15 +45,15 @@
                           <br>
                         </div> <br><br>
                         
-
+                        {{error_message}}
 
                     <div ng-show="cash">
-                        <button type="submit" class="btn btn-transparent" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
+                        <button type="submit" class="btn btn-transparent" ng-disabled="formData.$invalid" ng-submit="book_cash()"> BOOK NOW AND PAY CASH</button>
                     </div>
-                        <button type="submit" class="btn btn-transparent" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
+                        <button type="submit" class="btn btn-transparent" ng-disabled="formData.$invalid" ng-submit="open_stripe()"> BOOK NOW WITH STRIPE</button>
                 </form>
 
-                  <button class="btn btn-transparent" ng-controller="cancelUserBookingController" ng-click="refund()"> refund </button>
+                  <button class="btn btn-transparent" ng-controller="cancelUserBookingController" ng-click="refund()"> TEST REFUND </button>
                     
                 </div>
                         <!-- End row -->
@@ -62,47 +64,7 @@
         <!--
         Start Main Features
         ==================================== -->
-        <section id="main-features">
-            <div class="container">
-                <div class="row">
-                    
-                    <!-- features item -->
-                    <div id="features">
-                        <div class="item">
-                            
-                            <div class="features-item">
-                                
-                               
-
-                                
-                                <!-- features content -->
-                                
-                                <!-- /features content -->
-                                
-                            </div>
-                        </div>
-                        
-                        <div class="item">
-                            <div class="features-item">
-                                                            
-                                <!-- features content -->
-                                <div class="col-md-6 feature-desc wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
-                                    <h3>Details:</h3>
-                                    <p>Details of facility/event to be booked goes here</p>
-                                  
-                                    <a href="#" class="btn btn-transparent">Learn More</a>
-                                    <a href="#" class="btn btn-transparent">Purchase Theme</a>
-                                </div>
-                                <!-- /features content -->
-                                
-                            </div>
-                        </div>
-                    </div>
-                    <!-- /features item -->
-                    
-                </div>      <!-- End row -->
-            </div>      <!-- End container -->
-        </section>   <!-- End section -->
+       
            
 
         <a href="javascript:;" id="scrollUp">

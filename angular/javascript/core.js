@@ -1,8 +1,8 @@
-// angular.module('homepage', ['homepageController', 'homepageService']);
+	// angular.module('homepage', ['homepageController', 'homepageService']);
 // angular.module('business', ['businessController', 'businessService']);
 
 
-var app = angular.module('fasa7ny',['ngRoute', 'ui.bootstrap']);
+var app = angular.module('fasa7ny',['ngRoute', 'ui.bootstrap', '720kb.datepicker']);
 
 app.config(function($routeProvider){
 	$routeProvider
@@ -43,6 +43,7 @@ app.config(function($routeProvider){
 		controller  : "facilityController"
 	})
 
+
 	// $locationProvider.html5Mode(true);
 
 	.when("/createOneEvent/:businessId", {
@@ -50,9 +51,21 @@ app.config(function($routeProvider){
 		controller  : "onetimeController"
 	})
 
+
+	.when("/createOffer/:businessId", {
+			templateUrl : "views/createOffer.html"
+			// ,
+			// controller  : "facilityController"
+	})
+
 	.when("/schedule/:id", {
 		templateUrl : "views/schedule.html",
 		controller  : "scheduleController"
+	})
+
+	.when("/offers",{
+		templateUrl : "views/offersView.html",
+		controller  : "ViewOffersController"
 	})
 
 
