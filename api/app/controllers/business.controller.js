@@ -8,7 +8,7 @@ var async = require('async');
 
 
 var BusinessController = {
-       getBusiness: function (req, res) {
+      getBusiness: function (req, res) {
         var name = "Nourhan";
         // var id = req.params.id;
         Business.findOne({ name: name }).
@@ -20,9 +20,8 @@ var BusinessController = {
 //in case there is a user logged in
                     if(!result); //return error message business does not exist
                     Rating.findOne({user_ID: "58f0c9341767d632566c9fb5" , business_ID: result._id}, function(err, rate) {
-                      if(err ) console.log("error in finding rate");
-                      var r = 0;
-                      if(rate) r = rate.rating;//dont forget this return zero rating
+                      if(err) console.log("error in finding rate");
+                      // if(!rate) //dont forget this return zero rating
                       else {
 
                         console.log(rate);
@@ -34,13 +33,18 @@ var BusinessController = {
 
                                 Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
                                     if(err) console.log("error in finding once events");
-                                    
-                                    if(!onceevents) res.json({result:result, user:"58f0c9341767d632566c9fb5",
-                                            rate:r, facilities:facilities, events:[]});
-                                    else {
-                                        
+                                    if(!onceevents) 
+                                        if(!rate)  res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                            rate:0, facilities:facilities, events:[]});
+                                            else
                                         res.json({result:result, user:"58f0c9341767d632566c9fb5",
-                                            rate:r, facilities:facilities, events:onceevents});
+                                            rate:rate.rating, facilities:facilities, events:[]});
+                                    else {
+                                         if(!rate)  res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                            rate:0, facilities:facilities, events:[]});
+                                            else
+                                        res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                            rate:rate.rating, facilities:facilities, events:onceevents});
                                     }
                                 });
                             }
@@ -54,6 +58,7 @@ var BusinessController = {
             });
 
     },
+
 
     /* A business can request to be removed from the website.
     If the business has any bookings the request is rejected and a message is sent to the business specifying

@@ -5,12 +5,11 @@ app.controller('businessController', function($scope, $http, Business, $location
   $scope.ratedBy = 0;
   $scope.avgRate = 0;
   $scope.sub = "Subscribe";
-  console.log($routeParams.id);
-  $scope.id = "58f0cb2d6bfb6061efd66625";
+  $scope.id = "58f0f3faaa02d151aa4c987c";
 
   Business.get($scope.id)
   .then(function(d) {
-    console.log(d.data.result);
+    console.log("First then "+d.data.result);
     $scope.business = d.data.result;
 
     $scope.phones = d.data.result.phones;
