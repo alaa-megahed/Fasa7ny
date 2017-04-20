@@ -21,7 +21,7 @@ router.get('/rate/:rate/:bid', user.addRating);
 router.get('/subscribe/:id',user.subscribe);
 router.get('/unsubscribe/:id',user.unsubscribe);
 router.get('/customize', user.customize);
-router.post('/editInfo/:userID', upload.single('image'), user.editInformation);
+router.post('/editInfo/:userID', upload.single('img'), user.editInformation);
 
 
 module.exports = router;

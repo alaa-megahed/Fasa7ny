@@ -6,8 +6,8 @@ app.controller('userController', function($scope, $http, User, $location, $route
 	$scope.id = "58f7bf25a609f6396ec3d286";
 	$scope.bookings ;
 	User.getUserDetails($scope.id).then(function(d) {
-		console.log(d.data.user);
-		console.log("line 6 userController");
+		//console.log(d.data.user);
+		//console.log("line 6 userController");
     	$scope.user = d.data.user;
 
 
@@ -26,9 +26,9 @@ app.controller('userController', function($scope, $http, User, $location, $route
     	$scope.bookings = ["58f758db36646333e9fd6ec0", "58f758f236646333e9fd6ec1"];
     	$scope.all_info = [];
 		for(i = 0; i < $scope.bookings.length; i++) {
-			console.log("This is scope bookings[i]" + $scope.bookings[i]);
+			//console.log("This is scope bookings[i]" + $scope.bookings[i]);
 			User.getBookingDetails($scope.bookings[i]).then(function(d) {		
-				console.log($scope.bookings[i])	;
+				//console.log($scope.bookings[i])	;
 				$scope.all_info.push(d.data);
 			});
 		}
@@ -54,6 +54,13 @@ app.controller('userController', function($scope, $http, User, $location, $route
 			}, function () {
 					$log.info('Modal dismissed at: ' + new Date());
 			});
+	}
+
+	$scope.changeImage = function(userID) {
+		console.log("ana fl change image controller")
+		User.changeImage(userID,$scope.formData).then(function(d) {
+			console.log("done changeImage");
+		});
 	}
 
 });

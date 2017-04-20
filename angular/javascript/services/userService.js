@@ -24,6 +24,20 @@ app.factory('User', ['$http', function($http) {
                 transformRequest: angular.identity,
                 headers: { 'Content-Type': undefined }
               });
+	    },
+
+	    changeImage: function(userID, formData) {
+	    	var fd = new FormData();
+              for(var key in formData)
+                fd.append(key, formData[key]);
+
+            console.log("change image service");
+            console.log(fd);
+
+	    	return $http.post('http://127.0.0.1:3000/user/editInfo/' + userID, fd, {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+              });
 	    }
     }
 

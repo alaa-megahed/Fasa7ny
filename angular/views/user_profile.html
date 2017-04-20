@@ -1,11 +1,11 @@
 <!-- Start Preloader
-==================================== -->
+==================================== 
 <div id="loading-mask">
 	<div class="loading-img">
 		<img alt="Meghna Preloader" src="../img/preloader.gif"  />
 	</div>
-</div>
-<!-- End Preloader
+</div>  
+ End Preloader
 ==================================== -->
 
 <!-- Start Top Section (image + name + email)
@@ -14,18 +14,21 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
-               
+               <form>
                 <!-- edit profile pic !-->
-                <div class="image-upload" style="float:  position: absolute; left: 0; right: 0; margin: auto">
+                <div class="image-upload" style="float: left: 0; right: 0; margin: 0 auto;">
                     <label for="file-input">
                         <div class="container2 image-cropper">
-                          <img src="../img/user_profile/avatar.png" alt="Avatar" class="image" style="width:100%;">
+                          <img ng-src='http://localhost:3000/photo/{{user.profilePic}}' alt="Avatar" class="image" style="width:100%;">
                           <div class="middle">
                             <div style="font-size: 20px; color:lightgrey;"> Change profile picture</div>
                           </div>
                         </div>
                     </label>
-                    <input id="file-input" type="file"/>
+                        <input id="file-input" type="file" file-model="formData.img" style="display: none;"/>
+                        <br>
+                        <button class="btn btn-booking" id = "uploadButton" ng-click = "changeImage(user._id)" style = "display:block; margin: 0 auto; "> Upload  </button>
+                     </form>
                 </div>
 
 
@@ -207,8 +210,8 @@
                                         </a>
                                     </div>
 
-                                    <div style="padding-left: 28px;">
-                                      <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)"> Edit Profile </button>
+                                    <div >
+                                      <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)" style = "display:block; margin: 0 auto;"> Edit Profile </button>
                                     </div>
 
                                 </div>

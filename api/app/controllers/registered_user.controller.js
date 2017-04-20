@@ -16,7 +16,7 @@ exports.getUserDetails =  function (req, res) {
 	        if(err) 
 	        	console.log("error in finding user");
 	        else {
-	        	console.log(user);
+	        	//console.log(user);
 	        	res.json({user:user});
 	        }
 	    });
@@ -26,13 +26,13 @@ exports.getUserDetails =  function (req, res) {
 exports.getBookingDetails =  function (req, res) {
         var user_id = "58f7bf25a609f6396ec3d286";
         var booking_id = req.params.booking;
-        console.log("This is the booking id in user controller :"+ booking_id);
+        //console.log("This is the booking id in user controller :"+ booking_id);
 
 	    Booking.findById(booking_id, function(err, booking) {
 	        if(err) 
 	        	console.log("error in finding booking");
 	        else {
-	        	console.log("This is booking in node "+ booking);
+	        	//console.log("This is booking in node "+ booking);
 	        	if(booking) {
 	        		EventOccurrence.findById(booking.event_id, function(err, eventocc) {
 	        			if(err)
@@ -77,7 +77,7 @@ exports.getSubscribedBusiness =  function (req, res) {
 			if(err)
 				console.log("error in finding business subscription");
 			else {
-				console.log("This is business in node subscriptions "+ business);
+				//console.log("This is business in node subscriptions "+ business);
 				res.json({business: business});
 			}
 		});	 	        							
@@ -305,30 +305,50 @@ exports.customize = function(req,res)
 phone, gender, address, email or profilePic.*/
 exports.editInformation = function(req, res) {
 	// if(req.user && req.user instanceof User) {
-		console.log("yasso");
+		console.log("inside editInfo");
 		var id = req.params.userID;
 		var body = req.body;
-		console.log("!!!!!!!!!");
-		console.log(body.name);
-		// var file = req.file;
-
-		User.findById(id, function(err, user) {
-			if(err)  res.send("error");
+		console.log("This is the body name: " + body.name);
+		var file = req.file;
+		console.log("hifile"+file);
+		User.findOne({_id:id}, function(err, user) {
+			if(err)  
+				res.send("error");
 			else {
-				if(!user) res.send("user not found");
+				if(!user) 
+					res.send("user not found");
 				else {
-					console.log("ANA GOWA");
+					console.log("This is the old birthdate:" + user.birthdate);
+
+					console.log("starting findOne");
 					if(body.name) {
-						console.log("Ana fl name");
-						user.name = body.name;}
-					if(body.birthdate) user.birthdate = new Date(body.birthdate);
-					if(typeof body.phone != "undefined" && body.phone.length > 0) user.phone = body.phone;
-					if(typeof body.gender != "undefined" && body.gender.length > 0) user.gender = body.gender;
-					if(typeof body.address != "undefined" && body.address.length > 0) user.address = body.address;
-					if(typeof body.email != "undefined" && body.email.length > 0) user.email = body.email;
-					if(typeof file != "undefined") user.profilePic = file.filename;
-					console.log(user);
-					user.save(function(err) if(err) res.status(500).json(err.message));
+						console.log("Name in body: " + body.name);
+						user.name = body.name;
+					}
+					 if (body.birthdate && body.birthdate !== 'null') {
+					 	console.log("Birthdate in body: " + body.birthdate);
+					 	user.birthdate = new Date(body.birthdate);
+					 	if ( isNaN( user.birthdate.getTime() ) ) {
+						    return res.send('error'); // or whatever response you deem appropriate
+						 }					 	
+					 }
+					if(typeof body.phone != "undefined" && body.phone.length > 0) {
+						console.log("Phone in body: " + body.phone);
+						user.phone = body.phone;
+					}
+					if(typeof body.gender != "undefined" && body.gender.length > 0) 
+						user.gender = body.gender;
+					if(typeof body.address != "undefined" && body.address.length > 0) 
+						user.address = body.address;
+					if(typeof body.email != "undefined" && body.email.length > 0) 
+						user.email = body.email;
+					if(typeof file != "undefined") 
+						user.profilePic = file.filename;
+					console.log("This is the 'unsaved' user" + user);
+					user.save(function(err) {
+					  if (err) return res.send('error');
+					  res.send('okay');
+					});
 				}
 			}
 		});

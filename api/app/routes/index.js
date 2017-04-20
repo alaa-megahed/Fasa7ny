@@ -34,4 +34,9 @@ router.get('/', function (req, res) {
     // res.render('index0.ejs');
 });
 
+router.use('/photo/:photo', function (req, res) {
+   console.log(path.resolve('public/uploads/' + req.params.photo));
+   res.sendFile(path.resolve('public/uploads/' + req.params.photo));
+});
+
 module.exports = router;
