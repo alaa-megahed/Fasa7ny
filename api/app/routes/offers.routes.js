@@ -17,6 +17,6 @@ router.get('/viewOffers/:id', OffersController.viewOffers);
 router.get('/createOffer', OffersController.getCreateOffer);
 router.post('/createOffer', upload.single('image'), OffersController.createOffer);
 router.post('/updateOffer', upload.single('image'), OffersController.updateOffer);
-router.get('/deleteOffer', OffersController.deleteOffer);
+router.get('/deleteOffer/:id', OffersController.deleteOffer);
 
 module.exports = router;

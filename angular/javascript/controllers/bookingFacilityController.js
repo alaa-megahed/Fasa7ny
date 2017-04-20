@@ -71,13 +71,14 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
         $scope.event_price = $scope.chosen_event.price;
         console.log("chosen eventprice in book cash is "+$scope.event_price);
         $scope.min_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
-        
+        $scope.error_message=""
         console.log("This is count :"+ $scope.formData.count);
         $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.charge, user_id: "58f0f48daa02d151aa4c987f"})
                     .then(function successCallback(response){
                       console.log(response.data);
                     }, function errorCallback(response){
                       console.log(response.data);
+                       $scope.error_message = response.data;
                     }); 
                     
       }
@@ -99,10 +100,12 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
                               console.log(responce.data);
                             }, function errorCallback(responce){
                               console.log(responce.data);
+                               $scope.error_message = responce.data;
                             }); 
 
                     }, function errorCallback(responce){
                       console.log(responce.data);
+                       $scope.error_message = responce.data;
                     });
           }
         });

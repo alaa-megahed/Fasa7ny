@@ -25,6 +25,7 @@
    <input ng-if = "business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent">
    <input type="submit" value="Create a Facility" ng-click = "createFacility(business._id)" class="btn btn-transparent">
    <input type="submit" value="Create One-Time Event" ng-click = "createOneEvent(business._id)" class="btn btn-transparent">
+   <input type="submit" value="Create Offer " ng-click = "createOffer(business._id)" class="btn btn-transparent">
     <form action="#!/business/edit" method="get">
        <input type="submit" value="Edit Information" class="btn btn-transparent">
      </form>
@@ -256,6 +257,9 @@
     <input type="submit" value="Book Now!" class="btn btn-transparent w3-green">
     <hr>
 </div>
+
+
+
 <br>
 <!-- </div> -->
 <button onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button>
@@ -312,8 +316,71 @@
     Location: {{event.location}} <br> -->
     </ul>
 </div>
+
 <br>
-<button ng-click="schedule(business._id)" class="btn btn-transparent"> Check my schedule </button>
+<button ng-click="schedule(business._id)" class="btn btn-transparent"> Check My Schedule &nbsp; </button>
+<br>
+
+
+<button onclick="myFunction('Demo3')" class="btn btn-transparent" >Check Our Offers&nbsp;&nbsp;&nbsp;&nbsp;</button>
+
+<div id="Demo3" ng-controller="ViewOffersController" class="w3-hide w3-container">
+<br>
+  <div id="primary" class="sidebar-right">
+    <div class="container group">
+        <div class="row">
+            <!-- START CONTENT -->
+            <div ng-repeat = "offer in offers" id="content-blog" class="span9 content group">
+                <div style="background-color:#2B2C30;" class="post type-post status-publish format-video sticky hentry category-web-design hentry-post group blog-small">
+                    <!-- post featured & title -->
+
+                    <div style="background-color:#2B2C30;" class="thumbnail">
+                        <div style="background-color:#2B2C30;" class="row">
+                            <!-- post featured -->
+                            <div class="image-wrap span4">
+                              <hr>
+                                <img style="width: auto\9;height: auto;max-width: 100%; vertical-align: middle;border: 0; -ms-interpolation-mode: bicubic;" width="365" height="340"
+                                 src="../img/portfolio/portfolio.jpg" class="attachment-blog_small wp-post-image" alt="3" />
+                                 <hr>
+                                 <center>
+                                  <button  class="btn btn-transparent" ng-controller = "EditOffersController" ng-click = "editOffer(offer._id,offer.type)" > Edit Offer </button>
+                                 <button  class="btn btn-transparent" ng-controller = "DeleteOffersController" ng-click = "deleteOffer(offer._id)"> Delete Offer </button>
+                                   <hr style="border: 0.5px solid #90EE90">
+                                 <center>
+                            </div>
+
+                            <!-- post title -->
+                            <div class="span5">
+                                <h2 class="post-title">
+                                    <h3>{{offer.name}}</h3>
+                                </h2>
+                                <hr width="60%">
+                                <div class="the-content">
+                                    <hr width="60%"> Details:
+                                    <p> {{offer.details}}</p>
+
+                                </div>
+                                <div class="the-content">
+                                    <hr width="60%"> Value: 
+                                    <p> {{offer.value}}</p>
+
+                                </div>
+                            </div>
+
+                            <div class="clear"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <hr>
+</div>
+
+
+
 </div>
 
 

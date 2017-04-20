@@ -377,23 +377,24 @@ exports.createEvent = function (req, res) {
 	// }
 }
 
-exports.getOnceEvents = function(req,res)
+exports.getOnceEvents = function(req,res) 
 {
 	//whoever views business page can see all "once" events, no restrictions
-	var business_name = req.params.name;
+	var business_id = req.params.id;
+	console.log(business_id);
 
-	Business.find({name:business_name},function(err,business)
+	Business.findById(business_id,function(err,business)
 	{
 		if(err || !business)
-			res.send("Oops!! Something went wrong");
+			res.send("Oops!! Something went wrong (1)");
 		else
 		{
 			Events.find({business_id: business.id,repeated:"Once"},function(err,events)
 			{
 				if(err)
-					res.send("Oops!! Something went wrong");
+					res.status(500).json("Oops!! Something went wrong (2)");
 				else
-					res.send(events);
+					res.status(200).json(events);
 			});
 		}
 

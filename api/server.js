@@ -8,7 +8,7 @@ var mongoose = require('./config/mongoose'),
     app      = express(),
     cors     = require('cors');
 
-app.listen(config.port);
+// app.listen(config.port);
 
 // var Events = require('./app/models/Event');
 

@@ -17,7 +17,7 @@ app.controller('cancelUserBookingController',function($scope, $http, $location, 
   $scope.amount = $scope.booking.charge;
 
 
-  $scope.refund= function()
+  $scope.refund = function()
   {
       $http.post('http://127.0.0.1:3000/bookings/refund', {charge_id: $scope.stripe_charge, amount: $scope.amount})
       .then(function successCallback(response){

@@ -6,7 +6,7 @@ var Facility = require('mongoose').model('Facility');
 
 var BusinessController = {
        getBusiness: function (req, res) {
-        var name = "business1";
+        var name = "Nourhan";
         // var id = req.params.id;
         Business.findOne({ name: name }).
             exec(function (err, result) {
@@ -20,6 +20,7 @@ var BusinessController = {
                       if(err) console.log("error in finding rate");
                       // if(!rate) //dont forget this return zero rating
                       else {
+
                         console.log(rate);
 //condition if business exists exists
                         Facility.find({business_id:result._id}, function(err, facilities) {
@@ -29,9 +30,16 @@ var BusinessController = {
 
                                 Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
                                     if(err) console.log("error in finding once events");
-                                    if(!onceevents) res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                    if(!onceevents) 
+                                        if(!rate)  res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                            rate:0, facilities:facilities, events:[]});
+                                            else
+                                        res.json({result:result, user:"58f0c9341767d632566c9fb5",
                                             rate:rate.rating, facilities:facilities, events:[]});
                                     else {
+                                         if(!rate)  res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                            rate:0, facilities:facilities, events:[]});
+                                            else
                                         res.json({result:result, user:"58f0c9341767d632566c9fb5",
                                             rate:rate.rating, facilities:facilities, events:onceevents});
                                     }
