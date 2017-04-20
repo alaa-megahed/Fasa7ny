@@ -23,6 +23,7 @@ angular.module('fasa7ny')
                 $scope.notifications =  $scope.user.data.notifications.slice(1,11);
                 if($scope.user.data.unread_notifications)
                     $scope.notifcolor = {'color' : 'red'};
+                $scope.type = 0;
               }
 
               if(!$scope.user.data)
@@ -38,9 +39,9 @@ angular.module('fasa7ny')
                      if($scope.user.data.unread_notifications)
                          $scope.notifcolor = {'color' : 'red'};
                    }
-                  console.log("response is " + JSON.stringify(result));
 
-                  deferred.resolve();
+                  deferred.resolve(result);
+                 console.log("response is " + JSON.stringify(deferred.promise));
                 },function(response){
                   deferred.reject();
                   $location.path('/');
@@ -136,10 +137,24 @@ angular.module('fasa7ny')
     $scope.logout = function(){
 
       $scope.user = null;
-      Homepage.logout().then(function(result)
+      console.log($scope.type);
+      if(!$scope.type)
       {
-          console.log(result);
-      })
+        Homepage.logoutLocal().then(function(result){
+
+        })
+      }
+      else {
+        Homepage.logout().then(function(result)
+        {
+            console.log(result);
+        })
+      }
+
+
+
+
+
     }
 
 

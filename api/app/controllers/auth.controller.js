@@ -93,8 +93,7 @@ let AuthController =
 
 		req.session.destroy(function (err) {
       req.logout();
-      res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
-      res.setHeader("Access-Control-Allow-Origin", "*");
+      res.json("successful");
   });
 	},
 	// =====================================
