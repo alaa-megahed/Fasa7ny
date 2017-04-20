@@ -102,7 +102,7 @@ var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
 };
 
 var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route, Business, $http) {
-    $scope.form = {}
+    $scope.form = {};
     $scope.yes = function (facilityId) {
         // if ($scope.form.editForm.$valid) {
             console.log('user form is in scope');
@@ -110,23 +110,21 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 						Business.getFacilityOccs(facilityId).then(function succcessCallback(response)
 						{
 							var occs = response.data;
+							console.log(occs);
 							for (var i = 0; i < occs.length; i++) 
 							{
 								var bookings = occs[i].bookings;
+								console.log("bookings lamma bagebha mn occs[i] "+bookings);
 								for (var j = 0; j < bookings.length; j++) {
 									Business.getBooking(bookings[j]).then(function succcessCallback(response)
 									{
 										var cur_booking = response.data;
+										console.log("booking[j] :"+cur_booking);
 										if(cur_booking.stripe_charge != undefined)
 										{
 											$http.post('http://127.0.0.1:3000/bookings/refund', {charge_id: cur_booking.stripe_charge, amount: cur_booking.charge})
 											      .then(function successCallback(response){
-											          $http.post('http://127.0.0.1:3000/bookings/deleteRegUserBookings',{bookingD: $scope.booking._id})
-											              .then(function successCallback(response){
-											                              console.log(response.data);
-											                            }, function errorCallback(response){
-											                              console.log(response.data);
-											                       });
+											         	console.log(response.data);
 											      }, function errorCallback(response){
 											          console.log(response.data);
 											      });

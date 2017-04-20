@@ -31,7 +31,7 @@ exports.createFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f0f3faaa02d151aa4c987c";
 		console.log(req.body);
 		console.log(req.file.filename);
 		if(!req.body.name || !req.body.description || !req.body.capacity)
@@ -143,7 +143,7 @@ exports.deleteFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58e666a20d04c180d969d591";
+		var id = "58f0f3faaa02d151aa4c987c";
 		var facility_id = req.params.facilityId;
 		console.log("delete facility backend");
 		Business.findById(id,function(err,business)
@@ -181,6 +181,13 @@ exports.deleteFacility = function(req,res)
 					else
 						return res.json({err:"You are not authorized to perform this action"});
 				}
+			});
+			Facility.findByIdAndRemove(facility_id,function(err)
+			{
+				if(err)
+					res.status(500).json("Something went wrong.");
+				else
+					res.status(200).json("cancelled facility successfully");
 			});
 		});
 	// }
