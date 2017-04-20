@@ -178,8 +178,9 @@ exports.edit_booking = function(req,res)
 exports.cancel_booking = function(req,res)
 {
 
-  if(req.user && req.user instanceof Business)
-  {
+  // if(req.user && req.user instanceof Business)
+  // {
+
     var bookingID = req.body.booking_id;       //id of booking to be cancelled
     var event_id  = req.body.event_id;         //event_id of booking to be cancelled
 
@@ -207,10 +208,10 @@ exports.cancel_booking = function(req,res)
                         var business = event.business_id;
 
                          //check if this booking belongs to business currently manipulating it
-                         if(business != req.user.id)
-                            res.status(403).json("You do not have authority to access this page");
-                          else
-                          {
+                         // if(business != req.user.id)
+                         //    res.status(403).json("You do not have authority to access this page");
+                         //  else
+                           //{
 
                              Booking.findByIdAndRemove(bookingID,function(err,booking)
                               {
@@ -241,18 +242,18 @@ exports.cancel_booking = function(req,res)
                               });
 
 
-                          }
+                          //}
                       }
                     });
                  }
               });
           }
       });
-  }
-  else
-  {
-    res.status(401).json("You do not have authority to access this page");
-  }
+  // }
+  // else
+  // {
+  //   res.status(401).json("You do not have authority to access this page");
+  // }
 
 }
 

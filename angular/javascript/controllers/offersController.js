@@ -12,9 +12,6 @@ app.controller('ViewOffersController', function($scope, $http, $location, Offers
 });
 
 
-
-
-
 app.controller('createOffersController',function($scope,$http,Facilities,OneTimeEvent,$location)
 {
 
@@ -49,7 +46,7 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
 
 //========== Edit ============
 
-app.controller('EditOffersController', function($scope, $http, $location, Offers, $modal) {
+app.controller('EditOffersController', function($scope, $http, $location, Offers, $modal, $window) {
       
       $scope.business_id = "58f0f3faaa02d151aa4c987c";
       Offers.get($scope.business_id).then(function(response) {
@@ -76,6 +73,7 @@ app.controller('EditOffersController', function($scope, $http, $location, Offers
 
 			modalInstance.result.then(function (selectedItem) {
 					$scope.selected = selectedItem;
+					$window.location.reload();
 			});
 	  };        
      

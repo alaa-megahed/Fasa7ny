@@ -48,9 +48,9 @@
                         {{error_message}}
 
                     <div ng-show="cash">
-                        <button type="submit" class="btn btn-transparent" ng-disabled="formData.$invalid" ng-submit="book_cash()"> BOOK NOW AND PAY CASH</button>
+                        <button type="submit" class="btn btn-transparent" ng-disabled="formData.$invalid" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
                     </div>
-                        <button type="submit" class="btn btn-transparent" ng-disabled="formData.$invalid" ng-submit="open_stripe()"> BOOK NOW WITH STRIPE</button>
+                        <button type="submit" class="btn btn-transparent" ng-disabled="formData.$invalid" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
                 </form>
 
                   <button class="btn btn-transparent" ng-controller="cancelUserBookingController" ng-click="refund()"> TEST REFUND </button>

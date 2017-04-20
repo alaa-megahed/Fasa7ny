@@ -71,15 +71,15 @@ var app = angular.module('fasa7ny');
             },
 
             getFacilityOccs: function(facility_id){
-              return $http.get('http://127.0.0.1:3000/business/getFacilityOccs' + facility_id);
+              return $http.get('http://127.0.0.1:3000/business/getFacilityOccs/' + facility_id);
             },
 
             getEventOccs: function(event_id){
-              return $http.get('http://127.0.0.1:3000/business/getEventOccs' + event_id);
+              return $http.get('http://127.0.0.1:3000/business/getEventOccs/' + event_id);
             },
 
             getBooking: function(booking_id){
-              return $http.get('http://127.0.0.1:3000/business/getBooking' + booking_id);
+              return $http.get('http://127.0.0.1:3000/business/getBooking/' + booking_id);
             },
 
             // checkSession : function(id) {

@@ -58,14 +58,35 @@ var mongoose = require('./config/mongoose'),
 // });
 // F.save();
 
+
+//  var Event = require('./app/models/Event').Events;
+// var ev = new Event(
+// 	{
+	
+// 	location : "locloc",
+// 	name : "Testing delete facility3",
+// 	description : "please",
+// 	price : 300,
+// 	capacity : 30,
+// 	repeated : "Daily",
+// 	facility_id : "58f8f32c747f6f5a6695e683",
+// 	business_id : "58f0f3faaa02d151aa4c987c",
+// 	daysOff : [ ],
+// 	image : [
+// 		" "
+// 	]
+// });
+
+// ev.save();
+
 // var EventOcc = require('./app/models/Event').EventOccurrences;
 // var E = new EventOcc(
 // {
 // 	day: new Date(),
-//     time: "4-5",
-//     available: 7,
-//     event : "58f1605e08902a21866c2c97",
-//     facility_id :"58f3bddb232f9d42f7d3a3a3"
+//     time: "4-12",
+//     available: 70,
+//     event : "58f8f3a27d7f8b5ad5c06e85",
+//     facility_id :"58f8e97e2510a154deb83153"
 
 // });
 // E.save();

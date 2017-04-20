@@ -21,6 +21,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
       $scope.choose_facility = function(facility_id)
       {
         $scope.facility = facility_id;
+        console.log($scope.facility);
       }
       $scope.choose_date = function(date)
       {
@@ -50,8 +51,9 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
         Facilities.getEvent($scope.event).then(function(response)
         {
             $scope.chosen_event = response.data;
-            console.log("this is response.data in choose_occ "+response.date);
+            console.log("this is response.data in choose_occ "+response.data);
         });
+
       }
 
       $scope.minDate = new Date();
@@ -71,7 +73,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
         $scope.event_price = $scope.chosen_event.price;
         console.log("chosen eventprice in book cash is "+$scope.event_price);
         $scope.min_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
-        $scope.error_message=""
+        $scope.error_message="";
         console.log("This is count :"+ $scope.formData.count);
         $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.charge, user_id: "58f0f48daa02d151aa4c987f", business_id: $scope.business_id})
                     .then(function successCallback(response){
@@ -145,7 +147,7 @@ var apply_best_offer_facility = function(facility, event_occ, price, capacity, c
                 {
                     if(typeof offers[i].event_id == 'undefined')
                     {
-                        if(typeof offers[i].facility_id == 'undefined' || offers[i].facility_id === facility._id)
+                        if(typeof offers[i].facility_id == 'undefined' || offers[i].facility_id === facility)
                         {
                             if(offers[i].type === "min_count" && count >= offers[i].count)
                             {
