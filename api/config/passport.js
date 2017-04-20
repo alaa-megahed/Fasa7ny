@@ -53,6 +53,8 @@ module.exports = function(passport)
       },
       function(req, username, password, done)
       {
+
+
           console.log(req.body);
           var check = 0;
           // check weather the username entered is unique
@@ -78,7 +80,10 @@ module.exports = function(passport)
                       newUser.name           = req.body.name;
                       newUser.email          = req.body.email;
                       newUser.phone          = req.body.phone;
-                      newUser.birthdate      = req.body.birthdate;
+                      if (req.body.birthdate && req.body.birthdate !== 'null')
+                      {
+                        newUser.birthdate      = req.body.birthdate;
+                      }
                       newUser.address        = req.body.address;
                       newUser.gender         = req.body.gender;
                       newUser.profilePic     = req.body.profilePic;
@@ -112,7 +117,10 @@ module.exports = function(passport)
                       newUser.name           = req.body.name;
                       newUser.email          = req.body.email;
                       newUser.phone          = req.body.phone;
-                      newUser.birthdate      = req.body.birthdate;
+                      if (req.body.birthdate && req.body.birthdate !== 'null')
+                      {
+                        newUser.birthdate      = req.body.birthdate;
+                      }
                       newUser.address        = req.body.address;
                       newUser.gender         = req.body.gender;
                       newUser.profilePic     = req.body.profilePic;
@@ -148,7 +156,10 @@ module.exports = function(passport)
                       newUser.name           = req.body.name;
                       newUser.email          = req.body.email;
                       newUser.phone          = req.body.phone;
-                      newUser.birthdate      = req.body.birthdate;
+                       if (req.body.birthdate && req.body.birthdate !== 'null')
+                        {
+                          newUser.birthdate      = req.body.birthdate;
+                        }
                       newUser.address        = req.body.address;
                       newUser.gender         = req.body.gender;
                       newUser.profilePic     = req.body.profilePic;
