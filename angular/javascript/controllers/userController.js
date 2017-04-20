@@ -1,7 +1,7 @@
 
 var app = angular.module('fasa7ny');
 
-app.controller('userController', function($scope, $http, User, $location, $routeParams, $modal) {
+app.controller('userController', function($scope, $http, User, $location, $routeParams, $modal, $window) {
 
 	$scope.id = "58f7bf25a609f6396ec3d286";
 	$scope.bookings ;
@@ -60,6 +60,7 @@ app.controller('userController', function($scope, $http, User, $location, $route
 		console.log("ana fl change image controller")
 		User.changeImage(userID,$scope.formData).then(function(d) {
 			console.log("done changeImage");
+			$window.location.reload();
 		});
 	}
 
