@@ -15,6 +15,7 @@
     "html5-boilerplate": "^5.3.0",
     "angular-file-upload": "^2.5.0",
     "fullcalendar": "^3.3.1",
-    "angularjs-datepicker": "^2.1.17"
+    "angularjs-datepicker": "^2.1.17",
+    "angularjs-datepicker": "latest"
   }
 }
