@@ -110,17 +110,48 @@ exports.editFacility = function(req,res)
 						//update capacity in event and available in event occurrences
 						if(req.body.capacity)
 						{
-							Events.update({facility_id:facility_id},{ $set: { capacity: Number(req.body.capacity) }},function(err)
+							Events.update({facility_id:facility_id},{ $set: { capacity: Number(req.body.capacity) }},function(err,event)
 							{
 								if(err)
 									return res.json({err:"error updating event"});
 							});
-							EventOccurrences.update({facility_id:facility_id},{ $set: { available: Number(req.body.capacity) }},function(err)
+							EventOccurrences.update({facility_id:facility_id},{ $set: { available: Number(req.body.capacity) }},function(err,eventocc)
 							{
 								if(err)
 									return res.json({err:"error updating eventocc"});
+
+								//To check if old occurrences have bookings>new capacity. I think it should
+								// be applicable on the new occurrences and those that have not been exceeded.
+								// or tell the business in the popup changes in capacity won't change past ones.
+								// Bookings.find({event_id: eventocc.id},function(err,bookings)
+								// {
+								// 	if(err)
+								// 		res.send("error");
+								// 	else
+								// 	{
+								// 		if(bookings.length > req.body.capacity)
+								// 			return res.status(500).json("You already have bookings more than new capacity");
+								// 	}
+								// });
+
 							});
 
+						}
+						if(req.body.name)
+						{
+							Events.update({facility_id:facility_id},{ $set: { name: req.body.name }},function(err)
+							{
+								if(err)
+									return res.json({err:"error updating event"});
+							});
+						}
+						if(req.body.description)
+						{
+							Events.update({facility_id:facility_id},{ $set: { description: req.body.description }},function(err)
+							{
+								if(err)
+									return res.json({err:"error updating event"});
+							});
 						}
 
 						facility.save();
