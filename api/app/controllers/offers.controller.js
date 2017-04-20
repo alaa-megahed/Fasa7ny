@@ -15,13 +15,13 @@ exports.viewOffers = function(req, res) {
     // var id = req.query.id;
    var id = "58f0cb2d6bfb6061efd66625";
 
-   Business.findOne({_id:id}, function(err, business) 
+   Business.findOne({_id:id}, function(err, business)
    {
       if(err || !business)
         return res.send("error in viewOffers");
       else
-      { 
-        Offer.find({business:id}, function(err, offers) 
+      {
+        Offer.find({business:id}, function(err, offers)
          {
             if(err)
               console.log("error in viewOffers");
@@ -47,7 +47,7 @@ exports.viewOffers = function(req, res) {
     //   }
     // })
  // } else
-  //  if(req.user && req.user instanceof Business) 
+  //  if(req.user && req.user instanceof Business)
   //  {
   //     var id = req.user.id;
   //     Offer.find({business:id}, function(err, offers) {
@@ -58,14 +58,14 @@ exports.viewOffers = function(req, res) {
   //           //res.render("crudoffer", {offers:offers, id:req.user.id});
   //       }
   //   })
-  // } 
+  // }
   // else {
   //   res.send("enter a business to find its offers");
   // }
 }
 
 exports.getCreateOffer = function(req, res){
-  if(req.user && req.user instanceof Business) 
+  if(req.user && req.user instanceof Business)
    {
       var id = req.user.id;
       Offer.find({business:id}, function(err, offers) {
@@ -76,10 +76,10 @@ exports.getCreateOffer = function(req, res){
             res.render("crudoffer", {offers:offers, id:req.user.id});
         }
     });
-  } 
+  }
   else {
     res.send("enter a business to find its offers");
-  } 
+  }
 }
 
 /*this function is used by business to create an offer where he must enter
@@ -104,7 +104,7 @@ exports.createOffer = function(req, res,notify_on_create) {
         type:body.type,
         value:body.value,
         details:body.details
-       
+
       });
       newOffer.business = businessId;
 
@@ -151,19 +151,19 @@ exports.createOffer = function(req, res,notify_on_create) {
         {
           res.send("please add a valid start_date/ expiration_date");
         }
-      
-      } 
-      else 
+
+      }
+      else
       {
         newOffer.save(function(err, offer) {
           if(err) {
             res.send("error in creating offer");
-          } else 
+          } else
           {
            // notify_on_create(body.name,req.user.subscribers,req.user.name);
                var rightNow = new Date();
-               var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");    
-               var content = req.user.name + " added " + req.body.name +"    "+ date; 
+               var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");
+               var content = req.user.name + " added " + req.body.name +"    "+ date;
 
                   async.each(req.user.subscribers, function(subscriber, callback){
                     User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
@@ -177,7 +177,7 @@ exports.createOffer = function(req, res,notify_on_create) {
                         console.log(user);
                       }
                     });
-                  }); 
+                  });
             res.send(offer);
           }
         })
@@ -300,13 +300,13 @@ exports.deleteOffer = function(req, res) {
     res.send("you're not a logged in business");
   }
 };
-    
+
 //==================================== Notifications =================================================
 
 function notify_on_create(offer_name,subscribers,business)
 {
   //Notification:  "Business name" just added "event name".
-  var content = business+ "added" + offer_name; 
+  var content = business+ "added" + offer_name;
   var notification = new Notification(
   {
     date: new Date(),

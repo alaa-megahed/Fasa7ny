@@ -6,10 +6,11 @@ var Rating = mongoose.model('Rating');
 
 exports.subscribe = function(req,res)
 {
-	if(req.user && req.user instanceof User) {
-		var userID = req.user.id;
-		var businessID = req.body.business;
+	// if(req.user && req.user instanceof User) {
+		var userID = "58f09946fcefb434ea0d4e22";
+		var businessID = req.params.id;
 		var subscribed_business;
+		console.log("business sub");
 		User.findOne({_id: userID}, function(err, user_found)
 		{
 			if(err) {
@@ -46,19 +47,21 @@ exports.subscribe = function(req,res)
 			}
 		 });
 		});
-	}
-	else {
-		res.redirect('/auth/login');
-    }
+	// }
+	// else {
+	// 	res.redirect('/auth/login');
+ //    }
 }
 
 
 exports.unsubscribe = function(req,res)
 {
-	if(req.user && req.user instanceof User) {
-		var userID = req.user.id;
-	    var businessID = req.body.business;
+	// if(req.user && req.user instanceof User) {
+		// var userID = req.user.id;
+		var userID = "58f09946fcefb434ea0d4e22";
+	    var businessID = req.params.id;
 	    var subscribed_business;
+			console.log("business unsub");
 	    User.findOne({_id: userID}, function(err, user_found)
 	    {
 			if(err) {
@@ -104,21 +107,23 @@ exports.unsubscribe = function(req,res)
 
 
 	    });
-	}
-	else {
-		res.redirect('/auth/login');
-	}
+	// }
+	// else {
+		// res.redirect('/auth/login');
+	// }
 }
 
 
 exports.addRating = function(req, res)
 {
 
-	 if(req.user && req.user instanceof User) {
+	//  if(req.user && req.user instanceof User) {
+		 var userID = "58f0c9341767d632566c9fb5";
+		// var userID = req.user.id;              // from passport session; changed to body temporarily for testing
+	    var businessID = req.params.bid;        // from url parameters; changed from param to body
 
-		var userID = req.user.id;              // from passport session; changed to body temporarily for testing
-	    var businessID = req.body.business;        // from url parameters; changed from param to body
-	    var rating2 = req.body.rating;		   // from post body
+	    var rating2 = req.params.rate;		   // from post body
+			console.log("entered addRating");
 	    var rating_query = {user_ID: userID, business_ID: businessID};
 
 	    Rating.findOne(rating_query, function(err, previous_rating)
@@ -129,6 +134,7 @@ exports.addRating = function(req, res)
 	    	}
 
 	    	if (previous_rating) {
+					console.log("previous_rating");
 	    		previous_rating.rating = rating2;
 					previous_rating.save();
 	    	}
@@ -148,15 +154,18 @@ exports.addRating = function(req, res)
 
 
 	    });
-	}
-	else {
-	 	res.redirect('/auth/login');
-    }
+	// }
+	// else {
+		// 	res.redirect('/auth/login');
+    // }
 };
 
 exports.average_rating = function(req,res)
 {
-    var businessID = req.body.business;
+	console.log("entered average_rating");
+    var businessID = req.params.bid;
+		// var businessID = "58e666a20d04c180d969d591";
+
 
 	Rating.find({business_ID:businessID}, function(err,ratings) { //this exists mainly to postpone the function
 		Rating.aggregate([{$group: {_id : '$business_ID', average: {$avg: '$rating'}}}],
@@ -174,7 +183,13 @@ exports.average_rating = function(req,res)
 					}
 					else
 					{
-						return res.send("rating successfully added");
+						Business.findOne({_id:businessID}, function(err, updatedBusiness) {
+							if(err) console.log("error");
+							else {
+								console.log(updatedBusiness.average_rating);
+								return res.json({average_rating:updatedBusiness.average_rating });
+							}
+						})
 					}
 				});
 			}

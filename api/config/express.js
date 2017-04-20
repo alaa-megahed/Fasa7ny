@@ -56,8 +56,11 @@ module.exports = function() {
 
 
 
+
     app.set('views', '../angular/views');
+
     app.set('view engine', 'ejs');
+
 
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
@@ -70,7 +73,6 @@ module.exports = function() {
     var router = require('../app/routes');
 
     app.use(router);
-
 
 
                                 // pass passport for passport configuration

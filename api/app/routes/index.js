@@ -33,6 +33,13 @@ router.use('/contact', function(req, res) {
 //       res.sendFile(path.resolve('../angular/index.html'));
 // });
 
+
+router.use('/photo/:photo', function (req, res) {
+   console.log(path.resolve('public/uploads/' + req.params.photo));
+   res.sendFile(path.resolve('public/uploads/' + req.params.photo));
+});
+
+
 router.get('/loggedin', function (req, res) {
 
     console.log("this is req.user  " + req.user);
@@ -41,6 +48,7 @@ router.get('/loggedin', function (req, res) {
 
 router.get('/loggedin1', function (req1, res1) {
   res1.json(req1.user);
+
 });
 
 module.exports = router;

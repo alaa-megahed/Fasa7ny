@@ -5,8 +5,10 @@ var passport = require('passport'),
     Business   = require('../models/Business'),
     nodemailer = require("nodemailer"),
     configAuth = require('../../config/auth'),
-    xoauth2 = require('xoauth2'),
-    fbuser;
+
+    xoauth2 = require('xoauth2');
+
+
 let AuthController =
 {
 	// ============================
@@ -23,6 +25,7 @@ let AuthController =
 		res.json(req.flash('loginMessage'));
 	},
 
+
   getLoginSuccess: function(req, res) {
     res.json("success");
   },
@@ -31,6 +34,7 @@ let AuthController =
     passport.authenticate('local-login', {
 		successRedirect : '/auth/successLogIn',
 		failureRedirect : '/auth/failLogIn',
+
 		failureFlash : true
 	})(req, res);},
 
@@ -40,6 +44,7 @@ let AuthController =
 	getSignupFail: function(req, res) {
 		res.json(req.flash('signupMessage'));
 	},
+
 
   getSignupSuccess: function(req, res) {
 		res.json("success");
@@ -51,6 +56,7 @@ let AuthController =
     passport.authenticate('local-signup', {
 		successRedirect : '/auth/successSignUp',
 		failureRedirect : '/auth/failSignUp',
+
 		failureFlash : true
 	})(req, res);},
 
@@ -92,8 +98,10 @@ let AuthController =
 	logout: function(req, res) {
 
 		req.session.destroy(function (err) {
+
       req.logout();
       res.json("successful");
+
   });
 	},
 	// =====================================
@@ -101,6 +109,7 @@ let AuthController =
 	// =====================================
 	facebookLogin   : function(req, res){
 		passport.authenticate('facebook', { scope : 'email' })(req, res);},
+
 
 	facebookCallback: function(req, res,next){
     passport.authenticate('facebook', function(err, user, info) {
@@ -267,6 +276,7 @@ let AuthController =
 
 	getReset: function(req, res) {
         var check = 0;
+
         console.log(req.param.token);
 
         // search the registeredusers collection
@@ -288,6 +298,7 @@ let AuthController =
       });
     }
       });
+
         // check the validity of the token sent in the url
         // first search the business collection
         Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
@@ -296,8 +307,10 @@ let AuthController =
           check++;
           if(check == 2)      // if no user found, print error msg and redirect
           {
+
           console.log('error', 'Password reset token is invalid or has expired.2');
           return res.json( 'Password reset token is invalid or has expired.');
+
           }
         }
         else
@@ -363,8 +376,10 @@ let AuthController =
         user.save(function(err,user) {
             if(err)
             {
+
              console.log("error: can not update the password, please try again");
              return res.json("error: can not update the password, please try again");
+
             }
             done(err, user);
         });
