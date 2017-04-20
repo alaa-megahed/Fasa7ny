@@ -329,7 +329,7 @@ exports.editInformation = function(req, res) {
 					 	console.log("Birthdate in body: " + body.birthdate);
 					 	user.birthdate = new Date(body.birthdate);
 					 	if ( isNaN( user.birthdate.getTime() ) ) {
-						    return res.send('error'); // or whatever response you deem appropriate
+						    return res.send('error'); 
 						 }					 	
 					 }
 					if(typeof body.phone != "undefined" && body.phone.length > 0) {
