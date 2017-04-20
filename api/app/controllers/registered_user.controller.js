@@ -247,3 +247,22 @@ exports.editInformation = function(req, res) {
 		});
 	} else res.send("you are not authorized to view this page");
 }
+
+
+
+//To get notifications
+
+exports.resetUnread = function(req,res){
+	if(req.user && req.user instanceof User)
+	{
+		User.findByIdAndUpdate(req.user.id, {unread_notifications : 0} , function(err,user){
+			if(err)
+				return res.status(500).send(err);
+			
+
+		})
+	}
+	else {
+		res.json("Unauthorized access.");
+	}
+}

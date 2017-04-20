@@ -3,6 +3,7 @@ var router   = express.Router();
 var search   = require('./search.routes.js');
 var business = require('./business.routes.js');
 var bookings = require('./bookings.routes');
+var path 	 = require('path');
 
 var reviews  = require('./reviews.routes');
 var offers   = require('./offers.routes');
@@ -13,7 +14,6 @@ var event = require('./event.routes');
 var auth = require('./auth.routes');
 var user = require('./registered_user.routes');
 var admin = require('./web_admin.routes');
-var path = require('path');
 
 router.use('/auth', auth);
 router.use('/event', event);
@@ -28,15 +28,27 @@ router.use('/admin', admin);
 router.use('/contact', function(req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
+//
+// router.get('/', function (req, res) {
+//       res.sendFile(path.resolve('../angular/index.html'));
+// });
+
 
 router.use('/photo/:photo', function (req, res) {
    console.log(path.resolve('public/uploads/' + req.params.photo));
    res.sendFile(path.resolve('public/uploads/' + req.params.photo));
 });
 
-router.get('/', function (req, res) {
-    res.sendfile('public/views/index.html');
-    // res.render('index0.ejs');
+
+router.get('/loggedin', function (req, res) {
+
+    console.log("this is req.user  " + req.user);
+    res.json(req.user);
+});
+
+router.get('/loggedin1', function (req1, res1) {
+  res1.json(req1.user);
+
 });
 
 module.exports = router;

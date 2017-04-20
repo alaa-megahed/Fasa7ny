@@ -5,8 +5,8 @@ var mongoose = require('./config/mongoose'),
     express  = require('./config/express'),
     db       = mongoose(),
 
-    app      = express(),
-    cors     = require('cors');
+    app      = express();
+
 
 app.listen(config.port);
 
@@ -40,6 +40,7 @@ app.listen(config.port);
 // business.save(function(err){
 // if(err) throw err;
 // });
+
 
 
 module.exports = app;

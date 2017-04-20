@@ -18,24 +18,24 @@ var RegisteredUserSchema = new Schema({
     unread_notifications : {type: Number, default: 0},
     local    :
     {
-        username: 
+        username:
         {
             type : String
         },
-        password: 
+        password:
         {
             type : String,
         },
         resetPasswordToken: String,
-        resetPasswordExpires: Date    
+        resetPasswordExpires: Date
     },
-    facebook   : 
+    facebook   :
     {
         id     : String,
         token  : String,
         email  : String
-    }, 
-    google     : 
+    },
+    google     :
     {
         id     : String,
         token  : String,

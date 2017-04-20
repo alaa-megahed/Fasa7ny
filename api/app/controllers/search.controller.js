@@ -14,12 +14,12 @@ SearchController = {
     search: function (req, res) {
         var formData = req.body;
         var sortBy = formData.sortBy;
-        console.log(formData); 
-        var queryBody = helper.makeQuery(formData); // retrieve query body 
+        console.log(formData);
+        var queryBody = helper.makeQuery(formData); // retrieve query body
 
         var query = Business.find(queryBody);
 
-        if (typeof sortBy !== 'undefined' && sortBy.length > 0) { //apply sort filter only if not empty 
+        if (typeof sortBy !== 'undefined' && sortBy.length > 0) { //apply sort filter only if not empty
             var sortObj = {};
             sortObj[sortBy] = -1;
             query.sort(sortObj);
@@ -31,8 +31,9 @@ SearchController = {
             if (err)
                 res.send(err);
             else {
-                console.log(result); 
+                console.log(result);
                 res.render('search.ejs', {result: result});
+                // res.json(result);
             }
         });
 
@@ -42,8 +43,8 @@ SearchController = {
 //module that contains helper methods to the SearchController
 helper = {
     /**
-     * Extracts the relevent information from formData input 
-     * and returns the body of the query to be executed 
+     * Extracts the relevent information from formData input
+     * and returns the body of the query to be executed
      */
     makeQuery: function (formData) {
 
@@ -62,8 +63,8 @@ helper = {
                 { area: new RegExp(keyword, 'i') }
             ];
         }
-        
-        // add filters one by one, according to user input 
+
+        // add filters one by one, according to user input
         var anding = [];
         if (category.length > 0) {
             anding.push({ category: new RegExp(category, 'i') });
@@ -83,4 +84,4 @@ helper = {
         return query;
     }
 }
-module.exports = SearchController; 
+module.exports = SearchController;

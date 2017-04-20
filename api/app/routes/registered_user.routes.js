@@ -18,4 +18,6 @@ router.get('/unsubscribe/:id',user.unsubscribe);
 router.get('/customize', user.customize);
 router.post('/editInfo', upload.single('image'), user.editInformation);
 
+router.get('/resetUnread', user.resetUnread);
+
 module.exports = router;

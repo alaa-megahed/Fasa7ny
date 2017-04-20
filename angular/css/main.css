@@ -44,12 +44,14 @@ margin: 0;
 }
 
 a {
+
 color: #fff;
 
 -webkit-transition: all .3s ease-in 0s;
 -moz-transition: all .3s ease-in 0s;
 -o-transition: all .3s ease-in 0s;
 transition: all .3s ease-in 0s;
+
 }
 
 iframe {
@@ -75,6 +77,7 @@ margin-bottom: 0 !important;
 }
 
 .btn {
+
 background-color: transparent;
 color: #fff;
 padding: 10px 30px;
@@ -85,6 +88,7 @@ margin-top: 15px;
 -moz-transition: all .5s ease-in 0s;
 -o-transition: all .5s ease-in 0s;
 transition: all .5s ease-in 0s;
+
 }
 
 .btn:focus {
@@ -97,8 +101,10 @@ background-color: #6cb670;
 
 .btn-green:focus,
 .btn-green:hover {
+
 background-color: #2F383D;
 color: #fff;
+
 }
 
 .btn-transparent {
@@ -133,6 +139,7 @@ color: #ddd;
 }
 
 .form-control:-moz-placeholder { /* Firefox 18- */
+
 color: #ddd;
 }
 
@@ -142,6 +149,7 @@ color: #ddd;
 
 .form-control:-ms-input-placeholder {  /*  Internet Explorer  */
 color: #ddd;
+
 }
 
 
@@ -332,6 +340,7 @@ padding: 70px 0;
 }
 
 .icon-box {
+
 position: relative;
 width: 160px;
 height: 92.38px;
@@ -356,6 +365,7 @@ transition-duration: 0.3s;
 -moz-transition-property: transform;
 -o-transition-property: transform;
 transition-property: transform;
+
 }
 
 .icon-box:hover {
@@ -461,6 +471,7 @@ padding-bottom: 125px;
 }
 
 .service-block {
+
 padding: 50px 20px;
 border-left: 1px solid #4e595f;
 border-top: 1px solid #4e595f;
@@ -469,6 +480,7 @@ margin-bottom: 40px;
 -webkit-box-shadow:2px 2px 5px rgba(44, 44, 44, .3), 13px 13px 0 rgba(256, 256, 256, .7);
 -moz-box-shadow:2px 2px 5px rgba(44, 44, 44, .3), 13px 13px 0 rgba(256, 256, 256, .7);
 box-shadow:2px 2px 5px rgba(44, 44, 44, .3), 13px 13px 0 rgba(256, 256, 256, .7);
+
 }
 
 .service-icon {
@@ -507,6 +519,7 @@ position: relative;
 }
 
 .portfolio-filter ul li a::before {
+
 position: absolute;
 top: 0;
 left: 0;
@@ -534,6 +547,7 @@ content: '';
 -moz-transition: height 0.3s;
 -o-transition: height 0.3s;
 transition: height 0.3s;
+
 }
 
 .portfolio-filter ul li a:hover::before {
@@ -567,6 +581,7 @@ transform: scale(1.4) rotate(15deg);
 }
 
 .hover-mask {
+
 top: 0;
 left: 0;
 width: 100%;
@@ -587,6 +602,7 @@ transition: all 600ms ease-out 0s;
 -ms-transform: rotateY(180deg) scale(0.5,0.5);
 -o-transform: rotateY(180deg) scale(0.5,0.5);
 transform: rotateY(180deg) scale(0.5,0.5);
+
 }
 
 .hover-mask h3 {
@@ -612,6 +628,7 @@ width: 50px;
 }
 
 .og-grid .mix a:hover .hover-mask {
+
 opacity: 1;
 filter: alpha(opacity=100);
 
@@ -620,6 +637,7 @@ filter: alpha(opacity=100);
 -ms-transform: rotateY(0deg) scale(1,1);
 -o-transform: rotateY(0deg) scale(1,1);
 transform: rotateY(0deg) scale(1,1);
+
 }
 
 
@@ -717,6 +735,7 @@ padding: 10px 15px;
 
 
 .member-photo .mask {
+
 background-color: rgba(43, 44, 48, 0.8);
 position: absolute;
 text-align: center;
@@ -750,6 +769,7 @@ filter: alpha(opacity=100);
 -ms-transform: rotateY(0deg) scale(1,1);
 -o-transform: rotateY(0deg) scale(1,1);
 transform: rotateY(0deg) scale(1,1);
+
 }
 
 .team-mate h3 {
@@ -1153,14 +1173,16 @@ transition: all 400ms ease-out 0s;
 }
 
 .social-icon > ul > li > a > i {
-color: #55606a;
-display: inline-block;
-font-size: 32px;
-line-height: 70px;
-margin: 0;
 
-opacity: 0.3;
-filter: alpha(opacity=30);
+    color: #6CB670;
+    display: inline-block;
+    font-size: 32px;
+    line-height: 70px;
+    margin: 0;
+
+    opacity: 1;
+    filter: alpha(opacity=30);
+
 
 -webkit-transform: rotateY(180deg);
 -moz-transform: rotateY(180deg);
@@ -1175,6 +1197,7 @@ transition: all 400ms ease-out 0s;
 }
 
 .social-icon > ul > li:hover a {
+
 background-color: #6CB670;
 
 -webkit-transform: rotateY(0deg);
@@ -1194,6 +1217,7 @@ filter: alpha(opacity=100);
 -ms-transform: rotateY(0deg);
 -o-transform: rotateY(0deg);
 transform: rotateY(0deg);
+
 }
 
 .copyright {
@@ -1387,9 +1411,11 @@ float: left;
 }
 
 .tab-post-nav li.active a {
+
 border-top: 3px solid #6cb670;
 background-color: #2F383D;
 color: #6CB670;
+
 }
 
 .tab-pane.active .clearfix:first-child {
@@ -1621,6 +1647,11 @@ margin: 0;
 }
 
 
+/* ============================================
+	Nourhan css for radio button
+	===========================================*/
+
+
 
 
 .menu {
@@ -1713,6 +1744,7 @@ padding-top: 4px;
 text-transform: uppercase;
 }
 
+
 .date .day
 {
 display: block;
@@ -1722,3 +1754,133 @@ color: #FFF;
 font-size: 18px;
 font-weight: bold;
 }
+
+input[type=radio]:checked ~ label{
+  color: #0DFF92;
+}*/
+/*==========================================Farida==================================
+ It will not work without the style tag, so don't remove it. (I know it doesn't make sense)
+ ===================================================================================*/
+<style>
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+
+
+li a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover, .dropdown:hover .dropbtn {
+    background-color: #6cb670;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.notif:hover {
+  background-color: #6cb670;
+}
+
+#search {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+
+    -webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+
+    -webkit-transform: translate(0px, -100%) scale(0, 0);
+	-moz-transform: translate(0px, -100%) scale(0, 0);
+	-o-transform: translate(0px, -100%) scale(0, 0);
+	-ms-transform: translate(0px, -100%) scale(0, 0);
+	transform: translate(0px, -100%) scale(0, 0);
+
+    opacity: 0;
+}
+
+#search.open {
+    -webkit-transform: translate(0px, 0px) scale(1, 1);
+    -moz-transform: translate(0px, 0px) scale(1, 1);
+	-o-transform: translate(0px, 0px) scale(1, 1);
+	-ms-transform: translate(0px, 0px) scale(1, 1);
+	transform: translate(0px, 0px) scale(1, 1);
+    opacity: 1;
+}
+
+#search input[type="search"] {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    color: rgb(255, 255, 255);
+    background: rgba(0, 0, 0, 0);
+    font-size: 60px;
+    font-weight: 300;
+    text-align: center;
+    border: 0px;
+    margin: 0px auto;
+    margin-top: -51px;
+    padding-left: 30px;
+    padding-right: 30px;
+    outline: none;
+}
+#search .btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 61px;
+    margin-left: -45px;
+}
+#search .close {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    color: #fff;
+	background-color: ##6cb670;
+	border-color: ##6cb670;
+	opacity: 1;
+	padding: 10px 17px;
+	font-size: 27px;
+}
+
+</style>
+

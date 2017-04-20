@@ -1,12 +1,13 @@
 var passport = require('passport'),
     async    = require('async'),
     crypto   = require('crypto'),
-    configAuth = require('../../config/auth'),
     User = require('../models/RegisteredUser'),
     Business   = require('../models/Business'),
     nodemailer = require("nodemailer"),
     configAuth = require('../../config/auth'),
+
     xoauth2 = require('xoauth2');
+
 
 let AuthController =
 {
@@ -20,29 +21,47 @@ let AuthController =
 	// ============================
 	// 		    	LOGIN
 	// ============================
-	getLogin: function(req, res) {
-
-		res.render('login.ejs', { message: req.flash('loginMessage') });
+	getLoginFail: function(req, res) {
+		res.json(req.flash('loginMessage'));
 	},
 
-	postLogin: function(req, res){passport.authenticate('local-login', {
-		successRedirect : '/', 
-		failureRedirect : '/auth/login',
+
+  getLoginSuccess: function(req, res) {
+    res.json("success");
+  },
+
+	postLogin: function(req, res){
+    passport.authenticate('local-login', {
+		successRedirect : '/auth/successLogIn',
+		failureRedirect : '/auth/failLogIn',
+
 		failureFlash : true
 	})(req, res);},
 
 	// ============================
 	//           SIGNUP
 	// ============================
-	getSignup: function(req, res) {
-		res.render('signup.ejs', { message: req.flash('signupMessage') });
+	getSignupFail: function(req, res) {
+		res.json(req.flash('signupMessage'));
 	},
 
-	postSignup: function(req, res){passport.authenticate('local-signup', {
-		successRedirect : '/auth/profile',
-		failureRedirect : '/auth/signup',
+
+  getSignupSuccess: function(req, res) {
+		res.json("success");
+	},
+
+
+	postSignup: function(req, res){
+
+    passport.authenticate('local-signup', {
+		successRedirect : '/auth/successSignUp',
+		failureRedirect : '/auth/failSignUp',
+
 		failureFlash : true
 	})(req, res);},
+
+
+
 
 	// ============================
 	// 	    PROFILE SECTION
@@ -52,7 +71,7 @@ let AuthController =
 		{
 			if(req.user.user_type == 1)       // regular user
 			{
-        res.redirect('http://localhost:3000/user/customize');
+        res.redirect('/');
         // res.render('user_profile.ejs', {
         // user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });
 			}
@@ -77,24 +96,40 @@ let AuthController =
 	// 				     LOGOUT
 	// =====================================
 	logout: function(req, res) {
-		req.logout();
+
 		req.session.destroy(function (err) {
-    res.redirect('/');
+
+      req.logout();
+      res.json("successful");
+
   });
 	},
-
 	// =====================================
 	// 			     	FACEBOOK
 	// =====================================
 	facebookLogin   : function(req, res){
 		passport.authenticate('facebook', { scope : 'email' })(req, res);},
 
-	facebookCallback: function(req, res){
-		passport.authenticate('facebook', {
-            						successRedirect : '/auth/profile',
-            						failureRedirect : '/'
-       							   })(req, res);
-								},
+
+	facebookCallback: function(req, res,next){
+    passport.authenticate('facebook', function(err, user, info) {
+          if (err) { return next(err); }
+          if (!user) { return res.json("error"); }
+          req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            req.session.save(function(){
+             return res.redirect("http://localhost:8000/");
+           });
+          });
+        })(req, res);
+
+
+		},
+
+
+
+
+
 
 	// =====================================
 	// 			      	GOOGLE
@@ -103,9 +138,21 @@ let AuthController =
 		passport.authenticate('google', { scope : ['profile', 'email'] })(req, res);
 	},
 
-	googleCallback: function(req, res){
-		passport.authenticate('google', { failureRedirect: 'http://localhost:3000', successRedirect :'http://localhost:3000/auth/profile'})(req, res);
-	},
+  googleCallback: function(req, res){
+    passport.authenticate('google', function(err, user, info) {
+          if (err) { return next(err); }
+          if (!user) { return res.json("error"); }
+          req.logIn(user, function(err) {
+            if (err) { return next(err); }
+            req.session.save(function(){
+             return res.redirect("http://localhost:8000/");
+           });
+          });
+        })(req, res);
+
+
+		},
+
 
 	// =====================================
 	// 		     FORGOT PASSWORD
@@ -115,6 +162,8 @@ let AuthController =
 	},
 
 	forgotPassword: function(req, res, next) {
+    if(req.body.email){
+
   		async.waterfall([
       // generate random token of length 20, to uniquely identify each request of reseting password
     	function(done) {
@@ -131,7 +180,7 @@ let AuthController =
               if(err)
               {
                   console.log("Sorry for inconvenience, your trial to reset the password has been denied");
-                  return res.redirect('/auth/forgot');
+                  return res.json("Sorry for inconvenience, your trial to reset the password has been denied");
               }
               if(!business)
               {
@@ -139,7 +188,7 @@ let AuthController =
                 if(check == 2)    // if no user found, print error msg and redirect
                 {
                 console.log('error', 'No account with that email address exists.');
-                return res.redirect('/auth/forgot');
+                return res.json("No account with that email address exists.");
                 }
               }
               // if found, set the values of resetPasswordToken to the token generated
@@ -158,14 +207,14 @@ let AuthController =
             if(err)
               {
                   console.log("Sorry for inconvenience, your trial to reset the password has been denied");
-                  return res.redirect('/auth/forgot');
+                  return res.json("Sorry for inconvenience, your trial to reset the password has been denied");
               }
         	if (!user) {
             check++;
             if(check == 2)       // if no user found, print error msg and redirect
             {
               console.log('error', 'No account with that email address exists.');
-              return res.redirect('/auth/forgot');
+              return res.json("No account with that email address exists.");
             }
 
         	}
@@ -178,7 +227,7 @@ let AuthController =
         		  if(err)
               {
                   console.log("Sorry for inconvenience, your trial to reset the password has been denied");
-                  return res.redirect('/auth/forgot');
+                  return res.json("Sorry for inconvenience, your trial to reset the password has been denied");
               }
           	done(err, token, user);
         	});
@@ -204,7 +253,7 @@ let AuthController =
         	subject: 'Fasa7ny Password Reset',
         	text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
           	'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-          	'http://' + req.headers.host + '/auth/reset/' + token + '\n\n' +                                    //url containing the token generated
+          	'http://' + req.headers.host + '/#!/auth/reset/' + token + '\n\n' +                                    //url containing the token generated
           	'If you did not request this, please ignore this email and your password will remain unchanged.\n'
      		};
      	  // send the email using nodeMailer, and previously specified options
@@ -212,9 +261,9 @@ let AuthController =
       			if(err)
             {
       				console.log("ERROR: can not send email to the entered email, please try again");
-              return res.redirect('/auth/forgot');
+              return res.json("ERROR: can not send email to the entered email, please try again");
             }
-        	console.log('info', 'An e-mail has been sent to ' + user.email + ' with further instructions.');
+        	return res.json("An e-mail has been sent to " + user.email + " with further instructions.");
        		done(err, 'done');
       	});
     	}
@@ -222,10 +271,34 @@ let AuthController =
     	if (err) return next(err);
     	res.redirect('/');
   	  });
-	},
+	}
+},
 
 	getReset: function(req, res) {
         var check = 0;
+
+        console.log(req.param.token);
+
+        // search the registeredusers collection
+   User.findOne({ "local.resetPasswordToken": req.params.token,"local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
+     if (!user) {
+       console.log("nope");
+      check++;
+      if(check == 2)      // if no user found, print error msg and redirect
+      {
+        console.log('error', 'Password reset token is invalid or has expired.1');
+      return res.json('Password reset token is invalid or has expired.');
+      }
+      }
+      else
+      {
+      return  res.json({
+        user: req.user,
+        token: req.params.token
+      });
+    }
+      });
+
         // check the validity of the token sent in the url
         // first search the business collection
         Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
@@ -234,8 +307,10 @@ let AuthController =
           check++;
           if(check == 2)      // if no user found, print error msg and redirect
           {
-          console.log('error', 'Password reset token is invalid or has expired.');
-          return res.redirect('/auth/forgot');
+
+          console.log('error', 'Password reset token is invalid or has expired.2');
+          return res.json( 'Password reset token is invalid or has expired.');
+
           }
         }
         else
@@ -246,29 +321,14 @@ let AuthController =
           });
         }
       });
-        // search the registeredusers collection
- 	 User.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
-   	 if (!user) {
-      check++;
-      if(check == 2)      // if no user found, print error msg and redirect
-      {
-        console.log('error', 'Password reset token is invalid or has expired.');
-      return res.redirect('/auth/forgot');
-      }
-    	}
-      else
-      {
-    	res.render('reset', {
-      	user: req.user,
-      	token: req.params.token
-    	});
-    }
-  	  });
+
 	},
 
 	postReset: function(req, res) {
+  console.log("info " + JSON.stringify(req.body));
   async.waterfall([
     // recheck the validity of the token sent (it might be expired)
+
     function(done) {
       var check = 0;
           Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
@@ -278,7 +338,7 @@ let AuthController =
               if(check == 2)
               {
               console.log('error', 'Password reset token is invalid or has expired.');
-              return res.redirect('/auth/forgot');
+              return res.json('Password reset token is invalid or has expired.');
               }
             }
             // save the new password, and reset token related attributes
@@ -291,18 +351,20 @@ let AuthController =
                  if(err)
                  {
                   console.log("error: can not update the password, please try again");
-                  return res.redirect('/auth/login');
+                  return res.json("error: can not update the password, please try again");
                  }
               });
             }
           });
       User.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
         if (!user) {
+
+          console.log(req.params.token);
           check++;
               if(check == 2)
               {
               console.log('error', 'Password reset token is invalid or has expired.');
-              return res.redirect('/auth/forgot');
+              return res.json('Password reset token is invalid or has expired.');
               }
         }
         // save the new password, and reset token related attributes
@@ -314,8 +376,10 @@ let AuthController =
         user.save(function(err,user) {
             if(err)
             {
-              console.log("error: can not update the password, please try again");
-              return res.redirect('/auth/login');
+
+             console.log("error: can not update the password, please try again");
+             return res.json("error: can not update the password, please try again");
+
             }
             done(err, user);
         });
@@ -343,14 +407,14 @@ let AuthController =
         if(err)
         {
           console.log("ERROR: can not send email to the entered email, please try again");
-          return res.redirect('/auth/forgot');
+          return res.redirect("ERROR: can not send email to the entered email, please try again");
         }
-        console.log('success', 'Success! Your password has been changed.');
+        res.json('Success! Your password has been changed.');
         done(err);
       });
     }
   ], function(err) {
-    res.redirect('/auth/login');
+    res.redirect('http://localhost:8000/');
   });
 },
 
