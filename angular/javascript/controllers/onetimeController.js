@@ -4,10 +4,15 @@ console.log("habiiba one");
 	console.log($scope.businessId);
 
 	$scope.goToCreateEvent = function(){
+		$scope.error = "";
 		console.log("Create event 1");
 		OneTimeEvent.create($scope.formData)
-		.then(function(d){
+		.then(function successCallback(d) {
+			console.log("create facility success");
 			$location.path('/'+$scope.businessId);
+		},
+		function errorCallback(d){
+			$scope.error = d.data;
 		})
 	};
 

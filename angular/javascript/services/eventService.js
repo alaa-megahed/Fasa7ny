@@ -15,6 +15,10 @@ app.factory('Event', ['$http', function($http) {
 
         edit : function(formData,id){
         	console.log("edit service"+formData);
+
+          if(formData.starttime && formData.endtime)
+            formData.timing = formData.starttime.getHours()+":"+formData.starttime.getMinutes()+"-"+formData.endtime.getHours()+":"+formData.endtime.getMinutes();
+
         	return $http.post('http://127.0.0.1:3000/event/edit/'+id, formData);
         }
   }

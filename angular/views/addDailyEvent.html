@@ -40,6 +40,10 @@
 
     </div>
     <div class="modal-footer">
+        <div style = "color:#ff0000">
+            {{error}}   
+        </div>
+
         <button type="submit" class="btn btn-primary" ng-disabled="form.userForm.$invalid" style="color:#000;">Create</button>
         <button class="btn btn-warning" ng-click="cancel()" style="color:#000;">Cancel</button>
     </div>
