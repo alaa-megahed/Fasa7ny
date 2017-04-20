@@ -73,7 +73,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
         $scope.min_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
         
         console.log("This is count :"+ $scope.formData.count);
-        $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.charge, user_id: "58f0f48daa02d151aa4c987f"})
+        $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.charge, user_id: "58f0f48daa02d151aa4c987f", business_id: $scope.business_id})
                     .then(function successCallback(response){
                       console.log(response.data);
                     }, function errorCallback(response){
@@ -94,7 +94,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
                     .then(function successCallback(responce){
                       console.log("success  charge in responce  "+ responce.data);
                       console.log("success  charge in responce  "+ responce.data.id);
-                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:responce.data.id, charge: $scope.charge, user_id: "58f0f48daa02d151aa4c987f"})
+                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:responce.data.id, charge: $scope.charge, user_id: "58f0f48daa02d151aa4c987f", business_id: $scope.business_id})
                             .then(function successCallback(responce){
                               console.log(responce.data);
                             }, function errorCallback(responce){

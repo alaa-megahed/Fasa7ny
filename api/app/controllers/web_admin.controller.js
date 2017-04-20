@@ -3,6 +3,7 @@ var Business = require('mongoose').model('Business');
 var generator = require('generate-password');
 var Events = require('mongoose').model('Events');
 var EventOcc = require('mongoose').model('EventOccurrences');
+var Facility = require('mongoose').model('Facility');
 var Offer = require('mongoose').model('Offer');
 var User = require('mongoose').model('RegisteredUser');
 var Review = require('mongoose').model('Review');
@@ -131,40 +132,35 @@ exports.AddBusiness = function (req, res) {
 exports.WebAdminDeleteBusiness = function (req, res) {
 
 
-    Business.findById(req.params.id, function (err, business) {
-        if (err)
-            throw err;
+    Business.findById(req.body.id, function (err, business) {
+        if(err) res.status(500).json(err.message);
+
         //remove offers
         Offer.remove({ business: business._id }, function (err) {
 
-            if (err) throw err;
+           if(err) res.status(500).json(err.message);
         });
-        //remove events of the business
-        Events.find({ business_id: business._id }, function (err, events) {
-            if (err) throw err;
-            else
-            {
-                async.each(events, function(event, callback){
-                    EventOcc.remove({ event: event._id }, function (err) {
-                        if (err)
-                            throw err;
-                    });
-                });
-
-                Events.remove({ business_id: business._id }, function (err) {
-                    if (err)
-                        throw err;
-                });
-            }
-
+        // remove events
+        Events.remove({ business_id: business._id }, function (err) {
+            if (err)
+                if(err) res.status(500).json(err.message);
         });
+        // remove facilities
+        Facility.remove({business_id: business._id}, function(err){
+            if(err) return res.status(500).json(err.message);
+        });
+        // remove event occuerrences
+        EventOcc.remove({business_id: business._id}, function(err){
+            if(err) res.status(500).json(err.message);
+        });
+
 
         //remove business from subscribers
 
         async.each(business.subscribers, function(subscriber, callback){
             User.findById(subscriber, function (err, user) {
                 if (err)
-                    throw err;
+                        res.status(500).json(err.message);
                 else {
                     var subs = user.subscriptions;
                     var index = subs.indexOf(business._id);
@@ -172,7 +168,7 @@ exports.WebAdminDeleteBusiness = function (req, res) {
                         subs.splice(index, 1);
                         User.findByIdAndUpdate(subscriber, { $set: { subscriptions: subs } }, function (err, userResult) {
                             if (err)
-                                throw err;
+                                res.status(500).json(err.message);
 
                         });
                     }
@@ -183,13 +179,14 @@ exports.WebAdminDeleteBusiness = function (req, res) {
         Business.findByIdAndRemove(req.params.id, function (err, business) {
             if (err)
                 throw err;
+            res.status(200).json("Succefully deleted");
         });
 
-        Business.find({ delete: 1 }, function (err, requests) {
-            if (err)
-                throw err;
-            res.render('requestedDelete', { user: req.user, requests: requests });
-        });
+        // Business.find({ delete: 1 }, function (err, requests) {
+        //     if (err)
+        //         throw err;
+        //     res.render('requestedDelete', { user: req.user, requests: requests });
+        // });
     });
 
 

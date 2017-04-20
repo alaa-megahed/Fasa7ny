@@ -36,6 +36,10 @@ var app = angular.module('fasa7ny');
             	return $http.get('http://127.0.0.1:3000/business/requestRemoval');
             },
 
+            hasBookings : function(){
+              return $http.get('http://127.0.0.1:3000/business/hasBookings');
+            },
+
             deleteImage : function(image) {
               console.log('delete image service');
               return $http.get('http://127.0.0.1:3000/business/deleteImage/' + image);
@@ -64,8 +68,19 @@ var app = angular.module('fasa7ny');
               console.log('delete payment method service');
               console.log(method);
               return $http.get('http://127.0.0.1:3000/business/deletePaymentMethod/' + method);
-            }
+            },
 
+            getFacilityOccs: function(facility_id){
+              return $http.get('http://127.0.0.1:3000/business/getFacilityOccs' + facility_id);
+            },
+
+            getEventOccs: function(event_id){
+              return $http.get('http://127.0.0.1:3000/business/getEventOccs' + event_id);
+            },
+
+            getBooking: function(booking_id){
+              return $http.get('http://127.0.0.1:3000/business/getBooking' + booking_id);
+            },
 
             // checkSession : function(id) {
             //   console.log('check session service');

@@ -10,6 +10,7 @@ var BookingSchema = new Schema({
     count        : {type: Number, default: 1}, // how many people
     booker       : {type: mongoose.Schema.Types.ObjectId, ref: 'RegisteredUser'},
     event_id     : {type: mongoose.Schema.Types.ObjectId, ref:'EventOccurrences'},
+    business_id  : {type: mongoose.Schema.Types.ObjectId, ref:'Businesses'},
     charge       : SchemaTypes.Double,		//amount
     stripe_charge: String					//token for refund
 });

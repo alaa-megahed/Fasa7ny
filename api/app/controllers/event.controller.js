@@ -635,20 +635,20 @@ exports.editEvent = function (req, res) {
 
 exports.cancelEvent = function (req, res,notify_on_cancel) {
 	// if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
-		var id = req.params.id;
+		var id = req.body.id;
 		// var business_id = req.user.id;
-		var business_id = "58f20e01b38dec5d920104f3";
+		var business_id = "58f0cb2d6bfb6061efd66625";
 		console.log("backend");
 		Events.findById(id, function (err, event) {
-			if (!event) res.send('Something went wrong');
+			if (!event) res.status(500).json('Something went wrong');
 			else
-				if (event.business_id == business_id) {
-
+				if (event.business_id == business_id) 
+				{
 					Events.remove({ _id: id }, function (err) {
-						if (err) res.sen('could not delete event');
+						if (err) res.status(500).json('could not delete event');
 						else {
 							EventOccurrences.find({event:id},function (err,all_occ) {
-								if (err) res.send('could not delete occurrence');
+								if (err) res.status(500).json('could not delete occurrence');
 								else
 									{
 										async.each(all_occ, function(one_occ, callback)
@@ -656,35 +656,42 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 											one_occ.remove(function(err)
 										    {
 
-										   //    if(!err)
-										   //    {
-											  //     	var bookings = one_occ.bookings;
-													// var content = req.user.name + " cancelled " + event.name + "     " + Date.now();
+										      if(!err)
+										      {
+											      	var bookings = one_occ.bookings;
+													var content = req.user.name + " cancelled " + event.name + "     " + Date.now();
 
-													// async.each(bookings, function(one_booking, cb){
-													// 	Bookings.findById({_id:one_booking},function(err,booking)
-													// 	{
-													// 		User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
-													// 		{
-													// 			if(err)
-													// 				console.log("error updating user notifications");
-													// 			else
-													// 				console.log(user);
-													// 		});
-													// 	});
-													// });
-											  //     	// notify_on_cancel_occ(event.name,one_occ.id,req.user.name);
-											  //     	Business.find({_id:business_id},function(err,business){
-											  //     		if(err) res.send(err.message);
-											  //     		if(!business) console.log("No business");
-											  //     		res.json(business);
-											  //     	});
+													async.each(bookings, 
+														function(one_booking, cb)
+														{
+															Bookings.findById({_id:one_booking},function(err,booking)
+															{
+																User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
+																{
+																	// if(err)
+																	// 	res.status(500).json("Something went wrong");
+																	// else
+																	// 	console.log(user);
+																});
+															});
+															cb();
+														}, function(err)
+														{
+															if(err) return res.status(500).json("something went wrong");
+															return res.status(200).json("succefully canceled event and notified bookers");
+														}
+													);
 
-										   //    }
-										  	  // else
+											      	// notify_on_cancel_occ(event.name,one_occ.id,req.user.name);
+											      	// Business.find({_id:business_id},function(err,business){
+											      	// 	if(err) es.status(500).json("Something went wrong");
+											      	// 	if(!business) console.log("No business");
+											      	// 	res.json(business);
+											      	// });
 
-
-										  	  	res.send("Something went wrong");
+										      }
+										  	  else
+										  	  	res.status(500).json("Something went wrong");
 										    });
 										});
 									 }
@@ -693,7 +700,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 					});
 				}
 				else {
-					res.send('Cannot cancel this event!');
+					res.status(500).json("CAN NOT CANCEL THIS EVENT");
 				}
 		});
 	// }

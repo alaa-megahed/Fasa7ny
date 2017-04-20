@@ -50,7 +50,8 @@ exports.book_event = function (req,res)
                           booking_date : new Date(),
                           count        : count,
                           event_id     : event_id,
-                          booker       : req.user.id
+                          booker       : req.user.id,
+                          business_id  : req.user.id
                       });
 
                       //update number of available bookings in event occurrence by subtracting
@@ -186,28 +187,28 @@ exports.cancel_booking = function(req,res)
         Booking.findById(bookingID,function(err,booking)
         {
           if(err || !booking)
-             res.send("Oops, something went wrong, please try again with the correct information ");
+             return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
           else
           {
             // get event occurrence of this booking
             EventOccurrences.findById(booking.event_id, function(err,eventocc)
             {
                if(err || !eventocc)
-                     res.send("Oops, something went wrong, please try again with the correct information ");
+                     return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
                 else
                 {
                     //get event of event occurrence
                     Events.findById(eventocc.event,function(err,event)
                     {
                       if(err || !event)
-                          res.send("Oops, something went wrong, please try again with the correct information ");
+                          return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
                       else
                       {
                         var business = event.business_id;
 
                          //check if this booking belongs to business currently manipulating it
                          if(business != req.user.id)
-                            res.send("You do not have authority to access this page");
+                            res.status(403).json("You do not have authority to access this page");
                           else
                           {
 
@@ -217,16 +218,22 @@ exports.cancel_booking = function(req,res)
                                     res.send("Oops, something went wrong, please try again with the correct information ");
                                 else
                                 {
+                                  var content = business.name + " cancelled your booking in " + event.name + "     " + Date.now();
+                                  User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
+                                  {
+                                    if(err)
+                                     return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
+                                  });
                                    EventOccurrences.findByIdAndUpdate(event_id,{ $pull: {bookings: bookingID}},
                                     function(err,eventocc)
                                      {
                                       if(err || !eventocc)
-                                          res.send("Oops, something went wrong, please try again with the correct information ");
+                                          return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
                                        else
                                        {
                                           eventocc.available = eventocc.available + booking.count;
                                           eventocc.save();
-                                          res.send("Booking cancelled");
+                                          res.status(200).json("Booking cancelled successfully, booker is notified");
                                        }
                                    });
 
@@ -244,7 +251,7 @@ exports.cancel_booking = function(req,res)
   }
   else
   {
-    res.send("Business not logged in");
+    res.status(401).json("You do not have authority to access this page");
   }
 
 }
@@ -318,6 +325,7 @@ exports.regUserAddBooking = function(req, res, next) {
 	        booker       : req.body.user_id, //temporarily
           // booker       : req.user.id,
 	        event_id     : req.body.event,
+          business_id  : req.body.business_id,
 	        booking_date : date,
           charge       : req.body.charge,
           stripe_charge: req.body.stripe_charge

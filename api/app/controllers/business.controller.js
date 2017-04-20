@@ -1,12 +1,15 @@
 var Business = require('../models/Business');
 var Events = require('mongoose').model('Events');
-var EventOccurrences = require('mongoose').model('EventOccurrences');
+var EventOccurrences   = require('mongoose').model('EventOccurrences');
+var Booking = require('mongoose').model('Booking');
 var Rating = require('mongoose').model('Rating');
 var Facility = require('mongoose').model('Facility');
+var async = require('async');
+
 
 var BusinessController = {
        getBusiness: function (req, res) {
-        var name = "business1";
+        var name = "Nourhan";
         // var id = req.params.id;
         Business.findOne({ name: name }).
             exec(function (err, result) {
@@ -17,8 +20,9 @@ var BusinessController = {
 //in case there is a user logged in
                     if(!result); //return error message business does not exist
                     Rating.findOne({user_ID: "58f0c9341767d632566c9fb5" , business_ID: result._id}, function(err, rate) {
-                      if(err) console.log("error in finding rate");
-                      // if(!rate) //dont forget this return zero rating
+                      if(err ) console.log("error in finding rate");
+                      var r = 0;
+                      if(rate) r = rate.rating;//dont forget this return zero rating
                       else {
                         console.log(rate);
 //condition if business exists exists
@@ -29,11 +33,13 @@ var BusinessController = {
 
                                 Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
                                     if(err) console.log("error in finding once events");
+                                    
                                     if(!onceevents) res.json({result:result, user:"58f0c9341767d632566c9fb5",
-                                            rate:rate.rating, facilities:facilities, events:[]});
+                                            rate:r, facilities:facilities, events:[]});
                                     else {
+                                        
                                         res.json({result:result, user:"58f0c9341767d632566c9fb5",
-                                            rate:rate.rating, facilities:facilities, events:onceevents});
+                                            rate:r, facilities:facilities, events:onceevents});
                                     }
                                 });
                             }
@@ -59,8 +65,8 @@ requestRemoval: function(req,res) {
         console.log('removal');
         var id = "58e666a20d04c180d969d591";
         Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
-            if(err) res.send("error in request removal");
-            else res.send("Requested!");
+            if(err) res.status(500).json("error in request removal");
+            else res.status(200).json("Requested!");
         });
 
      //    }
@@ -278,8 +284,136 @@ requestRemoval: function(req,res) {
       // }
     // }
       // }
-    }
+    },
+
+
+    hasBookings: function(req, res)
+    {
+        // if(req.user && req.user instanceof business)
+        // {
+            // var id = req.user._id;
+            var id = "58f0cb2d6bfb6061efd66625";
+            Booking.find({}, function(err, bookings)
+            {
+             if(err) res.status(500).json(err.message);
+             if(!bookings || bookings == undefined || bookings.length == 0)
+                res.status(200).json(0);
+             else
+                res.status(200).json(1);   
+            });
+        // }
+        // else
+        // {
+        //     res.status(401).json("YOU ARE NOT AUTHORIZED");
+        // }
+    },
+
+    getAllBookings: function(req, res)
+    {
+        // if(req.user && req.user instanceof business)
+        // {
+            // var id = req.user.id;
+               
+                var id = "58f0cb2d6bfb6061efd66625";
+                var all_bookings = [];
+                var i = 0;
+                console.log("sdsd");
+                EventOccurrences.find({}, function(err,occs){
+                    if(err) return res.status(500).json(err.message);
+                    console.log("HIIIIIIIIIIII " +occs);
+                    async.each(occs, function(occ, callback)
+                    {
+                        console.log("yalla b2a");
+                        async.each(occ.bookings, function(booking, cb)
+                        {
+                            console.log("fsfsf");
+                            Booking.findById(booking, function(err, book)
+                            {
+                                if(err) return res.status(500).json(err.message);
+                                // console.log("halllooooo "+book);
+                                all_bookings.push(book);
+                                console.log("all bookings "+all_bookings[i++]);
+                            });
+                            console.log("all bookings1 "+all_bookings[0]);
+                            cb();
+                        }, function(err){
+                            console.log("all bookings2 "+all_bookings[0]);
+                            // if(err) return res.status(500).json("Something went wrong");
+                            // return res.status(200).json(all_bookings);
+                        });
+                        callback(); 
+                    }, function(err){
+                            console.log("all bookings3 "+all_bookings[0]);
+                            if(err) return res.status(500).json("Something went wrong");
+                            return res.status(200).json(all_bookings);
+                    });
+
+                });
+            
+            
+        // }
+        // else res.status(401).json("YOU ARE NOT AUTHORIZED");
+
+    },
+
+getFacilityOccs: function(req, res)
+{
+    // if(req.user && req.user instanceof business)
+    // {
+            // var id = req.user.id; 
+            var id = "58f0cb2d6bfb6061efd66625";
+            var facility_id = req.params.facility;
+            EventOccurrences.find({"business_id": id, "facility_id": facility_id}, function(err, occs)
+            {
+                if(err) return res.status(500).json(err.message);
+                return res.status(200).json(occs);
+            });
+
+     // }
+    // else res.status(401).json("YOU ARE NOT AUTHORIZED");
+
+},
+
+getEventOccs: function(req, res)
+{
+     // if(req.user && req.user instanceof business)
+    // {
+            // var id = req.user.id; 
+            var id = "58f0cb2d6bfb6061efd66625";
+            var event_id = req.params.event;
+            EventOccurrences.find({"business_id": id, "event": event_id}, function(err, occs)
+            {
+                if(err) return res.status(500).json(err.message);
+                return res.status(200).json(occs);
+            });
+
+     // }
+    // else res.status(401).json("YOU ARE NOT AUTHORIZED");
+},
+
+getBooking: function(req, res)
+{
+    // if(req.user && req.user instanceof business)
+    // {
+            // var id = req.user.id; 
+            var id = "58f0cb2d6bfb6061efd66625";
+            var booking_id = req.params.booking;
+            Booking.findOne({"business_id": id, "_id": event_id}, function(err, booking)
+            {
+                if(err || !booking || booking == undefined) return res.status(500).json(err.message);
+                return res.status(200).json(booking);
+            });
+
+     // }
+    // else res.status(401).json("YOU ARE NOT AUTHORIZED");
 }
+
+
+
+
+
+}
+
 
 
 module.exports = BusinessController;

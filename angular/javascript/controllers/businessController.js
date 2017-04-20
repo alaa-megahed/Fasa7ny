@@ -6,7 +6,7 @@ app.controller('businessController', function($scope, $http, Business, $location
   $scope.avgRate = 0;
   $scope.sub = "Subscribe";
   console.log($routeParams.id);
-  $scope.id = "58f20e01b38dec5d920104f3";
+  $scope.id = "58f0cb2d6bfb6061efd66625";
   Business.get($scope.id)
   .then(function(d) {
     console.log(d.data.result);
@@ -138,18 +138,41 @@ app.controller('businessController', function($scope, $http, Business, $location
 
 
         $scope.remove = function () {
-        $scope.message = "Remove Button Clicked";
-        console.log($scope.message);
-        var modalInstance = $modal.open({
-            templateUrl: 'views/removePop.html',
-            controller: Remove,
-            scope: $scope
+          $scope.message = "Remove Button Clicked";
+          console.log($scope.message);
 
-        });
+          Business.hasBookings().then(function(responce)
+          {
+            if(responce.data != 0)
+            {
+              
+              var notAllowedModalInstance = $modal.open({
+                  templateUrl: 'views/notAllowedRemovePop.html',
+                  controller: NotAllowedRemove,
+                  scope: $scope
 
-        modalInstance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
-            });
+              });
+
+              modalInstance.result.then(function (selectedItem) {
+                  $scope.selected = selectedItem;
+                  });
+            }
+            else
+            {
+
+              var modalInstance = $modal.open({
+                  templateUrl: 'views/removePop.html',
+                  controller: Remove,
+                  scope: $scope
+
+              });
+
+              modalInstance.result.then(function (selectedItem) {
+                  $scope.selected = selectedItem;
+                  });
+              }
+         });
+
     };
 
 
@@ -272,7 +295,7 @@ var Public = function ($scope, $modalInstance,Business,$route) {
 var Remove = function ($scope, $modalInstance,Business,$route) {
     $scope.form = {}
     $scope.submitForm = function () {
-      console.log('Remove Form');
+      console.log('Remove Form');   
         Business.remove()
         .then(function(d){
           console.log('rem');
@@ -283,6 +306,15 @@ var Remove = function ($scope, $modalInstance,Business,$route) {
 
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
+    };
+};
+
+
+var NotAllowedRemove = function ($scope, $modalInstance,Business,$route) {
+    $scope.form = {}
+    $scope.submitForm = function () {
+        $route.reload();
+        $modalInstance.close('closed');
     };
 };
 
