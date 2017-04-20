@@ -5,9 +5,12 @@ console.log($routeParams.facilityId);
 	dailyEvents.get($routeParams.facilityId)
 	.then(function(d) {
     $scope.events = d.data.events;
+		$scope.eventslength = d.data.events.length;
     $scope.eventocc = d.data.eventocc;
-    $scope.name1 = $scope.events[0].name.substring(0, $scope.events[0].name.length/2);
-    $scope.name2 = $scope.events[0].name.substring($scope.events[0].name.length/2);
+		$scope.name = d.data.name;
+		console.log(d.data.name);
+    $scope.name1 = $scope.name.substring(0, $scope.name.length/2);
+    $scope.name2 = $scope.name.substring($scope.name.length/2);
 
     for(var i = 0; i < $scope.events.length; i++)
       for(var j = 0; j < $scope.eventocc.length; j++)
@@ -19,18 +22,23 @@ console.log($routeParams.facilityId);
 
     for(var x = 0; x < $scope.events.length; x++) {
       var days = "";
-      var d = 0;
       // console.log("daysoff: " + $scope.events[x]);
       for(var y = 0; $scope.events[x].daysOff && y < $scope.events[x].daysOff.length ; y++){
-        if($scope.events[x].daysOff[y]==0){ days = days + "Sunday, "; d++; }
-        else if($scope.events[x].daysOff[y]==1){ days = days + "Monday, "; d++; }
-        else if($scope.events[x].daysOff[y]==2){ days = days + "Tuesday, "; d++; }
-        else if($scope.events[x].daysOff[y]==3){ days = days + "Wednesday, "; d++; }
-        else if($scope.events[x].daysOff[y]==4){ days = days + "Thursday, "; d++; }
-        else if($scope.events[x].daysOff[y]==5){ days = days + "Friday, "; d++; }
-        else if($scope.events[x].daysOff[y]==6){ days = days + "Saturday, "; d++; }
+        if($scope.events[x].daysOff[y]==0){ days = days + "Sunday, ";}
+        else if($scope.events[x].daysOff[y]==1){ days = days + "Monday, ";}
+        else if($scope.events[x].daysOff[y]==2){ days = days + "Tuesday, ";}
+        else if($scope.events[x].daysOff[y]==3){ days = days + "Wednesday, ";}
+        else if($scope.events[x].daysOff[y]==4){ days = days + "Thursday, ";}
+        else if($scope.events[x].daysOff[y]==5){ days = days + "Friday, ";}
+        else if($scope.events[x].daysOff[y]==6){ days = days + "Saturday, ";}
       }
+			if($scope.events[x].daysOff.length == 0){
+				days = "No days off";
+				$scope.events[x].days = days
+			}
+			else{
       $scope.events[x].days = days.substring(0, days.length-2);
+		}
     }
 
     console.log($scope.events);

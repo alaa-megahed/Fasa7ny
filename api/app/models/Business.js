@@ -9,21 +9,21 @@ var RegisteredUser = require('./RegisteredUser');
 
 var BusinessSchema = new Schema({
     local         :
-    {   
-        username: 
+    {
+        username:
         {
             type : String,
             required : true,
             unique : true
         },
-        password: 
+        password:
         {
             type : String,
             required : true
         },
         resetPasswordToken: String,
-        resetPasswordExpires: Date 
-    },    
+        resetPasswordExpires: Date
+    },
     user_type     : {type: Number, default: 2},
     name          :
     {
@@ -37,7 +37,7 @@ var BusinessSchema = new Schema({
     category      : [String], //or int? can be in more than one category
     location      : { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
     address: String,
-    area: String, 
+    area: String,
     average_rating: {type: SchemaTypes.Double, default: 0.0},
     public:
     {
@@ -48,12 +48,15 @@ var BusinessSchema = new Schema({
     subscribers    : [{type: mongoose.Schema.Types.ObjectId, ref:'RegisteredUser',default: []}], //whenever user subscribes to business, add him to this list.
     reviews        : [{type: mongoose.Schema.Types.ObjectId, ref:'Review',default: []}],
     images         : [String],
-    delete         : 
+    delete         :
     {
         type: Number, default:0
     },
     reviews : [{type: mongoose.Schema.Types.ObjectId, ref:'Review',default: []}],
-    profilePicture : String
+    profilePicture : String,
+    facebookURL    : String,
+    twitterURL     : String,
+    youtubeURL     : String
 });
 
 //created a text index on the desired fields
@@ -83,7 +86,7 @@ BusinessSchema.pre('remove', function(next)
                 if(user.subscriptions.indexOf(business._id)!== -1)
                 {
                     user.subscriptions.splice(i,1);
-                }     
+                }
             });
         },function(err){
             if (err) throw err;

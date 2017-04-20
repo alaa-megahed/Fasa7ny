@@ -1,4 +1,4 @@
-app.controller('businessController', function($scope, $http, Business, $location, $routeParams, $modal, $log, $window) {
+app.controller('businessController', function($scope, $http, Business, $location, business, $routeParams, $modal, $log, $window) {
 
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
@@ -6,6 +6,19 @@ app.controller('businessController', function($scope, $http, Business, $location
   $scope.sub = "Subscribe";
   console.log($routeParams.id);
   $scope.id = "58f20e01b38dec5d920104f3";
+  console.log(business);
+  $scope.business = business;
+  // $scope.business = {};
+  if($scope.business.images) {
+    console.log("images");
+    console.log($scope.business.images);
+    if($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
+    if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
+    if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
+    if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
+    if($scope.business.images[4]) $scope.image5 = $scope.business.images[4];
+  }
+
   Business.get($scope.id)
   .then(function(d) {
     console.log(d.data.result);
@@ -25,7 +38,11 @@ app.controller('businessController', function($scope, $http, Business, $location
     // $scope.images = d.data.result.images;
 
     $scope.facilities = d.data.facilities;
+    $scope.facilitylength = d.data.facilities.length;
+
     $scope.events = d.data.events; //once events
+    $scope.eventlength = d.data.events.length;
+
     if(d.data.rate) $scope.ratedBy = d.data.rate;
     $scope.avgRate = d.data.result.average_rating;
 
@@ -36,16 +53,19 @@ app.controller('businessController', function($scope, $http, Business, $location
           $scope.sub = "Unsubscribe";
       }
 
+
+
       $window.name = $scope.business.name;
     }
 
 
+    console.log($scope.business.images);
+    if($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
+    if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
+    if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
+    if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
+    if($scope.business.images[4]) $scope.image5 = $scope.business.images[4];
 
-    if(d.data.result.images[0]) $scope.image1 = d.data.result.images[0];
-    if(d.data.result.images[1]) $scope.image2 = d.data.result.images[1];
-    if(d.data.result.images[2]) $scope.image3 = d.data.result.images[2];
-    if(d.data.result.images[3]) $scope.image4 = d.data.result.images[3];
-    if(d.data.result.images[4]) $scope.image5 = d.data.result.images[4];
 
     console.log($scope.image1);
     console.log($scope.image2);
@@ -56,6 +76,14 @@ app.controller('businessController', function($scope, $http, Business, $location
     // console.log($scope.check);
     // console.log($scope.sub);
   });
+
+if($scope.business.images){
+  if($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
+  if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
+  if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
+  if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
+  if($scope.business.images[4]) $scope.image5 = $scope.business.images[4];
+}
 
 
 
@@ -306,15 +334,19 @@ var Remove = function ($scope, $modalInstance,Business,$route) {
         };
     };
 
-    var addImageCtrl = function ($scope, $modalInstance, Business, $route) {
+    var addImageCtrl = function ($scope, $modalInstance, business, Business, $route) {
         $scope.addImage = function (formData) {
                 console.log('add image is in scope');
                 Business.addImage(formData)
                 .then(function(d) {
-                  console.log("done adding image");
+                  $scope.business = business;
+                  business = d.data.business;
+                  console.log(d.data.business);
+
+                // $route.reload();
                 });
                 console.log("eh yasta?");
-                $route.reload();
+                // $route.reload();
                 $modalInstance.close('closed');
         };
 
@@ -341,11 +373,13 @@ var Remove = function ($scope, $modalInstance,Business,$route) {
     };
 
 
-    var deletePaymentMethodCtrl = function ($scope, $modalInstance, Business, $route) {
+    var deletePaymentMethodCtrl = function ($scope, $modalInstance, business, Business, $route) {
         $scope.yes = function (method) {
                 console.log('delete payment method is in scope');
                 Business.deletePaymentMethod(method)
                 .then(function(d) {
+                  $scope.business = business;
+                  $scope.business = d.data.business;
                   console.log("done deleting payment_method");
                 });
                 console.log("eh yasta?");

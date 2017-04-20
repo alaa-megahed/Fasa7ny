@@ -66,34 +66,34 @@
                               <div id="post-thumb">
                                       <div ng-if = "image1" class="item">
                                         <center ng-if = "image1" >
-                                          <img ng-if = "image1" src="../img/blog/bicycle.jpg" alt="business image" class="img-responsive">
+                                          <img ng-if = "image1" ng-src="http://localhost:3000/photo/{{image1}}" alt="business image" class="img-responsive">
                                           <!-- <img src="http://127.0.0.1:3000/api/public/uploads/{{ image }}" alt="business image" class="img-responsive"> -->
                                         </center>
                                         &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "image1" class="btn btn-transparent" ng-click="deleteImage(image1)"> Delete Image </button>
                                       </div>
                                   <div ng-if = "image2" class="item">
                                     <center ng-if = "image2" >
-                                      <img ng-if = "image2" src="../img/portfolio/port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                      <img ng-if = "image2" ng-src="http://localhost:3000/photo/{{image2}}" alt="3D Beach Art | Meghna" class="img-responsive">
                                     </center>
                                       &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image2" class="btn btn-transparent" onclick="deleteImage(image2)"> Delete Image </button>
                                   </div>
                                   <div ng-if = "image3" class="item">
                                     <center ng-if = "image3">
-                                      <img ng-if = "image3" src="../img/portfolio/portfolio.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                      <img ng-if = "image3" ng-src="http://localhost:3000/photo/{{image3}}" alt="3D Beach Art | Meghna" class="img-responsive">
                                     </center>
                                       &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image3" class="btn btn-transparent" onclick="deleteImage(image3)"> Delete Image </button>
                                   </div>
                                   <div  ng-if = "image4" class="item">
                                     <center ng-if = "image4">
-                                      <img ng-if = "image4" src="../img/portfolio/wide-port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                      <img ng-if = "image4" ng-src="http://localhost:3000/photo/{{image4}}" alt="3D Beach Art | Meghna" class="img-responsive">
                                     </center>
                                       &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image4" class="btn btn-transparent" onclick="deleteImage(image4)"> Delete Image </button>
                                   </div>
                                   <div  ng-if = "image5" class="item">
                                     <center ng-if = "image5">
-                                      <img ng-if = "image5" src="../img/portfolio/wide-port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                      <img ng-if = "image5" ng-src="http://localhost:3000/photo/{{image5}}" alt="3D Beach Art | Meghna" class="img-responsive">
                                     </center>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image5" class="btn btn-transparent" onclick="deleteImage(image5)"> Delete Image </button>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image4" class="btn btn-transparent" onclick="deleteImage(image4)"> Delete Image </button>
                                   </div>
                               </div>
                               &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" ng-click="addImage()"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
@@ -201,7 +201,7 @@
 
 
 
-<button onclick="myFunction('Demo1')" class="btn btn-transparent" >Check Our Facilities</button>
+<button ng-if="facilitylength" onclick="myFunction('Demo1')" class="btn btn-transparent" >Check Our Facilities</button>
 
 <div id="Demo1" class="w3-hide w3-container">
 <br>
@@ -220,7 +220,7 @@
                             <div class="image-wrap span4">
                               <hr>
                                 <img style="width: auto\9;height: auto;max-width: 100%; vertical-align: middle;border: 0; -ms-interpolation-mode: bicubic;" width="365" height="340"
-                                 src="../img/portfolio/portfolio.jpg" class="attachment-blog_small wp-post-image" alt="3" />
+                                 src="http://localhost:3000/photo/{{facility.image}}" class="attachment-blog_small wp-post-image" alt="3" />
                                  <hr>
                                  <center>
                                   <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "goToEditFacility(facility._id)"> Edit Facility </button>
@@ -254,12 +254,12 @@
         </div>
       </div>
     </div>
-    <input type="submit" value="Book Now!" class="btn btn-transparent w3-green">
+    <input ng-if="facilitylength" type="submit" value="Book Now!" class="btn btn-transparent w3-green">
     <hr>
 </div>
 <br>
 <!-- </div> -->
-<button onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button>
+<button ng-if="eventlength" onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <div id="Demo2" class="w3-hide w3-container">
 <br>
   <div id="primary" class="sidebar-right">
@@ -323,10 +323,9 @@
 
 
         <div class="social-icon">
-                            <ul>
-                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#"><i class="fa fa-youtube"></i></a></li>
-
-                            </ul>
-                        </div>
+          <ul>
+              <li ng-if="business.facebookURL"><a ng-if="business.facebookURL" href="{{ business.facebookURL}}" target="_blank"><i class="fa fa-facebook"></i></a></li>
+              <li ng-if="business.twitterURL"><a ng-if="business.twitterURL" href="{{ business.twitterURL}}" target="_blank"><i class="fa fa-twitter"></i></a></li>
+              <li ng-if="business.youtubeURL"><a ng-if="business.youtubeURL" href="{{ business.youtubeURL}}" target="_blank"><i class="fa fa-youtube"></i></a></li>
+          </ul>
+        </div>

@@ -29,6 +29,11 @@ router.use('/contact', function(req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
 
+router.use('/photo/:photo', function (req, res) {
+   console.log(path.resolve('public/uploads/' + req.params.photo));
+   res.sendFile(path.resolve('public/uploads/' + req.params.photo));
+});
+
 router.get('/', function (req, res) {
     res.sendfile('public/views/index.html');
     // res.render('index0.ejs');

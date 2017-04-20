@@ -73,3 +73,8 @@
             // }
     	}
     }]);
+
+
+    app.factory('business', function() {
+      return {};
+    });

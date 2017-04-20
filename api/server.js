@@ -34,16 +34,9 @@ app.listen(config.port);
 // var Business = require('./app/models/Business');
 
 // var business = new Business();
-// business.local.username = "habiiba";
-// business.description = "Describe Me";
-// business.area = "Lala Land";
-// business.address = "Lala Land yemeen fi shemal";
-// business.phones = "011";
-// business.email = "habiiba.elghamry@gmail.com";
-// business.payment_methods = "Cash";
-// business.name = "Habiiba";
-// business.category = "Arwash Haga";
-// business.local.password = business.generateHash("123");
+// business.local.username = "EscapeRoom";
+// business.name = "Escape Room";
+// business.local.password = business.generateHash("111");
 // business.save(function(err){
 // if(err) throw err;
 // });
