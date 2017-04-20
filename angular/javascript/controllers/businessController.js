@@ -1,4 +1,4 @@
-app.controller('businessController', function($scope, $http, Business, $location, business, $routeParams, $modal, $log, $window) {
+app.controller('businessController', function($scope, $http, Business, $location, $routeParams, $modal, $log, $window) {
 
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
@@ -6,9 +6,9 @@ app.controller('businessController', function($scope, $http, Business, $location
   $scope.sub = "Subscribe";
   console.log($routeParams.id);
   $scope.id = "58f20e01b38dec5d920104f3";
-  console.log(business);
-  $scope.business = business;
-  // $scope.business = {};
+  // console.log(business);
+  // $scope.business = business;
+  $scope.business = {};
   if($scope.business.images) {
     console.log("images");
     console.log($scope.business.images);
@@ -203,6 +203,7 @@ if($scope.business.images){
 
             modalInstance.result.then(function (selectedItem) {
                 $scope.selected = selectedItem;
+                $window.location.reload();
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
@@ -219,6 +220,15 @@ if($scope.business.images){
 
             modalInstance.result.then(function (selectedItem) {
                 $scope.selected = selectedItem;
+                $scope.business = selectedItem.business;
+                console.log("business!!");
+                console.log($scope.business);
+                if($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
+                if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
+                if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
+                if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
+                if($scope.business.images[4]) $scope.image5 = $scope.business.images[4];
+                $window.location.reload();
             }, function () {
                 $log.info('Modal dismissed at: ' + new Date());
             });
@@ -334,20 +344,23 @@ var Remove = function ($scope, $modalInstance,Business,$route) {
         };
     };
 
-    var addImageCtrl = function ($scope, $modalInstance, business, Business, $route) {
+    var addImageCtrl = function ($scope, $modalInstance, Business, $route) {
         $scope.addImage = function (formData) {
                 console.log('add image is in scope');
                 Business.addImage(formData)
                 .then(function(d) {
-                  $scope.business = business;
-                  business = d.data.business;
-                  console.log(d.data.business);
+                  // $scope.business = business;
+                  // business = d.data.business;
 
-                // $route.reload();
+                  $modalInstance.close({
+                    business : d.data.business
+                  });
+                  // console.log(d.data.business);
+
                 });
                 console.log("eh yasta?");
                 // $route.reload();
-                $modalInstance.close('closed');
+                // $route.reload();
         };
 
         $scope.no = function () {
@@ -363,7 +376,7 @@ var Remove = function ($scope, $modalInstance,Business,$route) {
                   console.log("done deleting phone");
                 });
                 console.log("eh yasta?");
-                $route.reload();
+                // $route.reload();
                 $modalInstance.close('closed');
         };
 
