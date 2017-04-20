@@ -19,7 +19,7 @@ var BusinessController = {
                     console.log(result);
 //in case there is a user logged in
                     if(!result); //return error message business does not exist
-                    Rating.findOne({user_ID: "58f0c9341767d632566c9fb5" , business_ID: result._id}, function(err, rate) {
+                    Rating.findOne({user_ID: "58ed22fcbfe67363f0c3a41d" , business_ID: result._id}, function(err, rate) {
                       if(err) console.log("error in finding rate");
                       // if(!rate) //dont forget this return zero rating
                       else {
@@ -34,16 +34,16 @@ var BusinessController = {
                                 Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
                                     if(err) console.log("error in finding once events");
                                     if(!onceevents) 
-                                        if(!rate)  res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                        if(!rate)  res.json({result:result, user:"58ed22fcbfe67363f0c3a41d",
                                             rate:0, facilities:facilities, events:[]});
                                             else
-                                        res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                        res.json({result:result, user:"58ed22fcbfe67363f0c3a41d",
                                             rate:rate.rating, facilities:facilities, events:[]});
                                     else {
-                                         if(!rate)  res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                         if(!rate)  res.json({result:result, user:"58ed22fcbfe67363f0c3a41d",
                                             rate:0, facilities:facilities, events:[]});
                                             else
-                                        res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                        res.json({result:result, user:"58ed22fcbfe67363f0c3a41d",
                                             rate:rate.rating, facilities:facilities, events:onceevents});
                                     }
                                 });
