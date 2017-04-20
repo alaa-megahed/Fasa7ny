@@ -9,8 +9,6 @@ angular.module('fasa7ny')
         $scope.areas = ['New Cairo', 'Maadi', 'Mohandeseen', 'Zamalek'];
         $scope.check = function () {
             if ($scope.checked) {
-                console.log('habal');
-
                 $scope.direction = false;
             } else {
                 $scope.direction = true;
@@ -18,6 +16,7 @@ angular.module('fasa7ny')
         }
         Search.get()
             .then(function (res) {
+                console.log(res.data);
                 $scope.businesses = res.data;
             });
 

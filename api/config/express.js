@@ -49,6 +49,7 @@ module.exports = function () {
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8000');
         res.setHeader('Access-Contro-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
         res.header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type");
+        res.header("Access-Control-Allow-Credentials", true);
         next();
     });
 

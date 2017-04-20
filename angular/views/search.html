@@ -58,7 +58,7 @@
 
 <div id="main">
     <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()">&#9776;</button>
-    <div ng-repeat="business in businesses track by $index | category: cat | filter: keyword | orderBy: sortBy : direction " ng-if="business.average_rating >= $parent.minRating">
+    <div ng-repeat="business in businesses | category: cat | filter: keyword | orderBy: sortBy : direction " ng-if="business.average_rating >= $parent.minRating">
         <img ng-src="/uploads/image" alt="">
 
         <h3>{{business.name}} </h3>

@@ -28,8 +28,7 @@ exports.writeReview = function (req, res) {
           else {
             var newReview = new Review({
               review: req.body.review,
-              upvote: 0,
-              downvote: 0
+              votes: 0
             });
             newReview.business = businessId;
             newReview.user = user;
@@ -45,6 +44,9 @@ exports.writeReview = function (req, res) {
         });
       }
     });
+  } else {
+    res.status(501);
+    res.send('Error');
   }
 }
 
@@ -55,7 +57,45 @@ and also can change a downvote to upvote by removing the user from the downvotes
 array and decrementing the array then add such user to the upvotes array and
 the upvotes will be incremented*/
 exports.upvoteReview = function (req, res) {
+  var userID = req.body.userID
+  var businessID = req.body.businessID;
+  var reviewID = req.body.review._id;
+  //TODO add checks
+  Business.findById(businessID, function (err, business) {
+    var review = business.reviews.id(reviewID);
+    if (review != null) {
+      var upIndex = business.reviews.id(reviewID).upvotes.indexOf(userID);
+      if (upIndex > -1) { //user has upvoted before
+        console.log('undo upvote');
 
+        business.reviews.id(reviewID).upvotes.splice(upIndex, 1); //undo upvote
+        business.reviews.id(reviewID).votes--;
+
+      } else {
+        var downIndex = business.reviews.id(reviewID).downvotes.indexOf(userID);
+        if (downIndex > -1) { //if user has downvoted before 
+          business.reviews.id(reviewID).downvotes.splice(downIndex, 1); //remove downvote
+          business.reviews.id(reviewID).votes++;
+
+        }
+        business.reviews.id(reviewID).upvotes.push(userID); //add upvote
+        business.reviews.id(reviewID).votes++;
+      }
+      business.save(function (err, updatedBusiness) {
+        if (err) {
+          res.status(500);
+          console.log(err);
+          res.send('DB Error.');
+        } else {
+          res.json(updatedBusiness);
+        }
+      });
+
+    } else {
+      res.status(501);
+      res.send('Error');
+    }
+  });
 }
 
 /*A user can downvote a review about a business. Any user can downvote only once,
@@ -65,78 +105,43 @@ and also can change the upvote to downvote by removing the user from the
 upvotes array and decrementing the array then add such user to the downvote
 array and the downvotes will be incremented*/
 exports.downvoteReview = function (req, res) {
-
-  if (req.user && req.user instanceof RegisteredUser && typeof req.query.review != "undefined") {
-    var rev = req.query.review;
-    var id = req.user.id;
-    // var rev = req.body.review;
-    // var id = req.body.id;
-
-    Review.findOne({ _id: rev }, function (err, review) {
-      if (err) {
-        console.log("cannot find review to be downvoted");
+  var userID = req.body.userID
+  var businessID = req.body.businessID;
+  var reviewID = req.body.review._id;
+  //TODO add checks
+  Business.findById(businessID, function (err, business) {
+    var review = business.reviews.id(reviewID);
+    if (review != null) {
+      var downIndex = business.reviews.id(reviewID).downvotes.indexOf(userID);
+      if (downIndex > -1) { //if user has downvoted before 
+        console.log('undo downvote');
+        business.reviews.id(reviewID).downvotes.splice(downIndex, 1); //undo downvote
+        business.reviews.id(reviewID).votes++;
       } else {
-        var flag = true;
-        for (var i = 0; i < review.downvotes.length; i++) {
-          if (review.downvotes[i] == id) flag = false;
+        var upIndex = business.reviews.id(reviewID).upvotes.indexOf(userID);
+        if (upIndex > -1) { //if user has upvoted before
+          business.reviews.id(reviewID).upvotes.splice(upIndex, 1); // remove upvote
+          business.reviews.id(reviewID).votes--;
         }
-
-        if (flag == true) {
-          // review.downvotes.push(id);
-
-          Review.findByIdAndUpdate(rev, { $push: { "downvotes": id } }, { safe: true, upsert: true, new: true },
-            function (err, newrev) {
-              if (err) {
-                console.log("error in downvoting the review");
-              } else {
-                console.log("downvoted1");
-              }
-            });
-
-          Review.findByIdAndUpdate(rev, { $set: { downvote: review.downvote + 1 } },
-            function (err, updatedReview) {
-              if (err) {
-                console.log("error in downvoting");
-              } else {
-                console.log("downvoted");
-                console.log(updatedReview);
-
-                for (var i = 0; i < review.upvotes.length; i++) {
-                  if (review.upvotes[i] == id) {
-                    flag = false;
-                  }
-                }
-
-                if (flag == false) {
-                  // review.upvotes.pull(id);
-
-                  Review.findByIdAndUpdate(rev, { $pull: { "upvotes": id } }, { safe: true, upsert: true, new: true },
-                    function (err, newreview) {
-                      if (err) {
-                        console.log("error in updating upvotes in the review");
-                      } else {
-                        console.log("upvotes array updated");
-                      }
-                    });
-
-                  Review.findByIdAndUpdate(rev, { $set: { upvote: review.upvote - 1 } },
-                    function (err, updatedReview) {
-                      if (err) {
-                        console.log("error in decrementing upvotes");
-                      } else {
-                        console.log("upvotes decremented");
-                        console.log(updatedReview);
-                      }
-                    });
-                }
-              }
-            });
-        } else {
-          console.log("cannot vote more than once");
-        }
+        //add downvote
+        business.reviews.id(reviewID).downvotes.push(userID);
+        business.reviews.id(reviewID).votes--;
       }
-    })
-  }
+      business.save(function (err, updatedBusiness) {
+        if (err) {
+          res.status(500);
+          res.send('DB Error.');
+        } else {
+          res.json(updatedBusiness);
+        }
+      });
+    } else {
+      res.status(501);
+      res.send('Error');
+    }
+  });
+
+
 }
 /*view reviews of a certain business*/
 exports.viewReviews = function (req, res) {
@@ -208,6 +213,9 @@ exports.replyReview = function (req, res) {
       }
     })
 
+  } else {
+    res.status(500); 
+    res.send('Invalid request'); 
   }
 }
 

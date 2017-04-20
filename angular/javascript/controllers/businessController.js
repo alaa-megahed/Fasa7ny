@@ -1,10 +1,9 @@
 app.controller('businessController', function ($scope, $http, Business, $location, $routeParams, $modal, $log, $window) {
-
     $scope.maxRating = 5;
     $scope.ratedBy = 0;
     $scope.avgRate = 0;
     $scope.sub = "Subscribe";
-
+    $scope['test'] = 'bala7';
     $scope.id = "58f7693c51294567b2d8b083";
     $scope.userID = "58f6f803100dc825040a880c";
     Business.get($scope.id)
@@ -246,6 +245,10 @@ app.controller('businessController', function ($scope, $http, Business, $locatio
             .then(function (res) {
                 $scope.business = res.data;
                 $scope.reviewBody = "";
+
+                console.log('HERE');
+            }, function (res) {
+                alert(res.data);
             });
     };
     $scope.deleteReview = function (review) {
@@ -261,6 +264,8 @@ app.controller('businessController', function ($scope, $http, Business, $locatio
     };
 
     $scope.addReply = function (reviewID, replyBody) {
+        // console.log('replyyyy'); 
+
         Business.addReply({
             userID: $scope.userID,
             businessID: $scope.id,
@@ -269,8 +274,10 @@ app.controller('businessController', function ($scope, $http, Business, $locatio
         })
             .then(function (res) {
                 $scope.business = res.data;
-                $scope.replyBody = '';
-            })
+                $scope.replyForm.$setPristine();
+            }, function (res) {
+                alert(res.data);
+            });
     }
 
     $scope.deleteReply = function (review, reply) {
@@ -282,6 +289,32 @@ app.controller('businessController', function ($scope, $http, Business, $locatio
         })
             .then(function (res) {
                 $scope.business = res.data;
+            });
+    }
+
+    $scope.upvote = function (review) {
+        Business.upvote({
+            userID: $scope.userID,
+            businessID: $scope.id,
+            review: review
+        })
+            .then(function (res) {
+                $scope.business = res.data;
+            }, function (res) {
+                alert(res.data);
+            });
+    }
+
+    $scope.downvote = function (review) {
+        Business.downvote({
+            userID: $scope.userID,
+            businessID: $scope.id,
+            review: review
+        })
+            .then(function (res) {
+                $scope.business = res.data;
+            }, function (res) {
+                alert(res.data);
             });
     }
 

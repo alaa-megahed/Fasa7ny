@@ -7,8 +7,11 @@ SearchController = {
             exec(function (err, result) {
                 if (err)
                     console.log(err);
-                else
+                else {
+                    console.log(result); 
                     res.json(result);
+                }
+
             });
     },
     search: function (req, res) {

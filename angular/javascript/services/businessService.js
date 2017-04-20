@@ -3,7 +3,7 @@
 app.factory('Business', ['$http', function ($http) {
   return {
     get: function (id) {
-      return $http.get('http://127.0.0.1:3000/business/b/' + id);
+      return $http.get('http://127.0.0.1:3000/business/b/' + id, { withCredentials: true });
     },
 
     edit: function (formData) {
@@ -76,6 +76,13 @@ app.factory('Business', ['$http', function ($http) {
     },
     deleteReply: function (params) {
       return $http.post('http://127.0.0.1:3000/reviews/deleteReply', params);
+    },
+    upvote: function (params) {
+      return $http.post('http://127.0.0.1:3000/reviews/upvoteReview', params);
+
+    },
+    downvote: function (params) {
+      return $http.post('http://127.0.0.1:3000/reviews/downvoteReview', params);
     }
 
 

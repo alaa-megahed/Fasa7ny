@@ -287,7 +287,7 @@
 
         <!--start reviews form -->
         <h1 class="text-center">Reviews </h1>
-        {{test}}
+
         <div class="container">
             <div class="row">
                 <!-- Contenedor Principal -->
@@ -297,17 +297,18 @@
                         <li ng-repeat="review in business.reviews track by $index">
                             <div class="comment-main-level">
                                 <!-- Avatar -->
-                                <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_1_zps8e1c80cd.jpg" alt=""></div>
+                                <div class="comment-avatar"><img src="http://localhost:3000/photo/3b7dcf53262649c287d00ae4c0a7dc44" alt=""></div>
                                 <!-- Contenedor del Comentario -->
                                 <div class="comment-box">
 
                                     <div class="comment-head">
                                         <h6 class="comment-name">{{review.user.name}}</h6>
-                                        <span>{{review.timestamp}} <i ng-click="deleteReview(review)" class="delete glyphicon glyphicon-trash"></i></span>
 
-                                        <i class="vote fa fa-chevron-up"></i> <br>
-                                        <i class="fa"> {{review.upvote - review.downvote}} </i> <br>
-                                        <i class="vote fa fa-chevron-down"></i>
+                                        <span style="margin-top: 10px">{{review.timestamp | date: 'd MMM, yy h:mm a '}} <i ng-click="deleteReview(review)" class="delete glyphicon glyphicon-trash"></i></span>
+
+                                        <i ng-click="upvote(review)" class="vote fa fa-chevron-up"></i> <br>
+                                        <i class="fa">{{review.votes}}</i> <br>
+                                        <i ng-click="downvote(review)" class="vote fa fa-chevron-down"></i>
 
                                     </div>
                                     <div class="comment-content">
@@ -325,7 +326,7 @@
                                         <div class="comment-head">
                                             <h6 ng-if="reply.authorType == 'user'" class="comment-name">{{reply.user.name}}</h6>
                                             <h6 ng-if="reply.authorType == 'business'" class="comment-name by-author"> {{business.name}}</h6>
-                                            <span>{{reply.timestamp}} <i ng-click="deleteReply(review, reply)" class="delete glyphicon glyphicon-trash"></i></span>
+                                            <span style="margin-top: 10px">{{reply.timestamp | date: 'd MMM, yy h:mm a ' }} <i ng-click="deleteReply(review, reply)" class="delete glyphicon glyphicon-trash"></i></span>
 
 
                                         </div>
@@ -335,18 +336,21 @@
                                     </div>
                                 </li>
                                 <li>
-                                    <!-- Avatar -->
+
                                     <div class="comment-avatar"><img src="http://i9.photobucket.com/albums/a88/creaticode/avatar_2_zps7de12f8b.jpg" alt=""></div>
-                                    <!-- Contenedor del Comentario -->
+
                                     <div class="comment-box">
                                         <div class="comment-head">
                                             <h6 class="comment-name">User name: </h6>
 
                                         </div>
                                         <div class="comment-content">
-                                            <input ng-model="replyBody" class="w3-input w3-border-green" type="text" placeholder="Reply to review..">
-                                            <br>
-                                            <button ng-click="addReply(review._id, replyBody)" class="w3-button w3-green" type="button">Reply</button>
+                                            <ng-form name="replyForm">
+                                                <input ng-model="replyBody" class="w3-input w3-border-green" type="text" placeholder="Add reply.." required>
+                                                <br>
+                                                <button ng-click="addReply(review._id, replyBody)" class="w3-button w3-green" type="submit">Post</button>
+                                            </ng-form>
+
                                         </div>
                                     </div>
                                 </li>
@@ -364,9 +368,11 @@
 
                                     </div>
                                     <div class="comment-content">
-                                        <input ng-model="reviewBody" class="w3-input w3-border-green" type="text" placeholder="Add review..">
+
+                                        <input ng-model="reviewBody" class="w3-input w3-border-green" type="text" placeholder="Add review.." required>
                                         <br>
-                                        <button ng-click="addReview()" class="w3-button w3-green" type="button">Post</button>
+                                        <button ng-click="addReview()" class="w3-button w3-green" type="submit">Post</button>
+
                                     </div>
                                 </div>
                             </div>
