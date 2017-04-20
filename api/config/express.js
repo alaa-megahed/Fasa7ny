@@ -14,7 +14,20 @@ var config = require('./config'),
 
 
 module.exports = function() {
+
     var app = express();
+
+    app.use('*',function(req, res, next){
+      var allowedOrigins = [null,'http://127.0.0.1:8000', 'http://localhost:8000', 'http://127.0.0.1:3000', 'http://localhost:3000', 'https://www.facebook.com'];
+      var origin = req.headers.origin;
+      if(allowedOrigins.indexOf(origin) > -1){
+        res.setHeader('Access-Control-Allow-Origin', origin);
+      }
+        res.setHeader('Access-Contro-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+        res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization, Accept, X-HTTP-Method-Override");
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        next();
+    });
 
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
@@ -33,17 +46,7 @@ module.exports = function() {
     }));
 
 
-    app.use('*',function(req, res, next){
-      var allowedOrigins = [null,'http://127.0.0.1:8000', 'http://localhost:8000', 'http://127.0.0.1:3000', 'http://localhost:3000', 'https://www.facebook.com'];
-      var origin = req.headers.origin;
-      if(allowedOrigins.indexOf(origin) > -1){
-        res.setHeader('Access-Control-Allow-Origin', origin);
-      }
-        res.setHeader('Access-Contro-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
-        res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization, Accept, X-HTTP-Method-Override");
-        res.setHeader('Access-Control-Allow-Credentials', true);
-        next();
-    });
+
 
     require('./passport')(passport);
 

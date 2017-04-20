@@ -50,7 +50,14 @@ angular.module('fasa7ny')
         return  $http.get('http://127.0.0.1:3000/user/resetUnread');
       },
       logout: function() {
-        return $http.get('http://127.0.0.1:3000/auth/logout');
+        return $http({
+             url: 'http://127.0.0.1:3000/auth/logout',
+             method: "GET",
+             withCredentials: true,
+             headers: {
+                         'Content-Type': 'application/jsonp'
+             }
+           })
       }
 
 

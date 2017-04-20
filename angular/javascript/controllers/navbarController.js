@@ -6,6 +6,7 @@ angular.module('fasa7ny')
     $scope.err = "";
     $scope.form = {};
     $scope.searchAppear = 1;
+    $scope.type = -1;
     $scope.notifcolor = {'color' : 'white'} ;
 
 
@@ -17,7 +18,7 @@ angular.module('fasa7ny')
              if($scope.user.data)
              {
                 console.log($scope.user.data.notifications);
-
+                $scope.type = 0;
                 $scope.user.data.notifications.reverse();
                 $scope.notifications =  $scope.user.data.notifications.slice(1,11);
                 if($scope.user.data.unread_notifications)
@@ -31,7 +32,7 @@ angular.module('fasa7ny')
                   $scope.user = result;
                   if($scope.user.data)
                   {
-                     console.log($scope.user.data.notifications);
+                     $scope.type = 1;
                      $scope.user.data.notifications.reverse();
                      $scope.notifications =  $scope.user.data.notifications.slice(1,11);
                      if($scope.user.data.unread_notifications)
@@ -122,18 +123,23 @@ angular.module('fasa7ny')
     }
 
     $scope.facebook = function(){
-     $window.location = $window.location.protocol + "//" + "localhost:3000" + $window.location.pathname + "auth/facebook";
+     $window.location = $window.location.protocol + "//" + "localhost:3000/auth/facebook";
     //   Homepage.facebook().then(function(){
     //       $window.location.reload();
     // });
     }
 
     $scope.google = function(){
-       $window.location = $window.location.protocol + "//" + "localhost:3000" + $window.location.pathname + "auth/google";
+       $window.location = $window.location.protocol + "//" + "localhost:3000/auth/google";
     }
 
     $scope.logout = function(){
-      Homepage.logout();
+
+      $scope.user = null;
+      Homepage.logout().then(function(result)
+      {
+          console.log(result);
+      })
     }
 
 

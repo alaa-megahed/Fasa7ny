@@ -92,10 +92,9 @@ let AuthController =
 	logout: function(req, res) {
 
 		req.session.destroy(function (err) {
-
-    console.log("in logout");
-    req.logOut();
-    res.json("Successful logout");
+      req.logout();
+      res.setHeader("Access-Control-Allow-Origin", req.headers.origin);
+      res.setHeader("Access-Control-Allow-Origin", "*");
   });
 	},
 	// =====================================
@@ -104,7 +103,7 @@ let AuthController =
 	facebookLogin   : function(req, res){
 		passport.authenticate('facebook', { scope : 'email' })(req, res);},
 
-	facebookCallback: function(req, res){
+	facebookCallback: function(req, res,next){
     passport.authenticate('facebook', function(err, user, info) {
           if (err) { return next(err); }
           if (!user) { return res.json("error"); }
