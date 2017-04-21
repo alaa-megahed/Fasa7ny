@@ -23,6 +23,6 @@ router.get('/cancel/:id', RegularEventController.cancelEvent);
 router.get('/cancelO/:occId', RegularEventController.cancelOccurrence);
 router.get('/view', RegularEventController.getEvents);
 router.get('/viewO/:eventId', RegularEventController.getOccurrences);
-router.get('/getOnceEventDetails/:businessId/:eventId', RegularEventController.getOnceEventDetails);
+router.get('/getOnceEventDetails/:eventId', RegularEventController.getOnceEventDetails);
 
 module.exports = router;

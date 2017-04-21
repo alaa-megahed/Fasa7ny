@@ -1,13 +1,39 @@
-app.controller('eventController', function($scope, $http, Event, $location, $routeParams, $modal,$window) {
+app.controller('eventController', function($scope, $http, status, Event, $location, $routeParams, $modal,$window) {
+
+	$scope.user = {};
+		status.local()
+		 .then(function(res){
+		   if(res.data){
+				 $scope.user = res.data._id;
+		     if(res.data.user_type == 1)
+		       $scope.type = 1;
+		     else if(res.data.user_type == 2)
+		       $scope.type  = 4;
+		     else $scope.type = 3;
+		   }
+		   else {
+				 $scope.user = res.data._id;
+		     status.foreign()
+		     .then(function(res){
+		       if(res.data.user_type)
+		         $scope.type = 1;
+		       else $scope.type = 2;
+		     });
+		   }
+		 });
 
 console.log("event eventController");
-	Event.get($routeParams.businessId, $routeParams.eventId)
-	.then(function(d) {
-		$scope.businessId = d.data.businessId;
+$scope.error = "";
+	Event.get($routeParams.eventId)
+	.then(function successCallback(d){
+		$scope.business = d.data.business;
 		$scope.event = d.data.event;
 		$scope.eventocc = d.data.eventocc;
-		//images
-		console.log(d.data);
+
+		if($scope.business != $scope.user) $scope.type = 2;
+
+	}, function errorCallback(d) {
+		$scope.error = d.data;
 	});
 
 	// $scope.DeleteEvent = function(id,bid){
@@ -18,7 +44,7 @@ console.log("event eventController");
 	// 	})
 	// };
 
-	$scope.showDelete = function (id,bid) {
+	$scope.showDelete = function (id) {
         $scope.message = "Show Delete Button Clicked";
         console.log($scope.message);
         console.log("Delete");
@@ -27,10 +53,10 @@ console.log("event eventController");
             controller: DeletePopUp2,
             scope: $scope,
             resolve: {
-                    bid: function () {
-                        return bid;
-                    },
-                    id: function(){
+								bid: function() {
+									return $scope.user;
+								},
+							  id: function(){
                     	return id;
                     }
                 }
@@ -52,7 +78,7 @@ console.log("event eventController");
             controller: ModalInstanceCtrl,
             scope: $scope,
             resolve: {
-                    id: function () {
+							id: function () {
                         return id;
                     }
                 }
@@ -66,20 +92,24 @@ console.log("event eventController");
     }
 
 });
-var DeletePopUp2 = function ($scope, $modalInstance,Event,id,bid,$route,$window) {
-    $scope.form = {}
+var DeletePopUp2 = function ($scope, $location, $modalInstance,Event,id,bid, $route,$window) {
+    $scope.form = {};
+		$scope.error = "";
     $scope.submitForm = function () {
     	console.log('Delete Form');
-        Event.delete(id,bid)
-        .then(function(d){
-        
-
+        Event.delete(id)
+				.then(function successCallback(d) {
+          console.log("done deleting event");
+          $route.reload();
+					console.log(bid);
+					$location.path('/business/' + bid);
+					// $window.location = "/" + bid;
+        },
+        function errorCallback(d){
+					console.log("??");
+					$scope.error = d.data;
         });
-            console.log('del');
-            $modalInstance.close('closed');
-            $window.location =" http://localhost:8000/#!/";
-       
-
+        console.log('del');
     };
 
     $scope.cancel = function () {
@@ -89,7 +119,7 @@ var DeletePopUp2 = function ($scope, $modalInstance,Event,id,bid,$route,$window)
 
 
 
-var ModalInstanceCtrl = function ($scope, $modalInstance,Event,id,$route) {
+var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event,id, $route) {
     $scope.form = {}
     $scope.formData = {}
     $scope.error = "";
@@ -102,10 +132,10 @@ var ModalInstanceCtrl = function ($scope, $modalInstance,Event,id,$route) {
             Event.edit($scope.formData,id)
             .then(function successCallback(d){
             	console.log('yas');
-                 $route.reload();
-                $modalInstance.close('closed');
+              $route.reload();
+              $modalInstance.close('closed');
             }, function errorCallback(d) {
-                $scope.error = d.data;
+              $scope.error = d.data;
             });
         }
     };

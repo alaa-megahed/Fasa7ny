@@ -1,8 +1,10 @@
 <center>
        <section id = "blog-page">
-            <div style="max-width: 400px;" ng-app = "fasa7ny" ng-controller = "facilityController">
+         <div ng-if = "type != 4">
+           <h3>You are not authorized to view this page.</h3>
+         </div>
+            <div ng-if = "type == 4" style="max-width: 400px;" ng-app = "fasa7ny" ng-controller = "facilityController">
                 <form name = "form.userForm" ng-model = "formData">
-                    {{error}}
                     <h3>Name</h3> <br>
                     <input style="color:#000;" class="w3-input w3-border w3-round" type="text" ng-model = "formData.name" required></input> <br>
                     <h3>Capacity</h3> <br>
@@ -11,6 +13,7 @@
                     <input type="file" file-model="formData.img" required/>
                     <h3>Description </h3><br>
                     <textarea style="color:#000;" class="w3-input w3-border w3-round" type="text" ng-model = "formData.description" rows="5" cols="70" required> </textarea><br>
+                    {{error}}
                     <button type="submit" ng-click = "goToCreate()" class="btn btn-transparent" ng-disabled="form.userForm.$invalid">Create</button>
                 </form>
             </div>

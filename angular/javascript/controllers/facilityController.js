@@ -1,11 +1,33 @@
-app.controller('facilityController', function($scope, $http, Facility, $location, $routeParams, $modal, $log) {
+app.controller('facilityController', function($scope, $http, status, Facility, $location, $routeParams, $modal, $log) {
+
+$scope.user = {};
+	status.local()
+	 .then(function(res){
+	   if(res.data){
+			 $scope.user = res.data._id;
+	     if(res.data.user_type == 1)
+	       $scope.type = 1;
+	     else if(res.data.user_type == 2)
+	       $scope.type  = 4;
+	     else $scope.type = 3;
+	   }
+	   else {
+			 $scope.user = res.data._id;
+	     status.foreign()
+	     .then(function(res){
+	       if(res.data.user_type)
+	         $scope.type = 1;
+	       else $scope.type = 2;
+	     });
+	   }
+	 });
 
 	$scope.goToCreate = function() {
 		$scope.error = "";
 		Facility.createFacility($scope.formData)
 		.then(function successCallback(d) {
 			console.log("create facility success");
-			$location.path('/');
+			$location.path('/' + $scope.user);
 		},
 		function errorCallback(d){
 			$scope.error = d.data;

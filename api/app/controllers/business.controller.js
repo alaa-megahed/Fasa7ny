@@ -120,14 +120,13 @@ requestRemoval: function(req,res) {
 
     editInformation: function (req, res) {
 
-        // if (req.user && req.user instanceof Business) {
-            var id = "58f8b9fdf3e7ca15c2ca2c1f";
-            // var id = "58f879e533a8465ada041bd1";
+        if (req.user && req.user instanceof Business) {
+            var id = req.user.id;
             console.log("ana fl backend");
             console.log(req.body);
             Business.findById(id, function (err, business) {
                 if (err) res.status(500).json("Something went wrong");
-                else if (!business) res.status(500).json("Something went wrong");
+                else if (!business) res.status(500).json("Business not found");
                 else {
                     if (typeof req.body.description != "undefined" && req.body.description.length > 0) {
                         business.description = req.body.description;
@@ -192,11 +191,11 @@ requestRemoval: function(req,res) {
 
             });
 
-        // }
+        }
 
-        // else {
-        //     res.send('You are not a logged in business');
-        // }
+        else {
+            res.status(500).json('You are not a logged in business');
+        }
     },
 
     /* A business can request to delete a phone number. If this is business' only phone number then it will
@@ -204,10 +203,10 @@ requestRemoval: function(req,res) {
     one can be deleted. If the business entered a wrong phone number a message is sent to the business
     saying that the phone number was not found.*/
     deletePhone: function (req, res) {
-        // if (req.user && req.user instanceof Business) {
+        if (req.user && req.user instanceof Business) {
             if (typeof req.params.phone != "undefined") {
-                // var id = req.user.id;
-                var id = "58f8b9fdf3e7ca15c2ca2c1f";
+                var id = req.user.id;
+                // var id = "58f8b9fdf3e7ca15c2ca2c1f";
                 // var id = "58f879e533a8465ada041bd1";
                 console.log("ana fl backend delete phone");
                 var phone = req.params.phone;
@@ -243,11 +242,11 @@ requestRemoval: function(req,res) {
                 });
             }
             else res.status(500).json("Enter a phone number");
-        // }
+        }
 
-        // else {
-            // res.send('You are not a logged in business');
-        // }
+        else {
+          res.status(500).json('You are not a logged in business');
+        }
 
     },
 
@@ -257,10 +256,10 @@ requestRemoval: function(req,res) {
     saying that the payment method was not found.*/
 
     deletePaymentMethod: function (req, res) {
-        // if (req.user && req.user instanceof Business) {
+        if (req.user && req.user instanceof Business) {
             if (typeof req.params.method != "undefined") {
-                // var id = req.user.id;
-                var id = "58f8b9fdf3e7ca15c2ca2c1f";
+                var id = req.user.id;
+                // var id = "58f8b9fdf3e7ca15c2ca2c1f";
                 // var id = "58f879e533a8465ada041bd1";
                 var payment = req.params.method;
                 console.log("ana fl backend delete method");
@@ -299,17 +298,17 @@ requestRemoval: function(req,res) {
             else {
                 res.status(500).json('Enter a payment method to be deleted');
             }
-        // }
-        // else {
-            // res.send('You are not a logged in business');
-        // }
+        }
+        else {
+          res.status(500).json('You are not a logged in business');
+        }
 
     },
 
     deleteImage: function(req, res) {
-      // if(req.user && req.user instanceof business) {
-        // var id = req.user._id;
-        var id = "58f8b9fdf3e7ca15c2ca2c1f";
+      if(req.user && req.user instanceof Business) {
+        var id = req.user.id;
+        // var id = "58f8b9fdf3e7ca15c2ca2c1f";
         // var id = "58f879e533a8465ada041bd1";
         console.log("ana fl backend delete image");
         var image = req.params.image;
@@ -324,14 +323,15 @@ requestRemoval: function(req,res) {
             console.log(newBusiness);
           }
         });
-      // }
-    // }
-      // }
+      } else res.status(500).json("You are not a logged in business");
     },
 
 
     changeProfilePicture: function(req, res) {
-        var id = "58f8b9fdf3e7ca15c2ca2c1f";
+
+      if(req.user && req.user instanceof Business) {
+        // var id = "58f8b9fdf3e7ca15c2ca2c1f";
+        var id = req.user.id;
 
         console.log("ana fl backend changeProfilePicture");
         var file = req.file;
@@ -340,8 +340,8 @@ requestRemoval: function(req,res) {
             if(err) res.status(500).json("error in changing the profile picture");
             else res.status(200).json({business:updatedBusiness});
         });
-
     }
+  }
 }
 
 

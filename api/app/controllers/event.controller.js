@@ -187,9 +187,9 @@ If the type is Once only one event occurrence is added.
 */
 exports.createEvent = function (req, res) {
 
-	// if (req.user && req.user instanceof Business) {
-	// 	var id = req.user.id;
-		var id = "58f8b9fdf3e7ca15c2ca2c1f";
+	if (req.user && req.user instanceof Business) {
+		var id = req.user.id;
+		// var id = "58f8b9fdf3e7ca15c2ca2c1f";
 		// var id = "58f879e533a8465ada041bd1";
 		var now = new Date();
 		console.log(req.body);
@@ -371,10 +371,10 @@ exports.createEvent = function (req, res) {
 			}
 			else res.status(500).json('Incorrect input');
 		}
-	// }
-	// else {
-	// 	res.send('You are not a logged in business');
-	// }
+	}
+	else {
+		res.status(500).json('You are not a logged in business');
+	}
 }
 
 exports.getOnceEvents = function(req,res)
@@ -402,9 +402,7 @@ exports.getOnceEvents = function(req,res)
 
 exports.getOnceEventDetails = function(req, res)
 {
-	var business_id = req.params.businessId;
 	var event_id = req.params.eventId;
-	console.log("hi")
 	Events.findOne({_id:event_id}, function(err, event) {
 		if(err) res.status(500).json("error in findng the event");
 		if(!event) res.status(500).json("error in findng the event");
@@ -414,8 +412,7 @@ exports.getOnceEventDetails = function(req, res)
 				if(err) console.log("error in finding the eventocc");
 				if(!eventocc) res.status(500).json("error in findng the event");
 				else{
-					console.log("hi3");
-					res.status(200).json({businessId:business_id, event:event, eventocc:eventocc});
+					res.status(200).json({business: event.business_id, event:event, eventocc:eventocc});
 				}
 			});
 		}
@@ -524,12 +521,12 @@ exports.getOccurrences = function (req, res) {
 /* A business can edit an event or an event occurrence based on the changed field. */
 
 exports.editEvent = function (req, res) {
-	// if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
+	if (req.user && req.user instanceof Business && typeof req.params.id != "undefined") {
 
 		var id = req.params.id;
-		// var business_id = req.user.id;
+		var business_id = req.user.id;
 
-		var business_id = "58f8b9fdf3e7ca15c2ca2c1f";
+		// var business_id = "58f8b9fdf3e7ca15c2ca2c1f";
 		// var business_id = "58f879e533a8465ada041bd1";
 		console.log("ana fl backend edit");
 		console.log(req.body.day);
@@ -645,10 +642,10 @@ exports.editEvent = function (req, res) {
 			}
 
 		});
-	// }
-	// else {
-	// 	res.send('You are not a logged in business');
-	// }
+	}
+	else {
+		res.status(500).json('You are not a logged in business');
+	}
 
 }
 
@@ -656,10 +653,10 @@ exports.editEvent = function (req, res) {
 /*A business can cancel an event with all its occurrences.*/
 
 exports.cancelEvent = function (req, res,notify_on_cancel) {
-	// if (req.user && req.user instanceof Business && typeof req.body.id != "undefined") {
+	if (req.user && req.user instanceof Business && typeof req.params.id != "undefined") {
 		var id = req.params.id;
-		// var business_id = req.user.id;
-		var business_id = "58f8b9fdf3e7ca15c2ca2c1f";
+		var business_id = req.user.id;
+		// var business_id = "58f8b9fdf3e7ca15c2ca2c1f";
 		// var business_id = "58f879e533a8465ada041bd1";
 		console.log("backend cancel event");
 		Events.findById(id, function (err, event) {
@@ -675,6 +672,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 								if (err) res.status(500).json("Something went wrong");
 								else
 									{
+										res.status(200).json("deleted");
 										async.each(all_occ, function(one_occ, callback)
 										{
 											one_occ.remove(function(err)
@@ -718,10 +716,10 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 					res.status(500).json("Can not cancel this event");
 				}
 		});
-	// }
-	// else {
-	// 	res.send('You are not a logged in business');
-	// }
+	}
+	else {
+		res.status(500).json('You are not a logged in business');
+	}
 
 }
 

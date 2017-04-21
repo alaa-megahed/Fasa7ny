@@ -30,13 +30,13 @@
 
   <div ng-if = "type == 4" class="w3-sidebar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;background-color:#2B2C30;" id="rightMenu">
     <!-- <div class="w3-grey"> -->
-  <button onclick="closeRightMenu()" class=" w3-button w3-large" style="background-color:#2B2C30;" >&times;</button>
+  <button ng-if = "type == 4" onclick="closeRightMenu()" class=" w3-button w3-large" style="background-color:#2B2C30;" >&times;</button>
   <center>
    <input ng-if = "type == 4 && business.delete == 0" type="submit" value="Request Removal" ng-click = "remove()" class="btn btn-transparent">
    <input ng-if = "type == 4 && business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent">
    <input ng-if = "type == 4" type="submit" value="Create a Facility" ng-click = "createFacility(business._id)" class="btn btn-transparent">
    <input ng-if = "type == 4" type="submit" value="Create One-Time Event" ng-click = "createOneEvent(business._id)" class="btn btn-transparent">
-    <form action="#!/business/edit" method="get">
+    <form ng-click = "businessEdit()" method="get">
        <input ng-if = "type == 4" type="submit" value="Edit Information" class="btn btn-transparent">
      </form>
 
@@ -54,15 +54,15 @@
                     <div class="image-upload" style="float: left: 0; right: 0; margin: 0 auto;" >
                         <label for="file-input">
                             <div class="container2 image-cropper" >
-                              <img ng-src='img/avatar.png' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
+                              <img ng-src='http://localhost:3000/photo/{{business.profilePicture}}' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
                               <div class="middle">
                                 <div ng-if = "type == 4" style="font-size: 20px; color:lightgrey;"> Change profile picture</div>
                               </div>
                             </div>
                         </label>
-                        <input id="file-input" type="file" file-model="formData.img"/>
+                        <input ng-if = "type == 4" id="file-input" type="file" file-model="formData.img"/>
                         <br>
-                        <button class="btn btn-booking" id = "uploadButton" ng-click = "changeImage(user._id)" style = "display:block; margin: 0 auto; display: none;"> Upload  </button>
+                        <button ng-if = "type == 4" class="btn btn-booking" id = "uploadButton" ng-click = "changeImage(user._id)" style = "display:block; margin: 0 auto; display: none;"> Upload  </button>
 
                         <!-- full name & email display !-->
                         <div class="blog-title" style="margin: 0 auto;">
@@ -85,9 +85,7 @@
 
 
 </div>
-
-
-       <section id="blog-page">
+     <section id="blog-page">
             <div class="container">
                 <div class="row">
 
@@ -95,109 +93,38 @@
                       <div class="post-item">
 
                           <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
-                            <!--
-                              <div id="post-thumb">
-                                      <div ng-if = "image1" class="item">
-                                        <center ng-if = "image1" >
-                                          <img ng-if = "image1" ng-src="http://localhost:3000/photo/{{image1}}" alt="business image" class="img-responsive">
-                                           <img src="http://127.0.0.1:3000/api/public/uploads/{{ image }}" alt="business image" class="img-responsive">
-                                        </center>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "image1" class="btn btn-transparent" ng-click="deleteImage(image1)"> Delete Image </button>
-                                      </div>
-                                  <div ng-if = "image2" class="item">
-                                    <center ng-if = "image2" >
-                                      <img ng-if = "image2" ng-src="http://localhost:3000/photo/{{image2}}" alt="3D Beach Art | Meghna" class="img-responsive">
-                                    </center>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image2" class="btn btn-transparent" onclick="deleteImage(image2)"> Delete Image </button>
-                                  </div>
-                                  <div ng-if = "image3" class="item">
-                                    <center ng-if = "image3">
-                                      <img ng-if = "image3" ng-src="http://localhost:3000/photo/{{image3}}" alt="3D Beach Art | Meghna" class="img-responsive">
-                                    </center>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image3" class="btn btn-transparent" onclick="deleteImage(image3)"> Delete Image </button>
-                                  </div>
-                                  <div  ng-if = "image4" class="item">
-                                    <center ng-if = "image4">
-                                      <img ng-if = "image4" ng-src="http://localhost:3000/photo/{{image4}}" alt="3D Beach Art | Meghna" class="img-responsive">
-                                    </center>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image4" class="btn btn-transparent" onclick="deleteImage(image4)"> Delete Image </button>
-                                  </div>
-                                  <div  ng-if = "image5" class="item">
-                                    <center ng-if = "image5">
-                                      <img ng-if = "image5" ng-src="http://localhost:3000/photo/{{image5}}" alt="3D Beach Art | Meghna" class="img-responsive">
-                                    </center>
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "image5" class="btn btn-transparent" onclick="deleteImage(image5)"> Delete Image </button>
-                                  </div>
-                              </div>
-                              !-->
 
-                              <!-- START LAILA SLIDER !-->
-
-
-                              <style>
-                                .carousel-inner > .item > img,
-                                .carousel-inner > .item > a > img {
-                                    width: 70%;
-                                    margin: auto;
-                                },
-                                .carousel-inner>.item{
-                                   /*disables white flash*/
-                                   -webkit-transition: -webkit-transform .5s ease-in-out;
-                                   -o-transition: -o-transform .5s ease-in-out;
-                                   transition: transform .5s ease-in-out;
-                                },
-                                .carousel-inner {
-                                /*just incase the flash (style above) comes back*/
-                                   background: #000;
-                                },
-                                .carousel {
-                                  overflow: hidden;
-                                }
-                                .item {
-                                  overflow: hidden;
-                                }
-                              </style>
-
-                              <!-- <div class="container"> -->
                                 <br>
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                                  <!-- Indicators -->
-                                  <ol class="carousel-indicators">
-                                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                                    <li data-target="#myCarousel" data-slide-to="3"></li>
-                                    <li data-target="#myCarousel" data-slide-to="4"></li>
-                                  </ol>
 
-                                  <!-- Wrapper for slides -->
                                   <div class="carousel-inner" role="listbox" style = "position: relative; margin: 0 auto">
                                     <div class="item active" ng-if = "image1">
+                                      <div class="crop">
                                       <img ng-if = "image1" ng-src="http://localhost:3000/photo/{{image1}}" alt="business image" width="460" height="340" >
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image1" class="btn btn-transparent" ng-click="deleteImage(image1)"> Delete Image </button>
+                          </div>            &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image1" class="btn btn-transparent" ng-click="deleteImage(image1)"> Delete Image </button>
                                     </div>
 
 
                                     <div class="item" ng-if = "image2">
+                                      <div class = "crop">
                                       <img ng-if = "image2" ng-src="http://localhost:3000/photo/{{image2}}" alt="3D Beach Art | Meghna" width="460" height="340" >
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image2" class="btn btn-transparent" ng-click="deleteImage(image2)"> Delete Image </button>
+                                  </div>    &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image2" class="btn btn-transparent" ng-click="deleteImage(image2)"> Delete Image </button>
                                     </div>
 
 
                                     <div class="item" ng-if = "image3">
+                                      <div class = "crop">
                                       <img ng-if = "image3" ng-src="http://localhost:3000/photo/{{image3}}" alt="3D Beach Art | Meghna" width="460" height="340" >
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image3" class="btn btn-transparent" ng-click="deleteImage(image3)"> Delete Image </button>
+                              </div> &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image3" class="btn btn-transparent" ng-click="deleteImage(image3)"> Delete Image </button>
                                     </div>
 
 
                                     <div class="item" ng-if = "image4">
+                                      <div class = "crop">
                                       <img ng-if = "image4" ng-src="http://localhost:3000/photo/{{image4}}" alt="3D Beach Art | Meghna" width="460" height="340">
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image4" class="btn btn-transparent" ng-click="deleteImage(image4)"> Delete Image </button>
+                                    </div>&nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image4" class="btn btn-transparent" ng-click="deleteImage(image4)"> Delete Image </button>
                                     </div>
                                   </div>
-
-
-                                  <!-- Left and right controls -->
                                   <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                                     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                                     <span class="sr-only">Previous</span>
@@ -213,7 +140,7 @@
                               <!-- END LAILA SLIDER !-->
 
 
-                              &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "type == 4" class="btn btn-transparent" ng-click="addImage()"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
+                              &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "type == 4" class="btn btn-transparent" ng-click="addImage()" ng-disabled="imagelength == 4"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
                               <hr width="40%">
                               <div class="post-excerpt">
                                   <p>{{ business.description }}</p>
@@ -384,7 +311,7 @@
                         <div style="background-color:#2B2C30;" class="row">
                             <!-- post featured -->
                             <div class="image-wrap span4">
-                                 <center><button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "getEvent(business.name, event._id)"> View Event </button>
+                                 <center><button class="btn btn-transparent" ng-click = "getEvent(event._id)"> View Event </button>
                                  <hr style="border: 0.5px solid #90EE90">
                                  <center>
                             </div>

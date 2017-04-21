@@ -13,61 +13,15 @@
 <script src="js/jquery.sticky.js"></script>
 <script src="js/jquery.fitvids.js"></script>
 <script src="js/custom.js"></script>
-                    <!-- <div id="blog-posts">
-                        <div class="post-item" style="height:420px">
 
-                            <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
-
-                              <div ng-controller="CarouselDemoCtrl" id="slides_control">
-                                <div>
-                                  <carousel interval="myInterval">
-                                    <slide ng-repeat="slide in slides" active="slide.active">
-                                      <img style="margin:auto; width: 600px; max-width:600px; max-height:400px;" ng-src="{{slide.image}}">
-                                      <div class="carousel-caption">
-                                      </div>
-                                    </slide>
-                                  </carousel>
-                                </div>
-                              </div>
-                            </article>
-
-</div>
-
-<h2>
-<span class="date">
-<span class="month">
-Dec
-</span>
-<span class="day">
-25
-</span>
-
-</span> {{ event.name }}
-<!<input ng-click = "DeleteEvent(event._id,event.business_id)" type="submit" value="Delete" class="btn btn-transparent w3-green">
- -->
-<!--
-</span> {{ event.name }}
-<input ng-click = "showForm(event._id)" type="submit" value="Edit" class="btn btn-transparent w3-green">
-<input ng-click = "showDelete(event._id,event.business_id)" type="submit" value="Delete" class="btn btn-transparent w3-green">
-
-
-
-</h2>
-
-<h4>Time: {{ eventocc.time}} </h4>
-<h4>    Location: {{ event.location}} </h4>
-<h4>    Description: {{ event.description}} </h4>
-<h4>    Price: {{ event.price}} </h4>
-<h4>    Capacity: {{ event.capacity}} </h4>
-<h4>    Available: {{ eventocc.available}} </h4>
-     <input type="submit" value="Book Now!" class="btn btn-transparent w3-green">
-
-</div> -->
 <br>
 <br>
 <br>
 <section id="blog-page">
-     <div class="container">
+  <div ng-if = "error">
+      <center>
+      <h3>404 page not found</h3> </center>  </div>
+     <div ng-if = "!error" class="container">
          <div class="row">
 
            <div id="blog-posts" class="col-md-8 col-sm-8">
@@ -75,39 +29,49 @@ Dec
 
                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
 
-                       <div id="post-thumb" class="post-thumb owl-carousel owl-theme" style="display: block; opacity: 1;">
-                             <!-- <div ng-repeat = "image in images" >
-                               <div class="item">
-                                 <center>
-                                   <img src="http://127.0.0.1:3000/api/public/uploads/{{ image }}" alt="event picture" class="img-responsive">
-                                 </center>
-                                 &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" ng-click="deleteImage(image)"> Delete Image </button>
-                               </div>
-                             </div> -->
+                     <br>
+                     <div id="myCarousel" class="carousel slide" data-ride="carousel">
 
-                             <div class="item">
-                               <center>
-                                 <br>
-                                 <img src="../img/portfolio/port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
-                               </center>
-                                 &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" onclick="deleteImage(image)"> Delete Image </button>
-                             </div>
-                             <div class="item">
-                               <center>
-                                 <br>
-                                 <img src="../img/portfolio/portfolio.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
-                               </center>
-                                 &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" onclick="deleteImage(image)"> Delete Image </button>
-                             </div>
-                             <div class="item">
-                               <center>
-                                 <br>
-                                 <img src="../img/portfolio/wide-port1.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
-                               </center>
-                                 &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" onclick="deleteImage(image)"> Delete Image </button>
-                             </div>
+                       <div class="carousel-inner" role="listbox" style = "position: relative; margin: 0 auto">
+                         <div class="item active" ng-if = "image1">
+                           <div class="crop">
+                           <img ng-if = "image1" ng-src="img/blog/bicycle.jpg" alt="business image" width="460" height="340" >
+               </div>            &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image1" class="btn btn-transparent" ng-click="deleteImage(image1)"> Delete Image </button>
+                         </div>
+
+
+                         <div class="item" ng-if = "image2">
+                           <div class = "crop">
+                           <img ng-if = "image2" ng-src="img/blog/user.jpg"  alt="3D Beach Art | Meghna" width="460" height="340" >
+                       </div>    &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image2" class="btn btn-transparent" ng-click="deleteImage(image2)"> Delete Image </button>
+                         </div>
+
+
+                         <div class="item" ng-if = "image3">
+                           <div class = "crop">
+                           <img ng-if = "image3" ng-src="http://localhost:3000/photo/{{image3}}" alt="3D Beach Art | Meghna" width="460" height="340" >
+                   </div>        &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image3" class="btn btn-transparent" ng-click="deleteImage(image3)"> Delete Image </button>
+                         </div>
+
+
+                         <div class="item" ng-if = "image4">
+                           <div class = "crop">
+                           <img ng-if = "image4" ng-src="http://localhost:3000/photo/{{image4}}" alt="3D Beach Art | Meghna" width="460" height="340">
+               </div>            &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image4" class="btn btn-transparent" ng-click="deleteImage(image4)"> Delete Image </button>
+                         </div>
                        </div>
-                       &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" ng-click="addImage()"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
+
+
+                       <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                         <span class="sr-only">Previous</span>
+                       </a>
+                       <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                         <span class="sr-only">Next</span>
+                       </a>
+                     </div>
+                       &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "type==4" class="btn btn-transparent" ng-click="addImage()"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
                        <hr width="40%">
                        <div class="post-excerpt">
 
@@ -132,16 +96,14 @@ Dec
                          <h4>    Price: {{ event.price}} </h4>
                          <h4>    Capacity: {{ event.capacity}} </h4>
                          <h4>    Available: {{ eventocc.available}} </h4>
-                         <input type="submit" value="Book Now!" class="btn btn-transparent">
-                         <input ng-click = "showForm(event._id)" type="submit" value="Edit" class="btn btn-transparent">
-                        <input ng-click = "showDelete(event._id,event.business_id)" type="submit" value="Delete" class="btn btn-transparent">
+                         <input ng-if = "type==1 || type==4" type="submit" value="Book Now!" class="btn btn-transparent">
+                         <input ng-if = "type==4" ng-click = "showForm(event._id)" type="submit" value="Edit" class="btn btn-transparent">
+                         <input ng-if = "type==4" ng-click = "showDelete(event._id)" type="submit" value="Delete" class="btn btn-transparent">
                         <br>
                         <br>
                        </div>
-
                    </article>
-
-</div>
+                 </div>
                </div>
              </div>
            </div>

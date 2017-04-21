@@ -23,7 +23,7 @@ app.config(function($routeProvider){
 		templateUrl : "views/businessPage.html",
 		controller  : "businessController"
 	})
-	.when("/business/edit", {
+	.when("/editBusiness", {
 		templateUrl : "views/businessEdit.html",
 		controller  : "businessController"
 	})
@@ -45,7 +45,7 @@ app.config(function($routeProvider){
 
 	})
 
-	.when("/eventPage/:businessId/:eventId", {
+	.when("/eventPage/:eventId", {
 		templateUrl : "views/eventPage.html",
 		controller  : "eventController"
 	})

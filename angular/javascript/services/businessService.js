@@ -69,8 +69,8 @@
 
             changeImage : function(formData) {
               var fd = new FormData();
-              for(var key in data)
-                fd.append(key, data[key]);
+              for(var key in formData)
+                fd.append(key, formData[key]);
 
               console.log(fd);
               return $http.post('http://127.0.0.1:3000/business/changeProfilePicture', fd, {
