@@ -1,23 +1,27 @@
 app.controller('businessController', function($scope, status,$http, Business, $location, $routeParams, $modal, $log, $window) {
 
+
   status.local()
- .then(function(res){
-   if(res.data){
-     if(res.data.user_type == 1)
-       $scope.type = 1;
-     else if(res.data.user_type == 2)
-       $scope.type  = 4;
-     else $scope.type = 3;
-   }
-   else {
-     status.foreign()
-     .then(function(res){
-       if(res.data.user_type)
-         $scope.type = 1;
-       else $scope.type = 2;
-     });
-   }
+  .then(function(res){
+    if(res.data){
+      if(res.data.user_type == 1)
+        $scope.type = 1;
+      else if(res.data.user_type == 2)
+        $scope.type  = 4;
+      else $scope.type = 3;
+    }
+    else {
+      status.foreign()
+      .then(function(res){
+        if(res.data.user_type)
+          $scope.type = 1;
+        else $scope.type = 2;
+      });
+    }
   });
+
+  // $scope.type = 2; //unregistered user or business visiting another business
+
 
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
@@ -25,11 +29,9 @@ app.controller('businessController', function($scope, status,$http, Business, $l
   $scope.sub = "Subscribe";
   console.log($routeParams.id);
   $scope.imagelength = 0;
-  // $scope.id = "58f20e01b38dec5d920104f3";
-  // console.log(business);
-  // $scope.business = business;
   $scope.business = {};
-  if($scope.business.images) {
+  if($scope.business.images)
+  {
     $scope.imagelength = $scope.business.images.length;
     console.log("images");
     console.log($scope.business.images);
@@ -39,7 +41,7 @@ app.controller('businessController', function($scope, status,$http, Business, $l
     if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
   }
 
-// $scope.type = 2; //unregistered user or business visiting another business
+
 
   Business.get($routeParams.id)
   .then(function(d) {
@@ -65,10 +67,9 @@ app.controller('businessController', function($scope, status,$http, Business, $l
         }
         else if(res.data.user_type == 2) {
           if(res.data._id == d.data.result._id) {
-            console.log("hii");
-            $scope.type = 4; //my business page
+            $scope.type = 4;
           } else {
-            $scope.type = 2; //business visiting another business' page
+            $scope.type = 2;
           }
         } else $scope.type = 2;
       }
@@ -93,9 +94,7 @@ app.controller('businessController', function($scope, status,$http, Business, $l
               $scope.type = 3;
             }
             else if(res.data.user_type == 2) {
-              console.log("??");
               if(res.data._id === d.data.result.id) {
-                console.log("hi");
                 $scope.type = 4; //my business page
               } else {
                 $scope.type = 2; //business visiting another business' page
@@ -103,7 +102,7 @@ app.controller('businessController', function($scope, status,$http, Business, $l
             } else $scope.type = 2;
           }
           else{
-
+             $scope.type = 2;
           }
         });
       }
@@ -151,13 +150,6 @@ app.controller('businessController', function($scope, status,$http, Business, $l
     // console.log($scope.sub);
   });
 
-if($scope.business.images){
-  if($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
-  if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
-  if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
-  if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
-}
-
 
           $scope.goToEdit = function() {
           $scope.error = "";
@@ -167,11 +159,11 @@ if($scope.business.images){
             console.log(d.data);
                  console.log(d.data.business._id);
             $location.path('/'+ d.data.business._id);
-             },
+         	},
           function errorCallback(d){
             $scope.error = d.data;
           })
-          };
+         };
 
          $scope.subscribe = function(id) {
          	console.log("controller subscribe");
@@ -414,7 +406,6 @@ if($scope.business.images){
             function errorCallback(d){
               $scope.error = d.data;
             });
-
         };
 
         $scope.cancel = function () {
@@ -479,17 +470,14 @@ if($scope.business.images){
                     },
                     function errorCallback(d){
                       $scope.error = d.data;
-                      // $route.reload();
                     });
-                    // $route.reload();
 
             };
 
             $scope.no = function () {
                 $modalInstance.dismiss('cancel');
             };
-        };
-
+  }
 
         var deletePaymentMethodCtrl = function ($scope, $modalInstance, business, Business, $route) {
           $scope.error = "";
@@ -512,4 +500,4 @@ if($scope.business.images){
             $scope.no = function () {
                 $modalInstance.dismiss('cancel');
             };
-        };
+}

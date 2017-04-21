@@ -78,32 +78,32 @@ var BusinessController = {
 
 
 requestRemoval: function(req,res) {
-        // if(req.user && req.user instanceof Business){
-        // var id = req.user.id;
+        if(req.user && req.user instanceof Business){
+        var id = req.user.id;
         console.log('removal');
-         var id = "58f8b9fdf3e7ca15c2ca2c1f";
-        var id = "58f879e533a8465ada041bd1";
+
         Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
             if(err) res.status(500).json("Something went wrong");
-            else res.status(200).json("Requested!");
+            else {
+                res.status(200).json("Requested!");
+                }
         });
 
-     //    }
+        }
 
-     //    else{
-     //     console.log('You are not a logged in busiess');
-     // }
+        else{
+         res.status(500).json('You are not a logged in busiess');
+     }
 
     },
 
     /* A business can make his own page public (by changing the public flag)
     so that Business will now show up in searches and can be viewed by all users.*/
     makePagePublic: function (req, res) {
-        // if (req.user && req.user instanceof Business) {
-            // var businessId = req.user.id;
+        if (req.user && req.user instanceof Business) {
+            var businessId = req.user.id;
             console.log('public');
-             var businessId = "58f8b9fdf3e7ca15c2ca2c1f";
-            // var businessId = "58f879e533a8465ada041bd1";
+
             Business.findByIdAndUpdate(businessId, { $set: { public: 1 } },
                 function (err) {
                     if (err) {
@@ -112,7 +112,7 @@ requestRemoval: function(req,res) {
                         res.status(200).json("done");
                     }
                 });
-        // } else res.send("you must be a logged in business");
+        } else res.status(500).json("you must be a logged in business");
     },
 
     /* A business can edit its personal infromation.*/
@@ -142,7 +142,7 @@ requestRemoval: function(req,res) {
                     if (typeof req.body.address != "undefined" && req.body.address.length > 0) {
                         business.address = req.body.address;
                     }
-                    if (typeof req.body.area != "undefined" && req.body.area.length > 0) {
+                    if (req.body.area) {
                         business.area = req.body.area;
                     }
                     if (typeof req.body.phones != "undefined" && req.body.phones.length > 0) {
@@ -206,8 +206,6 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             if (typeof req.params.phone != "undefined") {
                 var id = req.user.id;
-                // var id = "58f8b9fdf3e7ca15c2ca2c1f";
-                // var id = "58f879e533a8465ada041bd1";
                 console.log("ana fl backend delete phone");
                 var phone = req.params.phone;
                 Business.findOne({ _id: id }, function (err, business) {
@@ -259,8 +257,7 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             if (typeof req.params.method != "undefined") {
                 var id = req.user.id;
-                // var id = "58f8b9fdf3e7ca15c2ca2c1f";
-                // var id = "58f879e533a8465ada041bd1";
+
                 var payment = req.params.method;
                 console.log("ana fl backend delete method");
                 Business.findOne({ _id: id }, function (err, business) {

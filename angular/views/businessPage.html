@@ -160,18 +160,19 @@
 
                       <div style="background-color:#2B2C30;">
 
-                        <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()">&#9776;</button>
+                        <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()" ng-if = "type == 4">&#9776;</button>
                         <div class="w3-container">
 
                         </div>
                        <!-- Single Widget -->
                         <aside class="widget wow fadeInDown">
 
-                            <div ng-if = "type == 1" class="widget-content">
-                              <div ng-if == "type == 1">
+
+                            <div  class="widget-content">
+                              <div>
                                 <ul class="rating">
-                                <li ng-repeat="n in [].constructor(maxRating) track by $index">
-                                <span ng-click="rateBy($index+1, business._id)" ng-show="ratedBy > $index" class="filled">&#9733;</span>
+                                <li ng-repeat="n in [].constructor(maxRating) track by $index" ng-if = "type == 1">
+                                <span ng-click="rateBy($index+1, business._id)" ng-show="ratedBy > $index" class="filled" ng-if = "type == 1">&#9733;</span>
                                 <span ng-click="rateBy($index+1, business._id)" ng-show="ratedBy <= $index">&#9733;</span>
                                 </li>
                                 </ul>
@@ -224,11 +225,8 @@
                             <div class="widget-content">
                           </div>
                         </aside>
-
                     </div>
-                    <!-- End Widget Section -->
-
-                </div>      <!-- End row -->
+                </div>
 
 
 

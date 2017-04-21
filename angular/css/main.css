@@ -1762,13 +1762,11 @@ font-weight: bold;
       margin: auto;
   },
   .carousel-inner>.item{
-     /*disables white flash*/
      -webkit-transition: -webkit-transform .5s ease-in-out;
      -o-transition: -o-transform .5s ease-in-out;
      transition: transform .5s ease-in-out;
   },
   .carousel-inner {
-  /*just incase the flash (style above) comes back*/
      background: #000;
   },
   .carousel {
@@ -1790,7 +1788,7 @@ font-weight: bold;
 
 input[type=radio]:checked ~ label{
   color: #0DFF92;
-}*/
+}
 /*==========================================Farida==================================
  It will not work without the style tag, so don't remove it. (I know it doesn't make sense)
  ===================================================================================*/

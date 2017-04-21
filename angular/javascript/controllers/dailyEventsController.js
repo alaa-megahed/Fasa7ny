@@ -1,7 +1,28 @@
-app.controller('dailyEventsController', function($scope, $http, dailyEvents, $location, $routeParams, $modal) {
+app.controller('dailyEventsController', function($scope, status,$http, dailyEvents, $location, $routeParams, $modal) {
 
 console.log("dailyevent eventController");
 console.log($routeParams.facilityId);
+
+
+status.local()
+ .then(function(res){
+   if(res.data){
+     if(res.data.user_type == 1)
+       $scope.type = 1;
+     else if(res.data.user_type == 2)
+       $scope.type  = 4;
+     else $scope.type = 3;
+   }
+   else {
+     status.foreign()
+     .then(function(res){
+       if(res.data.user_type)
+         $scope.type = 1;
+       else $scope.type = 2;
+     });
+   }
+ });
+
 	dailyEvents.get($routeParams.facilityId)
 	.then(function(d) {
     $scope.events = d.data.events;
@@ -161,14 +182,18 @@ var editDailyEvent = function ($scope, $modalInstance,dailyEvents,eventId,$route
       {
         daysOff[day] = 6;
       }
-
+      $scope.error = "";
       $scope.formData.day = daysOff;
         dailyEvents.edit($scope.formData,eventId)
-        .then(function(d){
+        .then(function successCallback(d){
           console.log('yas');
-        });
-        $route.reload();
+           $route.reload();
         $modalInstance.close('closed');
+        },
+        function errorCallback(d){
+          $scope.error = d.data;
+        });
+       
     };
 
     $scope.cancel = function () {

@@ -117,38 +117,48 @@ $scope.user = {};
 
 var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
     $scope.form = {}
+    $scope.error = ""
     $scope.submitForm = function (formData, facilityId) {
         // if ($scope.form.editForm.$valid) {
             console.log('user form is in scope');
 						console.log(formData);
 						console.log(facilityId);
 						Facility.editFacility(facilityId, formData)
-						.then(function(d) {
+						.then(function successCallback(d) {
 							console.log("done editing facility");
+								$route.reload();
+            					$modalInstance.close('closed');
+						},
+						function errorCallback(d){
+						$scope.error = d.data;
 						});
-						$route.reload();
-            $modalInstance.close('closed');
+
     };
 
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+    $modalInstance.dismiss('cancel');
     };
 };
 
 var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route) {
     $scope.form = {}
+    $scope.error = "";
     $scope.yes = function (facilityId) {
         // if ($scope.form.editForm.$valid) {
             console.log('user form is in scope');
 						console.log(facilityId+"!!");
 						Facility.deleteFacility(facilityId)
-						.then(function(d) {
+						.then(function successCallback(d) {
 							console.log("done deleting facility");
+							$route.reload();
+            				$modalInstance.close('closed');
+
+						},
+						function errorCallback(d){
+							$scope.error = d.data;
 						});
 						console.log("delete done");
-						$route.reload();
-            $modalInstance.close('closed');
-    };
+					    };
 
     $scope.no = function () {
         $modalInstance.dismiss('cancel');
