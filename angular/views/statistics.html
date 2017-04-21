@@ -1,20 +1,108 @@
-<section>
+<link 
+  href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" 
+  rel="stylesheet"  type='text/css'>
+<section id="counter" class="parallax-section">
+    <div class="container">
+        <div class="row" style="margin: auto">
+            <div style=" margin:0 auto; ">
+                <!-- first count item -->
+                <div class="col-md-2 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="600ms">
+                    <div class="counters-item kill-margin-bottom">
+                        <!--<div style="text-size: 0px; opacity: 0">
+                            <span data-speed="3000" data-to="{{allStats.sales}}">{{allStats.sales}}</span>
+                        </div>-->
+                        <i style="padding-top: 50px; color: #4bb056" class="fa fa-line-chart w3-jumbo"></i>
+                        <h3>Statistics</h3>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms">
+                    <div class="counters-item">
+                        <div>
+                            <span data-speed="3000" data-to="{{allStats.views}}"> {{allStats.views}} </span>
+                        </div>
+                        <i class="fa fa-eye fa-3x"></i>
+                        <h3>Page Views</h3>
+                    </div>
+                </div>
+                <!-- end first count item -->
+
+                <!-- second count item -->
+                <div class="col-md-2 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="200ms">
+                    <div class="counters-item">
+                        <div>
+                            <span data-speed="3000" data-to="{{allStats.subscriptions}}">{{allStats.subscriptions}}</span>
+                        </div>
+                        <i class="fa fa-check-square fa-3x"></i>
+                        <h3>Subscriptions</h3>
+                    </div>
+                </div>
+                <!-- end second count item -->
+
+                <!-- third count item -->
+                <div class="col-md-2 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="400ms">
+                    <div class="counters-item">
+                        <div>
+                            <span data-speed="3000" data-to="{{allStats.rating}}">{{allStats.rating}}</span>
+                        </div>
+                        <i class="fa fa-star fa-3x"></i>
+                        <h3>Rating</h3>
+
+                    </div>
+                </div>
+                <!-- end third count item -->
+
+                <!-- fourth count item -->
+                <div class="col-md-2 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="600ms">
+                    <div class="counters-item kill-margin-bottom">
+                        <div>
+                            <span data-speed="3000" data-to="{{allStats.attendees}}">{{allStats.attendees}}</span>
+                        </div>
+                        <i class="fa fa-users fa-3x"></i>
+                        <h3>Attendees</h3>
+                    </div>
+                </div>
+                <!-- end fourth count item -->
+
+
+                <div class="col-md-2 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="600ms">
+                    <div class="counters-item kill-margin-bottom">
+                        <div>
+                            <span data-speed="3000" data-to="{{allStats.sales}}">{{allStats.sales}}</span>
+                        </div>
+                        <i class="fa fa-money fa-3x"></i>
+                        <h3>Sales</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+    <!-- end container -->
+</section>
+
+
+<!-- end section -->
+
+<div class="title text-center wow fadeIn">
+    <h2 class="color">{{title}}</h2>
+    <div class="border"></div>
+</div>
+
+<section class="w3-margin-top">
     <div class="container">
         <div class="row">
 
-            <div class="col-lg-8">
-                <h1>{{title}} </h1>
+            <center class="col-md-8">
                 <canvas class="col-lg-8 chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
                     chart-dataset-override="datasetOverride" chart-click="onClick" ng-cloak>
                 </canvas>
+            </center>
 
-
-
-            </div>
-            <div class="col-lg-4">
+            <div class="col-md-4">
                 <div class="row">
-                    Weekly: <input type="radio" value="week" ng-model="type"> Monthly: <input type="radio" value="month"
-                        ng-model="type"> Yearly: <input type="radio" value="year" ng-model="type">
+                    Weekly: <input class="w3-radio" type="radio" value="week" ng-model="type"> Monthly: <input class="w3-radio"
+                        type="radio" value="month" ng-model="type"> Yearly: <input class="w3-radio" type="radio" value="year"
+                        ng-model="type">
                     <div ng-show="type == 'week'">
                         <label for="start-date">Start date: </label>
                         <input id="start-date" ng-model="startDate" type="date" name=""> <br>
@@ -36,12 +124,20 @@
                         <label for="end-year">End year: </label>
                         <input id="end-year" ng-model="endYear" type="number" name="end" min="1900" max="2099" step="1">
                     </div>
+                    <!--<div ng-show="type != 'year' && type != 'week' && type != 'month'">
+                        <div class="w3-tag w3-jumbo w3-green">
+                            Choose statistics range.
+                        </div>
+                    </div>-->
 
                 </div>
-
+                <div class="row">
+                    <button class="btn btn-transparent" type="button" ng-disabled="disableButton" ng-click="getStats()">Get Stats</button>
+                </div>
             </div>
-            <button class="btn btn-transparent" type="button" ng-disabled="disableButton" ng-click="getStats()">Get Stats</button>            {{test}}
+
         </div>
+
     </div>
     </div>
 
@@ -52,5 +148,40 @@
         color: black;
         border-radius: 8px;
         outline: none;
+    }
+    
+    .square-box {
+        position: relative;
+        width: 50%;
+        overflow: hidden;
+        background: #4679BD;
+    }
+    
+    .square-box:before {
+        content: "";
+        display: block;
+        padding-top: 100%;
+    }
+    
+    .square-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        color: white;
+    }
+    
+    .square-content div {
+        display: table;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .square-content span {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        color: white
     }
 </style>

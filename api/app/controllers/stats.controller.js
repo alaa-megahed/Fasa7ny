@@ -210,6 +210,19 @@ var StatsController = {
           res.json(result);
         }
       });
+  },
+  getAllStats: function (req, res) {
+    console.log(req.body);
+    var businessID = req.body.businessID;
+    AllStat.findOne({ business: businessID }, function (err, result) {
+      if (err) {
+        res.status(500);
+        res.send(err);
+      } else {
+        console.log('yalahwy');
+        res.json(result);
+      }
+    })
   }
 }
 

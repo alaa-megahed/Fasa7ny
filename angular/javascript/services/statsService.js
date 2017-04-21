@@ -11,13 +11,17 @@ angular.module('fasa7ny')
         factory.week = function (params) {
             return $http.post('http://localhost:3000/stats/week', params);
         }
+        factory.getAllStats = function (params) {
+            return $http.post('http://localhost:3000/stats/all', params);            
+        }
+
         var formatDate = function (date) {
             var ans = '';
             var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             ans = ans + month[date.getMonth()];
             ans += ' ';
             ans += date.getYear();
-            return ans; 
+            return ans;
         }
         factory.processData = function (resData, type) {
             var chart = {};

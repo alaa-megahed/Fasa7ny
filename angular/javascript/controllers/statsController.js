@@ -4,7 +4,20 @@ angular.module('fasa7ny')
         $scope.title = 'Statistics';
         $scope.disableButton = ($scope.type == 'year' && $scope.startYear > $scope.endYear);
         $scope.series = ['Views', 'Attendees', 'Rating', 'Sales', 'Subscriptions'];
-
+        $scope.data = [
+            [1, 4, 2, 5, 7],
+            [8, 3, 4, 4, 2],
+            [1, 2, 4, 8, 0],
+            [2, 5, 3, 3, 3],
+            [2, 7, 8, 2, 4], 
+        ]; 
+        Stats.getAllStats({ businessID: $scope.businessID })
+            .then(function (res) {
+                $scope.allStats = res.data;
+                console.log($scope.allStats);
+            }, function (res) {
+                console.log(res.data);
+            });
         $scope.getStats = function () {
             if ($scope.type == 'year') {
                 Stats.year({ businessID: $scope.businessID, startYear: +$scope.startYear, endYear: +$scope.endYear })

@@ -1,11 +1,12 @@
 angular.module('fasa7ny')
     .controller('SearchController', function ($scope, Search) {
-        $scope.minRating = 0;
-        $scope.direction = true;
-        $scope.cat = 'all';
+        $scope.minRating = 0; //default min rating is zero 
+        $scope.direction = true; //default sorting is descending
+        $scope.cat = 'all'; //default category is all 
+        $scope.sortBy = ''; //default is no sort 
+        $scope.area = 'All'; //default area is all 
         $scope.businesses = 'No results.';
-        $scope.checked = false;
-        $scope.sortBy = "";
+        $scope.checked = false; 
         $scope.areas = ['New Cairo', 'Maadi', 'Mohandeseen', 'Zamalek'];
         $scope.check = function () {
             if ($scope.checked) {
