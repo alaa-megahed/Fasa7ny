@@ -22,7 +22,6 @@ router.use('/reviews', reviews);
 router.use('/bookings', bookings);
 router.use('/search', search);
 router.use('/business', business);
-router.use('/event',event);
 router.use('/user', user);
 router.use('/admin', admin);
 router.use('/contact', function(req, res) {
@@ -48,7 +47,6 @@ router.get('/loggedin', function (req, res) {
 
 router.get('/loggedin1', function (req1, res1) {
   res1.json(req1.user);
-
 });
 
 module.exports = router;

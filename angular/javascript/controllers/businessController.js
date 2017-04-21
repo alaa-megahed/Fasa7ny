@@ -1,5 +1,6 @@
-app.controller('businessController', function($scope, status,$http, Business, $location, $routeParams, $modal, $log, $window) {
 
+var app = angular.module('fasa7ny');
+app.controller('businessController', function($scope, status,$http, Business, $location, $routeParams, $modal, $log, $window) {
 
   status.local()
   .then(function(res){
@@ -20,13 +21,11 @@ app.controller('businessController', function($scope, status,$http, Business, $l
     }
   });
 
-  // $scope.type = 2; //unregistered user or business visiting another business
-
-
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
   $scope.avgRate = 0;
   $scope.sub = "Subscribe";
+
   console.log($routeParams.id);
   $scope.imagelength = 0;
   $scope.business = {};
@@ -230,18 +229,41 @@ app.controller('businessController', function($scope, status,$http, Business, $l
 
 
         $scope.remove = function () {
-        $scope.message = "Remove Button Clicked";
-        console.log($scope.message);
-        var modalInstance = $modal.open({
-            templateUrl: 'views/removePop.html',
-            controller: Remove,
-            scope: $scope
+          $scope.message = "Remove Button Clicked";
+          console.log($scope.message);
 
-        });
+          Business.hasBookings().then(function(responce)
+          {
+            if(responce.data != 0)
+            {
+              
+              var notAllowedModalInstance = $modal.open({
+                  templateUrl: 'views/notAllowedRemovePop.html',
+                  controller: NotAllowedRemove,
+                  scope: $scope
 
-        modalInstance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
-            });
+              });
+
+              modalInstance.result.then(function (selectedItem) {
+                  $scope.selected = selectedItem;
+                  });
+            }
+            else
+            {
+
+              var modalInstance = $modal.open({
+                  templateUrl: 'views/removePop.html',
+                  controller: Remove,
+                  scope: $scope
+
+              });
+
+              modalInstance.result.then(function (selectedItem) {
+                  $scope.selected = selectedItem;
+                  });
+              }
+         });
+
     };
 
 
@@ -253,6 +275,12 @@ app.controller('businessController', function($scope, status,$http, Business, $l
         $scope.createFacility = function(id) {
           console.log("create facility controller");
           $location.path('/createFacility/'+ id);
+        };
+
+
+        $scope.createOffer = function(id) {
+          console.log("create offer controller");
+          $location.path('/createOffer/'+ id);
         };
 
         $scope.deleteImage = function (image) {
@@ -391,7 +419,6 @@ app.controller('businessController', function($scope, status,$http, Business, $l
         };
     };
 
-
     var Remove = function ($scope, $modalInstance,Business,$route) {
         $scope.form = {}
         $scope.error = "";
@@ -407,11 +434,19 @@ app.controller('businessController', function($scope, status,$http, Business, $l
               $scope.error = d.data;
             });
         };
-
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
     };
+
+
+var NotAllowedRemove = function ($scope, $modalInstance,Business,$route) {
+    $scope.form = {}
+    $scope.submitForm = function () {
+        $route.reload();
+        $modalInstance.close('closed');
+    };
+};
 
 
 

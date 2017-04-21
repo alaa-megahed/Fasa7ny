@@ -9,15 +9,27 @@ app.config(function($routeProvider){
 		controller  : "navbarController"
 	})
 
+
 	.when("/search/:id", {
 		templateUrl : "views/searchtest.html",
 		controller  : "searchtestController"
+	})	
 
+	.when("/book-event", {
+		templateUrl : "views/booking_event.html",
+		controller  : "bookingEventController"
 	})
+	
+	.when("/book_facility", { //I want the facility name to be passed in the url
+		templateUrl : "views/booking_facility.html",
+		controller  : "bookFacilityController"
+	})
+
 	.when("/business/:id", {
 		templateUrl : "views/businessPage.html",
 		controller  : "businessController"
 	})
+
 	.when("/editBusiness", {
 		templateUrl : "views/businessEdit.html",
 		controller  : "businessController"
@@ -45,11 +57,17 @@ app.config(function($routeProvider){
 		controller  : "facilityController"
 	})
 
+
 	// $locationProvider.html5Mode(true);
 
 	.when("/createOneEvent/:businessId", {
 		templateUrl : "views/createEvent.html",
 		controller  : "onetimeController"
+	})
+
+
+	.when("/createOffer/:businessId", {
+			templateUrl : "views/createOffer.html"
 	})
 
 	.when("/schedule/:id", {
@@ -61,6 +79,12 @@ app.config(function($routeProvider){
 			templateUrl : "views/viewEvents.html",
 			controller  : "dailyEventsController"
 	})
+
+	.when("/offers",{
+		templateUrl : "views/offersView.html",
+		controller  : "ViewOffersController"
+	})
+
 
 	.when("/viewOccurences/:eventId", {
 			templateUrl : "views/viewOccurences.html",

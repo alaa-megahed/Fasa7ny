@@ -24,5 +24,14 @@ router.get('/cancelO/:occId', RegularEventController.cancelOccurrence);
 router.get('/view', RegularEventController.getEvents);
 router.get('/viewO/:eventId', RegularEventController.getOccurrences);
 router.get('/getOnceEventDetails/:eventId', RegularEventController.getOnceEventDetails);
+router.get('/facilities',RegularEventController.getAllFacilities);
+router.get('/getEvent/:id', RegularEventController.getEvent);
+router.get('/getOnceEvents/:id',RegularEventController.getOnceEvents);
+// router.get('/viewO/:facility_id',RegularEventController.getAllTimings);
+
+
+router.get('/getOnceEventDetails/:businessId/:eventId', RegularEventController.getOnceEventDetails);
+
+
 
 module.exports = router;

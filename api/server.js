@@ -8,7 +8,6 @@ var mongoose = require('./config/mongoose'),
     app      = express();
 
 
-app.listen(config.port);
 
 // var Events = require('./app/models/Event');
 
@@ -29,7 +28,7 @@ app.listen(config.port);
 // facility.name = "room1";
 // facility.description = "facility description";
 // facility.capacity = "10";
-// facility.business_id = "58f20e01b38dec5d920104f3";
+// facility.business_id = "58f0cb2d6bfb6061efd66625";
 // facility.save();
 // var Business = require('./app/models/Business');
 
@@ -40,6 +39,53 @@ app.listen(config.port);
 // business.save(function(err){
 // if(err) throw err;
 // });
+
+// var Facility = require('./app/models/Facility');
+// var F = new Facility(
+// {
+// 	name: "Facility3",
+//     description: "Hi I'm a Facility",
+//     capacity: 50,
+//     business_id:"58f0f3faaa02d151aa4c987c"
+
+// });
+// F.save();
+
+
+//  var Event = require('./app/models/Event').Events;
+// var ev = new Event(
+// 	{
+	
+// 	location : "lolla",
+// 	name : "koko ",
+// 	description : "please",
+// 	price : 150,
+// 	capacity : 40,
+// 	repeated : "Daily",
+// 	facility_id : "58f9eeda54894641dd7453ae",
+// 	business_id : "58f0cb2d6bfb6061efd66625",
+// 	daysOff : [ ],
+// 	image : [
+// 		" "
+// 	]
+// });
+
+// ev.save();
+
+// var EventOcc = require('./app/models/Event').EventOccurrences;
+// var E = new EventOcc(
+// {
+// 	day: new Date(),
+//     time: "1-3",
+//     available: 40,
+//     event : "58f9ef0a884967421f8ed009",
+//     facility_id :"58f9eeda54894641dd7453ae",
+// business_id : "58f0cb2d6bfb6061efd66625",
+
+// });
+// E.save();
+
+app.listen(config.port);
 
 
 

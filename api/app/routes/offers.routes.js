@@ -13,10 +13,10 @@ router.get("/update_offer", function(req, res) {
   } else res.send("you're not authorized to view this page");
 });
 
-router.get('/viewOffers', OffersController.viewOffers);
+router.get('/viewOffers/:id', OffersController.viewOffers);
 router.get('/createOffer', OffersController.getCreateOffer);
-router.post('/createOffer', upload.single('image'), OffersController.createOffer);
-router.post('/updateOffer', upload.single('image'), OffersController.updateOffer);
-router.get('/deleteOffer', OffersController.deleteOffer);
+router.post('/createOffer', upload.single('img'), OffersController.createOffer);
+router.post('/updateOffer', upload.single('img'), OffersController.updateOffer);
+router.get('/deleteOffer/:id', OffersController.deleteOffer);
 
 module.exports = router;

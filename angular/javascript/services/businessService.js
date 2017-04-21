@@ -1,5 +1,5 @@
 // angular.module('businessService', [])
-
+var app = angular.module('fasa7ny');
     app.factory('Business', ['$http', function($http) {
         return {
             get : function(id) {
@@ -35,6 +35,10 @@
             remove : function(){
             	console.log('remove service');
             	return $http.get('http://127.0.0.1:3000/business/requestRemoval');
+            },
+
+            hasBookings : function(){
+              return $http.get('http://127.0.0.1:3000/business/hasBookings');
             },
 
             deleteImage : function(image) {
@@ -77,8 +81,19 @@
                 transformRequest: angular.identity,
                 headers: { 'Content-Type': undefined }
               });
-            }
+            },
 
+            getFacilityOccs: function(facility_id){
+              return $http.get('http://127.0.0.1:3000/business/getFacilityOccs/' + facility_id);
+            },
+
+            getEventOccs: function(event_id){
+              return $http.get('http://127.0.0.1:3000/business/getEventOccs/' + event_id);
+            },
+
+            getBooking: function(booking_id){
+              return $http.get('http://127.0.0.1:3000/business/getBooking/' + booking_id);
+            },
 
             // checkSession : function(id) {
             //   console.log('check session service');

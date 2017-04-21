@@ -1,11 +1,14 @@
 var Business = require('../models/Business');
 var Events = require('mongoose').model('Events');
-var EventOccurrences = require('mongoose').model('EventOccurrences');
+var EventOccurrences   = require('mongoose').model('EventOccurrences');
+var Booking = require('mongoose').model('Booking');
 var Rating = require('mongoose').model('Rating');
 var Facility = require('mongoose').model('Facility');
-var User = require('mongoose').model('RegisteredUser')
+var User = require('mongoose').model('RegisteredUser');
+var async = require('async');
 
 var BusinessController = {
+
   getBusiness: function (req, res) {
    // var name = "Habiiba";
    // var name = "Escape Room";
@@ -83,10 +86,8 @@ requestRemoval: function(req,res) {
         console.log('removal');
 
         Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
-            if(err) res.status(500).json("Something went wrong");
-            else {
-                res.status(200).json("Requested!");
-                }
+            if(err) res.status(500).json("error in request removal");
+            else res.status(200).json("Requested!");
         });
 
         }
@@ -338,8 +339,86 @@ requestRemoval: function(req,res) {
             else res.status(200).json({business:updatedBusiness});
         });
     }
-  }
+    else
+        res.status(401).json("YOU ARE NOT AUTHORIZED");
+  },
+
+    
+
+    hasBookings: function(req, res)
+    {
+        if(req.user && req.user instanceof business)
+        {
+            var id = req.user._id;
+            Booking.find({}, function(err, bookings)
+            {
+             if(err) res.status(500).json(err.message);
+             if(!bookings || bookings == undefined || bookings.length == 0)
+                res.status(200).json(0);
+             else
+                res.status(200).json(1);   
+            });
+        }
+        else
+        {
+            res.status(401).json("YOU ARE NOT AUTHORIZED");
+        }
+    },
+
+getFacilityOccs: function(req, res)
+{
+    if(req.user && req.user instanceof business)
+    {
+            var id = req.user.id; 
+            var id = "58f0cb2d6bfb6061efd66625";
+            var facility_id = req.params.facility;
+            EventOccurrences.find({"facility_id": facility_id}, function(err, occs)
+            {
+                console.log(occs);
+                if(err) return res.status(500).json(err.message);
+                return res.status(200).json(occs);
+            });
+     }
+    else res.status(401).json("YOU ARE NOT AUTHORIZED");
+
+},
+
+getEventOccs: function(req, res)
+{
+     if(req.user && req.user instanceof business)
+    {
+            var id = req.user.id; 
+            var event_id = req.params.event;
+            EventOccurrences.find({"event": event_id}, function(err, occs)
+            {
+                if(err) return res.status(500).json(err.message);
+                console.log("event occs in node");
+                return res.status(200).json(occs);
+            });
+
+     }
+    else res.status(401).json("YOU ARE NOT AUTHORIZED");
+},
+
+getBooking: function(req, res)
+{
+    if(req.user && req.user instanceof business)
+    {
+            var id = req.user.id; 
+            var booking_id = req.params.booking;
+            Booking.findOne({"_id": booking_id}, function(err, booking)
+            {
+                console.log(booking);
+                if(err) return res.status(500).json(err.message);
+                return res.status(200).json(booking);
+            });
+
+     }
+    else res.status(401).json("YOU ARE NOT AUTHORIZED");
 }
+
+}
+
 
 
 module.exports = BusinessController;

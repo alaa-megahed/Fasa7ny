@@ -140,13 +140,47 @@ var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
     };
 };
 
-var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route) {
-    $scope.form = {}
+
+
+var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route, Business, $http) {
+    $scope.form = {};
     $scope.error = "";
     $scope.yes = function (facilityId) {
         // if ($scope.form.editForm.$valid) {
-            console.log('user form is in scope');
-						console.log(facilityId+"!!");
+  		Business.getFacilityOccs(facilityId).then(function succcessCallback(response)
+						{
+							var occs = response.data;
+							console.log(occs);
+							for (var i = 0; i < occs.length; i++) 
+							{
+								var bookings = occs[i].bookings;
+								for (var j = 0; j < bookings.length; j++) 
+								{
+									console.log("booking[j] :"+bookings[j]);
+									Business.getBooking(bookings[j]).then(function succcessCallback(response)
+									{
+										console.log("2abl cur booking1  "+response.data.id);
+										console.log("2abl cur booking2  "+response.data._id);
+										var cur_booking = response.data;
+										console.log("cur booking zat nafso :"+cur_booking);
+			
+										$http.post('http://127.0.0.1:3000/bookings/cancel_booking_after_delete', {booking_id: cur_booking._id})
+												.then(function successCallback(response){
+											            console.log(response.data);
+											     }, function errorCallback(response){
+											            console.log(response.data);
+												});
+
+										}, function errorCallback(response){
+										      console.log(response.data);
+									});
+								}
+							}
+						}, function errorCallback(response)
+						{
+							console.log(response.data);
+						});
+
 						Facility.deleteFacility(facilityId)
 						.then(function successCallback(d) {
 							console.log("done deleting facility");
@@ -158,7 +192,7 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route)
 							$scope.error = d.data;
 						});
 						console.log("delete done");
-					    };
+		};
 
     $scope.no = function () {
         $modalInstance.dismiss('cancel');

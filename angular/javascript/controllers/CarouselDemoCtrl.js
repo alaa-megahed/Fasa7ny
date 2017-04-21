@@ -1,3 +1,4 @@
+var app = angular.module('fasa7ny');
 app.controller('CarouselDemoCtrl', function ($scope){
   $scope.myInterval = 3000;
   $scope.slides = [
