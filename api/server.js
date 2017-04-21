@@ -29,7 +29,7 @@ var mongoose = require('./config/mongoose'),
 // facility.name = "room1";
 // facility.description = "facility description";
 // facility.capacity = "10";
-// facility.business_id = "58f20e01b38dec5d920104f3";
+// facility.business_id = "58f0cb2d6bfb6061efd66625";
 // facility.save();
 // var Business = require('./app/models/Business');
 
@@ -72,6 +72,14 @@ var mongoose = require('./config/mongoose'),
 // 	repeated : "Daily",
 // 	facility_id : "58f9ebf5a4722b1eef681d6a",
 // 	business_id : "58f0f3faaa02d151aa4c987c",
+// 	location : "lolla",
+// 	name : "koko ",
+// 	description : "please",
+// 	price : 150,
+// 	capacity : 40,
+// 	repeated : "Daily",
+// 	facility_id : "58f9eeda54894641dd7453ae",
+// 	business_id : "58f0cb2d6bfb6061efd66625",
 // 	daysOff : [ ],
 // 	image : [
 // 		" "
@@ -87,6 +95,12 @@ var mongoose = require('./config/mongoose'),
 //     available: 17,
 //     event : "58f9ec96fc8dda233e08ae54",
 //     facility_id :"58f9ebf5a4722b1eef681d6a"
+//     time: "1-3",
+//     available: 40,
+//     event : "58f9ef0a884967421f8ed009",
+//     facility_id :"58f9eeda54894641dd7453ae",
+// business_id : "58f0cb2d6bfb6061efd66625",
+
 
 // });
 // E.save();

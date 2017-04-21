@@ -19,7 +19,7 @@ var BusinessController = {
                     console.log(result);
 //in case there is a user logged in
                     if(!result); //return error message business does not exist
-                    Rating.findOne({user_ID: "58f0c9341767d632566c9fb5" , business_ID: result._id}, function(err, rate) {
+                    Rating.findOne({user_ID: "58ed22fcbfe67363f0c3a41d" , business_ID: result._id}, function(err, rate) {
                       if(err) console.log("error in finding rate");
                       // if(!rate) //dont forget this return zero rating
                       else {
@@ -34,16 +34,16 @@ var BusinessController = {
                                 Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
                                     if(err) console.log("error in finding once events");
                                     if(!onceevents) 
-                                        if(!rate)  res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                        if(!rate)  res.json({result:result, user:"58ed22fcbfe67363f0c3a41d",
                                             rate:0, facilities:facilities, events:[]});
                                             else
-                                        res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                        res.json({result:result, user:"58ed22fcbfe67363f0c3a41d",
                                             rate:rate.rating, facilities:facilities, events:[]});
                                     else {
-                                         if(!rate)  res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                         if(!rate)  res.json({result:result, user:"58ed22fcbfe67363f0c3a41d",
                                             rate:0, facilities:facilities, events:[]});
                                             else
-                                        res.json({result:result, user:"58f0c9341767d632566c9fb5",
+                                        res.json({result:result, user:"58ed22fcbfe67363f0c3a41d",
                                             rate:rate.rating, facilities:facilities, events:onceevents});
                                     }
                                 });
@@ -367,7 +367,7 @@ getFacilityOccs: function(req, res)
     // if(req.user && req.user instanceof business)
     // {
             // var id = req.user.id; 
-            var id = "58f0f3faaa02d151aa4c987c";
+            var id = "58f0cb2d6bfb6061efd66625";
             var facility_id = req.params.facility;
             EventOccurrences.find({"facility_id": facility_id}, function(err, occs)
             {
@@ -385,11 +385,12 @@ getEventOccs: function(req, res)
      // if(req.user && req.user instanceof business)
     // {
             // var id = req.user.id; 
-            var id = "58f0f3faaa02d151aa4c987c";
+            var id = "58f0cb2d6bfb6061efd66625";
             var event_id = req.params.event;
-            EventOccurrences.find({"business_id": id, "event": event_id}, function(err, occs)
+            EventOccurrences.find({"event": event_id}, function(err, occs)
             {
                 if(err) return res.status(500).json(err.message);
+                console.log("event occs in node");
                 return res.status(200).json(occs);
             });
 
@@ -402,12 +403,18 @@ getBooking: function(req, res)
     // if(req.user && req.user instanceof business)
     // {
             // var id = req.user.id; 
-            var id = "58f0f3faaa02d151aa4c987c";
+            var id = "58f0cb2d6bfb6061efd66625";
             var booking_id = req.params.booking;
-            console.log(booking_id);
-            Booking.findOne({"business_id": id, "_id": booking_id}, function(err, booking)
+// <<<<<<< HEAD
+//             console.log(booking_id);
+//             Booking.findOne({"business_id": id, "_id": booking_id}, function(err, booking)
+//             {
+//                 if(err || !booking || booking == 'undefined') return res.status(500).json("error");
+// =======
+            Booking.findOne({"_id": booking_id}, function(err, booking)
             {
-                if(err || !booking || booking == 'undefined') return res.status(500).json("error");
+                console.log(booking);
+                if(err) return res.status(500).json(err.message);
                 return res.status(200).json(booking);
             });
 

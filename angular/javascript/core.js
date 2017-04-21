@@ -54,8 +54,7 @@ app.config(function($routeProvider){
 
 	.when("/createOffer/:businessId", {
 			templateUrl : "views/createOffer.html"
-			// ,
-			// controller  : "facilityController"
+			
 	})
 
 	.when("/schedule/:id", {

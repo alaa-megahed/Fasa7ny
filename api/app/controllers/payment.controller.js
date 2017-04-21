@@ -48,10 +48,10 @@ exports.pay = function(req,res)
 exports.refund = function(req, res)
 {
 	var charge_id = req.body.charge_id;
-	var amount = req.body.amount * 0.97;
+	var amount = Math.round(req.body.amount * 97);
 	var refund = stripe.refunds.create({
 		  charge: charge_id,
-
+		  amount: amount
 		}, function(err, refund) {
 		  if(err)
 		  {

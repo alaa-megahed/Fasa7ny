@@ -8,9 +8,6 @@ var upload = multer({ dest: 'public/uploads/' });
 
 
 
-router.get('/', function(req, res){
-        res.sendFile(path.resolve('app/views/event.html'));
-    });
 
 router.post('/createFacility', upload.single('img'), RegularEventController.createFacility);
 router.post('/editFacility/:facilityId', upload.single('img'), RegularEventController.editFacility);

@@ -18,27 +18,25 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
         //   if($scope.business.payment_methods[i] === "cash")
         //     $scope.cash = true;
         // }
-      $scope.choose_facility = function(facility_id)
-      {
+      $scope.choose_facility = function(facility_id){
         $scope.facility = facility_id;
         console.log($scope.facility);
       }
-      $scope.choose_date = function(date)
-      {
+      $scope.choose_date = function(date){
         $scope.date  = date.getDate();
         $scope.year  = date.getFullYear();
         $scope.month = date.getMonth();
       }
-      $scope.Date = function(datetime)
-      {
+
+      $scope.Date = function(datetime){
         return new Date(datetime).getDate();
       }
-      $scope.Year = function(datetime)
-      {
+
+      $scope.Year = function(datetime){
         return new Date(datetime).getFullYear();
       }
-      $scope.Month = function(datetime)
-      {
+
+      $scope.Month = function(datetime) {
         return new Date(datetime).getMonth();
       }
       $scope.choose_occ = function(timing)
@@ -76,6 +74,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
         $scope.error_message="";
         console.log("This is count :"+ $scope.formData.count);
         $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.min_charge, user_id: "58f0f48daa02d151aa4c987f", business_id: $scope.business_id})
+
                     .then(function successCallback(response){
                       console.log(response.data);
                     //   $scope.successfulbooking = function(id) {
@@ -110,7 +109,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
                     .then(function successCallback(responce){
                       console.log("success  charge in responce  "+ responce.data);
                       console.log("success  charge in responce  "+ responce.data.id);
-                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:responce.data.id, charge: $scope.charge, user_id: "58f0f48daa02d151aa4c987f", business_id: $scope.business_id})
+                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:responce.data.id, charge: $scope.charge, user_id: "58ed22fcbfe67363f0c3a41d", business_id: $scope.business_id})
                             .then(function successCallback(responce){
                               console.log(responce.data);
                             }, function errorCallback(responce){
@@ -147,14 +146,14 @@ var apply_best_offer_facility = function(facility, event_occ, price, capacity, c
                 var original_charge = price * count;
                 console.log("price :"+price );
                 console.log("count :"+count );
+                console.log("chosen offer is :"+chosen_offer); //da sa7
 
-                console.log("original_charge "+original_charge);
+                console.log("original_charge "+original_charge); 
                 var min_charge = original_charge;
                 if(typeof chosen_offer != 'undefined')
                 {
                     var newcharge = original_charge -  ((chosen_offer / 100) * original_charge);
                     min_charge = (min_charge > newcharge) ? newcharge : min_charge;
-                    // console.log("after chosen offer "+newcharge);
                 }
                 for (var i = offers.length - 1; i >= 0; i--)
                 {
@@ -166,9 +165,9 @@ var apply_best_offer_facility = function(facility, event_occ, price, capacity, c
                             {
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;
-                                // console.log("min_count   "+newcharge);  
+                                console.log("min_count   "+newcharge);  
                             }
-                            if(offers[i].type === "Duration" && Date.now().$gt(offers[i].start_date) && offers[i].expiration_date.$gt(Date.now()))
+                            if(offers[i].type === "duration" && (new Date()).getTime() >= new Date(offers[i].start_date).getTime() && new Date(offers[i].expiration_date).getTime() > (new Date()).getTime())
                             {
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;     
@@ -180,7 +179,8 @@ var apply_best_offer_facility = function(facility, event_occ, price, capacity, c
                                 var apply_on = (lucky < count) ? lucky : count;
                                 var newcharge = ((apply_on * event.price) - offers[i].value / 100 * apply_on * event.price) + (count - apply_on) * event.price;
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge; 
-                                // console.log("first lucky  "+ newcharge); 
+
+                                // console.log("first lucky  "+ newcharge);
                             }
                         }
                     }

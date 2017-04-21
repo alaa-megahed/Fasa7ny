@@ -16,10 +16,10 @@
                         <h3>Number of people  :  <input type="Number" style="color:#000;" ng-model="formData.count" min = {{min}} max = {{max}}><br></h3>
                        
                         <div> {{betengan}} </div>
-                        <div ng-show="offers.length">
+                        <div >
                             <h3> Special Offers:</h3> <br>
 
-                            <div ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific audience'">
+                            <div  ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
 
                               <input type="radio" ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
 
@@ -28,6 +28,21 @@
 
                             </div> <br>
                         </div>
+
+                       <!--  <div>
+                          <div class="container2">
+                            <ul>
+                             <h3 style="padding-bottom: 0px"> Special Offers: </h3><hr>
+                              <li ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
+                                <input type="radio" id = {{$index}} ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
+                                <label for = {{$index}}> <h4>{{"Offer: "+offer.name}} {{"value:" + offer.value}} <br>{{"details:" +offer.details}}</h4> </label>
+                                <div class="check"></div>
+                              </li>
+                            </ul>
+                         
+                        </div>
+                        </div> -->
+                        
                         <div ng-show="cash">
                         <button type="submit" class="btn btn-transparent" ng-disabled="!formData.count" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
                         </div>
