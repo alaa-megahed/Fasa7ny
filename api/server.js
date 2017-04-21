@@ -28,7 +28,7 @@ var mongoose = require('./config/mongoose'),
 // facility.name = "room1";
 // facility.description = "facility description";
 // facility.capacity = "10";
-// facility.business_id = "58f20e01b38dec5d920104f3";
+// facility.business_id = "58f0cb2d6bfb6061efd66625";
 // facility.save();
 // var Business = require('./app/models/Business');
 
@@ -63,14 +63,14 @@ var mongoose = require('./config/mongoose'),
 // var ev = new Event(
 // 	{
 	
-// 	location : "locloc",
-// 	name : "Testing delete facility3",
+// 	location : "lolla",
+// 	name : "koko ",
 // 	description : "please",
-// 	price : 300,
-// 	capacity : 30,
+// 	price : 150,
+// 	capacity : 40,
 // 	repeated : "Daily",
-// 	facility_id : "58f8f32c747f6f5a6695e683",
-// 	business_id : "58f0f3faaa02d151aa4c987c",
+// 	facility_id : "58f9eeda54894641dd7453ae",
+// 	business_id : "58f0cb2d6bfb6061efd66625",
 // 	daysOff : [ ],
 // 	image : [
 // 		" "
@@ -83,10 +83,11 @@ var mongoose = require('./config/mongoose'),
 // var E = new EventOcc(
 // {
 // 	day: new Date(),
-//     time: "4-12",
-//     available: 70,
-//     event : "58f8f3a27d7f8b5ad5c06e85",
-//     facility_id :"58f8e97e2510a154deb83153"
+//     time: "1-3",
+//     available: 40,
+//     event : "58f9ef0a884967421f8ed009",
+//     facility_id :"58f9eeda54894641dd7453ae",
+// business_id : "58f0cb2d6bfb6061efd66625",
 
 // });
 // E.save();

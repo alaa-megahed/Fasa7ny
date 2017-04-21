@@ -367,7 +367,7 @@ getFacilityOccs: function(req, res)
     // if(req.user && req.user instanceof business)
     // {
             // var id = req.user.id; 
-            var id = "58f0f3faaa02d151aa4c987c";
+            var id = "58f0cb2d6bfb6061efd66625";
             var facility_id = req.params.facility;
             EventOccurrences.find({"facility_id": facility_id}, function(err, occs)
             {
@@ -385,11 +385,12 @@ getEventOccs: function(req, res)
      // if(req.user && req.user instanceof business)
     // {
             // var id = req.user.id; 
-            var id = "58f0f3faaa02d151aa4c987c";
+            var id = "58f0cb2d6bfb6061efd66625";
             var event_id = req.params.event;
-            EventOccurrences.find({"business_id": id, "event": event_id}, function(err, occs)
+            EventOccurrences.find({"event": event_id}, function(err, occs)
             {
                 if(err) return res.status(500).json(err.message);
+                console.log("event occs in node");
                 return res.status(200).json(occs);
             });
 
@@ -402,11 +403,12 @@ getBooking: function(req, res)
     // if(req.user && req.user instanceof business)
     // {
             // var id = req.user.id; 
-            var id = "58f0f3faaa02d151aa4c987c";
+            var id = "58f0cb2d6bfb6061efd66625";
             var booking_id = req.params.booking;
-            Booking.findOne({"business_id": id, "_id": event_id}, function(err, booking)
+            Booking.findOne({"_id": booking_id}, function(err, booking)
             {
-                if(err || !booking || booking == undefined) return res.status(500).json(err.message);
+                console.log(booking);
+                if(err) return res.status(500).json(err.message);
                 return res.status(200).json(booking);
             });
 

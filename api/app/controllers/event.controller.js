@@ -31,7 +31,7 @@ exports.createFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58f0f3faaa02d151aa4c987c";
+		var id = "58f0cb2d6bfb6061efd66625";
 		console.log(req.body);
 		console.log(req.file.filename);
 		if(!req.body.name || !req.body.description || !req.body.capacity)
@@ -143,7 +143,7 @@ exports.deleteFacility = function(req,res)
 	// if (req.user && req.user instanceof Business)
 	// {
 		// var id = req.user.id;
-		var id = "58f0f3faaa02d151aa4c987c";
+		var id = "58f0cb2d6bfb6061efd66625";
 		var facility_id = req.params.facilityId;
 		console.log("delete facility backend");
 		Business.findById(id,function(err,business)
