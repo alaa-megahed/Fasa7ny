@@ -1,6 +1,6 @@
 angular.module('fasa7ny')
 
-  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status) {
+  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global) {
 
     $scope.user = {};
     $scope.err = "";
@@ -8,19 +8,25 @@ angular.module('fasa7ny')
     $scope.searchAppear = 1;
     $scope.type = -1;
     $scope.notifcolor = {'color' : 'white'} ;
-
+  
+    // var user = Global.getUser();
+    // console.log(user);
 
     status.local().then(
       function(result)
            {
              $scope.user = result;
-             console.log("Data is " + JSON.stringify(result));
+
              if($scope.user.data)
              {
-                console.log($scope.user.data.notifications);
+               console.log("Data is " + JSON.stringify(result));
                 $scope.type = 0;
-                $scope.user.data.notifications.reverse();
-                $scope.notifications =  $scope.user.data.notifications.slice(1,11);
+                if($scope.user.data.notifications)
+                {
+                  $scope.user.data.notifications.reverse();
+                  $scope.notifications =  $scope.user.data.notifications.slice(1,11);
+                }
+
                 if($scope.user.data.unread_notifications)
                     $scope.notifcolor = {'color' : 'red'};
                 $scope.type = 0;
@@ -161,6 +167,11 @@ angular.module('fasa7ny')
     $scope.goToBusinessPage = function(id) {
       console.log(id);
       $location.path('/business/'+id);
+    }
+
+    $scope.getNotifications = function(){
+      console.log("hiii");
+      $location.path('/user/notifications');
     }
 
 

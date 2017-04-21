@@ -72,6 +72,11 @@ app.config(function($routeProvider){
 		controller  : "resetPasswordController"
 
 	})
+	.when("/user/notifications", {
+		templateUrl : "views/notifications.html",
+		controller  : "notificationsController"
+
+	})
 
 
 	// $locationProvider.html5Mode(true);
