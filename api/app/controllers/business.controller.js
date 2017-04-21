@@ -3,7 +3,7 @@ var Events = require('mongoose').model('Events');
 var EventOccurrences = require('mongoose').model('EventOccurrences');
 var Rating = require('mongoose').model('Rating');
 var Facility = require('mongoose').model('Facility');
-var User = require('mongoose').model('RegisteredUser')
+var User = require('mongoose').model('RegisteredUser');
 
 var BusinessController = {
   getBusiness: function (req, res) {

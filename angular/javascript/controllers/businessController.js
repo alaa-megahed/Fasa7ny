@@ -342,7 +342,8 @@ app.controller('businessController', function($scope, status,$http, Business, $l
         };
 
         $scope.schedule = function(id) {
-           console.log("schedule controller");
+          //  console.log("schedule controller+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+          //  console.log(id);
            $location.path('/schedule/' + id);
        };
 

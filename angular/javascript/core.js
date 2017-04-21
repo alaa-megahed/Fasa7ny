@@ -52,7 +52,7 @@ app.config(function($routeProvider){
 		controller  : "onetimeController"
 	})
 
-	.when("/schedule/:id", {
+	.when("/schedule/:businessId", {
 		templateUrl : "views/schedule.html",
 		controller  : "scheduleController"
 	})

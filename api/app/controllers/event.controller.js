@@ -229,12 +229,8 @@ exports.createEvent = function (req, res) {
 					event.facility_id = req.body.facility_id;
 				}
 
-				if (typeof req.file == "undefined") {
-					event.image = " ";
-				}
-				else {
+				if (typeof req.file != "undefined") {
 					event.image = req.file.filename;
-
 				}
 
 
@@ -441,9 +437,10 @@ exports.getFacilities = function(req,res)
 }
 
 exports.getEvents = function (req, res) {
-	// if (req.user && req.user instanceof Business) {
-		var id = "58f8b9fdf3e7ca15c2ca2c1f";
-		// var id = "58f879e533a8465ada041bd1";
+
+		var id = req.params.businessId;
+		console.log(id);
+		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		Events.find({ business_id: id }, function (err, events) {
 			if (err) res.status(500).json(err.message);
 			else if (!events) res.status(500).json("Something went wrong");
@@ -453,17 +450,13 @@ exports.getEvents = function (req, res) {
 					if(err) res.status(500).json(err.message);
 					else if(!eventocc) res.status(500).json("Something went wrong");
 					else {
-						console.log('events/eventocc retrieved')
+						console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!events/eventocc retrieved');
 						res.status(200).json({events:events, eventocc:eventocc});
 					}
 				})
 
 			}
 		});
-	// }
-	// else {
-	// 	res.send('You are not a logged in business');
-	// }
 
 }
 
@@ -631,6 +624,58 @@ exports.editEvent = function (req, res) {
 		res.status(500).json('You are not a logged in business');
 	}
 
+}
+
+exports.deleteImage = function(req, res) {
+	if(req.user && req.user instanceof Business && typeof req.params.eventId != "undefined" && typeof req.params.image != "undefined") {
+		var eventId = req.params.eventId;
+		var image = req.params.image;
+
+		Events.findById(eventId, function(err, event) {
+			if(err || !event) res.status(500).json("something went wrong");
+			else {
+				if(event.business_id == req.user.id) {
+					Events.findByIdAndUpdate(eventId, {$pull:{image:image}}, function(err, updatedEvent) {
+						if(err) res.status(500).json("something went wrong");
+
+						res.status(200).json(updatedEvent);
+					});
+				} else {
+					res.status(500).json("You are not authorized to view this page");
+				}
+			}
+		});
+	} else {
+		res.status(500).json('You are not authorized to view this page');
+	}
+}
+
+exports.addImage = function(req, res) {
+	if(req.user && req.user instanceof Business && typeof req.params.eventId != "undefined") {
+		console.log("hi?");
+		var eventId = req.params.eventId;
+		console.log(eventId);
+		Events.findById(eventId, function(err, event) {
+			if(err || !event){ res.status(500).json("something went wrong");
+		}
+			else {
+				if(event.business_id == req.user.id) {
+					console.log("??");
+					Events.findByIdAndUpdate(eventId, {$push: {image: req.file.filename}}, function(err, updatedEvent) {
+						if(err) res.status(500).json("something went wrong");
+
+						res.status(200).json(updatedEvent);
+					});
+				} else {
+					console.log("lolo");
+					res.status(500).json("You are not authorized to view this page");
+				}
+			}
+		});
+	} else {
+		console.log("koko");
+		res.status(500).json('You are not authorized to view this page');
+	}
 }
 
 

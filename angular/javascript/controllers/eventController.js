@@ -1,4 +1,4 @@
-app.controller('eventController', function($scope, $http, status, Event, $location, $routeParams, $modal,$window) {
+app.controller('eventController', function($scope, $http, status, Event, $location, $routeParams, $modal,$window, $log) {
 
 	$scope.user = {};
 		status.local()
@@ -29,6 +29,13 @@ $scope.error = "";
 		$scope.business = d.data.business;
 		$scope.event = d.data.event;
 		$scope.eventocc = d.data.eventocc;
+		console.log($scope.event.image);
+		if($scope.event.image[0]) $scope.image1 = $scope.event.image[0];
+		if($scope.event.image[1]) $scope.image2 = $scope.event.image[1];
+		if($scope.event.image[2]) $scope.image3 = $scope.event.image[2];
+		if($scope.event.image[3]) $scope.image4 = $scope.event.image[3];
+		if($scope.event.image[4]) $scope.image5 = $scope.event.image[4];
+		$scope.imageEventlength = $scope.event.image.length;
 
 		if($scope.business != $scope.user) $scope.type = 2;
 
@@ -89,7 +96,47 @@ $scope.error = "";
             $scope.selected = selectedItem;
             $window.location.reload();
             });
-    }
+    };
+
+		$scope.deleteImageEvent = function(eventId, image) {
+			$scope.message = "Show delete Form Button Clicked";
+			console.log($scope.message);
+			console.log(image);
+			$scope.image = image;
+			$scope.eId = eventId;
+			var modalInstance = $modal.open({
+					templateUrl: 'views/deleteImageEvent.html',
+					controller: deleteImageEventCtrl,
+					scope: $scope
+			});
+
+			modalInstance.result.then(function (selectedItem) {
+					$scope.selected = selectedItem;
+					$window.location.reload();
+			}, function () {
+					$log.info('Modal dismissed at: ' + new Date());
+			});
+		};
+
+		$scope.addImageEvent = function (eventId) {
+				$scope.message = "Show image Form Button Clicked";
+				$scope.eId = eventId;
+				console.log($scope.message);
+				console.log($scope.eId);
+				var modalInstance = $modal.open({
+						templateUrl: 'views/addImageEvent.html',
+						controller: addImageEventCtrl,
+						scope: $scope
+				});
+
+				modalInstance.result.then(function (selectedItem) {
+						$scope.selected = selectedItem;
+						$window.location.reload();
+				}, function () {
+						$log.info('Modal dismissed at: ' + new Date());
+				});
+		};
+
 
 });
 var DeletePopUp2 = function ($scope, $location, $modalInstance,Event,id,bid, $route,$window) {
@@ -143,4 +190,48 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event,id, $rou
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+};
+
+
+var deleteImageEventCtrl = function ($scope, $modalInstance, Event, $route) {
+		$scope.form = {}
+		$scope.yes = function (eventId, image) {
+				// if ($scope.form.editForm.$valid) {
+						console.log('user form is in scope');
+						console.log(image);
+						Event.deleteImage(eventId, image)
+						.then(function(d) {
+							console.log("done deleting image event");
+						});
+						$route.reload();
+						$modalInstance.close('closed');
+		};
+
+		$scope.no = function () {
+				$modalInstance.dismiss('cancel');
+		};
+};
+
+var addImageEventCtrl = function ($scope, $modalInstance, Event, $route, $window) {
+		$scope.addImageEvent = function (eventId, formData) {
+						console.log('add image is in scope');
+						console.log(eventId);
+						console.log(formData);
+						Event.addImage(eventId, formData)
+						.then(function successCallback(d) {
+		          console.log("changeImage done");
+		          $window.location.reload();
+		        },
+		        function errorCallback(d){
+							console.log("error");
+		          $scope.error = d.data;
+		        });
+						// console.log("eh yasta?");
+						// $route.reload();
+						// $route.reload();
+		};
+
+		$scope.no = function () {
+				$modalInstance.dismiss('cancel');
+		};
 };

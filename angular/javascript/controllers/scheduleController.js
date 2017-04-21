@@ -1,7 +1,9 @@
 app.controller('scheduleController', function($scope, $http, Schedule, $location, $routeParams) {
-	console.log("abos edak");
-	Schedule.get()
-	.then(function(d) {
+
+console.log($routeParams.businessId);
+$scope.error = "";
+	Schedule.get($routeParams.businessId)
+	.then(function successCallback(d) {
 		console.log(d.data);
 		$scope.events = d.data.events;
 		$scope.eventocc = d.data.eventocc;
@@ -21,7 +23,6 @@ app.controller('scheduleController', function($scope, $http, Schedule, $location
 						// endevent.setDate(endevent.getDate() - 1);
 
 						var time = $scope.eventocc[j].time;
-						console.log(startevent);
 						var a = time.split('-');
 						var start = a[0];
 						var end = a[1];
@@ -46,6 +47,8 @@ app.controller('scheduleController', function($scope, $http, Schedule, $location
 				}
 			}
 			console.log($scope.events2);
+	}, function errorCallback(d) {
+		eror = d.data;
 	});
 
 
