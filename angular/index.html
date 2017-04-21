@@ -39,6 +39,7 @@
     <!-- Media Queries -->
     <link rel="stylesheet" href="css/media-queries.css">
 
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <!--
         Google Font
         =========================== -->
@@ -50,7 +51,15 @@
 
     <!-- Modernizer Script for old Browsers -->
     <script src="js/modernizr-2.6.2.min.js"></script>
+    <script>
+        function w3_open() {
+            document.getElementById("mySidebar").style.display = "block";
+        }
+        function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+        }
 
+    </script>
 
 </head>
 
@@ -183,7 +192,7 @@
     <!-- 
         Essential Scripts
         =====================================-->
-  <!--angualar js-->
+    <!--angualar js-->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <!--angular route -->
     <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>

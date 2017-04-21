@@ -13,7 +13,8 @@ var event = require('./event.routes');
 var auth = require('./auth.routes');
 var user = require('./registered_user.routes');
 var admin = require('./web_admin.routes');
-var stats = require('./stats.routes'); 
+var stats = require('./stats.routes');
+var path = require('path');
 
 router.use('/auth', auth);
 router.use('/event', event);
@@ -25,9 +26,12 @@ router.use('/business', business);
 router.use('/event', event);
 router.use('/user', user);
 router.use('/admin', admin);
-router.use('/stats', stats); 
+router.use('/stats', stats);
 router.use('/contact', function (req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
+router.use('/photo/:photo', function (req, res) {
+    res.sendFile(path.resolve('public/uploads/' + req.params.photo));
+})
 
 module.exports = router;

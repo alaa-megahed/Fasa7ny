@@ -1,10 +1,8 @@
-<script>
+<button class="w3-button w3-teal w3-xlarge w3-right w3-hide-large" onclick="w3_open()">&#9776;</button>
 
-</script>
-
-<div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" onclick="closeNav()">&times; </a>
-    <div id="search-form">
+<div class="w3-sidebar w3-bar-block w3-collapse" style="width:200px;right:0" id="mySidebar">
+    <div>
+        <button class="w3-bar-item w3-button w3-hide-large" onclick="w3_close()">Close &times;</button>
         <form>
             <input type="text" class="form-control" placeholder="Search..." autocomplete="on" name="seach" ng-model="keyword">
             <button type="submit" title="Search" id="search-submit">
@@ -12,7 +10,7 @@
     </button>
             <div class="form-group">
                 <label for="sortOptions">Sort by: </label> <br>
-                <select width="20" id="sortOptions" ng-model="sortBy"> 
+            <select class="w3-dropdown" width="20" id="sortOptions" ng-model="sortBy"> 
                 <option value="none">None </option>        
                 <option value="average_rating">Rating </option>
                 <option value="area">Area</option>
@@ -36,10 +34,6 @@
 
         </form>
         <br>
-
-
-
-
         <div class="form-group">
             <label for="area">Area:</label> <br>
             <select width="20" id="area" ng-model="area">
@@ -55,102 +49,95 @@
     </div>
 </div>
 
+<button class="w3-button w3-teal w3-xlarge w3-right w3-hide-large" onclick="w3_open()">&#9776;</button>
 
-<div id="main">
-    <span onclick="openNav()"> <i style="size: 50px" class="fa fa-bars"></i> </span>
-    <div ng-repeat="business in businesses | category: cat | filter: keyword | orderBy: sortBy : direction " ng-if="business.average_rating >= $parent.minRating">
-        <img ng-src="/uploads/image" alt="">
 
-        <h3>{{business.name}} </h3>
-        <b>Description: </b> {{business.description}} <br>
-        <b>Address </b> {{business.address}} <br>
-        <b>Area: </b> {{business.area}} <br>
-        <b>Average rating: </b> {{business.average_rating}} <br>
-        <b>Category: </b>
-        <span ng-repeat="category in business.category">
-                {{category}}
-            </span>
-        <br>
-        <a href="/#!/business/{{business.name}}">View page >> </a>
+<div class="container">
+    <div class="row" ng-repeat="rows in chunkedBusinesses">
+        <div class="col-md-3 col-sm-3 w3-border w3-margin" ng-repeat="business in rows | category: cat | filter: keyword | orderBy: sortBy : direction "
+            ng-if="business.average_rating >= $parent.minRating">
+            <div class="flip-container">
+                <div class="flipper">
+                    <div class="front">
+                        <h3 style="width: inherit">{{business.name}} </h3>
+                        <img style="width: inherit" ng-src="http://localhost:3000/photo/image">
+                    </div>
+                    <div class="back">
+                        <b>Description: </b> {{business.description}} <br>
+                        <b>Address </b> {{business.address}} <br>
+                        <b>Area: </b> {{business.area}} <br>
+                        <b>Average rating: </b> {{business.average_rating}} <br>
+                        <b>Category: </b>
+                        <span ng-repeat="category in business.category"> {{category}}</span>
+                        <br>
+                        <a href="/#!/business/{{business.name}}">View page >> </a>
+
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
     </div>
+
 </div>
 
 <style>
-    #search-form {
-        margin-left: 10%;
-        margin-right: 10%;
-        margin-top: 50px;
-        border: 10px;
-        border-color: aquamarine;
-        transition: 0.2s;
+    flip-container {
+        perspective: 1000px;
+    }
+    /* flip the pane when hovered */
+    
+    .flip-container:hover .flipper,
+    .flip-container.hover .flipper {
+        transform: rotateY(180deg);
     }
     
-    select {
-        border-radius: 12px;
-        color: #111;
-        outline: none;
+    .flip-container,
+    .front,
+    .back {
+        width: 100%;
+        height: 50vh;
     }
+    /* flip speed goes here */
     
-    
-    .sidenav {
-        height: 100%;
-        /* 100% Full-height */
-        width: 0;
-        /* 0 width - change this with JavaScript */
-        position: fixed;
-        /* Stay in place */
-        z-index: 1;
-        /* Stay on top */
-        top: 0;
-        left: 0;
-        background-color: #111;
-        /* Black*/
-        overflow-x: hidden;
-        /* Disable horizontal scroll */
-        padding-top: 60px;
-        /* Place content 60px from the top */
-        transition: 0.2s;
-        /* 0.5 second transition effect to slide in the sidenav */
+    .flipper {
+        transition: 0.6s;
+        transform-style: preserve-3d;
+        position: relative;
     }
-    /* The navigation menu links */
+    /* hide back of pane during swap */
     
-    .sidenav a {
-        padding: 8px 8px 8px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: #818181;
-        display: block;
-        transition: 0.3s
-    }
-    /* When you mouse over the navigation links, change their color */
-    
-    .sidenav a:hover,
-    .offcanvas a:focus {
-        color: #f1f1f1;
-    }
-    /* Position and style the close button (top right corner) */
-    
-    .sidenav .closebtn {
+    .front,
+    .back {
+        backface-visibility: hidden;
         position: absolute;
         top: 0;
-        right: 25px;
-        font-size: 36px;
-        margin-left: 50px;
+        left: 0;
     }
-    /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+    /* front pane, placed above back */
     
-    #main {
-        transition: margin-left .5s;
-        padding: 20px;
+    .front {
+        background: whitesmoke;
+        z-index: 2;
+        /* for firefox 31 */
+        transform: rotateY(0deg);
     }
-    /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+    /* back, initially hidden pane */
     
-    @media screen and (max-height: 450px) {
-        .sidenav {
-            padding-top: 15px;
-        }
-        .sidenav a {
-            font-size: 18px;
-        }
+    .back {
+        background: blue;
+        transform: rotateY(180deg);
+    }
+     #profile-photo {
+        width: auto;
+        height: auto;
+        max-width: 200px;
+        max-height: 200 px;
+    }
+    
+    .centered-and-cropped {
+        object-fit: cover
     }
 </style>

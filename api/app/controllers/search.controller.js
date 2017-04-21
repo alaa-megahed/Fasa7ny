@@ -5,10 +5,13 @@ SearchController = {
     showAll: function (req, res) {
         Business.find({ public: 1 }).
             exec(function (err, result) {
-                if (err)
-                    console.log(err);
-                else
+                if (err) {
+                    res.status(500);
+                    res.send(err);
+                }
+                else {
                     res.json(result);
+                }
             });
     },
     search: function (req, res) {
