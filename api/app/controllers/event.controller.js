@@ -312,7 +312,6 @@ exports.createEvent = function (req, res) {
 					}
 
 
-
 					async.each(arr, function (date, callback) {
 
 
@@ -400,6 +399,24 @@ exports.createEvent = function (req, res) {
 						occurrence.save(function (err, occurrence) {
 							if (err)
 								res.send(err.message);
+							else
+								{
+									var notification = {content: req.user.name + " added " + req.body.name, date:Date.now()}; 
+
+									async.each(req.user.subscribers, function(subscriber, callback){
+										User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": notification}},function(err,user)
+										{
+											if(err)
+												console.log("error updating user notifications");
+											else
+											{
+												user.unread_notifications = user.unread_notifications + 1;
+												user.save();
+												console.log(user);
+											}
+										});
+									});	
+								}
 						});
 					}
 				Business.find({_id:id},function(err,business){
@@ -707,10 +724,10 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 															{
 																User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
 																{
-																	// if(err)
-																	// 	res.status(500).json("Something went wrong");
-																	// else
-																	// 	console.log(user);
+																	if(err)
+																		res.status(500).json("Something went wrong");
+																	else
+																		console.log(user);
 																});
 															});
 															cb();

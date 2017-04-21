@@ -13,7 +13,7 @@
                     
                    
                       <form ng-model="formData">
-                        <h3>Number of people  :  <input type="Number" ng-model="formData.count" min = {{min}} max = {{max}}><br></h3>
+                        <h3>Number of people  :  <input type="Number" style="color:#000;" ng-model="formData.count" min = {{min}} max = {{max}}><br></h3>
                        
                         <div> {{betengan}} </div>
                         <div ng-show="offers.length">
@@ -29,12 +29,12 @@
                             </div> <br>
                         </div>
                         <div ng-show="cash">
-                        <button type="submit" class="btn btn-transparent" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
+                        <button type="submit" class="btn btn-transparent" ng-disabled="!formData.count" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
                         </div>
-                        <button type="submit" class="btn btn-transparent" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
+                        <button type="submit" class="btn btn-transparent" ng-disabled="!formData.count" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
 
                        </form>
-                        <button class="btn btn-transparent" ng-controller="cancelUserBookingController" ng-click="refund()"> refund </button>
+                       
 
                        <br><br>
                         <a href="#!/book_facility">CLICK ME CLICK ME</a>

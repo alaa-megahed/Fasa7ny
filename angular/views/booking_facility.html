@@ -11,7 +11,7 @@
                     </div>
                     <!-- /section title -->
                     
-                <form ng-model="formData">
+                <form ng-model="formData" >
 <!--                         <div> {{betengan}} </div>
  -->                 <!--    <div ng-repeat="facility in facilities" > --> <!--  ng-if="check business id"-->
                          <!-- <input type="radio" ng-model="$parent.chosen_facility" value="{{facility._id}}" ng-change="choose_facility(facility._id)" >
@@ -28,9 +28,8 @@
                     <h3> Date <br><br><input type="date" style="color:#000;width: 300px;" ng-model="formData.day" required ng-change="choose_date(formData.day)"><br></h3>
                        <!--  min="{{minDate | date:'yyyy-MM-dd'}}" max="{{maxDate | date:'yyyy-MM-dd'}}"  ng-min={{minDate}} ng-max={{maxDate}} -->
                        
-                        
                     <h3> Time slot(s) available :</h3> 
-                      <div ng-repeat="timing in timings | filter : {facility_id:facility} track by $index" ng-if="timing.available > 0 && Date(timing.day) == date && Year(timing.day) == year && Month(timing.day) == month "> <!-- && d == date   -->
+                      <div ng-repeat="timing in timings | filter : {facility_id:facility} " ng-if="timing.available > 0 && Date(timing.day) == date && Year(timing.day) == year && Month(timing.day) == month "> <!-- && d == date   -->
                       <input type="radio" required ng-model="formData.chosen_time" name="chosen_time" ng-change="choose_occ({{timing}})" value="{{timing}}">
                        <label><h4>{{"Timings: "+timing.time + " , available: "+timing.available}}</h4></label>                          
                       </div> <br>
@@ -48,9 +47,9 @@
                         {{error_message}}
 
                     <div ng-show="cash">
-                        <button type="submit" class="btn btn-transparent" ng-disabled="formData.$invalid" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
+                        <button type="submit" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
                     </div>
-                        <button type="submit" class="btn btn-transparent" ng-disabled="formData.$invalid" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
+                        <button type="submit" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
                 </form>
 
                   <button class="btn btn-transparent" ng-controller="cancelUserBookingController" ng-click="refund()"> TEST REFUND </button>

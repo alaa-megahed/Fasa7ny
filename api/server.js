@@ -9,16 +9,17 @@ var mongoose = require('./config/mongoose'),
     cors     = require('cors');
 
 
-// var Events = require('./app/models/Event');
+// var Events = require('./app/models/Event').Events;
 
 // var event = new Events();
-// event.name = "Name";
+// event.name = "Rip Curl";
 // event.description = "Event Description";
 // event.location = "Cairo";
 // event.capacity = "30";
 // event.price = "100";
-// event.repeated = "Once";
-// event.business_id = "58f20e01b38dec5d920104f3";
+// event.repeated = "Daily";
+// event.business_id = "58f0f3faaa02d151aa4c987c";
+// event.facility_id = "58f9cfd8aefe190f02fd3174";
 // event.save();
 
 // var EventOccurrences = require('./app/models/EventOccurrences');
@@ -64,29 +65,28 @@ var mongoose = require('./config/mongoose'),
 // 	{
 	
 // 	location : "locloc",
-// 	name : "Testing delete facility3",
+// 	name : "Testing delete f1",
 // 	description : "please",
 // 	price : 300,
-// 	capacity : 30,
+// 	capacity : 40,
 // 	repeated : "Daily",
-// 	facility_id : "58f8f32c747f6f5a6695e683",
+// 	facility_id : "58f9ebf5a4722b1eef681d6a",
 // 	business_id : "58f0f3faaa02d151aa4c987c",
 // 	daysOff : [ ],
 // 	image : [
 // 		" "
 // 	]
 // });
-
 // ev.save();
 
 // var EventOcc = require('./app/models/Event').EventOccurrences;
 // var E = new EventOcc(
 // {
 // 	day: new Date(),
-//     time: "4-12",
-//     available: 70,
-//     event : "58f8f3a27d7f8b5ad5c06e85",
-//     facility_id :"58f8e97e2510a154deb83153"
+//     time: "4-7",
+//     available: 17,
+//     event : "58f9ec96fc8dda233e08ae54",
+//     facility_id :"58f9ebf5a4722b1eef681d6a"
 
 // });
 // E.save();

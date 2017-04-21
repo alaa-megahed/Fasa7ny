@@ -404,9 +404,10 @@ getBooking: function(req, res)
             // var id = req.user.id; 
             var id = "58f0f3faaa02d151aa4c987c";
             var booking_id = req.params.booking;
-            Booking.findOne({"business_id": id, "_id": event_id}, function(err, booking)
+            console.log(booking_id);
+            Booking.findOne({"business_id": id, "_id": booking_id}, function(err, booking)
             {
-                if(err || !booking || booking == undefined) return res.status(500).json(err.message);
+                if(err || !booking || booking == 'undefined') return res.status(500).json("error");
                 return res.status(200).json(booking);
             });
 

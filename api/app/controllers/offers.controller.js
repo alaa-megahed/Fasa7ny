@@ -154,13 +154,13 @@ exports.createOffer = function(req, res,notify_on_create) {
             res.send("error in creating offer "+ err);
           } else 
           {
-           // notify_on_create(body.name,req.user.subscribers,req.user.name);
+          // notify_on_create(body.name,req.user.subscribers,req.user.name);
                // var rightNow = new Date();
                // var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");    
-               // var content = req.user.name + " added " + req.body.name +"    "+ date; 
+               // var notification = {content:req.user.name + " added " + req.body.name, date:new Date()}; 
 
                //    async.each(req.user.subscribers, function(subscriber, callback){
-               //      User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
+               //      User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": notification}},function(err,user)
                //      {
                //        if(err)
                //          console.log("error updating user notifications");
