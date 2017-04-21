@@ -3,53 +3,74 @@ var Events = require('mongoose').model('Events');
 var EventOccurrences = require('mongoose').model('EventOccurrences');
 var Rating = require('mongoose').model('Rating');
 var Facility = require('mongoose').model('Facility');
+var User = require('mongoose').model('RegisteredUser')
 
 var BusinessController = {
-       getBusiness: function (req, res) {
-        // var name = "Habiiba";
-        var name = "Escape Room";
-        // var id = req.params.id;
-        Business.findOne({ name: name }).
-            exec(function (err, result) {
-                if (err)
-                    res.status(500).json("Something went wrong");
-                else{
-                    // console.log(result);
-//in case there is a user logged in
-                    if(!result); //return error message business does not exist
-                    Rating.findOne({user_ID: "58f0c9341767d632566c9fb5" , business_ID: result._id}, function(err, rate) {
-                      if(err) res.status(500).json("Something went wrong");
-                      // if(!rate) //dont forget this return zero rating
-                      else {
-                        var r = 0;
-                        if(rate) r = rate.rating;
-                        // console.log(rate);
-//condition if business exists exists
-                        Facility.find({business_id:result._id}, function(err, facilities) {
-                            if(err) res.status(500).json("Something went wrong");
-                            else {
-                                // console.log(facilities);
-
-                                Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
-                                    if(err) res.status(500).json("Something went wrong");
-                                    if(!onceevents) res.status(200).json({result:result, user:"58f0c9341767d632566c9fb5",
-                                            rate:rate.rating, facilities:facilities, events:[]});
-                                    else {
-                                        res.status(200).json({result:result, user:"58f0c9341767d632566c9fb5",
-                                            rate:r, facilities:facilities, events:onceevents});
-                                    }
-                                });
-                            }
-                        });
-                      }
-                    })
-
-                    // res.json({result:result, user:"58f09946fcefb434ea0d4e22"});
-                    // res.render("", {business: result});
-                }
-            });
-
-    },
+  getBusiness: function (req, res) {
+   // var name = "Habiiba";
+   // var name = "Escape Room";
+   console.log("backend");
+   if(req.params.id && req.user && req.user instanceof User) {
+      //  var name = req.params.name;
+      var id = req.params.id;
+       Business.findOne({_id: id }).
+           exec(function (err, result) {
+               if (err)
+                   return res.status(500).json("Something went wrong");
+               else {
+                 console.log("result");
+                 if(!result) return res.status(500).json("Business does not exist");
+                   Rating.findOne({user_ID: req.user.id , business_ID: result._id}, function(err, rate) {
+                     if(err) res.status(500).json("Something went wrong");
+                     else {
+                       var r = 0;
+                       if(rate) r = rate.rating;
+                       Facility.find({business_id:result._id}, function(err, facilities) {
+                           if(err) res.status(500).json("Something went wrong");
+                           else {
+                             Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
+                                   if(err) res.status(500).json("Something went wrong");
+                                   if(!onceevents) res.status(200).json({result:result,
+                                           rate:r, facilities:facilities, events:[]});
+                                   else {
+                                     console.log("done!!");
+                                       res.status(200).json({result:result,
+                                           rate:r, facilities:facilities, events:onceevents});
+                                   }
+                               });
+                           }
+                       });
+                     }
+                   })
+                 }
+           });
+   } else if(req.params.id) {
+     var id = req.params.id;
+     Business.findOne({_id: id }).
+         exec(function (err, result) {
+             if (err)
+                 return res.status(500).json("Something went wrong");
+             else {
+               console.log("??");
+               if(!result) return res.status(500).json("Business does not exist");
+                     Facility.find({business_id:result._id}, function(err, facilities) {
+                         if(err) res.status(500).json("Something went wrong");
+                         else {
+                           Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
+                                 if(err) res.status(500).json("Something went wrong");
+                                 if(!onceevents) res.status(200).json({result:result,
+                                         facilities:facilities, events:[]});
+                                 else {
+                                     res.status(200).json({result:result,
+                                         facilities:facilities, events:onceevents});
+                                 }
+                             });
+                         }
+                     });
+                   }
+                 })
+               } else res.status(500).json("Error");
+             },
 
     /* A business can request to be removed from the website.
     If the business has any bookings the request is rejected and a message is sent to the business specifying

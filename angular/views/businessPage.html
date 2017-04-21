@@ -28,16 +28,16 @@
 <!-- <script src="js/jquery.scrollUp.min.js"></script> -->
 <!-- <script src="js/classie.js"></script> -->
 
-  <div class="w3-sidebar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;background-color:#2B2C30;" id="rightMenu">
+  <div ng-if = "type == 4" class="w3-sidebar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;background-color:#2B2C30;" id="rightMenu">
     <!-- <div class="w3-grey"> -->
   <button onclick="closeRightMenu()" class=" w3-button w3-large" style="background-color:#2B2C30;" >&times;</button>
   <center>
-   <input ng-if = "business.delete == 0" type="submit" value="Request Removal" ng-click = "remove()" class="btn btn-transparent">
-   <input ng-if = "business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent">
-   <input type="submit" value="Create a Facility" ng-click = "createFacility(business._id)" class="btn btn-transparent">
-   <input type="submit" value="Create One-Time Event" ng-click = "createOneEvent(business._id)" class="btn btn-transparent">
+   <input ng-if = "type == 4 && business.delete == 0" type="submit" value="Request Removal" ng-click = "remove()" class="btn btn-transparent">
+   <input ng-if = "type == 4 && business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent">
+   <input ng-if = "type == 4" type="submit" value="Create a Facility" ng-click = "createFacility(business._id)" class="btn btn-transparent">
+   <input ng-if = "type == 4" type="submit" value="Create One-Time Event" ng-click = "createOneEvent(business._id)" class="btn btn-transparent">
     <form action="#!/business/edit" method="get">
-       <input type="submit" value="Edit Information" class="btn btn-transparent">
+       <input ng-if = "type == 4" type="submit" value="Edit Information" class="btn btn-transparent">
      </form>
 
    </center>
@@ -54,24 +54,30 @@
                     <div class="image-upload" style="float: left: 0; right: 0; margin: 0 auto;" >
                         <label for="file-input">
                             <div class="container2 image-cropper" >
-                              <img ng-src='img/avatar.png' alt="Avatar" id = "profilepic" class="image" style="width:100%;"> 
+                              <img ng-src='img/avatar.png' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
                               <div class="middle">
-                                <div style="font-size: 20px; color:lightgrey;"> Change profile picture</div>
+                                <div ng-if = "type == 4" style="font-size: 20px; color:lightgrey;"> Change profile picture</div>
                               </div>
                             </div>
                         </label>
                         <input id="file-input" type="file" file-model="formData.img"/>
                         <br>
                         <button class="btn btn-booking" id = "uploadButton" ng-click = "changeImage(user._id)" style = "display:block; margin: 0 auto; display: none;"> Upload  </button>
-                    
+
                         <!-- full name & email display !-->
                         <div class="blog-title" style="margin: 0 auto;">
-                            <h1> {{ business.name }} </h1>
+                            <h1> {{ business.name }}
+                              <span >
+                                <span style="font-size:140%;color:#90EE90;">&bigstar;</span>
+                                <span style="font-size:70%;color:#90EE90;">{{ avgRate }}
+                                <span style="font-size:40%;#90EE90 ;"> / 5</span></span>
+                              </span>
+                            </h1>
                         </div>
                     </div>
 
                 </form>
-  
+
       </div>     <!-- End col-lg-12 -->
     </div>      <!-- End row -->
   </div>       <!-- End container -->
@@ -80,24 +86,6 @@
 
 </div>
 
-<!--         <section id="blog-banner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <div class="blog-title">
-                            <h1> {{ business.name }}
-                             <span >
-                               <span style="font-size:140%;color:#90EE90;">&bigstar;</span>
-                               <span style="font-size:70%;color:#90EE90;">{{ avgRate }}
-                               <span style="font-size:40%;#90EE90 ;"> / 5</span></span>
-                             </span>
-                           </h1>
-                        </div>
-
-                    </div>    
-                </div>      
-            </div>  
-        </section>    -->
 
        <section id="blog-page">
             <div class="container">
@@ -186,32 +174,25 @@
                                   <div class="carousel-inner" role="listbox" style = "position: relative; margin: 0 auto">
                                     <div class="item active" ng-if = "image1">
                                       <img ng-if = "image1" ng-src="http://localhost:3000/photo/{{image1}}" alt="business image" width="460" height="340" >
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "image1" class="btn btn-transparent" ng-click="deleteImage(image1)"> Delete Image </button>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image1" class="btn btn-transparent" ng-click="deleteImage(image1)"> Delete Image </button>
                                     </div>
 
 
                                     <div class="item" ng-if = "image2">
                                       <img ng-if = "image2" ng-src="http://localhost:3000/photo/{{image2}}" alt="3D Beach Art | Meghna" width="460" height="340" >
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "image2" class="btn btn-transparent" ng-click="deleteImage(image2)"> Delete Image </button>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image2" class="btn btn-transparent" ng-click="deleteImage(image2)"> Delete Image </button>
                                     </div>
 
 
                                     <div class="item" ng-if = "image3">
                                       <img ng-if = "image3" ng-src="http://localhost:3000/photo/{{image3}}" alt="3D Beach Art | Meghna" width="460" height="340" >
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "image3" class="btn btn-transparent" ng-click="deleteImage(image3)"> Delete Image </button>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image3" class="btn btn-transparent" ng-click="deleteImage(image3)"> Delete Image </button>
                                     </div>
 
 
                                     <div class="item" ng-if = "image4">
                                       <img ng-if = "image4" ng-src="http://localhost:3000/photo/{{image4}}" alt="3D Beach Art | Meghna" width="460" height="340">
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "image4" class="btn btn-transparent" ng-click="deleteImage(image4)"> Delete Image </button>
-                                    </div>
-
-
-
-                                    <div class="item" ng-if = "image5">
-                                      <img ng-if = "image5" ng-src="http://localhost:3000/photo/{{image5}}" alt="3D Beach Art | Meghna" width="460" height="340" >
-                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "image5" class="btn btn-transparent" ng-click="deleteImage(image5)"> Delete Image </button>
+                                      &nbsp;&nbsp;&nbsp;&nbsp;<button  ng-if = "type == 4 && image4" class="btn btn-transparent" ng-click="deleteImage(image4)"> Delete Image </button>
                                     </div>
                                   </div>
 
@@ -232,7 +213,7 @@
                               <!-- END LAILA SLIDER !-->
 
 
-                              &nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-transparent" ng-click="addImage()"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
+                              &nbsp;&nbsp;&nbsp;&nbsp;<button ng-if = "type == 4" class="btn btn-transparent" ng-click="addImage()"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
                               <hr width="40%">
                               <div class="post-excerpt">
                                   <p>{{ business.description }}</p>
@@ -259,8 +240,8 @@
                        <!-- Single Widget -->
                         <aside class="widget wow fadeInDown">
 
-                            <div class="widget-content">
-                              <div>
+                            <div ng-if = "type == 1" class="widget-content">
+                              <div ng-if == "type == 1">
                                 <ul class="rating">
                                 <li ng-repeat="n in [].constructor(maxRating) track by $index">
                                 <span ng-click="rateBy($index+1, business._id)" ng-show="ratedBy > $index" class="filled">&#9733;</span>
@@ -270,10 +251,8 @@
                               </div>
 
                               <br>
-                                <!-- <form action="" ng-if = "user.data.user_type == 1"> -->
-                                    <input type="submit" value="{{sub}}" ng-click = "check == 1 ? unsubscribe(business._id) : subscribe(business._id)" class="btn btn-transparent">
-                                <!-- </form> -->
-                                </div>
+                                <input ng-if = "type == 1" type="submit" value="{{sub}}" ng-click = "check == 1 ? unsubscribe(business._id) : subscribe(business._id)" class="btn btn-transparent">
+                            </div>
 
 
 
@@ -309,20 +288,14 @@
                                 <li>Address: {{ business.address }}</li>
                                 <li>Phone Numbers: </li>
                                 <!-- <li ng-repeat = "phone in phones"> {{ phone }} <button ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)" style="color:#000;"> delete <button> </li> -->
-                                  <li ng-repeat = "phone in phones"> {{ phone }} <a ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)"><span class="glyphicon glyphicon-trash"></span> </a> </li>
+                                  <li ng-repeat = "phone in phones"> {{ phone }} <a ng-if = "type == 4" ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)"><span class="glyphicon glyphicon-trash"></span> </a> </li>
                                 <li>Email: {{ business.email }}</li>
                                 <li>Payment Methods: </li>
                                 <!-- <li ng-repeat = "method in methods"> {{ method }} <button ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)" style="color:#000;"> delete <button></li> -->
-                                  <li ng-repeat = "method in methods"> {{ method }} <a ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)"><span class="glyphicon glyphicon-trash"></span> </a> </li>
+                                  <li ng-repeat = "method in methods"> {{ method }} <a ng-if = "type == 4" ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)"><span class="glyphicon glyphicon-trash"></span> </a> </li>
                             </div>
                             <div class="widget-content">
-                                <!-- <form ng-if = "user.data.user_type == 2" action="/business/edit" method="get"> -->
-
-
-                                <!-- <a href = "#!/business/edit" > EDIT </a> -->
-                                <!-- <a href = "#business/edit" > EDIT </a> -->
-
-                                </div>
+                          </div>
                         </aside>
 
                     </div>
@@ -359,9 +332,9 @@
                                  src="http://localhost:3000/photo/{{facility.image}}" class="attachment-blog_small wp-post-image" alt="3" />
                                  <hr>
                                  <center>
-                                  <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "goToEditFacility(facility._id)"> Edit Facility </button>
-                                 <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "deleteFacility(facility._id)"> Delete Facility </button>
-                                 <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "addDaily(facility._id,facility.description,facility.capacity, facility.name)"> Add Event </button>
+                                  <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "goToEditFacility(facility._id)"> Edit Facility </button>
+                                 <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "deleteFacility(facility._id)"> Delete Facility </button>
+                                 <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "addDaily(facility._id,facility.description,facility.capacity, facility.name)"> Add Event </button>
                                  <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "viewEvents(facility._id)"> View Events </button>
                                  <hr style="border: 0.5px solid #90EE90">
                                  <center>
@@ -411,7 +384,7 @@
                         <div style="background-color:#2B2C30;" class="row">
                             <!-- post featured -->
                             <div class="image-wrap span4">
-                                 <center><button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "getEvent(business._id, event._id)"> View Event </button>
+                                 <center><button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "getEvent(business.name, event._id)"> View Event </button>
                                  <hr style="border: 0.5px solid #90EE90">
                                  <center>
                             </div>
@@ -439,18 +412,10 @@
         </div>
       </div>
     </div>
-
-  <!-- <p>yasso</p> -->
-    <!-- <ul ng-repeat = "event in events">
-        <a ng-click = "getEvent(business._id, event._id)">{{event.name}}</a> <br> -->
-        <!-- <button ng-click = "getEvent(business._id, event._id)">{{event.name}} </button> -->
-    <!-- <a onclick = "getEvent(business._id, event._id)">{{event.name}}</a> <br> -->
-    <!-- Description: {{event.description}} <br>
-    Location: {{event.location}} <br> -->
     </ul>
 </div>
 <br>
-<button ng-click="schedule(business._id)" class="btn btn-transparent"> Check My Schedule </button>
+<button ng-if = "type == 4" ng-click="schedule(business._id)" class="btn btn-transparent"> Check My Schedule </button>
 </div>
 
 

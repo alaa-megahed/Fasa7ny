@@ -19,16 +19,16 @@ app.config(function($routeProvider){
 		controller  : "searchtestController"
 
 	})
-	.when("/:id", {
+	.when("/business/:id", {
 		templateUrl : "views/businessPage.html",
 		controller  : "businessController"
 	})
 	.when("/business/edit", {
 		templateUrl : "views/businessEdit.html",
 		controller  : "businessController"
+	})
 
-
-	.when("/:name", {
+	.when("/business/:name", {
 		templateUrl : "views/businessPage.html",
 		controller  : "businessController"
 	})
@@ -92,4 +92,3 @@ app.config(function($routeProvider){
 app.config(['$httpProvider', function($httpProvider) {
   $httpProvider.defaults.withCredentials = true;
 }]);
-

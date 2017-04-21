@@ -52,9 +52,9 @@
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 
-      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+      <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> -->
       <!-- <base href="/"> -->
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
       <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
@@ -62,7 +62,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-      <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script>
+      <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.min.js"></script> -->
       <link src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"></link>
 
       <script src="javascript/core.js"></script>
@@ -104,16 +104,16 @@
 			}
 		</script>
 
-	   <script>
+	   <!-- <script> -->
 
 
-      <!-- <base href="/"> -->
+       <!-- <base href="/"> -->
 
       <script src="js/jquery-1.11.0.min.js"></script>
-      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
-      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+      <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script> -->
+      <!-- <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script> -->
       <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
-      <script src="./javascript/core.js"></script>
+      <!-- <script src="./javascript/core.js"></script> -->
       <script src="./javascript/controllers/homepageController.js"></script>
       <script src="./javascript/controllers/searchtestController.js"></script>
       <script src="./javascript/controllers/resetPasswordController.js"></script>
@@ -251,7 +251,7 @@
                       <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signUp()">Sign Up</a></li>
                       <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signIn()">Sign In</a></li>
                       <li ng-if = "user.data.user_type == 1"><a href=""> My Profile </a></li>
-                      <li ng-if = "user.data.user_type == 2"><a href=""> My Business Page </a></li>
+                      <li ng-if = "user.data.user_type == 2"><a ng-click = "goToBusinessPage(user.data._id)" href=""> My Business Page </a></li>
                       <li ng-if = "user.data.user_type == 3"><a href=""> Admin Requests </a></li>
                       <li><a href="#contact-us">Contact Us</a></li>
                       <li ng-if = "user.data.user_type"><a href="" ng-click = "logout()">Log Out</a></li>

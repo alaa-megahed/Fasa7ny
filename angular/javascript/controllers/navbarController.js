@@ -158,7 +158,10 @@ angular.module('fasa7ny')
     }
 
 
-
+    $scope.goToBusinessPage = function(id) {
+      console.log(id);
+      $location.path('/business/'+id);
+    }
 
 
 
@@ -216,6 +219,7 @@ angular.module('fasa7ny')
 
       $scope.submitForm = function () {
           if ($scope.form.userForm.$valid) {
+            console.log("signin");
             console.log($scope.formData);
               Homepage.signIn($scope.formData).then(function(data){
                 console.log("Return data "  + JSON.stringify(data));

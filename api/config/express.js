@@ -8,7 +8,7 @@ var config = require('./config'),
     session = require('express-session'),
     schedule = require('node-schedule'),
     async = require('async'),
-    cors = require('cors'),
+    // cors = require('cors'),
     multer = require('multer');
 
 

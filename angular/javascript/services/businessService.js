@@ -3,6 +3,7 @@
     app.factory('Business', ['$http', function($http) {
         return {
             get : function(id) {
+              console.log("service");
                 return $http.get('http://127.0.0.1:3000/business/b/' + id);
             },
 

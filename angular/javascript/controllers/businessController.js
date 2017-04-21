@@ -1,11 +1,11 @@
-app.controller('businessController', function($scope, $http, Business, $location, $routeParams, $modal, $log, $window) {
+app.controller('businessController', function($scope, status,$http, Business, $location, $routeParams, $modal, $log, $window) {
 
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
   $scope.avgRate = 0;
   $scope.sub = "Subscribe";
   console.log($routeParams.id);
-  $scope.id = "58f20e01b38dec5d920104f3";
+  // $scope.id = "58f20e01b38dec5d920104f3";
   // console.log(business);
   // $scope.business = business;
   $scope.business = {};
@@ -16,11 +16,79 @@ app.controller('businessController', function($scope, $http, Business, $location
     if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
     if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
     if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
-    if($scope.business.images[4]) $scope.image5 = $scope.business.images[4];
   }
 
-  Business.get($scope.id)
+$scope.type = 2; //unregistered user or business visiting another business
+
+  Business.get($routeParams.id)
   .then(function(d) {
+    console.log("then");
+    status.local()
+    .then(function(res) {
+      if(res.data) {
+        if(res.data.user_type == 1) {
+          $scope.type = 1;
+          if(d.data.rate) $scope.ratedBy = d.data.rate;
+
+          $scope.check = 0;
+          for(var i = 0; i < d.data.result.subscribers.length; i++) {
+            if(d.data.result.subscribers[i] == d.data.user) {
+                $scope.check = 1;
+                $scope.sub = "Unsubscribe";
+            }
+            $window.name = $scope.business.name;
+          }
+        }
+        else if(res.data.user_type == 3) {
+          $scope.type = 3;
+        }
+        else if(res.data.user_type == 2) {
+          if(res.data._id == d.data.result._id) {
+            console.log("hii");
+            $scope.type = 4; //my business page
+          } else {
+            $scope.type = 2; //business visiting another business' page
+          }
+        }
+      }
+      else {
+        status.foreign()
+        .then(function(res){
+          if(res.data) {
+            if(res.data.user_type == 1) {
+              $scope.type = 1;
+              if(d.data.rate) $scope.ratedBy = d.data.rate;
+
+              $scope.check = 0;
+              for(var i = 0; i < d.data.result.subscribers.length; i++) {
+                if(d.data.result.subscribers[i] == d.data.user) {
+                    $scope.check = 1;
+                    $scope.sub = "Unsubscribe";
+                }
+                $window.name = $scope.business.name;
+              }
+            }
+            else if(res.data.user_type == 3) {
+              $scope.type = 3;
+            }
+            else if(res.data.user_type == 2) {
+              console.log("??");
+              if(res.data._id === d.data.result.id) {
+                console.log("hi");
+                $scope.type = 4; //my business page
+              } else {
+                $scope.type = 2; //business visiting another business' page
+              }
+            }
+          }
+          else{
+
+          }
+        });
+      }
+
+    });
+
     console.log(d.data.result);
     $scope.business = d.data.result;
 
@@ -34,7 +102,7 @@ app.controller('businessController', function($scope, $http, Business, $location
 
     console.log($scope.paymentlength);
     $scope.categories = d.data.result.category;
-    $scope.user = d.data.user;
+    // $scope.user = d.data.user;
     // $scope.images = d.data.result.images;
 
     $scope.facilities = d.data.facilities;
@@ -43,20 +111,7 @@ app.controller('businessController', function($scope, $http, Business, $location
     $scope.events = d.data.events; //once events
     $scope.eventlength = d.data.events.length;
 
-    if(d.data.rate) $scope.ratedBy = d.data.rate;
     $scope.avgRate = d.data.result.average_rating;
-
-    $scope.check = 0;
-    for(var i = 0; i < d.data.result.subscribers.length; i++) {
-      if(d.data.result.subscribers[i] == d.data.user) {
-          $scope.check = 1;
-          $scope.sub = "Unsubscribe";
-      }
-
-
-
-      $window.name = $scope.business.name;
-    }
 
 
     console.log($scope.business.images);
@@ -64,14 +119,12 @@ app.controller('businessController', function($scope, $http, Business, $location
     if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
     if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
     if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
-    if($scope.business.images[4]) $scope.image5 = $scope.business.images[4];
 
 
     console.log($scope.image1);
     console.log($scope.image2);
     console.log($scope.image3);
     console.log($scope.image4);
-    console.log($scope.image5);
 
     // console.log($scope.check);
     // console.log($scope.sub);
@@ -82,10 +135,7 @@ if($scope.business.images){
   if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
   if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
   if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
-  if($scope.business.images[4]) $scope.image5 = $scope.business.images[4];
 }
-
-
 
 
          $scope.goToEdit = function() {
