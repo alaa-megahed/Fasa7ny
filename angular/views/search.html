@@ -10,8 +10,8 @@
     </button>
             <div class="form-group">
                 <label for="sortOptions">Sort by: </label> <br>
-            <select class="w3-dropdown" width="20" id="sortOptions" ng-model="sortBy"> 
-                <option value="none">None </option>        
+                <select width="20" id="sortOptions" ng-model="sortBy"> 
+                <option selected value="none">None </option>        
                 <option value="average_rating">Rating </option>
                 <option value="area">Area</option>
                 <option value="name">Name</option>                   
@@ -23,7 +23,7 @@
             <div class="form-group">
                 <label for="category">Category: </label> <br>
                 <select width="20" id="category" ng-model="cat"> 
-            <option value="all">All</option>                           
+            <option selected value="all">All</option>                           
             <option value="fun">Fun </option>
             <option value="escape rooms">Escape Rooms</option>
             <option value="travel">Travel</option>
@@ -37,8 +37,9 @@
         <div class="form-group">
             <label for="area">Area:</label> <br>
             <select width="20" id="area" ng-model="area">
-          <option ng-repeat="ar in areas" value="{{ar}}">{{ar}}</option>
-      </select>
+                <option value="All" selected = "selected"> All</option>
+                <option ng-repeat="ar in areas" value="{{ar}}">{{ar}}</option>
+            </select>
         </div>
 
         <div class="form-group">
@@ -54,24 +55,31 @@
 
 <div class="container">
     <div class="row" ng-repeat="rows in chunkedBusinesses">
-        <div class="col-md-3 col-sm-3 w3-border w3-margin" ng-repeat="business in rows | category: cat | filter: keyword | orderBy: sortBy : direction "
-            ng-if="business.average_rating >= $parent.minRating">
+        <div class="col-md-3 col-sm-3 w3-margin" ng-repeat="business in rows | category: cat | filter: keyword | orderBy: sortBy : direction "
+            ng-if="business.average_rating >= $parent.minRating && (area == 'All' || business.area == area)">
             <div class="flip-container">
                 <div class="flipper">
-                    <div class="front">
-                        <h3 style="width: inherit">{{business.name}} </h3>
-                        <img style="width: inherit" ng-src="http://localhost:3000/photo/image">
-                    </div>
-                    <div class="back">
-                        <b>Description: </b> {{business.description}} <br>
-                        <b>Address </b> {{business.address}} <br>
-                        <b>Area: </b> {{business.area}} <br>
-                        <b>Average rating: </b> {{business.average_rating}} <br>
-                        <b>Category: </b>
-                        <span ng-repeat="category in business.category"> {{category}}</span>
-                        <br>
-                        <a href="/#!/business/{{business.name}}">View page >> </a>
+                    <div class="front img-container">
+                        <img for="business-img" class="centered-and-cropped" ng-src="http://localhost:3000/photo/image">
+                        <footer>
+                            <label for="business-img" class="w3-display-bottommiddle w3-green"> {{business.name}}</label>
 
+                        </footer>
+                    </div>
+                    <div class="back" style="overflow: hidden">
+                        <img class="centered-and-cropped img-flipped" ng-src="http://localhost:3000/photo/image">
+                        <div class="w3-display-left w3-container">
+                            <b class="color">Description: </b>
+                            <p> {{business.description}} </p> <br>
+                            <b class="color">Address </b> {{business.address}} <br>
+                            <b class="color">Area: </b> {{business.area}} <br>
+                            <b class="color">Average rating: </b> {{business.average_rating}} <br>
+                            <b class="color">Category: </b>
+                            <span ng-repeat="category in business.category"> {{category}}</span>
+                            <br>
+                            <a class="w3-button w3-green" href="/#!/business/{{business.name}}">View page >> </a>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -119,7 +127,7 @@
     /* front pane, placed above back */
     
     .front {
-        background: whitesmoke;
+        background: green;
         z-index: 2;
         /* for firefox 31 */
         transform: rotateY(0deg);
@@ -127,17 +135,36 @@
     /* back, initially hidden pane */
     
     .back {
-        background: blue;
         transform: rotateY(180deg);
-    }
-     #profile-photo {
-        width: auto;
-        height: auto;
-        max-width: 200px;
-        max-height: 200 px;
     }
     
     .centered-and-cropped {
-        object-fit: cover
+        position: absolute;
+        left: -1000%;
+        right: -1000%;
+        top: -1000%;
+        bottom: -1000%;
+        margin: auto;
+        min-height: 100%;
+        min-width: 100%;
+    }
+    
+    .img-container {
+        overflow: hidden;
+        position: relative;
+    }
+    
+    .img-flipped {
+        -moz-transform: scaleX(-1);
+        -o-transform: scaleX(-1);
+        -webkit-transform: scaleX(-1);
+        transform: scaleX(-1);
+        filter: FlipH;
+        -ms-filter: "FlipH";
+        filter: blur(5px) grayscale(100%);
+        /* blurring*/
+        /*-webkit-filter: blur(5px);*/
+        /* Safari 6.0 - 9.0 */
+        /*filter: blur(5px);*/
     }
 </style>
