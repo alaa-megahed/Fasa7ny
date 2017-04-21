@@ -81,7 +81,8 @@ exports.createOffer = function(req, res,notify_on_create) {
     var businessId = "58f0f3faaa02d151aa4c987c"; 
     var body = req.body;
     var file = req.file;
-
+    console.log(file);
+    console.log(body);
     // expiration date not required in case of count dependent offer
     if(!body.name || !body.type || !body.value || !body.details ) 
     {
@@ -97,16 +98,6 @@ exports.createOffer = function(req, res,notify_on_create) {
        
       });
       newOffer.business = businessId;
-
-      // if(req.body.expiration_date)
-      // {
-      //    newOffer.expiration_date = new Date(body.expiration_date);
-      // }
-
-      // if(req.body.start_date)
-      // {
-      //    newOffer.start_date = new Date(body.start_date);
-      // }
 
       if(req.body.facility_id)
       {
@@ -132,20 +123,8 @@ exports.createOffer = function(req, res,notify_on_create) {
         newOffer.image = file.filename;
       }
 
-      // if(typeof body.notify_subscribers != 'undefined' && body.notify_subscribers.length > 0) {
-      //   newOffer.notify_subscribers = Number(body.notify_subscribers);
-      // }
-
       var now = new Date();
-      // if(typeof body.start_date != 'undefined' && body.start_date.length > 0 && new Date(body.start_date).getTime() >= new Date(now).getTime()) {
-      //   newOffer.start_date = new Date(body.start_date);
-      // } 
-
-      // else{
-      //   newOffer.startdate = now;
-      // }
-
-      // var startdate = newOffer.start_date;
+    
       console.log("expiration date : "+ body.expiration_date);
        if( (!body.expiration_date  || !body.start_date) && body.type === "duration")
       {
@@ -167,12 +146,12 @@ exports.createOffer = function(req, res,notify_on_create) {
         }
       
       } 
-     
-      
+      console.log("offer:");
+      console.log(newOffer);
         newOffer.save(function(err, offer) 
         {
           if(err) {
-            res.send("error in creating offer");
+            res.send("error in creating offer "+ err);
           } else 
           {
            // notify_on_create(body.name,req.user.subscribers,req.user.name);
@@ -195,7 +174,7 @@ exports.createOffer = function(req, res,notify_on_create) {
                //    }); 
             res.status(200).json(offer);
           }
-        })
+        });
       
     } //
   // } else //
@@ -231,8 +210,9 @@ exports.updateOffer = function(req, res) {
           {
             if(typeof body.name != 'undefined' && body.name.length != 0) offer.name = body.name;
             if(typeof body.type != 'undefined' && body.type.length != 0) offer.type = body.type;
-            if(typeof body.value != 'undefined' && body.value.length != 0) offer.value = body.value;
+            if(typeof body.value != 'undefined' && body.value.length != 0) if(body.value >= 0.01) offer.value = body.value; else res.status(500).json("Enter a value greater than 0.01");
             if(typeof body.details != 'undefined' && body.details.length != 0) offer.details = body.details;
+            if(typeof file != 'undefined') { offer.image = file.filename; }
 
             var startdate = offer.start_date;
             var expirationdate = offer.expiration_date;
