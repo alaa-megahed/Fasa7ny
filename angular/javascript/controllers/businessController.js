@@ -1,13 +1,68 @@
-app.controller('businessController', function($scope, status,$http, Business, $location, $routeParams, $modal, $log, $window) {
+app.controller('businessController', function($scope, status,$http, Business, $location, $routeParams, $modal, $log, $window, $document) {
 
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
   $scope.avgRate = 0;
   $scope.sub = "Subscribe";
+  $scope.formData = {};
   console.log($routeParams.id);
   // $scope.id = "58f20e01b38dec5d920104f3";
   // console.log(business);
   // $scope.business = business;
+
+
+
+    $scope.initMap = function () {
+        var myLatlng = new google.maps.LatLng(30.05483,31.23413);
+        var mapProp = {
+        center:myLatlng,
+        zoom:5,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+
+    };
+
+
+    var map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
+    var marker = new google.maps.Marker({
+        position: myLatlng,
+        map: map,
+        title: 'Hello World!',
+        draggable:true
+    });
+
+    $scope.Lat= 30.05483;
+    $scope.Lng= 31.23413;
+
+    console.log("In the controller with gmaps: " + $scope.Lat + $scope.Lng);
+    // marker drag event
+    google.maps.event.addListener(marker,'drag',function(event) {
+      $scope.Lat = event.latLng.lat();
+      $scope.Lng = event.latLng.lng();
+
+    });
+  //  marker drag event end
+    google.maps.event.addListener(marker,'dragend',function(event) {
+    $scope.Lat = event.latLng.lat();
+    $scope.Lng = event.latLng.lng();
+    console.log("EVENT " + event.latLng.lat() + " " +event.latLng.lng());
+    console.log("In the controller changing with gmaps: " + $scope.Lat  + " " + $scope.Lng);
+    });
+    }
+
+    google.maps.event.addDomListener(window, 'scroll', $scope.initMap);
+
+
+
+
+
+
+
+
+
+
+
+
+
   $scope.business = {};
   if($scope.business.images) {
     console.log("images");
@@ -70,7 +125,7 @@ app.controller('businessController', function($scope, status,$http, Business, $l
           }
         }
         else{
-          $scope.type = 2; 
+          $scope.type = 2;
         }
       }
       else {
@@ -162,7 +217,10 @@ if($scope.business.images){
 
          $scope.goToEdit = function() {
           $scope.error = " ";
-         	console.log("controller"+ $scope.formData);
+          $scope.formData.location = {};
+          $scope.formData.location.Lat = $scope.Lat;
+          $scope.formData.location.Lng = $scope.Lng;
+         	console.log("controller"+ JSON.stringify($scope.formData));
          	Business.edit($scope.formData)
          	.then(function successCallback(d) {
             console.log(d.data);
@@ -385,7 +443,7 @@ var Public = function ($scope, $modalInstance,Business,$route) {
         function errorCallback(d){
           $scope.error = d.data;
         });
-        
+
     };
 
     $scope.cancel = function () {
@@ -406,9 +464,9 @@ var Remove = function ($scope, $modalInstance,Business,$route) {
         $modalInstance.close('closed');
         },
         function errorCallback(d){
-          $scope.error = d.data; 
+          $scope.error = d.data;
         });
-        
+
     };
 
     $scope.cancel = function () {
@@ -474,9 +532,9 @@ var Remove = function ($scope, $modalInstance,Business,$route) {
                 function errorCallback(d){
                   $scope.error = d.data;
                 });
-                
+
                 // $route.reload();
-               
+
         };
 
         $scope.no = function () {
@@ -500,7 +558,7 @@ var Remove = function ($scope, $modalInstance,Business,$route) {
                 function errorCallback(d){
                   $scope.error = d.data;
                 });
-               
+
         };
 
         $scope.no = function () {

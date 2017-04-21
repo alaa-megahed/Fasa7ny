@@ -42,7 +42,6 @@ router.use('/photo/:photo', function (req, res) {
 
 router.get('/loggedin', function (req, res) {
 
-    console.log("this is req.user  " + req.user);
     res.json(req.user);
 });
 

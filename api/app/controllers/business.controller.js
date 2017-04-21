@@ -81,7 +81,7 @@ requestRemoval: function(req,res) {
         if(req.user && req.user instanceof Business){
         var id = req.user.id;
         console.log('removal');
-        
+
         Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
             if(err) res.status(500).json("Something went wrong");
             else {
@@ -103,7 +103,7 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             var businessId = req.user.id;
             console.log('public');
-        
+
             Business.findByIdAndUpdate(businessId, { $set: { public: 1 } },
                 function (err) {
                     if (err) {
@@ -119,7 +119,6 @@ requestRemoval: function(req,res) {
 
 
     editInformation: function (req, res) {
-        console.log("edit backedn");
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             console.log("ID"+id);
@@ -135,8 +134,9 @@ requestRemoval: function(req,res) {
                         business.description = req.body.description;
                     }
 
-                    if (typeof req.body.location != "undefined" && req.body.location.length > 0) {
+                    if (typeof req.body.location != "undefined") {
                         business.location = req.body.location;
+                        console.log("ahlan we sahlan");
                     }
                     if (typeof req.body.email != "undefined" && req.body.email.length > 0) {
                         business.email = req.body.email;
@@ -209,7 +209,7 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             if (typeof req.params.phone != "undefined") {
                 var id = req.user.id;
-                
+
                 // var id = "58f879e533a8465ada041bd1";
                 console.log("ana fl backend delete phone");
                 var phone = req.params.phone;
@@ -262,7 +262,7 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             if (typeof req.params.method != "undefined") {
                 var id = req.user.id;
-            
+
     ;
                 var payment = req.params.method;
                 console.log("ana fl backend delete method");

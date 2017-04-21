@@ -29,11 +29,30 @@
                 <input style="color:#000;" class="w3-input w3-border w3-round" type="url" ng-model = "formData.twitterURL"></input> <br>
                 <h3>Your Youtube Page<h3> <br>
                 <input style="color:#000;" class="w3-input w3-border w3-round" type="url" ng-model = "formData.youtubeURL"></input> <br>
+                <h3>Your Location<h3> <br>
+                <input  type = 'hidden' id='lat' ng-model = "Lat" >
+                <input  type = 'hidden' ng-model = "Lng">
+
+
+
+                <div id="googleMap" style="height: 400px;"></div>
+
                     {{error}}
                 <button type="submit" ng-click = "goToEdit()" class="btn btn-transparent">Edit Information</button>
 
+
+
+
+
+
+
+
             </form>
             </div>
+
+            <script>
+            
+            </script>
+
    </section>
 <center>
-

@@ -22,6 +22,9 @@ module.exports = {
     'stripe'    :{
         'secretKey'     : 'sk_test_7Fj1tAMukSo5YAdchcbVBntj',
         'publicKey'     : 'pk_test_O1Gn3Rl11nLaHckNqvJOzaYz'
+    },
+    'googlemaps':{
+        'key'           : 'AIzaSyCH3FCcUy8xNg7J_P1ATl_Hec_BlV495cw'
     }
 
 };

@@ -8,7 +8,7 @@ angular.module('fasa7ny')
     $scope.searchAppear = 1;
     $scope.type = -1;
     $scope.notifcolor = {'color' : 'white'} ;
-  
+
     // var user = Global.getUser();
     // console.log(user);
 
@@ -142,11 +142,11 @@ angular.module('fasa7ny')
 
     $scope.logout = function(){
 
-      $scope.user = null;
       console.log($scope.type);
       if(!$scope.type)
       {
         Homepage.logoutLocal().then(function(result){
+          $window.location.reload();
 
         })
       }
@@ -154,6 +154,7 @@ angular.module('fasa7ny')
         Homepage.logout().then(function(result)
         {
             console.log(result);
+            $window.location.reload();
         })
       }
 
@@ -165,6 +166,7 @@ angular.module('fasa7ny')
 
 
     $scope.goToBusinessPage = function(id) {
+      console.log("yellehwiii");
       console.log(id);
       $location.path('/business/'+id);
     }
