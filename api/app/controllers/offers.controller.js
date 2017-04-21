@@ -71,12 +71,12 @@ if the business added an expiration_date that is before the start_date(which if
  he did not enter it will be by default the current date when he created the offer)
  he will be notified that he entered a wrong expiration_date */
 
-exports.createOffer = function(req, res,notify_on_create) 
-{
+exports.createOffer = function(req, res,notify_on_create) {
 
-  if(req.user && req.user instanceof Business) 
-  {
-    var businessId = req.user.id;  
+  // if(req.user && req.user instanceof Business) 
+  // {
+  //  var businessId = req.user.id;  //get _id from session
+    var businessId = "58f0f3faaa02d151aa4c987c"; 
     var body = req.body;
     var file = req.file;
     console.log(file);
@@ -84,7 +84,7 @@ exports.createOffer = function(req, res,notify_on_create)
     // expiration date not required in case of count dependent offer
     if(!body.name || !body.type || !body.value || !body.details ) 
     {
-      res.status(400).json("please add all information");
+      res.send("please add all information");
     } 
     else 
     {
@@ -93,7 +93,7 @@ exports.createOffer = function(req, res,notify_on_create)
         type:body.type,
         value:body.value,
         details:body.details
-
+       
       });
       newOffer.business = businessId;
 
@@ -142,24 +142,23 @@ exports.createOffer = function(req, res,notify_on_create)
            newOffer.expirationdate = expirationdate;
            newOffer.startdate = body.start_date;
         }
-
-      }
-      else
-      {
+      
+      } 
+      console.log("offer:");
+      console.log(newOffer);
         newOffer.save(function(err, offer) 
         {
-          if(err) 
+          if(err) {
+            res.status(500).json("error in creating offer "+ err);
+          } else 
           {
-            res.send("error in creating offer");
-          } else
-          {
-           // notify_on_create(body.name,req.user.subscribers,req.user.name);
-               var rightNow = new Date();
-               var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");
-               var content = req.user.name + " added " + req.body.name +"    "+ date;
+          // notify_on_create(body.name,req.user.subscribers,req.user.name);
+               // var rightNow = new Date();
+               // var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");    
+               var notification = {content:req.user.name + " added " + req.body.name, date:new Date()}; 
 
                   async.each(req.user.subscribers, function(subscriber, callback){
-                    User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
+                    User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": notification}},function(err,user)
                     {
                       if(err)
                         console.log("error updating user notifications");
@@ -170,20 +169,16 @@ exports.createOffer = function(req, res,notify_on_create)
                         console.log(user);
                       }
                     });
-                  });
-
+                  }); 
             res.status(200).json(offer);
           }
-       }); 
-     }
-   
-  }
-
-}
- else 
-    {
-      res.status(401).json("you're not a logged in business");
-    }
+        });
+      
+    } //
+  // } else //
+  // {
+  //   res.send("you're not a logged in business");
+  // }
 };
 
 /* this function is used by the business to update the offers either by

@@ -1,4 +1,4 @@
-    
+   
 
         <section id="about" class="text-center">
             <div  class="container">
@@ -11,49 +11,71 @@
                     </div>
                     <!-- /section title -->
                     
-                <form ng-model="formData">
+                <form ng-model="formData" >
 <!--                         <div> {{betengan}} </div>
  -->                 <!--    <div ng-repeat="facility in facilities" > --> <!--  ng-if="check business id"-->
                          <!-- <input type="radio" ng-model="$parent.chosen_facility" value="{{facility._id}}" ng-change="choose_facility(facility._id)" >
                           <label>{{facility.name}}</label><br>
                     </div> <br><br> -->
-                     <h3> Facility </h3>
-                    <div class="styled-select">                    
+                    
+                    <div class="styled-select container3">    
+                     <h3> Facility </h3>                
                       <select  class="selectpicker" style="width: 300px;color:#000;" required re data-style="btn-primary" ng-model="chosen_facility">
                       <h3><option disabled selected value>Choose One</option></h3>                 
                       <option ng-repeat="facility in facilities" value="{{facility._id}}">{{facility.name}}</option>
                       </select>
                     </div>
 
-                    <h3> Date <br><br><input type="date" style="color:#000;width: 300px;" ng-model="formData.day" required ng-change="choose_date(formData.day)"><br></h3>
+                     <!-- <div class = "container3"> -->  
+                      <h3> Date <br> <br>
+                      <input type="date" style="color:#000;width: 300px;" ng-model="formData.day" required ng-change="choose_date(formData.day)"><br></h3>
                        <!--  min="{{minDate | date:'yyyy-MM-dd'}}" max="{{maxDate | date:'yyyy-MM-dd'}}"  ng-min={{minDate}} ng-max={{maxDate}} -->
-                       
-                        
-                    <h3> Time slot(s) available :</h3> 
-                      <div ng-repeat="timing in timings | filter : {facility_id:facility} track by $index" ng-if="timing.available > 0 && Date(timing.day) == date && Year(timing.day) == year && Month(timing.day) == month "> <!-- && d == date   -->
+                      <!-- </div> -->
+                     
+                      <div class = "container3">  
+                       <h3> Time slot(s) available :</h3> 
+                      </div>
+                      <div ng-repeat="timing in timings | filter : {facility_id:facility} " ng-if="timing.available > 0 && Date(timing.day) == date && Year(timing.day) == year && Month(timing.day) == month " class="container3"> <!-- && d == date   -->
                       <input type="radio" required ng-model="formData.chosen_time" name="chosen_time" ng-change="choose_occ({{timing}})" value="{{timing}}">
                        <label><h4>{{"Timings: "+timing.time + " , available: "+timing.available}}</h4></label>                          
-                      </div> <br>
+                      </div> 
 
                       <h3>Booking for 
                            <input type="number" style="width: 70px; color:#000;" required  min="1" max={{max_count}} ng-model="formData.count"> person(s).</h3>
 
-                     <h3> Special Offers:</h3> <br>
-                        <div ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific audience'">
-                          <input type="radio" ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
+<!--                      <h3> Special Offers:</h3> <br>
+                     <div style = "margin: auto; max-width: 100%; ">
+                        <div style="text-align: left width: 800px; margin:0 auto;" ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
+                          <input type="radio"  ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer._id}}">
                           <label><h4>{{"Offer: "+offer.name + "  details: "+offer.details +" value: "+ offer.value}} </h4></label>
                           <br>
                         </div> <br><br>
-                        
+                        </div>
+ -->
+                        <div>
+                          <div class="container2">
+                            <ul>
+                             <h3 style="padding-bottom: 0px"> Special Offers: </h3><hr>
+                              <li ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
+                                <input type="radio" id = {{$index}} ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
+                                <label for = {{$index}}> <h4>{{"Offer: "+offer.name}} {{"value:" + offer.value}} <br>{{"details:" +offer.details}}</h4> </label>
+                                <div class="check"></div>
+                              </li>
+                            </ul>
+                         
+                        </div>
+                        </div>
+                        <!-- </div> -->
+
                         {{error_message}}
 
                     <div ng-show="cash">
-                        <button type="submit" class="btn btn-transparent" ng-disabled="formData.$invalid" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
+                        <button type="submit" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
                     </div>
-                        <button type="submit" class="btn btn-transparent" ng-disabled="formData.$invalid" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
+                        <button type="submit" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
                 </form>
 
-                  <button class="btn btn-transparent" ng-controller="cancelUserBookingController" ng-click="refund()"> TEST REFUND </button>
+                  
                     
                 </div>
                         <!-- End row -->

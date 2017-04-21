@@ -218,7 +218,7 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;
                                 // console.log("min_count   "+newcharge);  
                             }
-                            if(offers[i].type === "duration" && Date.now().$gt(offers[i].start_date) && offers[i].expiration_date.$gt(Date.now()))
+                            if(offers[i].type === "duration" && (new Date()).getTime() >= new Date(offers[i].start_date).getTime() && new Date(offers[i].expiration_date).getTime() > (new Date()).getTime())
                             {
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;     
