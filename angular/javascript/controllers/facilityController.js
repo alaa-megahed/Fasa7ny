@@ -1,11 +1,36 @@
-app.controller('facilityController', function($scope, $http, Facility, $location, $routeParams, $modal, $log) {
+app.controller('facilityController', function($scope, status,$http, Facility, $location, $routeParams, $modal, $log) {
+
+	$scope.user = {}
+	status.local()
+ .then(function(res){
+   if(res.data){
+     if(res.data.user_type == 1)
+       $scope.type = 1;
+     else if(res.data.user_type == 2)
+       $scope.type  = 4;
+     else $scope.type = 3;
+
+     $scope.user = res.data;
+   }
+   else {
+     status.foreign()
+     .then(function(res){
+       if(res.data.user_type){
+         $scope.type = 1;
+         $scope.user = res.data;
+       }
+       else $scope.type = 2;
+     });
+   }
+ });
+
 
 	$scope.goToCreate = function() {
 		$scope.error = "";
 		Facility.createFacility($scope.formData)
 		.then(function successCallback(d) {
 			console.log("create facility success");
-			$location.path('/');
+			$location.path('/'+ $scope.user._id);
 		},
 		function errorCallback(d){
 			$scope.error = d.data;
@@ -95,38 +120,48 @@ app.controller('facilityController', function($scope, $http, Facility, $location
 
 var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
     $scope.form = {}
+    $scope.error = ""
     $scope.submitForm = function (formData, facilityId) {
         // if ($scope.form.editForm.$valid) {
             console.log('user form is in scope');
 						console.log(formData);
 						console.log(facilityId);
 						Facility.editFacility(facilityId, formData)
-						.then(function(d) {
+						.then(function successCallback(d) {
 							console.log("done editing facility");
+								$route.reload();
+            					$modalInstance.close('closed');
+						},
+						function errorCallback(d){
+						$scope.error = d.data;
 						});
-						$route.reload();
-            $modalInstance.close('closed');
+				
     };
 
     $scope.cancel = function () {
-        $modalInstance.dismiss('cancel');
+    $modalInstance.dismiss('cancel');
     };
 };
 
 var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route) {
     $scope.form = {}
+    $scope.error = "";
     $scope.yes = function (facilityId) {
         // if ($scope.form.editForm.$valid) {
             console.log('user form is in scope');
 						console.log(facilityId+"!!");
 						Facility.deleteFacility(facilityId)
-						.then(function(d) {
+						.then(function successCallback(d) {
 							console.log("done deleting facility");
+							$route.reload();
+            				$modalInstance.close('closed');
+
+						},
+						function errorCallback(d){
+							$scope.error = d.data;
 						});
 						console.log("delete done");
-						$route.reload();
-            $modalInstance.close('closed');
-    };
+					    };
 
     $scope.no = function () {
         $modalInstance.dismiss('cancel');

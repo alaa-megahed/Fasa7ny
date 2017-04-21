@@ -9,11 +9,6 @@ app.config(function($routeProvider){
 		controller  : "navbarController"
 	})
 
-	// .when("/", {
-	// 	templateUrl : "views/businessPage.html",
-	// 	controller  : "businessController"
-
-	// })
 	.when("/search/:id", {
 		templateUrl : "views/searchtest.html",
 		controller  : "searchtestController"
@@ -23,7 +18,7 @@ app.config(function($routeProvider){
 		templateUrl : "views/businessPage.html",
 		controller  : "businessController"
 	})
-	.when("/business/edit", {
+	.when("/editBusiness", {
 		templateUrl : "views/businessEdit.html",
 		controller  : "businessController"
 	})
@@ -39,11 +34,6 @@ app.config(function($routeProvider){
 		controller  : "businessController"
 	})
 
-	.when("/business/edit", {
-		templateUrl : "views/businessEdit.html",
-		controller  : "businessController"
-
-	})
 
 	.when("/eventPage/:businessId/:eventId", {
 		templateUrl : "views/eventPage.html",

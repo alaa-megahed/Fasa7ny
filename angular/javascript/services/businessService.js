@@ -8,7 +8,7 @@
             },
 
             edit : function(formData) {
-            	console.log("service!");
+            	console.log("service!" + formData);
             	return $http.post('http://127.0.0.1:3000/business/editInformation', formData);
             },
 

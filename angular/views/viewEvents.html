@@ -58,9 +58,9 @@
                         Time:  {{event.time}} <br>
                         Price: {{event.price}} EGP <br>
                         Days Off: {{event.days}} <br>
-                          <button class="btn btn-transparent" ng-click="viewOccurences(event._id)">View Occurences</button>
-                          <button class="btn btn-transparent" ng-click="editDailyEvent(event._id)">Edit Event</button>
-                          <button class="btn btn-transparent" ng-click="deleteEvent(event._id)">Delete Event</button>
+                          <button class="btn btn-transparent" ng-if= "type==4" ng-click="viewOccurences(event._id)">View Occurences</button>
+                          <button class="btn btn-transparent" ng-if= "type==4" ng-click="editDailyEvent(event._id)">Edit Event</button>
+                          <button class="btn btn-transparent"  ng-if= "type==4" ng-click="deleteEvent(event._id)">Delete Event</button>
                           <hr width="40%">
                        </div>
                    </article>

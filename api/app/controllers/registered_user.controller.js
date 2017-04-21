@@ -6,15 +6,15 @@ var Rating = mongoose.model('Rating');
 
 exports.subscribe = function(req,res)
 {
-	// if(req.user && req.user instanceof User) {
-		var userID = "58f09946fcefb434ea0d4e22";
+	if(req.user && req.user instanceof User) {
+		var userID = req.user.id;
 		var businessID = req.params.id;
 		var subscribed_business;
 		console.log("business sub");
 		User.findOne({_id: userID}, function(err, user_found)
 		{
 			if(err) {
-				res.send("Error in findOne() of subscribe-user");
+				res.status(500).json("Error in findOne() of subscribe-user");
 				return;
 
 			}
@@ -24,7 +24,7 @@ exports.subscribe = function(req,res)
 			function(err, business)
 			{
 				if(err)
-					res.send("Something went wrong. Please try again.");
+					res.status(500).json("Something went wrong. Please try again.");
 				else {
 					if (user_found) {
 						var check = 0;
@@ -35,37 +35,34 @@ exports.subscribe = function(req,res)
 						}
 
 						if(check == 1)
-							return res.send("Already subscribed");
+							return res.status(500).json("Already subscribed");
 						else
 						{
 							user_found.subscriptions.push(business);
 							user_found.save();
-							return res.send("business has been added to subscriptions.");
+							return res.status(200).json("business has been added to subscriptions.");
 						}
 
 				}
 			}
 		 });
 		});
-	// }
-	// else {
-	// 	res.redirect('/auth/login');
- //    }
-}
 
+}
+else res.status(500).json("You are not logged in");
+}
 
 exports.unsubscribe = function(req,res)
 {
-	// if(req.user && req.user instanceof User) {
-		// var userID = req.user.id;
-		var userID = "58f09946fcefb434ea0d4e22";
+	if(req.user && req.user instanceof User) {
+		var userID = req.user.id;
 	    var businessID = req.params.id;
 	    var subscribed_business;
 			console.log("business unsub");
 	    User.findOne({_id: userID}, function(err, user_found)
 	    {
 			if(err) {
-				res.send("Error in findOne() of unsubscribe-user");
+				res.status(500).json("Error in findOne() of unsubscribe-user");
 				return;
 			}
 
@@ -80,7 +77,7 @@ exports.unsubscribe = function(req,res)
 				Business.findOne({_id: businessID}, function(err, business)
 				{
 						if(err || !business) {
-						res.send("Error in finding business.");
+						res.status(500).json("Error in finding business.");
 						return;
 					}
 
@@ -89,37 +86,38 @@ exports.unsubscribe = function(req,res)
 						business.save();
 						user_found.subscriptions.pull(business);
 						user_found.save();
-						res.send("business has been removed from subscriptions.");
+						res.status(200).json("business has been removed from subscriptions.");
 						return;
 					}
 					else {
-						res.send("User is not found.");
+						res.status(500).json("User is not found.");
 						return;
 					}
 
 				});
 			}
 			else {
-				return res.send("Not subscribed");
+				return res.status(500).json("Not subscribed");
 			}
 
 
 
 
 	    });
-	// }
-	// else {
-		// res.redirect('/auth/login');
-	// }
+	}
+	else {
+		res.status(500).json("You are not logged in");
+	}
+	
 }
 
 
 exports.addRating = function(req, res)
 {
 
-	//  if(req.user && req.user instanceof User) {
-		 var userID = "58f0c9341767d632566c9fb5";
-		// var userID = req.user.id;              // from passport session; changed to body temporarily for testing
+	 if(req.user && req.user instanceof User) {
+		 
+		var userID = req.user.id;              // from passport session; changed to body temporarily for testing
 	    var businessID = req.params.bid;        // from url parameters; changed from param to body
 
 	    var rating2 = req.params.rate;		   // from post body
@@ -129,7 +127,7 @@ exports.addRating = function(req, res)
 	    Rating.findOne(rating_query, function(err, previous_rating)
 	    {
 	    	if(err) {
-	    		res.send("Error in finding rating");
+	    		res.status(500).json("Error in finding rating");
 	    		return;
 	    	}
 
@@ -154,10 +152,10 @@ exports.addRating = function(req, res)
 
 
 	    });
-	// }
-	// else {
-		// 	res.redirect('/auth/login');
-    // }
+	}
+	else {
+			res.status(500).json("You are not logged in");
+    }
 };
 
 exports.average_rating = function(req,res)
@@ -172,14 +170,14 @@ exports.average_rating = function(req,res)
         function (err, result) {
 			if(err)
 				{
-					res.send("Error. Please retry.");
+					res.status(500).json("Error. Please retry.");
 					return;
 				}
 			else {
 				Business.findByIdAndUpdate(businessID,{$set:{average_rating:result[0].average}},function(err, business){
 					if(err)
 					{
-						return res.send("Error. Please return to previous page.");
+						return res.status(500).json("Error. Please return to previous page.");
 					}
 					else
 					{
@@ -187,7 +185,7 @@ exports.average_rating = function(req,res)
 							if(err) console.log("error");
 							else {
 								console.log(updatedBusiness.average_rating);
-								return res.json({average_rating:updatedBusiness.average_rating });
+								return res.status(200).json({average_rating:updatedBusiness.average_rating });
 							}
 						})
 					}

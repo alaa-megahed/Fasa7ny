@@ -36,9 +36,8 @@
    <input ng-if = "type == 4 && business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent">
    <input ng-if = "type == 4" type="submit" value="Create a Facility" ng-click = "createFacility(business._id)" class="btn btn-transparent">
    <input ng-if = "type == 4" type="submit" value="Create One-Time Event" ng-click = "createOneEvent(business._id)" class="btn btn-transparent">
-    <form action="#!/business/edit" method="get">
-       <input ng-if = "type == 4" type="submit" value="Edit Information" class="btn btn-transparent">
-     </form>
+     <input ng-if = "type == 4" type="submit" value="Edit Information" ng-click = "businessEdit()" class="btn btn-transparent">
+    
 
    </center>
    <!-- </div> -->
@@ -233,18 +232,19 @@
 
                       <div style="background-color:#2B2C30;">
 
-                        <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()">&#9776;</button>
+                        <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()" ng-if = "type == 4">&#9776;</button>
                         <div class="w3-container">
 
                         </div>
                        <!-- Single Widget -->
                         <aside class="widget wow fadeInDown">
 
-                            <div ng-if = "type == 1" class="widget-content">
-                              <div ng-if == "type == 1">
+
+                            <div  class="widget-content">
+                              <div>
                                 <ul class="rating">
-                                <li ng-repeat="n in [].constructor(maxRating) track by $index">
-                                <span ng-click="rateBy($index+1, business._id)" ng-show="ratedBy > $index" class="filled">&#9733;</span>
+                                <li ng-repeat="n in [].constructor(maxRating) track by $index" ng-if = "type == 1">
+                                <span ng-click="rateBy($index+1, business._id)" ng-show="ratedBy > $index" class="filled" ng-if = "type == 1">&#9733;</span>
                                 <span ng-click="rateBy($index+1, business._id)" ng-show="ratedBy <= $index">&#9733;</span>
                                 </li>
                                 </ul>
