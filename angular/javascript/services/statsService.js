@@ -12,16 +12,15 @@ angular.module('fasa7ny')
             return $http.post('http://localhost:3000/stats/week', params);
         }
         factory.getAllStats = function (params) {
-            return $http.post('http://localhost:3000/stats/all', params);            
+            return $http.post('http://localhost:3000/stats/all', params);
         }
 
         var formatDate = function (date) {
-            var ans = '';
-            var month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            ans = ans + month[date.getMonth()];
-            ans += ' ';
-            ans += date.getYear();
-            return ans;
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];            
+            var day = date.getDate();
+            var month = months[date.getMonth()]; 
+            var year = date.getFullYear(); 
+            return day + ' ' + month + ' ' + year; 
         }
         factory.processData = function (resData, type) {
             var chart = {};
@@ -38,8 +37,11 @@ angular.module('fasa7ny')
                     chart.labels.push(resData[i].year);
                 else if (type == 'month')
                     chart.labels.push((resData[i].month + 1) + ' - ' + resData[i].year);
-                else if (type == 'week')
+                else if (type == 'week') {
+
                     chart.labels.push(formatDate(new Date(resData[i].startDate)) + ' - ' + formatDate(new Date(resData[i].endDate)));
+
+                }
 
                 views.push(resData[i].views);
                 attend.push(resData[i].attendees);
