@@ -3,11 +3,13 @@ var Business = require('mongoose').model('Business');
 var generator = require('generate-password');
 var Events = require('mongoose').model('Events');
 var EventOcc = require('mongoose').model('EventOccurrences');
+var Facility = require('mongoose').model('Facility');
 var Offer = require('mongoose').model('Offer');
 var User = require('mongoose').model('RegisteredUser');
 var Review = require('mongoose').model('Review');
 var Reply = require('mongoose').model('Reply');
 var async = require('async');
+var Advertisement = require('mongoose').model('Advertisement');
 
 const nodemailer = require('nodemailer');
 var configAuth = require('../../config/auth');
@@ -93,7 +95,8 @@ exports.AddBusiness = function (req, res) {
 
                                                 });
                                                 console.log(3);
-                                                res.render("admin_profile", { user: req.user });
+                                                //res.render("admin_profile", { user: req.user });
+                                                res.status(200).json("successfully added");
 
                                             }
                                         });
@@ -101,15 +104,17 @@ exports.AddBusiness = function (req, res) {
                                     else {
                                         console.log(resultAdmin);
                                         console.log("conflict with web admin");
-                                        res.render("admin_profile", { user: req.user });
+                                        //res.render("admin_profile", { user: req.user });
+                                        res.status(200).json("There is another webAdmin with the same username");
                                     }
                                 });
                         }//end of user check
                         else {
                             console.log(resultUser)
                             console.log("conflict with user");
-                            res.render("admin_profile", { user: req.user });
+                            // res.render("admin_profile", { user: req.user });
 
+                               res.status(200).json("There is another User with the same username");
                         }
                     }
                 );
@@ -117,8 +122,8 @@ exports.AddBusiness = function (req, res) {
             else {
                 console.log(resultBusiness);
                 console.log("conflict with business");
-                res.render("admin_profile", { user: req.user });
-
+                // res.render("admin_profile", { user: req.user });
+                    res.status(200).json("There is another business with the same username");
             }
 
         });
@@ -132,39 +137,34 @@ exports.WebAdminDeleteBusiness = function (req, res) {
 
 
     Business.findById(req.params.id, function (err, business) {
-        if (err)
-            throw err;
+        if(err) res.status(500).json(err.message);
+
         //remove offers
         Offer.remove({ business: business._id }, function (err) {
 
-            if (err) throw err;
+           if(err) res.status(500).json(err.message);
         });
-        //remove events of the business
-        Events.find({ business_id: business._id }, function (err, events) {
-            if (err) throw err;
-            else
-            {
-                async.each(events, function(event, callback){
-                    EventOcc.remove({ event: event._id }, function (err) {
-                        if (err)
-                            throw err;
-                    });
-                });
-
-                Events.remove({ business_id: business._id }, function (err) {
-                    if (err)
-                        throw err;
-                });
-            }
-
+        // remove events
+        Events.remove({ business_id: business._id }, function (err) {
+            if (err)
+                if(err) res.status(500).json(err.message);
         });
+        // remove facilities
+        Facility.remove({business_id: business._id}, function(err){
+            if(err) return res.status(500).json(err.message);
+        });
+        // remove event occuerrences
+        EventOcc.remove({business_id: business._id}, function(err){
+            if(err) res.status(500).json(err.message);
+        });
+
 
         //remove business from subscribers
 
         async.each(business.subscribers, function(subscriber, callback){
             User.findById(subscriber, function (err, user) {
                 if (err)
-                    throw err;
+                        res.status(500).json(err.message);
                 else {
                     var subs = user.subscriptions;
                     var index = subs.indexOf(business._id);
@@ -172,7 +172,7 @@ exports.WebAdminDeleteBusiness = function (req, res) {
                         subs.splice(index, 1);
                         User.findByIdAndUpdate(subscriber, { $set: { subscriptions: subs } }, function (err, userResult) {
                             if (err)
-                                throw err;
+                                res.status(500).json(err.message);
 
                         });
                     }
@@ -183,13 +183,10 @@ exports.WebAdminDeleteBusiness = function (req, res) {
         Business.findByIdAndRemove(req.params.id, function (err, business) {
             if (err)
                 throw err;
+            res.status(200).json("Succefully deleted");
         });
 
-        Business.find({ delete: 1 }, function (err, requests) {
-            if (err)
-                throw err;
-            res.render('requestedDelete', { user: req.user, requests: requests });
-        });
+       
     });
 
 
@@ -199,18 +196,20 @@ exports.WebAdminDeleteBusiness = function (req, res) {
 
 exports.webAdminViewRequestedDelete = function (req, res) {
 
-if(req.user && req.user instanceof WebAdmin)
-  {
-    Business.find({ delete: 1 }, function (err, requests) {
-        res.render('requestedDelete', { user: req.user, requests: requests });
+// if(req.user && req.user instanceof WebAdmin)
+//   {
 
+    Business.find({ delete: 1 }, function (err, requests) {
+     
+        res.status(200).json(requests);
     });
   }
-  else {
-    return res.send("Unauthorized access. Please log in.");
-  }
+  // else {
+  //   return res.status(200).json("Unauthorized access. Please log in."); 
+  //   //res.send("Unauthorized access. Please log in.");
+  // }
     
-}
+// }
 
 
 
@@ -226,17 +225,19 @@ if(req.user && req.user instanceof WebAdmin)
 exports.addAdvertisement = function(req,res)
 {
 
+    
+  // if(req.user && req.user instanceof WebAdmin)
+  // {
 
-  if(req.user && req.user instanceof WebAdmin)
-  {
 
-    if(!req.body.filename || !req.body.text || !req.body.sdate || !req.body.edate)
+    if(!req.file.filename || !req.body.text || !req.body.sdate || !req.body.edate)
     {
-      return res.send("Please fill in all necessary components");
+         console.log("f 7aga fadya");
+      return res.status(200).json("Please fill in all necessary components");
     }
     var ad = new Advertisement(
       {
-        image       : req.body.filename, //should be changed to req.file.filename
+        image       : req.file.filename, //should be changed to req.file.filename
         text        : req.body.text,
         start_date  : req.body.sdate,
         end_date    : req.body.edate
@@ -245,15 +246,17 @@ exports.addAdvertisement = function(req,res)
 
     ad.save(function(err,ad){
       if(err)
-        return res.send("error saving advertisement");
-      else
-        return res.send("successfully created advertisement");
-
+        throw err;
+      else{
+        
+        return res.status(200).json("successfully created advertisement");
+}
     });
-  }
-  else {
-    return res.send("Unauthorized access. Please log in.");
-  }
+ //  }
+  // else {
+  //   return res.status(200).json("Unauthorized access. Please log in.");
+  // }
+
 
 }
 
@@ -264,18 +267,18 @@ exports.addAdvertisement = function(req,res)
 exports.deleteAdvertisement = function(req,res)
 {
 
-    if(req.user && req.user instanceof WebAdmin)
-    {
-      Advertisement.findByIdAndRemove(req.body.ad, function(err,ad)
+    // if(req.user && req.user instanceof WebAdmin)
+    // {
+      Advertisement.findByIdAndRemove(req.params.id, function(err,ad)
       {
         if(err)
-          res.send("error deleting advertisement");
+          res.status(500).json("error deleting advertisement");
         else {
-          res.send("successfully deleted advertisement");
+          res.status(200).json("successfully deleted advertisement");
         }
 
       });
-    }
+    // }
 
 
 
@@ -333,5 +336,23 @@ exports.viewAvailableAdvertisements = function(req,res)
   else {
     return res.send("Unauthorized access. Please log in.");
   }
+
+}
+
+
+exports.viewAllAdvertisements = function(req,res)
+{
+  // if(req.user && req.user instanceof WebAdmin)
+  // {
+
+    Advertisement.find({},function(err, ads)
+    {
+      
+      res.status(200).json(ads);
+    });
+  // }
+  // else {
+  //   return res.send("Unauthorized access. Please log in.");
+  // }
 
 }

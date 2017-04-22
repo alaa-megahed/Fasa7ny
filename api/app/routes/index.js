@@ -39,4 +39,5 @@ router.use('/photo/:photo', function (req, res) {
    res.sendFile(path.resolve('public/uploads/' + req.params.photo));
 });
 
+
 module.exports = router;

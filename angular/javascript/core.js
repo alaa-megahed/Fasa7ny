@@ -11,9 +11,10 @@ app.config(function($routeProvider){
 	// 	controller  : "homepageController"
 	// })
 
+	//webAdminProfile
 	.when("/", {
 		templateUrl : "views/web_admin.html",
-		controller  : "userController"
+		controller  : "webAdminController"
 	})
 
 	// .when("/", {
