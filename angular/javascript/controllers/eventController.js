@@ -30,7 +30,7 @@ $scope.error = "";
 		$scope.event = d.data.event;
 		$scope.eventocc = d.data.eventocc;
 
-		if($scope.business != $scope.user) $scope.type = 2;
+		if($scope.type==4 && $scope.business != $scope.user) $scope.type = 2;
 
 	}, function errorCallback(d) {
 		$scope.error = d.data;
@@ -92,24 +92,50 @@ $scope.error = "";
     }
 
 });
-var DeletePopUp2 = function ($scope, $location, $modalInstance,Event,id,bid, $route,$window) {
+var DeletePopUp2 = function ($scope, $location, $modalInstance,Event, Business, id,bid, $route,$window) {
     $scope.form = {};
-		$scope.error = "";
-    $scope.submitForm = function () {
-    	console.log('Delete Form');
+	$scope.error = "";
+    $scope.submitForm = function ()
+     {
+        // Business.getEventOccs(id).then(function successCallback(response)
+        // {
+        //     var occs = response.data;
+        //     for (var i = 0; i < ocs.length; i++)
+        //     {
+        //         var bookings = occs[i].bookings;
+        //         for(var j = 0; j < bookings.length; j++)
+        //         {
+        //             Business.getBooking(bookings[j]).then(function succcessCallback(response)
+        //             {
+        //                 var cur_booking = response.data;
+        //                 $http.post('http://127.0.0.1:3000/bookings/cancel_booking_after_delete', {booking_id: cur_booking._id})
+        //                 .then(function successCallback(response){
+        //                     console.log(response.data);
+        //                 }, function errorCallback(response){
+        //                     console.log(response.data);
+        //                 });
+
+        //             }, function errorCallback(response){
+        //               console.log(response.data);
+        //           });
+        //         }
+        //     }
+        // }, function errorCallback(response)
+        // {
+        //     console.log(response.data);
+        // });
         Event.delete(id)
-				.then(function successCallback(d) {
+                .then(function successCallback(d) {
           console.log("done deleting event");
           $route.reload();
-					console.log(bid);
-					$location.path('/business/' + bid);
-					// $window.location = "/" + bid;
+                    console.log(bid);
+                    $location.path('/business/' + bid);
+                    // $window.location = "/" + bid;
         },
         function errorCallback(d){
-					console.log("??");
-					$scope.error = d.data;
+                    console.log("??");
+                    $scope.error = d.data;
         });
-        console.log('del');
     };
 
     $scope.cancel = function () {

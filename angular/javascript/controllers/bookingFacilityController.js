@@ -3,6 +3,7 @@ var app = angular.module('fasa7ny');
 app.controller('bookFacilityController', function($scope, $http, $location, Offers,Occurrences,Facilities) {
       
       Offers.get("58f0cb2d6bfb6061efd66625").then(function(response) {
+        console.log("offers ahy "+response.data);
               $scope.offers = response.data;
               $scope.betengan = "Facility Booking";
         });

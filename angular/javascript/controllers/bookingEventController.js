@@ -114,6 +114,7 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
   },
  
 };
+
 // >>>>>>> 62c263a62d53cc6f742021b5718ec747716b4590
             $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
@@ -127,6 +128,7 @@ app.controller('bookingEventController', function($scope, $http, $location, Offe
         Offers.get($scope.business_id)
                 .then(function(response) {
                        offers = response.data;
+                       console.log("offers ahy "+ offers);
                        $scope.offers = response.data;
                        $scope.betengan = "Roody";
                    });
