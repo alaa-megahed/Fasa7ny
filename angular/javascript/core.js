@@ -1,4 +1,5 @@
-var app = angular.module('fasa7ny', ['ngRoute', 'ngFileUpload', 'chart.js', 'sn.addthis']);
+
+var app = angular.module('fasa7ny', ['ngRoute', 'chart.js', '720kb.datepicker']);
 
 app.config(function ($routeProvider) {
     $routeProvider

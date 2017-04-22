@@ -2,15 +2,23 @@ angular.module('fasa7ny')
     .controller('StatsController', function ($scope, Stats) {
         $scope.businessID = '58f0f8312ffb434813227cc0';
         $scope.title = 'Statistics';
-        $scope.disableButton = ($scope.type == 'year' && $scope.startYear > $scope.endYear);
+        $scope.disableButton = ($scope.type == 'year' && $scope.startYear > $scope.endYear); 
+        $scope.maxDate = new Date()+""; 
+  
+        
+
+        //the 5 metrics tracked in our stats system
         $scope.series = ['Views', 'Attendees', 'Rating', 'Sales', 'Subscriptions'];
+
+        //initilaization with dummy data as a demo 
         $scope.data = [
             [1, 4, 2, 5, 7],
             [8, 3, 4, 4, 2],
             [1, 2, 4, 8, 0],
             [2, 5, 3, 3, 3],
-            [2, 7, 8, 2, 4], 
-        ]; 
+            [2, 7, 8, 2, 4],
+        ];
+        //get total stats of this business to display in boxes at the top
         Stats.getAllStats({ businessID: $scope.businessID })
             .then(function (res) {
                 $scope.allStats = res.data;
@@ -18,6 +26,7 @@ angular.module('fasa7ny')
             }, function (res) {
                 console.log(res.data);
             });
+        //get stats on demand when button is clicked
         $scope.getStats = function () {
             if ($scope.type == 'year') {
                 Stats.year({ businessID: $scope.businessID, startYear: +$scope.startYear, endYear: +$scope.endYear })
