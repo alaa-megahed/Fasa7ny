@@ -128,8 +128,11 @@ var StatsController = {
     var businessID = req.body.businessID;
     var startDate = helper.calculateWeek(new Date(req.body.startDate)).startDate;
     var endDate = helper.calculateWeek(new Date(req.body.endDate)).endDate;
+    console.log('start ' + startDate);
+    console.log('end ' + endDate);
+
     WeekStat.find({
-      $or: [
+      $and: [
         { startDate: { $gte: startDate } },
         { endDate: { $lte: endDate } },
       ],

@@ -89,11 +89,13 @@
 <section class="w3-margin-top">
     <div class="container">
         <div class="row">
+            {{noStats}}
 
-            <center class="col-md-8">
+            <center ng-hide="{{noStats}}" class="col-md-8">
                 <canvas class="col-lg-8 chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
                     chart-dataset-override="datasetOverride" chart-click="onClick" ng-cloak>
                 </canvas>
+                <h1 ng-show="{{noStats}}"> No stats available for selected range. </h1>
             </center>
 
             <div class="col-md-4">
@@ -150,5 +152,5 @@
     input {
         color: #000;
     }
-    
+
 </style>

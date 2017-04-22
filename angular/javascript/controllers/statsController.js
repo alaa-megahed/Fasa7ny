@@ -2,10 +2,10 @@ angular.module('fasa7ny')
     .controller('StatsController', function ($scope, Stats) {
         $scope.businessID = '58f0f8312ffb434813227cc0';
         $scope.title = 'Statistics';
-        $scope.disableButton = ($scope.type == 'year' && $scope.startYear > $scope.endYear); 
-        $scope.maxDate = new Date()+""; 
-  
-        
+        $scope.disableButton = ($scope.type == 'year' && $scope.startYear > $scope.endYear);
+        $scope.maxDate = new Date() + "";
+
+
 
         //the 5 metrics tracked in our stats system
         $scope.series = ['Views', 'Attendees', 'Rating', 'Sales', 'Subscriptions'];
@@ -22,7 +22,6 @@ angular.module('fasa7ny')
         Stats.getAllStats({ businessID: $scope.businessID })
             .then(function (res) {
                 $scope.allStats = res.data;
-                console.log($scope.allStats);
             }, function (res) {
                 console.log(res.data);
             });
@@ -36,6 +35,8 @@ angular.module('fasa7ny')
                         $scope.labels = [];
                         $scope.data = [];
                         var resData = res.data;
+                        if (resData.length == 0)
+                            $scope.noStats = true;
                         var chart = Stats.processData(resData, 'year');
                         $scope.data = chart.data;
                         $scope.labels = chart.labels;
@@ -54,6 +55,8 @@ angular.module('fasa7ny')
                         $scope.labels = [];
                         $scope.data = [];
                         var resData = res.data;
+                        if (resData.length == 0)
+                            $scope.noStats = true;
                         var chart = Stats.processData(resData, 'month');
                         $scope.data = chart.data;
                         $scope.labels = chart.labels;
@@ -69,6 +72,8 @@ angular.module('fasa7ny')
                     $scope.labels = [];
                     $scope.data = [];
                     var resData = res.data;
+                    if (resData.length == 0)
+                        $scope.noStats = true;
                     var chart = Stats.processData(resData, 'week');
                     $scope.data = chart.data;
                     $scope.labels = chart.labels;
