@@ -1,199 +1,408 @@
-<section id="blog-banner">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center uploadPic">
-  
-            </div>     <!-- End col-lg-12 -->
-        </div>      <!-- End row -->
-    </div>       <!-- End container -->
-</section>    <!-- End Section -->
 
-
-
-
-<!-- Start Middle Section (Bookings + Subscriptions)
-======================================= -->
-<section id="blog-page">
+<!--  Start Add Business & Ad Section
+=========================================== -->     
+<section id="team-skills" class="parallax-section">
     <div class="container">
         <div class="row">
 
+            <!-- / Start Add Business Area -->
+            <div class="contact-form col-md-6 wow fadeInUp" data-wow-duration="500ms">
 
-                        <!-- section title -->
+                <!-- section title -->
                 <div class="title text-center wow fadeIn" data-wow-duration="500ms">
-                    <h2> <span class="color">SUBSCRIPTIONS</span> </h2>
+                    <h2>Add <span class="color">Business</span></h2>
                     <div class="border"></div>
                 </div>
                 <!-- /section title -->
 
-                <!-- Subcscriptions Part -->
-                <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">  
-
-
-
-                    <div class="post-meta3" style="margin-top: 4px; margin-bottom: 4px;" ng-repeat = "subs_business in subscribed_businesses">
-                        <span class="post-date">
-                            <a style = "font-size: 15px"> {{subs_business.business.name}} </a> <!-- ASK !-->
-                        </span>
+                <form id="contact-form" method="post" action="sendmail.php" role="form">
+                
+                    <div class="form-group">
+                        <input type="text" placeholder="Username" class="form-control" name="name" id="name">
                     </div>
 
-                    <br><br><br>
-
-                    <!-- section title -->
-                    <div class="title text-center wow fadeIn" data-wow-duration="500ms">
-                        <h2>Profile <span class="color">Details</span></h2>
-                        <div class="border"></div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Name" class="form-control" name="subject" id="subject">
                     </div>
-                    <!-- /section title -->
-
-
-                    <div class="post-item">
-                        <!-- Single Post -->
-                        <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
-                           
-                            <div class="post-excerpt">  <!-- first section beginning !-->
-                                <!-- profile details !-->
-                                <div>
-
-                                    <div style="padding-left: 23px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 2px; margin-bottom: 2px; opacity: 0"> 
-                                            no data
-                                        </a>
-                                    </div>
-
-
-                                    <img src="../img/user_profile/at_sign.png" alt="at_sign_icon" class="image2" align="left" style = "padding-top: 4px">
-                                    <div style="padding-left: 25px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
-                                            {{ user.local.username }}  <!-- ASK !-->
-                                        </a>
-                                    </div>
-
-
-                                    <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon_profile" class="image2" align="left" style = "padding-top: 6px">
-                                    <div style="padding-left: 25px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
-                                            {{ user.phone }}
-                                        </a>
-                                    </div>
-
-
-                                    <img src="../img/user_profile/bdate_icon3.png" alt="bdate_icon_" class="image2" align="left" style = "padding-top: 6px">
-                                    <div style="padding-left: 25px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
-                                            {{ user.birthdate | date}}
-                                        </a>
-                                    </div>
-
-                                    <img src="../img/user_profile/gender_icon.png" alt="gender_icon" class="image2" align="left" style = "padding-top: 6px">
-                                    <div style="padding-left: 25px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
-                                            {{ user.gender }}
-                                        </a>
-                                    </div>
-
-                                 
-
-                                    <div style="padding-left: 23px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 2px; margin-bottom: 2px; opacity: 0"> 
-                                            no data
-                                        </a>
-                                    </div>
-
-                                    <div >
-                                      <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)" style = "display:block; margin: 0 auto;"> Edit Profile </button>
-                                    </div>
-
-                                </div>
-                            </div>  <!-- first section end !-->
-                        </article> <!-- End Single Post -->
-
+                    
+                    <div class="form-group">
+                        <input type="email" placeholder="Email" class="form-control" name="email" id="email">
                     </div>
-                </article>
+                    
+                    <div class="form-group">
+                        <input type="text" placeholder="Merchant ID" class="form-control" name="subject" id="subject">
+                    </div>
+
+                    <script>
+                        $('.contact-form').on('click', function(e){
+                          e.preventDefault();
+                          $(this).toggleClass('myClickState');
+                        });
+                    </script>
 
 
+                    <select>
+                          <option value="" disabled selected> -- Business Category --</option>
+                          <option value="volvo">Thrill</option>
+                          <option value="saab">Escape</option>
+                          <option value="mercedes">Outlet</option>
+                    </select>
 
+                    <br>
+                    <br>
+                    
+                    <div id="cf-submit">
+                        <input type="submit" id="contact-submit" class="btn btn-transparent" value="Add Business">
+                    </div>                      
+                    
+                </form>
             </div>
+            <!-- / End Add Business Area -->
 
-            
 
 
-            <!-- RIGHT Section -->
-            <div id="right-sidebar" class="col-md-4 col-sm-4">
+                
+            <!-- / Start Add Ad Area -->
+            <div class="contact-form col-md-6 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
 
-             <!-- LEFT Sectinon !-->
-            <div id="blog-posts" class="col-md-8 col-sm-8">
-
-                <!-- BOOKINGS SECTION !-->
-                <div class="post-item">
-
-                    <!-- section title -->
-                    <div class="title text-center wow fadeIn" data-wow-duration="500ms">
-                        <h2>Add <span class="color">Business</span></h2>
-                        <div class="border"></div>
-                    </div>
-                    <!-- /section title -->
-
-                   <!-- Single Post -->
-                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms" ng-repeat = "info in all_info">
-
-                       
-                        <div class="post-excerpt">  <!-- first section beginning !-->
-
-                            <!-- Name of Event + w/ + Name of Business !-->
-                            <h3>
-                                <a href="../single-post.html"> {{info.event.name}}</a> 
-                                <a href="../single-post.html"> <span class="color">w/</a> 
-                                <a href="../single-post.html"> {{info.business.name}} </a> 
-                                <!-- <img src="../img/user_profile/rating_3.png" alt="rating" > !-->
-                            </h3>
-
-                            <br>
-
-                            <p> {{info.event.description}} </p> 
-
-                            <br>
-
-                            <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon" class="image2" align="left">
-                            <div style="padding-left: 23px;" ng-repeat = "phone in info.business.phones"> 
-                               <p style="font-size:12px;">  {{phone}} </p>
-                            </div>
-
-                            <img src="../img/user_profile/location_icon12.png" alt="location_icon" class="image2" align="left">
-                            <div style="padding-left: 23px;"> 
-                               <p style="font-size:12px">  {{info.business.address}}</p>
-                            </div>
-                        </div>  <!-- first section end !-->
-
-                        <div class="post-meta2" ">  <!-- second section beginning !-->
-                            <span class="post-date">
-                                <i class="fa fa-calendar"></i> {{info.eventocc.day | date }} @ {{info.eventocc.time  }}
-                            </span>
-
-                            <span class="author">
-                                <i class="fa fa-user"></i> {{info.booking.count}} person(s)</a>
-                            </span>
-
-                            <span>
-                                <p style="display:inline">Total: <span class="color"> {{info.booking.charge}} 150 EGP &nbsp; </p>
-                            </span>
-
-                            <div style=" display:inline;  vertical-align: middle; padding-left: 180px">
-                                <a class="btn btn-booking" href="../single-post.html">Cancel Booking</a> 
-                            </div>
-                        </div>  <!-- second section end !-->
-                    </article>
-                    <!-- End Single Post -->
-
+                <!-- section title -->
+                <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                    <h2>Add <span class="color">Advertisement</span></h2>
+                    <div class="border"></div>
                 </div>
-                <!-- End of BOOKINS SECTION!-->
+                <!-- /section title -->
+
+                <form id="contact-form" method="post" action="sendmail.php" role="form">
+                
+                    <div class="form-group">
+                        <textarea rows="6" placeholder="Advertisement Body" class="form-control" name="message" id="message"></textarea>   
+                    </div>
+
+                    <div class="form-group">
+                        <input type="date" placeholder="Start Date" class="form-control" name="name" id="name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="date" placeholder="End Date" class="form-control" name="email" id="email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="file" placeholder="Image" class="form-control" name="subject" id="subject">
+                    </div>
+                    
+                    
+                    <div id="cf-submit">
+                        <input type="submit" id="contact-submit" class="btn btn-transparent" value="Add Advertisement">
+                    </div>                      
+                    
+                </form>
+            </div>
+            <!-- / End Add Ad Area -->
+
+        </div> <!-- end row -->
+    </div> <!-- end container -->
+</section> <!-- end section -->
+
+<!-- End Add Business & Ad Section
+========================================== -->
 
 
-            </div> <!-- End RIGHT Section -->
+
+
+
+<!-- Start Added Businesses Section
+=========================================== -->     
+<section id="contact-us">
+    <div class="container">
+        <div class="row">
+            
+            <!-- section title -->
+            <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                <h2>Added <span class="color">Businesses</span></h2>
+                <div class="border"></div>
+            </div>
+            <!-- /section title -->
+            
+            
+            <!-- Single Business Item -->
+            <article class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="service-block text-center">
+                    <h2 style="font-size: 30px"><span class="color">Breakout Egypt</span></h2>
+              
+                                                                
+                    <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)" style = "display:block; margin: 0 auto;"> Delete Business </button>                  
+                </div>
+            </article>
+            <!-- End Single Business Item -->
+
+
+            <!-- Single Business Item -->
+            <article class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="service-block text-center">
+                    <h2 style="font-size: 30px"><span class="color">KidZania Cairo</span></h2>
+                                                                
+                    <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)" style = "display:block; margin: 0 auto;"> Delete Business </button>                  
+                </div>
+            </article>
+            <!-- End Single Business Item -->
+
+
+            <!-- Single Business Item -->
+            <article class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="service-block text-center">
+                    <h2 style="font-size: 30px"><span class="color">Escapology</span></h2>
+                                                                
+                    <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)" style = "display:block; margin: 0 auto;"> Delete Business </button>                  
+                </div>
+            </article>
+            <!-- End Single Business Item -->
+
+
+            <!-- Single Business Item -->
+            <article class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="service-block text-center">
+                    <h2 style="font-size: 30px"><span class="color">Bubble Football</span></h2>
+                                                                
+                    <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)" style = "display:block; margin: 0 auto;"> Delete Business </button>                  
+                </div>
+            </article>
+            <!-- End Single Business Item -->
+
+
+            <!-- Single Business Item -->
+            <article class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="service-block text-center">
+                    <h2 style="font-size: 30px"><span class="color">Adrenalin Park</span></h2>
+                                                                
+                    <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)" style = "display:block; margin: 0 auto;"> Delete Business </button>                  
+                </div>
+            </article>
+            <!-- End Single Business Item -->
+
+
+            <!-- Single Business Item -->
+            <article class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="service-block text-center">
+                    <h2 style="font-size: 30px"><span class="color">Laser Fight</span></h2>
+                                                                
+                    <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)" style = "display:block; margin: 0 auto;"> Delete Business </button>                  
+                </div>
+            </article>
+            <!-- End Single Business Item -->
+
+
+            <!-- Single Business Item -->
+            <article class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="service-block text-center">
+                    <h2 style="font-size: 30px"><span class="color">Bubble Football</span></h2>
+                                                                
+                    <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)" style = "display:block; margin: 0 auto;"> Delete Business </button>                  
+                </div>
+            </article>
+            <!-- End Single Business Item -->
+
+
+            <!-- Single Business Item -->
+            <article class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
+                <div class="service-block text-center">
+                    <h2 style="font-size: 30px"><span class="color">Adrenalin Park</span></h2>
+                                                                
+                    <button class="btn btn-booking" ng-click = "goToEditProfile(user._id)" style = "display:block; margin: 0 auto;"> Delete Business </button>                  
+                </div>
+            </article>
+            <!-- End Single Business Item --> 
+
 
         </div>      <!-- End row -->
-    </div>       <!-- End container -->
-</section>    <!-- End Section -->
+    </div>      <!-- End container -->
+</section> <!-- end section -->
+
+<!-- End Added Businesses Section
+========================================== -->
 
 
 
-<a href="#" id="scrollUp"><i class="fa fa-angle-up fa-2x"></i></a>
+
+
+
+
+
+<!-- Start Added Advertisements Section
+==================================== -->
+<section id="services" class="bg-one">
+    <div class="container">
+        <div class="row">
+            
+            <!-- section title -->
+            <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                <h2>Added <span class="color">Advertisements</span></h2>
+                <div class="border"></div>
+            </div>
+            <!-- /section title -->
+            
+            <!-- Single Ad Item -->
+            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
+                <div class="post-item">
+   
+                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                       
+                        <div class="post-thumb">
+                            <a href="single-post.html">
+                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="post-excerpt">
+                            <h3><a href="single-post.html">Post with featured image</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
+                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
+                        </div>
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="fa fa-calendar"></i>30 jun 2014
+                            </span>
+                            <span class="comments">
+                                <i class="fa fa-comments"></i>18 Comments
+                            </span>
+                            <span class="post-view">
+                                <i class="fa fa-eye"></i>265 Views
+                            </span>
+                        </div>
+                    </article>
+                   
+                </div>
+            </article>
+            <!-- End Single Ad Item -->
+
+
+            <!-- Single Ad Item -->
+            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
+                <div class="post-item">
+
+                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                       
+                        <div class="post-thumb">
+                            <a href="single-post.html">
+                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="post-excerpt">
+                            <h3><a href="single-post.html">Post with featured image</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
+                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
+                        </div>
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="fa fa-calendar"></i>30 jun 2014
+                            </span>
+                            <span class="comments">
+                                <i class="fa fa-comments"></i>18 Comments
+                            </span>
+                            <span class="post-view">
+                                <i class="fa fa-eye"></i>265 Views
+                            </span>
+                        </div>
+                    </article>
+
+                </div>
+            </article>
+            <!-- End Single Ad Item -->
+
+
+
+            <!-- Single Ad Item -->
+            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
+                <div class="post-item">
+
+                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                       
+                        <div class="post-thumb">
+                            <a href="single-post.html">
+                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="post-excerpt">
+                            <h3><a href="single-post.html">Post with featured image</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
+                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
+                        </div>
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="fa fa-calendar"></i>30 jun 2014
+                            </span>
+                            <span class="comments">
+                                <i class="fa fa-comments"></i>18 Comments
+                            </span>
+                            <span class="post-view">
+                                <i class="fa fa-eye"></i>265 Views
+                            </span>
+                        </div>
+                    </article>
+
+                </div>
+            </article>
+            <!-- End Single Ad Item -->
+
+
+
+            <!-- Single Ad Item -->
+            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
+                <div class="post-item">
+
+                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                       
+                        <div class="post-thumb">
+                            <a href="single-post.html">
+                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="post-excerpt">
+                            <h3><a href="single-post.html">Post with featured image</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
+                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
+                        </div>
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="fa fa-calendar"></i>30 jun 2014
+                            </span>
+                            <span class="comments">
+                                <i class="fa fa-comments"></i>18 Comments
+                            </span>
+                            <span class="post-view">
+                                <i class="fa fa-eye"></i>265 Views
+                            </span>
+                        </div>
+                    </article>
+
+                </div>
+            </article>
+            <!-- End Single Ad Item -->
+
+
+<!--             <div style = "margin: 0 auto; padding-bottom: 0px;">
+                <nav class="post-pagination wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                <article class="col-md-12 wow fadeInUp" data-wow-duration="500ms">
+                    <ul>
+                        <li class="disabled"><a href="#">&laquo;</a></li>
+                        <li class="active"><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">...</a></li>
+                        <li><a href="#">10</a></li>
+                        <li><a href="#">11</a></li>
+                        <li><a href="#">12</a></li>
+                        <li><a href="#">13</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
+                 </nav>
+                 </article>
+             </div>
+ -->
+
+                
+        </div>      <!-- End row -->
+    </div>      <!-- End container -->
+</section>   <!-- End section -->
+
+<!-- End Advertisements Section
+==================================== -->

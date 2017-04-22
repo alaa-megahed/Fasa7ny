@@ -1078,11 +1078,25 @@ border: 1px solid #4e595f;
 height: 38px;
 }
 
+.contact-form select {
+background-color: transparent;
+border: 1px solid #4e595f;
+height: 38px;
+width: 100%;
+
+}
+
+.myClickState {
+  border-color: lime;
+}
+
 .contact-form input:hover,
 .contact-form textarea:hover,
+.contact-form select:hover,
 #contact-submit:hover {
 border-color: #6CB670;
 }
+
 
 #contact-submit {
 border: 1px solid #4e595f;
@@ -1093,7 +1107,7 @@ margin: 0;
 
 .contact-form textarea.form-control {
 padding: 10px;
-height: 120px;
+height: 97px;
 }
 
 .contact-info p {
