@@ -19,8 +19,7 @@
                      <!-- <div class = "container3"> -->  
                       <h3> Date <br> <br>
                       <input type="date" style="color:#000;width: 300px;" ng-model="formData.day" required ng-change="choose_date(formData.day)"><br></h3><br>
-                       <!--  min="{{minDate | date:'yyyy-MM-dd'}}" max="{{maxDate | date:'yyyy-MM-dd'}}"  ng-min={{minDate}} ng-max={{maxDate}} -->
-                      <!-- </div> -->
+                       <span style="color: red">{{invalidDateMsg}}</span>
                      
                        <h3> Time slot(s) available :</h3> 
                       <div ng-repeat="timing in timings | filter : {facility_id:facility} " ng-if="timing.available > 0 && Date(timing.day) == date && Year(timing.day) == year && Month(timing.day) == month " class="container3"> <!-- && d == date   -->
