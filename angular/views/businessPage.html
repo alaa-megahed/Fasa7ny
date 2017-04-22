@@ -293,7 +293,23 @@
                                 <li>Payment Methods: </li>
                                 <!-- <li ng-repeat = "method in methods"> {{ method }} <button ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)" style="color:#000;"> delete <button></li> -->
                                   <li ng-repeat = "method in methods"> {{ method }} <a ng-if = "type == 4" ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)"><span class="glyphicon glyphicon-trash"></span> </a> </li>
+                                  <li>Location: </li>
                             </div>
+
+
+
+
+                            <br>
+                            <br>
+
+                            <div id="googleMap" style="height: 400px; display: none" ></div>
+                            <div id="googleMap2" style="height: 400px;" ></div>
+
+
+
+
+
+
                             <div class="widget-content">
                           </div>
                         </aside>
@@ -423,11 +439,7 @@
         </section>    <!-- End Section -->
 
 
-        <!-- Google Map -->
-        <div class="google-map wow fadeInDown" data-wow-duration="500ms">
-          <div id="map-canvas"></div>
-        </div>
-        <!-- /Google Map -->
+
 
 
         <div class="social-icon">

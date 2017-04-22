@@ -10,60 +10,10 @@ app.controller('businessController', function($scope, status,$http, Business, $l
   // console.log(business);
   // $scope.business = business;
 
-
-
-    $scope.initMap = function () {
-        var myLatlng = new google.maps.LatLng(30.05483,31.23413);
-        var mapProp = {
-        center:myLatlng,
-        zoom:5,
-        mapTypeId:google.maps.MapTypeId.ROADMAP
-
-    };
-
-
-    var map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
-    var marker = new google.maps.Marker({
-        position: myLatlng,
-        map: map,
-        title: 'Hello World!',
-        draggable:true
-    });
-
-    $scope.Lat= 30.05483;
-    $scope.Lng= 31.23413;
-
-    console.log("In the controller with gmaps: " + $scope.Lat + $scope.Lng);
-    // marker drag event
-    google.maps.event.addListener(marker,'drag',function(event) {
-      $scope.Lat = event.latLng.lat();
-      $scope.Lng = event.latLng.lng();
-
-    });
-  //  marker drag event end
-    google.maps.event.addListener(marker,'dragend',function(event) {
-    $scope.Lat = event.latLng.lat();
-    $scope.Lng = event.latLng.lng();
-    console.log("EVENT " + event.latLng.lat() + " " +event.latLng.lng());
-    console.log("In the controller changing with gmaps: " + $scope.Lat  + " " + $scope.Lng);
-    });
-    }
-
-    google.maps.event.addDomListener(window, 'scroll', $scope.initMap);
-
-
-
-
-
-
-
-
-
-
-
-
-
+  $scope.edit = 0;
   $scope.business = {};
+  $scope.Lat = 0;
+  $scope.Lng = 0;
   if($scope.business.images) {
     console.log("images");
     console.log($scope.business.images);
@@ -190,6 +140,9 @@ app.controller('businessController', function($scope, status,$http, Business, $l
 
     $scope.avgRate = d.data.result.average_rating;
 
+    $scope.location = d.data.result.location;
+
+
 
     console.log($scope.business.images);
     if($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
@@ -203,8 +156,16 @@ app.controller('businessController', function($scope, status,$http, Business, $l
     console.log($scope.image3);
     console.log($scope.image4);
 
+
+
     // console.log($scope.check);
     // console.log($scope.sub);
+
+
+
+
+
+
   });
 
 if($scope.business.images){
@@ -212,10 +173,90 @@ if($scope.business.images){
   if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
   if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
   if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
+
 }
 
 
+
+
+
+    $scope.initMap = function () {
+
+
+      $scope.Lat =  $scope.business.location ? $scope.business.location.Lat : 30.05483;
+      $scope.Lng =  $scope.business.location ? $scope.business.location.Lng : 31.23413;
+
+
+        var myLatlng = new google.maps.LatLng($scope.Lat, $scope.Lng);
+        var mapProp = {
+        center:myLatlng,
+        zoom:5,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+
+      };
+
+      var map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+      var marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          title: 'Hello World!',
+          draggable:true
+      });
+
+
+      if($scope.business.location && !$scope.edit)
+      {
+        var myLatLng2 = new google.maps.LatLng($scope.business.location.Lat, $scope.business.location.Lng);
+        var mapProp2 = {
+        center:myLatLng2,
+        zoom:5,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+
+        };
+
+
+        var map2 =new google.maps.Map(document.getElementById("googleMap2"), mapProp2);
+
+
+       var marker2 = new google.maps.Marker({
+           position: myLatLng2,
+           map: map2,
+           title: 'Location',
+           draggable:false
+       });
+
+      }
+
+
+     // marker drag event
+     google.maps.event.addListener(marker,'drag',function(event) {
+       $scope.Lat = event.latLng.lat();
+       $scope.Lng = event.latLng.lng();
+
+     });
+   //  marker drag event end
+     google.maps.event.addListener(marker,'dragend',function(event) {
+     $scope.Lat = event.latLng.lat();
+     $scope.Lng = event.latLng.lng();
+     console.log("EVENT " + event.latLng.lat() + " " + event.latLng.lng());
+     console.log("In the controller changing with gmaps: " + $scope.Lat  + " " + $scope.Lng);
+     });
+
+
+
+
+
+    }
+
+    google.maps.event.addDomListener(window, 'scroll', $scope.initMap);
+
+
+
+
+
          $scope.goToEdit = function() {
+           $scope.edit = 0;
           $scope.error = " ";
           $scope.formData.location = {};
           $scope.formData.location.Lat = $scope.Lat;
@@ -291,6 +332,7 @@ if($scope.business.images){
 
 
            $scope.businessEdit = function() {
+             $scope.edit = 1;
           console.log("edit business controller");
           $location.path('/editBusiness');
         };
