@@ -1,4 +1,4 @@
-app.controller('eventController', function($scope, $http, status, Event, $location, $routeParams, $modal,$window) {
+app.controller('eventController', function($scope, $http, status, Event,Global, $location, $routeParams, $modal,$window) {
 
 	$scope.user = {};
 		status.local()
@@ -21,6 +21,9 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 		     });
 		   }
 		 });
+          Global.setBusiness(Global.getBusiness());
+          console.log("business in event "+Global.getBusiness());
+          Global.setOnceEvent($routeParams.eventId); //hayefdal fel url?
 
 console.log("event eventController");
 $scope.error = "";
@@ -30,8 +33,7 @@ $scope.error = "";
 		$scope.event = d.data.event;
 		$scope.eventocc = d.data.eventocc;
 
-		if($scope.business != $scope.user) $scope.type = 2;
-
+	  if($scope.type == 4 && $scope.business != $scope.user) $scope.type = 2;
 	}, function errorCallback(d) {
 		$scope.error = d.data;
 	});
@@ -90,6 +92,12 @@ $scope.error = "";
             $window.location.reload();
             });
     }
+
+
+    $scope.bookEvent = function(){
+            Global.setBusiness(Global.getBusiness());
+            $location.path('/book-event');
+          };
 
 });
 var DeletePopUp2 = function ($scope, $location, $modalInstance,Event,id,bid, $route,$window) {

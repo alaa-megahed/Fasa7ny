@@ -58,9 +58,9 @@
                         {{error_message}}
 
                     <div ng-show="cash">
-                        <button type="submit" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
+                        <button type="submit" ng-if="type == 1|| type == 4" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
                     </div>
-                        <button type="submit" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
+                        <button type="submit" ng-if="type == 1" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
                 </form>
 
                   

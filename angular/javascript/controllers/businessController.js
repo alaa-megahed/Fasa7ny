@@ -400,7 +400,7 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
         $scope.bookFacility = function(){
             Global.setBusiness($routeParams.id);
             $location.path('/book_facility');
-         };
+          };
 
     });
 

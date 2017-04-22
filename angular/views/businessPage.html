@@ -290,7 +290,7 @@
     </div>
     <button ng-controller="businessController" ng-if="facilitylength" class="btn btn-transparent w3-green"  ng-click="bookFacility()" >Book Now!</button>   
     <hr>
-</div>
+</div><br>
 
 <!-- </div> -->
 <button ng-if="eventlength" onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button>
@@ -367,8 +367,8 @@
                                  ng-src="http://localhost:3000/photo/{{offer.image}}" class="attachment-blog_small wp-post-image" alt="3" />
                                  <hr>
                                  <center>
-                                  <button  class="btn btn-transparent" ng-controller = "EditOffersController" ng-click = "editOffer(offer._id,offer.type)" > Edit Offer </button>
-                                 <button  class="btn btn-transparent" ng-controller = "DeleteOffersController" ng-click = "deleteOffer(offer._id)"> Delete Offer </button>
+                                  <button  ng-if = "type == 4" class="btn btn-transparent" ng-controller = "EditOffersController" ng-click = "editOffer(offer._id,offer.type)" > Edit Offer </button>
+                                 <button ng-if = "type == 4" class="btn btn-transparent" ng-controller = "DeleteOffersController" ng-click = "deleteOffer(offer._id)"> Delete Offer </button>
                                    <hr style="border: 0.5px solid #90EE90">
                                  <center>
                             </div>

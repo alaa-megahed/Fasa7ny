@@ -1,19 +1,25 @@
-app.factory('Global', [function() {
+app.service('Global', function() {
   
-  var currentBusinessPage = {}
+  // this.currentBusinessPage;
+  // this.currentOnceEvent;
 
-  function setBusiness(name){
-  	currentBusinessPage = name; //get business if;
+  this.setBusiness = function(name){
+  	this.currentBusinessPage = name; //get business id;
   }
-  function getBusiness(){
-  	return currentBusinessPage;
+  this.getBusiness = function (){
+  	console.log("global service "+this.currentBusinessPage);
+  	return this.currentBusinessPage;
   }
 
-  return {
-  setBusiness: setBusiness,
-  getBusiness: getBusiness
- }
+  this.setOnceEvent = function (id){ //by name?
+  	this.currentOnceEvent = id;
+  }
 
-}]);
+  this.getOnceEvent = function (){
+  	return this.currentOnceEvent;
+  }
+
+
+});
 
 

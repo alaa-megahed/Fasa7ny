@@ -475,8 +475,7 @@ exports.getOnceEventDetails = function(req, res)
 {
 	var event_id = req.params.eventId;
 	Events.findOne({_id:event_id}, function(err, event) {
-		if(err) res.status(500).json("error in findng the event");
-		if(!event) res.status(500).json("error in findng the event");
+		if(err || !event) res.status(500).json("error in findng the event");
 		else {
 			console.log("hi2");
 			EventOccurrences.findOne({event:event_id}, function(err, eventocc) {
@@ -572,9 +571,17 @@ exports.getDailyEvents = function (req, res) {
 exports.getOccurrences = function (req, res) {
 
 		EventOccurrences.find({ event: req.params.eventId }, function (err, events) {
-			if (err) res.status(500).json("Something went wrong");
-			if (!events) res.status(500).json("Something went wrong");
-			else res.status(200).json({eventocc:events});
+			if (err || !events) res.status(500).json("Something went wrong");
+			else 
+				{
+					console.log(events);
+					console.log(events);
+					console.log(events);
+					console.log(events);
+					console.log(events);
+
+					res.status(200).json({eventocc:events});
+				}
 		});
 	}
 

@@ -23,18 +23,19 @@ exports.book_event = function (req,res)
      if(form.count<1) return;
 
     var event_id = req.body.event_id;
+    console.log(event_id);
 
     //get event occurrence being booked
     EventOccurrences.findById(event_id,function(err,eventocc)
     {
         if(err || !eventocc)
-          res.send("Oops, something went wrong, please try again with the correct information ");
+          res.send("Oops, something went wrong, please try again with the correct information[1] ");
         else
         {
           Events.findById(eventocc.event,function(err,event)
         {
               if(err || !event)
-                res.send("Oops, something went wrong, please try again with the correct information ");
+                res.send("Oops, something went wrong, please try again with the correct information[2] ");
               else
               {
                 //check if this event belongs to business currently booking it
@@ -53,9 +54,12 @@ exports.book_event = function (req,res)
                           count        : count,
                           event_id     : event_id,
                           booker       : req.user.id,
-                          business_id  : req.user.id
+                          business_id  : req.user.id,
+                          charge       : req.body.charge,
+                          stripe_charge: req.body.stripe_charge
                       });
 
+                      
                       //update number of available bookings in event occurrence by subtracting
                       // the number of people in booking (count) and the available.
                       booking.save(function(err,booking)

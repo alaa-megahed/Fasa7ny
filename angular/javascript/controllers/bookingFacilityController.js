@@ -1,16 +1,43 @@
 var app = angular.module('fasa7ny');
 
-app.controller('bookFacilityController', function($scope, $http, $location, Offers,Occurrences,Global,Facilities) {
-      $scope.business_id = Global.getBusiness();
-      Offers.get("58f0f3faaa02d151aa4c987c").then(function(response) {
-              $scope.offers = response.data;
-              $scope.betengan = "Facility Booking";
-        });
+app.controller('bookFacilityController', function($scope, $http, $location, Offers,status,Occurrences,Global,Facilities) {
+    $scope.business_id = Global.getBusiness();
+    $scope.user = {};
+    status.local()
+     .then(function(res){
+       if(res.data){
+         $scope.user = res.data._id;
+         if(res.data.user_type == 1)
+           $scope.type = 1;
+         else if(res.data.user_type == 2)
+          {
+            if(res.data._id == $scope.business_id)
+                $scope.type  = 4;
+             else $scope.type = 2; 
+          }
+         else $scope.type = 3;
+       }
+       else {
+         $scope.user = res.data._id;
+         status.foreign()
+         .then(function(res){
+           if(res.data.user_type)
+             $scope.type = 1;
+           else $scope.type = 2;
+         });
+       }
+     });
+
+      console.log("in facility "+ $scope.business_id);
+       
       Facilities.get().then(function(response){
            $scope.facilities = response.data;
       });
+      Offers.get($scope.business_id).then(function(response) {
+              $scope.offers = response.data;
+              $scope.betengan = "Facility Booking";
+        });
       Occurrences.get().then(function(response){
-
            $scope.timings = response.data;
       });
       $scope.cash = true;
@@ -75,6 +102,8 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
         $scope.min_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
         $scope.error_message="";
         console.log("This is count :"+ $scope.formData.count);
+         if($scope.type == 1)
+        {
         $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.min_charge, business_id: $scope.business_id})
                     .then(function successCallback(response){
                       console.log(response.data);
@@ -82,6 +111,16 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
                       console.log(response.data);
                        $scope.error_message = response.data;
                     }); 
+         }
+         else if($scope.type == 4)
+          {
+            $http.post('http://127.0.0.1:3000/bookings/book_event', {count: $scope.formData.count ,event_id: $scope.occ_id, charge: $scope.min_charge})
+                    .then(function successCallback(responce){
+                      console.log(responce.data);
+                    }, function errorCallback(responce){
+                      console.log(responce.data);
+                    }); 
+          }
                     
       }
 
@@ -97,6 +136,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
                     .then(function successCallback(responce){
                       console.log("success  charge in responce  "+ responce.data);
                       console.log("success  charge in responce  "+ responce.data.id);
+
                       $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:responce.data.id, charge: $scope.charge, user_id: "58ed22fcbfe67363f0c3a41d", business_id: $scope.business_id})
                             .then(function successCallback(responce){
                               console.log(responce.data);
