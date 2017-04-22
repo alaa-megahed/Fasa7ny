@@ -37,7 +37,7 @@
    <input ng-if = "type == 4" type="submit" value="Create a Facility" ng-click = "createFacility(business._id)" class="btn btn-transparent">
    <input ng-if = "type == 4" type="submit" value="Create One-Time Event" ng-click = "createOneEvent(business._id)" class="btn btn-transparent">
      <input ng-if = "type == 4" type="submit" value="Edit Information" ng-click = "businessEdit()" class="btn btn-transparent">
-    
+
 
    </center>
    <!-- </div> -->
@@ -421,6 +421,13 @@
 
             </div>       <!-- End container -->
         </section>    <!-- End Section -->
+
+
+        <!-- Google Map -->
+        <div class="google-map wow fadeInDown" data-wow-duration="500ms">
+          <div id="map-canvas"></div>
+        </div>
+        <!-- /Google Map -->
 
 
         <div class="social-icon">
