@@ -1,8 +1,8 @@
 var app = angular.module('fasa7ny');
 
-app.controller('bookFacilityController', function($scope, $http, $location, Offers,Occurrences,Facilities) {
-      
-      Offers.get("58f0cb2d6bfb6061efd66625").then(function(response) {
+app.controller('bookFacilityController', function($scope, $http, $location, Offers,Occurrences,Global,Facilities) {
+      $scope.business_id = Global.getBusiness();
+      Offers.get("58f0f3faaa02d151aa4c987c").then(function(response) {
               $scope.offers = response.data;
               $scope.betengan = "Facility Booking";
         });
@@ -10,6 +10,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
            $scope.facilities = response.data;
       });
       Occurrences.get().then(function(response){
+
            $scope.timings = response.data;
       });
       $scope.cash = true;
@@ -74,7 +75,7 @@ app.controller('bookFacilityController', function($scope, $http, $location, Offe
         $scope.min_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
         $scope.error_message="";
         console.log("This is count :"+ $scope.formData.count);
-        $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.min_charge, user_id: "58ed22fcbfe67363f0c3a41d", business_id: $scope.business_id})
+        $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.min_charge, business_id: $scope.business_id})
                     .then(function successCallback(response){
                       console.log(response.data);
                     }, function errorCallback(response){

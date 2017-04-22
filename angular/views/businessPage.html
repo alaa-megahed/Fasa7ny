@@ -32,7 +32,6 @@
     <!-- <div class="w3-grey"> -->
   <button ng-if = "type == 4" onclick="closeRightMenu()" class=" w3-button w3-large" style="background-color:#2B2C30;" >&times;</button>
   <center>
-<<<<<<< HEAD
    <input ng-if = "type == 4 && business.delete == 0" type="submit" value="Request Removal" ng-click = "remove()" class="btn btn-transparent">
    <input ng-if = "type == 4 && business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent">
    <input ng-if = "type == 4" type="submit" value="Create a Facility" ng-click = "createFacility(business._id)" class="btn btn-transparent">
@@ -289,13 +288,10 @@
         </div>
       </div>
     </div>
-    <input ng-if="facilitylength" type="submit" value="Book Now!" class="btn btn-transparent w3-green">
+    <button ng-controller="businessController" ng-if="facilitylength" class="btn btn-transparent w3-green"  ng-click="bookFacility()" >Book Now!</button>   
     <hr>
 </div>
 
-
-
-<br>
 <!-- </div> -->
 <button ng-if="eventlength" onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <div id="Demo2" class="w3-hide w3-container">

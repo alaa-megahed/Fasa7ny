@@ -8,10 +8,6 @@ var upload = multer({ dest: 'public/uploads/' });
 
 
 
-router.get('/', function(req, res){
-        res.sendFile(path.resolve('app/views/event.html'));
-    });
-
 router.post('/createFacility', upload.single('img'), RegularEventController.createFacility);
 router.post('/editFacility/:facilityId', upload.single('img'), RegularEventController.editFacility);
 router.get('/deleteFacility/:facilityId', RegularEventController.deleteFacility);
@@ -27,9 +23,8 @@ router.get('/getOnceEventDetails/:eventId', RegularEventController.getOnceEventD
 router.get('/facilities',RegularEventController.getAllFacilities);
 router.get('/getEvent/:id', RegularEventController.getEvent);
 router.get('/getOnceEvents/:id',RegularEventController.getOnceEvents);
-// router.get('/viewO/:facility_id',RegularEventController.getAllTimings);
 
-
+router.get('/viewO',RegularEventController.getAllTimings); 
 router.get('/getOnceEventDetails/:businessId/:eventId', RegularEventController.getOnceEventDetails);
 
 

@@ -389,22 +389,20 @@ exports.view_event_bookings = function(req,res)
 //Registered User adds bookings by giving count, event id. Booking date is saved as current date.
 exports.regUserAddBooking = function(req, res, next) {
 
-  // if(req.user)
-  // {
-		// if(req.user instanceof RegisteredUser)
-		// {
+  if(req.user)
+  {
+		if(req.user instanceof RegisteredUser)
+		{
 
 
       if(req.body.count <= 0)
         return res.status(400).json("Can't have negative or zero count.");
-
+    
 			var date = new Date();
 	    var booking = new Booking(
 	      {
 	        count        : req.body.count,
-	        booker       : req.body.user_id, //temporarily
-          // booker       : req.user.id,
-          booker       : req.body.user_id,
+          booker       : req.user.id,
 	        event_id     : req.body.event,
           business_id  : req.body.business_id,
 	        booking_date : date,
@@ -442,8 +440,7 @@ exports.regUserAddBooking = function(req, res, next) {
 									//finds registered user and adds this event to his/her list of bookings
                   // RegisteredUser.findOne({_id:req.user.id}, function(err, user)
 
-									RegisteredUser.findOne({_id:req.body.user_id}, function(err, user)
-
+									RegisteredUser.findOne({_id:req.user.id}, function(err, user)
 								 {
 									 if(err || !user)
 									 {
@@ -469,22 +466,15 @@ exports.regUserAddBooking = function(req, res, next) {
 	        }
 	    });
 
-	 //  }
+	  }
 
-		// else
-		// {
-		// 	res.status(401).json("You are not a registered user");
-		// 	return;
-		// }
+	}
 
-
-	// }
-
-	// else
-	// {
-	// 	res.status(401).json("Please log in to book events");
-	// 	return;
- //  }
+	else
+	{
+		res.status(401).json("Please log in to book events");
+		return;
+  }
 
 
 };

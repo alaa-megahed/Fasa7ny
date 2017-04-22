@@ -585,13 +585,12 @@ exports.getAllTimings = function (req, res) {
 	if (req.user ) {
 	 // EventOccurrences.find({facility_id: req.params.facility_id}, function (err, events) {
 		EventOccurrences.find({},function (err, events) {
-			if (err) res.send(err.message);
-			if (!events) res.send('Something went wrong');
-			else res.json(events);
+			if (err || !events) res.status(500).json("Something went wrong");
+			else res.status(200).json(events);
 		});
 	}
 	else {
-		res.sstatus(401).json('You are not a logged in business');
+		res.status(401).json('You are not a logged in business');
 	}
 }
 
