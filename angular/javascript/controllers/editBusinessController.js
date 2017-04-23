@@ -88,8 +88,6 @@ app.controller('editBusinessController', function($scope, status,$http, Business
           draggable:true
       });
 
-      }
-
 
      // marker drag event
      google.maps.event.addListener(marker,'drag',function(event) {
