@@ -57,9 +57,6 @@ app.config(function($routeProvider){
 		controller  : "facilityController"
 	})
 
-
-	// $locationProvider.html5Mode(true);
-
 	.when("/createOneEvent/:businessId", {
 		templateUrl : "views/createEvent.html",
 		controller  : "onetimeController"
@@ -102,13 +99,17 @@ app.config(function($routeProvider){
 		controller : "viewBookingsController"
 	})
 
+	.when('/bookings/:eventId',{
+		templateUrl: "views/occurrence_bookings.html",
+		controller : "viewEventBookings"
+	})
+
 	.when('/success/:bookingId',{
 		templateUrl: "views/successful_booking.html",
 		controller : "successfulBookingController"
 	})
 
 
-	// $locationProvider.html5Mode(true);
 
 });
 

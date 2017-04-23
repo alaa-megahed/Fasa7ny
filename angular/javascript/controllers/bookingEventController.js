@@ -4,8 +4,8 @@ var app = angular.module('fasa7ny');
 app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences) 
 {     
 
-    $scope.business_id = Global.getBusiness();
-    // $scope.business_id = $routeParams.id;
+    // $scope.business_id = Global.getBusiness();
+     $scope.business_id = $routeParams.id;
 
     $scope.user = {};
     status.local()
@@ -76,10 +76,10 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
           console.log("event occurrence befor http "+ $scope.event_occ._id);
           if($scope.type == 1)
           {
-             $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge,})
+             $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge,business_id:$scope.business_id})
                     .then(function successCallback(responce){
                       console.log(responce.data);
-                      $location.path('/success/'+responce.data._id);
+                     $location.path('/success/'+responce.data._id);
 
                     }, function errorCallback(responce){
                       console.log(responce.data);
@@ -110,9 +110,11 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
             $http.post('http://127.0.0.1:3000/bookings/charge', {stripeToken: token.id, amount: $scope.stripe_charge})
                     .then(function successCallback(responce){
                       console.log("success  charge in responce  "+ responce.data);
-                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ.id, charge: $scope.charge, stripe_charge: responce.data.id, user_id: $scope.user._id, business_id: $scope.business_id})
+                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, stripe_charge: responce.data.id, user_id: $scope.user._id, business_id: $scope.business_id})
                             .then(function successCallback(responce){
                               console.log(responce.data);
+                              $location.path('/success/'+responce.data._id);
+
                             }, function errorCallback(responce){
                               console.log(responce.data);
                             }); 

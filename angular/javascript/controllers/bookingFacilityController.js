@@ -117,7 +117,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
             $http.post('http://127.0.0.1:3000/bookings/book_event', {count: $scope.formData.count ,event_id: $scope.occ_id, charge: $scope.min_charge})
                     .then(function successCallback(responce){
                       console.log(responce.data);
-                      $location.path('/success/'+responce.data);
+                      $location.path('/success/'+responce.data._id);
 
                     }, function errorCallback(responce){
                       console.log(responce.data);

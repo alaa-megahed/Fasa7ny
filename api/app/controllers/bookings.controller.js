@@ -88,7 +88,7 @@ exports.book_event = function (req,res)
                       booking.save(function(err,booking)
                       {
                         if(err || !booking)
-                            res.send("Oops, something went wrong, please try again with the correct information ");
+                            res.status(500).json("Oops, something went wrong, please try again with the correct information ");
                          else
                          {
                           var newAvailable = eventocc.available - booking.count;
@@ -98,9 +98,16 @@ exports.book_event = function (req,res)
                           function(err,eventoccur)
                           {
                             if(err || !eventoccur)
-                              res.send("Oops, something went wrong, please try again with the correct information ");
+                              res.status(500).json("Oops, something went wrong, please try again with the correct information ");
                             else
+                            {
+                              console.log("booking in node "+booking);
+                              console.log("booking in node "+booking);
+                              console.log("booking in node "+booking);
+                              console.log("booking in node "+booking);
+
                               res.status(200).json(booking);
+                            }
                           });
                       }
                       });

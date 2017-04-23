@@ -95,9 +95,14 @@ $scope.error = "";
 
 
     $scope.bookEvent = function(){
-            Global.setBusiness(Global.getBusiness());
+            Global.setBusiness(Global.getBusiness()); //get business from event, id in url
             $location.path('/book-event');
           };
+
+     $scope.viewEventBookings = function(eventId)
+     {
+        $location.path('/bookings/'+eventId);
+     };
 
 });
 var DeletePopUp2 = function ($scope, $location, $modalInstance,Event,id,bid, $route,$window) {
