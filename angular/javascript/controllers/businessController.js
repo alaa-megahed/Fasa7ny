@@ -1,6 +1,6 @@
 
 var app = angular.module('fasa7ny');
-app.controller('businessController', function($scope, status,$http, Business, $location, $routeParams, $modal, $log, $window) {
+app.controller('businessController', function($scope, status,$http, Business,Global, $location, $routeParams, $modal, $log, $window) {
 
   status.local()
   .then(function(res){
@@ -26,7 +26,10 @@ app.controller('businessController', function($scope, status,$http, Business, $l
   $scope.avgRate = 0;
   $scope.sub = "Subscribe";
 
-  console.log($routeParams.id);
+  Global.setBusiness($routeParams.id); //make this by name
+
+
+  console.log($routeParams.id); // make this by name
   $scope.imagelength = 0;
   $scope.business = {};
   if($scope.business.images)
@@ -394,6 +397,11 @@ app.controller('businessController', function($scope, status,$http, Business, $l
         //   $locatin.path('/editFacility/' + facilityId);
         // }
 
+        $scope.bookFacility = function(){
+            Global.setBusiness($routeParams.id);
+            $location.path('/book_facility');
+          };
+
     });
 
 
@@ -535,4 +543,10 @@ var NotAllowedRemove = function ($scope, $modalInstance,Business,$route) {
             $scope.no = function () {
                 $modalInstance.dismiss('cancel');
             };
+
+            //check if user is logged in 
+            
+
+
+         
 }

@@ -52,8 +52,8 @@ exports.book_event = function (req,res)
                           booking_date : new Date(),
                           count        : count,
                           event_id     : event_id,
-                          booker       : req.user.id,
-                          business_id  : req.user.id
+                          booker       : req.user._id,
+                          business_id  : req.user._id
                       });
 
                       //update number of available bookings in event occurrence by subtracting
@@ -292,47 +292,60 @@ exports.cancel_booking = function(req,res)
 exports.cancel_booking_after_delete = function(req, res)
 {
    var bookingID = req.body.booking_id;       //id of booking to be cancelled
-   // var business_id = req.user._id;
+   var business_id = req.user._id;
+   var event_occ = req.body.event_occ;
    // TODO add business name in notification after query
-                              Booking.findByIdAndRemove(bookingID,function(err,booking)
-                              {
-                                if(err || !booking)
-                                    return res.status(200).json("Oops, something went wrong, please try again with the correct information ");
-                                else
-                                 {
-                                    // var content = business.name + " cancelled your booking in " + event.name + "     " + Date.now();
-                                    var content = "Nourhan" + " cancelled your booking in "  + "     " ;
-                                    var now = Date.now();
-                                    RegisteredUser.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": {content: content, date: now}}},function(err,user)
-                                    {
-                                      if(err)
-                                       return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
-                                    });
+   Booking.findByIdAndRemove(bookingID,function(err,booking)
+   {
+    if(err || !booking)
+      return res.status(500).json("Oops, something went wrong, please try again with the correct information ");
+      else
+      {
+          if(req.user._id != booking.business_id)
+          {
+            return res.status(401).json("YOU ARE NOT AUTHORIZED");
+          }
 
-                                    var charge_id = booking.stripe_charge;
-                                    if(!charge_id || charge_id === undefined)
-                                    {
-                                      return res.status(200).json(booking);
-                                    }
-                                    else
-                                    {
-                                      var amount = Math.round(booking.charge * 97);
-                                      var refund = stripe.refunds.create({
-                                          charge: charge_id,
-                                          amount: amount
-                                        }, function(err, refund) {
-                                          if(err)
-                                          {
-                                            res.status(500).json(err.message);
-                                          }
-                                          else
-                                          {
-                                            res.status(200).json("refund successfully completed");
-                                          }
-                                        });
-                                    }
-                                  }
-                              });
+          Events.findById(event_occ.event, function(err, event)
+          {
+            if(err) return res.status(500).json(err.message);
+            var event_name = event.name;
+
+          var content = req.user.name + " cancelled your booking in " + event_name ;
+          // var content = "Nourhan" + " cancelled your booking in "  + "     " ;
+          var now = Date.now();
+          RegisteredUser.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": {content: content, date: now}}},function(err,user)
+          {
+              if(err)
+                  return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
+          });
+
+          var charge_id = booking.stripe_charge;
+          if(!charge_id || charge_id === undefined)
+          {
+              return res.status(200).json(booking);
+          }
+          else
+          {
+                var amount = Math.round(booking.charge * 97);
+                var refund = stripe.refunds.create({
+                charge: charge_id,
+                amount: amount
+                }, function(err, refund) {
+                if(err)
+                {
+                    res.status(500).json(err.message);
+                }
+                else
+                {
+                    res.status(200).json("refund successfully completed");
+                }
+            });
+          }
+
+        });
+      }
+    });
 
 };
 
@@ -402,9 +415,9 @@ exports.regUserAddBooking = function(req, res, next) {
 	    var booking = new Booking(
 	      {
 	        count        : req.body.count,
-	        booker       : req.body.user_id, //temporarily
-          // booker       : req.user.id,
-          booker       : req.body.user_id,
+	        // booker       : req.body.user_id, //temporarily
+          booker       : req.user._id,
+          // booker       : req.body.user_id,
 	        event_id     : req.body.event,
           business_id  : req.body.business_id,
 	        booking_date : date,

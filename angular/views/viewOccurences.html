@@ -37,7 +37,7 @@
                        <div ng-repeat="occ in eventocc | orderBy : 'day'">
                          {{occ.day | date}} <br>
                           <button class="btn btn-transparent" ng-if = "type == 4" ng-click="viewBookings(occ._id)">View Bookings</button>
-                          <button class="btn btn-transparent" ng-if = "type == 4"ng-click="deleteEvent(occ._id)">Delete Occurence</button>
+                          <button class="btn btn-transparent" ng-if = "type == 4" ng-click="deleteEvent(occ._id)">Delete Occurence</button>
                           <hr width="60%">
                        </div>
                    </article>

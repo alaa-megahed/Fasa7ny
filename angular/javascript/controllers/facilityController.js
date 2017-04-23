@@ -156,24 +156,13 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 								var bookings = occs[i].bookings;
 								for (var j = 0; j < bookings.length; j++) 
 								{
-									console.log("booking[j] :"+bookings[j]);
-									Business.getBooking(bookings[j]).then(function succcessCallback(response)
-									{
-										console.log("2abl cur booking1  "+response.data.id);
-										console.log("2abl cur booking2  "+response.data._id);
-										var cur_booking = response.data;
-										console.log("cur booking zat nafso :"+cur_booking);
-			
-										$http.post('http://127.0.0.1:3000/bookings/cancel_booking_after_delete', {booking_id: cur_booking._id})
-												.then(function successCallback(response){
-											            console.log(response.data);
-											     }, function errorCallback(response){
-											            console.log(response.data);
-												});
-
-										}, function errorCallback(response){
-										      console.log(response.data);
+									$http.post('http://127.0.0.1:3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j], event_occ: occs[i]})
+									.then(function successCallback(response){
+										console.log(response.data);
+									}, function errorCallback(response){
+										console.log(response.data);
 									});
+	
 								}
 							}
 						}, function errorCallback(response)
@@ -192,7 +181,7 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 							$scope.error = d.data;
 						});
 						console.log("delete done");
-		};
+		};	
 
     $scope.no = function () {
         $modalInstance.dismiss('cancel');

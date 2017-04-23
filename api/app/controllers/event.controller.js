@@ -210,11 +210,10 @@ exports.deleteFacility = function(req,res)
 						{
 							if(err)
 								return res.status(500).json({err:"error removing event occurence"});
-								else res.status(200).json("Done Deleting")
 						});
 					}
 					else
-						return res.status(500).json({err:"You are not authorized to perform this action"});
+						return res.status(401).json({err:"You are not authorized to perform this action"});
 				}
 			});
 			Facility.findByIdAndRemove(facility_id,function(err)
@@ -227,7 +226,7 @@ exports.deleteFacility = function(req,res)
 		});
 	}
 	else
-		res.status(500).json("Not logged in business");
+		res.status(401).json("Not logged in business");
 }
 
 
@@ -475,8 +474,7 @@ exports.getOnceEventDetails = function(req, res)
 {
 	var event_id = req.params.eventId;
 	Events.findOne({_id:event_id}, function(err, event) {
-		if(err) res.status(500).json("error in findng the event");
-		if(!event) res.status(500).json("error in findng the event");
+		if(err || !event) res.status(500).json("error in findng the event");
 		else {
 			console.log("hi2");
 			EventOccurrences.findOne({event:event_id}, function(err, eventocc) {
@@ -548,7 +546,7 @@ exports.getDailyEvents = function (req, res) {
 			if (err) res.status(500).json("Something went wrong");
 			else if (!events) res.status(500).json("Something went wrong");
 			else {
-				console.log(events+"eventsss");
+				// console.log(events+"eventsss");
 				EventOccurrences.find({facility_id: facilityId}, function(err, eventocc) {
 					if(err) res.status(500).json("Something went wrong");
 					else if(!eventocc) res.status(500).json("Something went wrong");
@@ -572,9 +570,17 @@ exports.getDailyEvents = function (req, res) {
 exports.getOccurrences = function (req, res) {
 
 		EventOccurrences.find({ event: req.params.eventId }, function (err, events) {
-			if (err) res.status(500).json("Something went wrong");
-			if (!events) res.status(500).json("Something went wrong");
-			else res.status(200).json({eventocc:events});
+			if (err || !events) res.status(500).json("Something went wrong");
+			else 
+				{
+					// console.log(events);
+					// console.log(events);
+					// console.log(events);
+					// console.log(events);
+					// console.log(events);
+
+					res.status(200).json({eventocc:events});
+				}
 		});
 	}
 
@@ -585,13 +591,12 @@ exports.getAllTimings = function (req, res) {
 	if (req.user ) {
 	 // EventOccurrences.find({facility_id: req.params.facility_id}, function (err, events) {
 		EventOccurrences.find({},function (err, events) {
-			if (err) res.send(err.message);
-			if (!events) res.send('Something went wrong');
-			else res.json(events);
+			if (err || !events) res.status(500).json("Something went wrong");
+			else res.status(200).json(events);
 		});
 	}
 	else {
-		res.sstatus(401).json('You are not a logged in business');
+		res.status(401).json('You are not a logged in business');
 	}
 }
 
@@ -745,79 +750,80 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 
 		Events.findById(id, function (err, event) 
 		{
-			if (err || !event) res.status(500).json("Something went wrong");
+			if (err || !event) return res.status(500).json("Something went wrong");
 			else
 				if (event.business_id == business_id) 
 				{
 					Events.remove({ _id: id }, function (err) 
 					{
-						if (err) res.status(500).json("Something went wrong");
+						if (err) return res.status(500).json("Something went wrong");
 						else 
 						{
 							console.log("event removed");
-							EventOccurrences.find({event:id},function (err,all_occ) 
+							EventOccurrences.remove({event:id},function (err,all_occ) 
 							{
-								if (err) res.status(500).json("Something went wrong");
+								if (err) return res.status(500).json("Something went wrong");
 								else
 									{
-										res.status(200).json("deleted");
-										async.each(all_occ, function(one_occ, callback)
-										{
-											one_occ.remove(function(err)
-										    {
-										    	if(err) return res.status(500).json(err.message);
-										    	else
-										    	{
-											    	var bookings = one_occ.bookings;
-											    	async.each(bookings, function(one_booking, cb)
-											    	{
-												    	Bookings.findById({_id:one_booking},function(err,booking)
-														{
-												    		var content = "Nourhan" + " cancelled your booking in "  + "     " ;
-						                                    var now = Date.now();
-						                                    RegisteredUser.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": {content: content, date: now}}},function(err,user)
-						                                    {
-						                                      if(err)
-						                                       return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
-						                                   });
+										return res.status(200).json("Done deleting");
+										// res.status(200).json("deleted");
+										// async.each(all_occ, function(one_occ, callback)
+										// {
+											// one_occ.remove(function(err)
+										 //    {
+										 //    	if(err) return res.status(500).json(err.message);
+										    // 	else
+										    // 	{
+											   //  	var bookings = one_occ.bookings;
+											   //  	async.each(bookings, function(one_booking, cb)
+											   //  	{
+												  //   	Bookings.findById({_id:one_booking},function(err,booking)
+														// {
+												  //   		var content = "Nourhan" + " cancelled your booking in "  + "     " ;
+						        //                             var now = Date.now();
+						        //                             User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": {content: content, date: now}}},function(err,user)
+						        //                             {
+						        //                               if(err)
+						        //                                return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
+						        //                            });
 
-						                                    var charge_id = booking.stripe_charge;
-						                                    if(!charge_id || charge_id === undefined)
-						                                    {
-						                                      // return res.status(200).json(booking);
-						                                    }
-						                                    else
-						                                    {
-						                                      var amount = Math.round(booking.charge * 97);
-						                                      var refund = stripe.refunds.create({
-						                                        charge: charge_id,
-						                                        amount: amount
-						                                      }, function(err, refund) {
-						                                        if(err)
-						                                        {
-						                                          return res.status(500).json(err.message);
-						                                        }
-						                                      });
-						                                    }
-						                                  });
+						        //                             var charge_id = booking.stripe_charge;
+						        //                             if(!charge_id || charge_id === undefined)
+						        //                             {
+						        //                               // return res.status(200).json(booking);
+						        //                             }
+						        //                             else
+						        //                             {
+						        //                               var amount = Math.round(booking.charge * 97);
+						        //                               var refund = stripe.refunds.create({
+						        //                                 charge: charge_id,
+						        //                                 amount: amount
+						        //                               }, function(err, refund) {
+						        //                                 if(err)
+						        //                                 {
+						        //                                   return res.status(500).json(err.message);
+						        //                                 }
+						        //                               });
+						        //                             }
+						        //                           });
 
-											    	});
-										   	  	}
-										    });
-										    callback();
-									    }, function(err) {if(err) return res.status(500).json(err.message); res.status(200).json(done);});
+											   //  	});
+										   	//   	}
+										    // });
+										    // callback();
+									    // }, function(err) {if(err) return res.status(500).json(err.message); else return res.status(200).json("Done");});
 									}
 								});
 							}
 						});
 					}
 						else {
-							res.status(500).json('You are not a logged in business');
+							return res.status(401).json('You are not a logged in business');
 						}
 				});		
 	}
 	else {
-		res.status(500).json('You are not a logged in business');
+		return res.status(401).json('You are not a logged in business');
 	}
 
 }
@@ -840,15 +846,15 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 
 
 		EventOccurrences.findById(occurrence_id, function (err, occ) {
-			if (!occ) res.status(500).json("Something went wrong");
+			if (!occ) res.status(500).json("Something went wrong1");
 
 			Events.findById(occ.event, function (err, event) {
-				if (!event) res.status(500).json("Something went wrong");
+				if (!event) res.status(500).json("Something went wrong2");
 				else
 					if (event.business_id == business_id) {
 
 						EventOccurrences.remove({ _id: occurrence_id }, function (err) {
-							if (err) res.status(500).json("Something went wrong");
+							if (err) res.status(500).json("Something went wrong3");
 							// else
 						  //   {
 						  //   	var bookings = occ.bookings;
@@ -883,6 +889,26 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 		res.status(500).json('You are not a logged in business');
 	}
 
+}
+
+exports.getOccurrence = function(req, res)
+{
+	console.log("in node .. occ id is "+req.body.occ_id);
+	console.log("req.user is "+req.user);
+	if(req.user && req.user instanceof Business)
+	{
+		EventOccurrences.findById(req.body.occ_id, function(err, occ)
+		{
+			if(err || !occ) return res.status(500).json("ERROR IN FINDING OCC");
+			console.log("occ nafsha "+occ);
+			console.log("occ.business_id "+occ.business_id );
+			console.log(" req.user._id "+ req.user._id);	
+			if(occ.business_id != req.user._id) return res.status(401).json("YOU ARE NOT AUTORIZED 1");
+			return res.status(200).json(occ);
+		});
+	}
+	else
+		return res.status(401).json("YOU ARE NOT AUTORIZED 2");
 }
 
 //================================ Notifications =====================================
@@ -949,50 +975,3 @@ function notify_on_cancel_occ(event_name,eventocc_id,business)			    //would be 
 		}
 	});
 }
-
-var cancel_booking_after_delete = function(booking_id)
-{
-   var bookingID = booking_id;       //id of booking to be cancelled
-   // var business_id = req.user._id;
-   // TODO add business name in notification after query
-   Booking.findByIdAndRemove(bookingID,function(err,booking)
-   {
-    if(err || !booking)
-      return res.status(200).json("Oops, something went wrong, please try again with the correct information ");
-    else
-    {
-                                    // var content = business.name + " cancelled your booking in " + event.name + "     " + Date.now();
-                                    var content = "Nourhan" + " cancelled your booking in "  + "     " ;
-                                    var now = Date.now();
-                                    RegisteredUser.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": {content: content, date: now}}},function(err,user)
-                                    {
-                                      if(err)
-                                       return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
-                                   });
-
-                                    var charge_id = booking.stripe_charge;
-                                    if(!charge_id || charge_id === undefined)
-                                    {
-                                      return res.status(200).json(booking);
-                                    }
-                                    else
-                                    {
-                                      var amount = Math.round(booking.charge * 97);
-                                      var refund = stripe.refunds.create({
-                                        charge: charge_id,
-                                        amount: amount
-                                      }, function(err, refund) {
-                                        if(err)
-                                        {
-                                          res.status(500).json(err.message);
-                                        }
-                                        else
-                                        {
-                                          res.status(200).json("refund successfully completed");
-                                        }
-                                      });
-                                    }
-                                  }
-                                });
-
-};
