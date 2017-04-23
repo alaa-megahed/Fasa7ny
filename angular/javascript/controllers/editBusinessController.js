@@ -61,4 +61,76 @@ app.controller('editBusinessController', function($scope, status,$http, Business
     })
   };
 
+
+
+
+    $scope.initMap = function () {
+
+
+      $scope.Lat =  $scope.business.location ? $scope.business.location.Lat : 30.05483;
+      $scope.Lng =  $scope.business.location ? $scope.business.location.Lng : 31.23413;
+
+
+        var myLatlng = new google.maps.LatLng($scope.Lat, $scope.Lng);
+        var mapProp = {
+        center:myLatlng,
+        zoom:5,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+
+      };
+
+      var map=new google.maps.Map(document.getElementById("googleMap"), mapProp);
+
+      var marker = new google.maps.Marker({
+          position: myLatlng,
+          map: map,
+          title: 'Hello World!',
+          draggable:true
+      });
+
+      }
+
+
+     // marker drag event
+     google.maps.event.addListener(marker,'drag',function(event) {
+       $scope.Lat = event.latLng.lat();
+       $scope.Lng = event.latLng.lng();
+
+     });
+   //  marker drag event end
+     google.maps.event.addListener(marker,'dragend',function(event) {
+     $scope.Lat = event.latLng.lat();
+     $scope.Lng = event.latLng.lng();
+     console.log("EVENT " + event.latLng.lat() + " " + event.latLng.lng());
+     console.log("In the controller changing with gmaps: " + $scope.Lat  + " " + $scope.Lng);
+     });
+
+
+
+
+
+    }
+
+    google.maps.event.addDomListener(window, 'scroll', $scope.initMap);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 });
