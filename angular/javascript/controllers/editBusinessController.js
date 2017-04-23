@@ -39,7 +39,10 @@ app.controller('editBusinessController', function($scope, status,$http, Business
 
   $scope.goToEdit = function() {
   $scope.error = "";
-  console.log("controller"+ $scope.formData);
+  $scope.formData.location = {};
+  $scope.formData.location.Lat = $scope.Lat;
+  $scope.formData.location.Lng = $scope.Lng;
+  console.log("controller"+ JSON.stringify($scope.formData));
   var payment = [];
   var i = 0;
   if($scope.formData.pay0 == true){
@@ -66,12 +69,7 @@ app.controller('editBusinessController', function($scope, status,$http, Business
 
     $scope.initMap = function () {
 
-
-      $scope.Lat =  $scope.business.location ? $scope.business.location.Lat : 30.05483;
-      $scope.Lng =  $scope.business.location ? $scope.business.location.Lng : 31.23413;
-
-
-        var myLatlng = new google.maps.LatLng($scope.Lat, $scope.Lng);
+        var myLatlng = new google.maps.LatLng(30.05483, 31.23413);
         var mapProp = {
         center:myLatlng,
         zoom:5,

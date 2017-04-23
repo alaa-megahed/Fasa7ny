@@ -181,7 +181,16 @@
                                   <li ng-if = "methods.length>0" ng-repeat = "method in methods"> {{ method }}
                                     <a ng-if = "type == 4" ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)">
                                     <span class="glyphicon glyphicon-trash"></span> </a> </li>
+
+                                <li>Location: </li>
                             </div>
+                            <br>
+                            <br>
+
+                                 <div id="googleMap" style="height: 400px; display: none" ></div>
+                                 <div id="googleMap2" style="height: 400px;" ></div>
+
+
                             <div class="widget-content">
                           </div>
                         </aside>
