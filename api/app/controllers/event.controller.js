@@ -283,12 +283,8 @@ exports.createEvent = function (req, res) {
 					event.facility_id = req.body.facility_id;
 				}
 
-				if (typeof req.file == "undefined") {
-					event.image = " ";
-				}
-				else {
+				if (typeof req.file != "undefined") {
 					event.image = req.file.filename;
-
 				}
 
 
@@ -514,29 +510,35 @@ exports.getFacilities = function(req,res)
 }
 
 exports.getEvents = function (req, res) {
-	if (req.user && req.user instanceof Business) {
-		var id = req.user.id;
-		Events.find({ business_id: id }, function (err, events) {
-			if (err) res.status(500).json(err.message);
-			else if (!events) res.status(500).json("Something went wrong");
+
+		var name = req.params.name;
+		console.log(name);
+		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+		Business.findOne({name:name}, function(err, business) {
+			if(err) res.status(500).json(err.message);
+			else if(!business) res.status(500).json("Business not found");
 			else {
-
-				EventOccurrences.find({business_id:id}, function(err, eventocc) {
-					if(err) res.status(500).json(err.message);
-					else if(!eventocc) res.status(500).json("Something went wrong");
+				var id = business._id;
+				console.log(id);
+				Events.find({ business_id: id }, function (err, events) {
+					if (err) res.status(500).json(err.message);
+					else if (!events) res.status(500).json("Something went wrong");
 					else {
-						console.log('events/eventocc retrieved')
-						res.status(200).json({events:events, eventocc:eventocc});
+
+						EventOccurrences.find({business_id:id}, function(err, eventocc) {
+							if(err) res.status(500).json(err.message);
+							else if(!eventocc) res.status(500).json("Something went wrong");
+							else {
+								console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!events/eventocc retrieved');
+								res.status(200).json({events:events, eventocc:eventocc});
+							}
+						})
 					}
-				})
-
+				});
 			}
-		});
-	}
-	else {
-		res.status(401).json('You are not a logged in business');
-	}
 
+		})
 }
 
 exports.getDailyEvents = function (req, res) {
@@ -723,7 +725,15 @@ exports.editEvent = function (req, res) {
 					}
 					event.save(function(err, newevent) {
 						if(err) res.status(500).json("Something went wrong");
-						else res.status(200).json({event:newevent});
+						else {
+							EventOccurrences.find({event: id}, function(err,occs){
+								if(err) res.status(500).json("Something went wrong");
+								else if(!occs) res.status(500).json("Something went wrong");
+								else res.status(200).json({event:newevent, eventocc:occs});
+								
+							})
+							
+						}
 					});
 
 				}
@@ -736,6 +746,65 @@ exports.editEvent = function (req, res) {
 		res.status(500).json('You are not a logged in business');
 	}
 
+}
+
+exports.deleteImage = function(req, res) {
+	if(req.user && req.user instanceof Business && typeof req.params.eventId != "undefined" && typeof req.params.image != "undefined") {
+		var eventId = req.params.eventId;
+		var image = req.params.image;
+console.log("ANA FE DELETEIMAGEEVENTT");
+		Events.findById(eventId, function(err, event) {
+			if(err || !event) res.status(500).json("something went wrong");
+			else {
+				if(event.business_id == req.user.id) {
+					// event.image.pull({image:image});
+					// event.save(function(err, updatedEvent) {
+					// 	if(err) res.status(500).json("something went wrong");
+					// 	console.log("UPDATED EVEENNTTTT:"+updatedEvent);
+					// 	res.status(200).json({event:updatedEvent});
+					// });
+					Events.findByIdAndUpdate(eventId, {$pull:{image:image}}, {safe:true, upsert: true, new:true}, function(err, updatedEvent) {
+						if(err) res.status(500).json("something went wrong");
+						console.log("UPDATED EVEENNTTTT:"+updatedEvent);
+						res.status(200).json({event:updatedEvent});
+					});
+				} else {
+					res.status(500).json("You are not authorized to view this page");
+				}
+			}
+		});
+	} else {
+		res.status(500).json('You are not authorized to view this page');
+	}
+}
+
+exports.addImage = function(req, res) {
+	if(req.user && req.user instanceof Business && typeof req.params.eventId != "undefined") {
+		console.log("hi????????????????");
+		var eventId = req.params.eventId;
+		console.log(eventId);
+		console.log("THIS IS A FILEEEE:"+req.file.filename);
+		Events.findById(eventId, function(err, event) {
+			if(err || !event){ res.status(500).json("something went wrong"); }
+			else {
+				if(event.business_id == req.user.id) {
+					console.log("??");
+					console.log("Fileeee::::::::::::"+req.file);
+					Events.findByIdAndUpdate(eventId, {$push: {image: req.file.filename}}, {safe:true, upsert: true, new:true}, function(err, updatedEvent) {
+						if(err) res.status(500).json("something went wrong");
+						console.log(updatedEvent);
+						res.status(200).json({event:updatedEvent});
+					});
+				} else {
+					console.log("lolo");
+					res.status(500).json("You are not authorized to view this page");
+				}
+			}
+		});
+	} else {
+		console.log("koko");
+		res.status(500).json('You are not authorized to view this page');
+	}
 }
 
 

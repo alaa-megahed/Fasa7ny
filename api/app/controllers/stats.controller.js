@@ -140,22 +140,31 @@ var StatsController = {
     var businessID = req.body.businessID;
     var startDate = helper.calculateWeek(new Date(req.body.startDate)).startDate;
     var endDate = helper.calculateWeek(new Date(req.body.endDate)).endDate;
+    var thisWeekEnd = helper.calculateWeek(new Date()).endDate
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(0, 0, 0, 0);
+    thisWeekEnd.setHours(0, 0, 0, 0);
+    if (startDate > endDate || startDate > thisWeekEnd || endDate > thisWeekEnd) {
+      res.status(500).json('The dates you entered are invalid.');
+    } else {
+      WeekStat.find({
+        $and: [
+          { startDate: { $gte: startDate } },
+          { endDate: { $lte: endDate } },
+        ],
+        business: businessID
+      }, function (err, result) {
+        if (err) {
+          res.status(500).json('Oops.. something went wrong.');
+        }
+        else {
+          console.log(result);
+          res.json(result);
+        }
+      });
 
-    WeekStat.find({
-      $and: [
-        { startDate: { $gte: startDate } },
-        { endDate: { $lte: endDate } },
-      ],
-      business: businessID
-    }, function (err, result) {
-      if (err) {
-        console.log(err);
-      }
-      else {
-        console.log(result);
-        res.json(result);
-      }
-    });
+    }
+
 
 
   },
@@ -167,39 +176,45 @@ var StatsController = {
     var endMonth = parseInt(req.body.endMonth);
     var endYear = parseInt(req.body.endYear);
 
-    var query = MonthStat.find({
-      $or: [
-        {
-          $and: [
-            { year: { $gt: startYear } },
-            { year: { $lt: endYear } }
-          ]
-        },
-        {
-          $and: [
-            { year: startYear },
-            { month: { $gte: startMonth } }
-          ]
-        },
-        {
-          $and: [
-            { year: endYear },
-            { month: { $lte: endMonth } }
-          ]
+    if (startYear > endYear || (startYear == endYear && startMonth > endMonth)) {
+      res.status(500).json('The dates you entered are invalid.');
+    } else {
+      var query = MonthStat.find({
+        $or: [
+          {
+            $and: [
+              { year: { $gt: startYear } },
+              { year: { $lt: endYear } }
+            ]
+          },
+          {
+            $and: [
+              { year: startYear },
+              { month: { $gte: startMonth } }
+            ]
+          },
+          {
+            $and: [
+              { year: endYear },
+              { month: { $lte: endMonth } }
+            ]
+          }
+        ],
+
+        business: businessID
+      }).sort({ year: 1, month: 1 });
+      query.exec(function (err, result) {
+        if (err)
+          res.status(500).json('Oops.. something went wrong.');
+
+        else {
+          console.log(result);
+          res.json(result);
+
         }
-      ],
+      });
+    }
 
-      business: businessID
-    }).sort({ year: 1, month: 1 });
-    query.exec(function (err, result) {
-      if (err)
-        throw err;
-      else {
-        console.log(result);
-        res.json(result);
-
-      }
-    });
 
 
   },
@@ -208,20 +223,26 @@ var StatsController = {
     var businessID = req.body.businessID;
     var startYear = parseInt(req.body.startYear);
     var endYear = parseInt(req.body.endYear);
-    var query = YearStat.find({
-      year: { $gte: startYear, $lte: endYear },
-      business: businessID
-    }).sort('year');
 
-    query.exec(
-      function (err, result) {
-        if (err) {
-          console.log(err);
-          res.send('Could not retrieve statistics.');
-        } else {
-          res.json(result);
-        }
-      });
+    if (startYear > endYear) {
+      res.status(500).json('The dates you entered are invalid.');
+    } else {
+      var query = YearStat.find({
+        year: { $gte: startYear, $lte: endYear },
+        business: businessID
+      }).sort('year');
+
+      query.exec(
+        function (err, result) {
+          if (err) {
+            
+            res.status(500).json('Oops.. something went wrong.');
+          } else {
+            res.json(result);
+          }
+        });
+    }
+
   },
   getAllStats: function (req, res) {
     console.log(req.body);

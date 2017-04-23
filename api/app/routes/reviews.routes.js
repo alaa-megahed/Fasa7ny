@@ -6,7 +6,6 @@ var ReviewController = require('../controllers/review.controller');
 router.post('/writeReview', ReviewController.writeReview);
 router.post('/upvoteReview', ReviewController.upvoteReview); //change to get
 router.post('/downvoteReview', ReviewController.downvoteReview); //change to get
-router.get('/viewReviews', ReviewController.viewReviews);
 router.post('/replyReview', ReviewController.replyReview);
 router.post('/deleteReview', ReviewController.deleteReview);
 router.post('/deleteReply', ReviewController.deleteReply);

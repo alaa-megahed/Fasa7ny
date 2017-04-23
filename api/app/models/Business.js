@@ -56,7 +56,10 @@ var BusinessSchema = new Schema({
         type: Number, default: 0
     },
 
-    profilePicture: String,
+    profilePicture: {
+        type: String, 
+        default: 'avatar.png'
+    },
     facebookURL: String,
     twitterURL: String,
     youtubeURL: String

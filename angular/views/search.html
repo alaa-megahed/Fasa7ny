@@ -39,10 +39,9 @@
                 <div class="styled-select green rounded">
                     <select width="20" id="category" ng-model="cat"> 
                     <option selected value="all">All</option>                           
-                    <option value="fun">Fun </option>
-                    <option value="escape rooms">Escape Rooms</option>
-                    <option value="travel">Travel</option>
-                    <option value="adventure">Adventure</option>                   
+                    <option value="thrill"> Thrill </option>
+                    <option value="escape">Escape</option>
+                    <option value="outlet">Outlet</option>
              </select>
                 </div>
             </div>
@@ -85,16 +84,21 @@
 <div class="container">
     <div class="row" ng-repeat="rows in chunkedBusinesses">
         <div class="col-md-3 col-sm-3 w3-margin" ng-repeat="business in rows | searchFilter: cat:minRating:area | filter: keyword | orderBy: sortBy : direction">
+            
             <div class="flip-container">
                 <div class="flipper">
                     <div class="front img-container">
-                        <img for="business-img" class="centered-and-cropped" ng-src="http://localhost:3000/photo/image">
+                        <img ng-if="business.profilePicture" ng-src="http://localhost:3000/photo/{{business.profilePicture}}" 
+                        <img ng-if="!business.profilePicture" ng-src="http://localhost:3000/photo/avatar.png" 
+                        
+                        class="centered-and-cropped">
                         <footer style="width: inherit" class="w3-container w3-display-bottommiddle w3-green">
                             <h4 align="center">{{business.name}}</h4>
                         </footer>
                     </div>
                     <div class="back" style="overflow: hidden">
-                        <img class="centered-and-cropped img-flipped" ng-src="http://localhost:3000/photo/image">
+
+                        <img ng-src="http://localhost:3000/photo/{{business.profilePicture}}" class="centered-and-cropped img-flipped">
                         <div class="w3-display-left w3-container">
                             <b class="color">Description: </b>
                             <p> {{business.description}} </p> <br>
@@ -104,7 +108,7 @@
                             <b class="color">Category: </b>
                             <span ng-repeat="category in business.category"> {{category}}</span>
                             <br>
-                            <a class="w3-button w3-green w3-margin-top" href="/#!/business/{{business._id}}">View page >> </a>
+                            <a class="w3-button w3-green w3-margin-top" href="/#!/business/{{business.name}}">View page >> </a>
 
                         </div>
                     </div>
@@ -130,7 +134,6 @@
         transform: rotateY(180deg);
     }
     
-
     .flip-container,
     .front,
     .back {
@@ -150,14 +153,12 @@
     .back {
         backface-visibility: hidden;
         position: absolute;
-
         top: 0;
         left: 0;
     }
     /* front pane, placed above back */
     
     .front {
-        background: green;
         z-index: 2;
         /* for firefox 31 */
         transform: rotateY(0deg);

@@ -89,7 +89,6 @@
 <section class="w3-margin-top">
     <div class="container">
         <div class="row">
-            {{noStats}}
 
             <center ng-hide="{{noStats}}" class="col-md-8">
                 <canvas class="col-lg-8 chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
@@ -103,6 +102,7 @@
                     Weekly: <input class="w3-radio" type="radio" value="week" ng-model="type"> Monthly: <input class="w3-radio"
                         type="radio" value="month" ng-model="type"> Yearly: <input class="w3-radio" type="radio" value="year"
                         ng-model="type">
+                        <br>
                     <div ng-show="type == 'week'">
                         <label for="start-date">Start date: </label>
                         <input type="date" id="start-date" ng-model="startDate">
@@ -134,6 +134,7 @@
 
                 </div>
                 <div class="row">
+                    <span style="color: red"> {{errMsg}}</span> <br>
                     <button class="btn btn-transparent" type="button" ng-disabled="disableButton" ng-click="getStats()">Get Stats</button>
                 </div>
             </div>

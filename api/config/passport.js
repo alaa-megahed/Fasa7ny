@@ -51,8 +51,8 @@ module.exports = function(passport)
       },
       function(req, username, password, done)
       {
-
-
+          if(!req.body)
+            return res.json("Error. Please enter valid information");
           var check = 0;
           // check weather the username entered is unique
           // search the registered users collection
@@ -83,7 +83,6 @@ module.exports = function(passport)
                       }
                       newUser.address        = req.body.address;
                       newUser.gender         = req.body.gender;
-                      newUser.profilePic     = req.body.profilePic;
                       // save the user
                       newUser.save(function(err) {
                         if (err)
@@ -185,6 +184,7 @@ module.exports = function(passport)
     {
       var check = 0;
 
+      console.log("username: " + username + "password: " + password);
       // find a user whose username matches the username entered
       // search registered users collection
       User.findOne({ 'local.username' :  username }, function(err, user)
@@ -296,6 +296,7 @@ module.exports = function(passport)
             {
               if (err)
               {
+                 console.log("error: please try again");
                  return done(err);
               }
               return done(null, newUser);

@@ -141,13 +141,14 @@ angular.module('fasa7ny')
       if(!$scope.type)
       {
         Homepage.logoutLocal().then(function(result){
-
+          $location.path("/");
         })
       }
       else {
         Homepage.logout().then(function(result)
         {
             console.log(result);
+            $location.path("/");
         })
       }
 
@@ -158,8 +159,9 @@ angular.module('fasa7ny')
     }
 
 
-    $scope.goToBusinessPage = function(id) {
-      $location.path('/business/'+id);
+    $scope.goToBusinessPage = function(name) {
+      console.log(name);
+      $location.path('/business/'+name);
     }
 
 

@@ -12,7 +12,10 @@ var RegisteredUserSchema = new Schema({
     birthdate: Date,
     address: String,  //url string or x and y doubles?
     gender: String,
-    profilePic: String,
+    profilePic: {
+        type: String,
+        default: 'avatar.png'
+    },
     bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking', default: [] }],
     subscriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Business', default: [] }],
     notifications: [{ content: String, date: Date }],

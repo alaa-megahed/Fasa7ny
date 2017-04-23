@@ -8,6 +8,7 @@ app.config(function ($routeProvider) {
 			templateUrl: "views/landingpage.html",
 			controller: "navbarController"
 		})
+
 		.when('/view-all', {
 			templateUrl: 'views/search.html',
 			controller: 'SearchController'
@@ -22,24 +23,9 @@ app.config(function ($routeProvider) {
 			controller: "SearchController"
 		})
 
-		.when("/book-event", {
-			templateUrl: "views/booking_event.html",
-			controller: "bookingEventController"
-		})
-
-		.when("/book_facility", { //I want the facility name to be passed in the url
-			templateUrl: "views/booking_facility.html",
-			controller: "bookFacilityController"
-		})
-
-		.when("/business/:id", {
-			templateUrl: "views/businessPage.html",
-			controller: "businessController"
-		})
-
 		.when("/editBusiness", {
 			templateUrl: "views/businessEdit.html",
-			controller: "businessController"
+			controller: "editBusinessController"
 		})
 
 		.when("/business/:name", {
@@ -57,7 +43,6 @@ app.config(function ($routeProvider) {
 			controller: "facilityController"
 		})
 
-
 		// $locationProvider.html5Mode(true);
 
 		.when("/createOneEvent/:businessId", {
@@ -65,26 +50,15 @@ app.config(function ($routeProvider) {
 			controller: "onetimeController"
 		})
 
-
-		.when("/createOffer/:businessId", {
-			templateUrl: "views/createOffer.html"
-		})
-
-		.when("/schedule/:id", {
-			templateUrl: "views/schedule.html",
-			controller: "scheduleController"
+		.when("/schedule/:name", {
+			templateUrl: "views/calendar.html",
+			controller: "calendarController"
 		})
 
 		.when("/viewEvents/:facilityId", {
 			templateUrl: "views/viewEvents.html",
 			controller: "dailyEventsController"
 		})
-
-		.when("/offers", {
-			templateUrl: "views/offersView.html",
-			controller: "ViewOffersController"
-		})
-
 
 		.when("/viewOccurences/:eventId", {
 			templateUrl: "views/viewOccurences.html",
@@ -96,6 +70,10 @@ app.config(function ($routeProvider) {
 			controller: "resetPasswordController"
 
 		})
+		.when('/error', {
+			
+		})
+
 
 });
 

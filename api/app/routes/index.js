@@ -37,12 +37,9 @@ router.use('/contact', function (req, res) {
 
 //check if photo exists, send it, if not, send defult avatar 
 router.use('/photo/:photo', function (req, res) {
-    var filePath = path.resolve('public/uploads/' + req.params.photo);
-    if (fileExists(filePath)) {
-        res.sendFile(path.resolve('public/uploads/' + req.params.photo));
-    } else {
-        res.sendFile(path.resolve('public/uploads/avatar.png'));
-    }
+    
+    res.sendFile(path.resolve('public/uploads/' + req.params.photo));
+
 });
 
 

@@ -7,16 +7,18 @@ var Facility = require('mongoose').model('Facility');
 var User = require('mongoose').model('RegisteredUser');
 var async = require('async');
 
+
+
 var BusinessController = {
 
   getBusiness: function (req, res) {
    // var name = "Habiiba";
    // var name = "Escape Room";
    console.log("backend");
-   if(req.params.id && req.user && req.user instanceof User) {
+   if(req.params.name && req.user && req.user instanceof User) {
       //  var name = req.params.name;
-      var id = req.params.id;
-       Business.findOne({_id: id }).
+      var name = req.params.name;
+       Business.findOne({name: name }).
            exec(function (err, result) {
                if (err)
                    return res.status(500).json("Something went wrong");
@@ -47,9 +49,9 @@ var BusinessController = {
                    })
                  }
            });
-   } else if(req.params.id) {
-     var id = req.params.id;
-     Business.findOne({_id: id }).
+   } else if(req.params.name) {
+     var name = req.params.name;
+     Business.findOne({name: name }).
          exec(function (err, result) {
              if (err)
                  return res.status(500).json("Something went wrong");
@@ -224,10 +226,10 @@ requestRemoval: function(req,res) {
                                 }
                             }
                             if (check) {
-                                Business.findByIdAndUpdate(id, { $pull: { "phones": phone } }, function (err, info) {
+                                Business.findByIdAndUpdate(id, {$pull:{ phones: phone }}, {safe:true, upsert: true, new:true},function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
-                                    if (!info) res.status(500).json("Something went wrong");
-                                    else{ res.status(200).json('phone deleted'); console.log("phone deleted");}
+                                    if (!business) res.status(500).json("Something went wrong");
+                                    else{ res.status(200).json({business:updatedbusiness}); console.log("2222222!!!!"+updatedbusiness);}
                                 });
                             }
                             else {
@@ -277,10 +279,10 @@ requestRemoval: function(req,res) {
                             }
 
                             if (check) {
-                                Business.findByIdAndUpdate(id, { $pull: { "payment_methods": payment } }, function (err, info) {
+                                Business.findByIdAndUpdate(id, { $pull: {payment_methods: payment }}, {safe:true, upsert: true, new:true},function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
-                                    if (!info) res.status(500).json("Something went wrong");
-                                    else {res.status(200).json('payment method deleted'); console.log("payment method deleted");}
+                                    if (!business) res.status(500).json("Something went wrong");
+                                    else {res.status(200).json({business:updatedbusiness}); console.log("payment method deleted");}
                                 });
 
                             }
@@ -319,6 +321,7 @@ requestRemoval: function(req,res) {
           } else {
             console.log("image deleted");
             console.log(newBusiness);
+            res.status(200).json({business:newBusiness});
           }
         });
       } else res.status(500).json("You are not a logged in business");

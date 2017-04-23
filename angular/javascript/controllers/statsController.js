@@ -1,13 +1,11 @@
 angular.module('fasa7ny')
     .controller('StatsController', function ($scope, Stats, $routeParams) {
-        
-        
+
+
         $scope.businessID = $routeParams.id;
         $scope.title = 'Statistics';
-        $scope.disableButton = ($scope.type == 'year' && $scope.startYear > $scope.endYear);
         $scope.maxDate = new Date() + "";
-
-
+        $scope.errMsg = '';
 
         //the 5 metrics tracked in our stats system
         $scope.series = ['Views', 'Attendees', 'Rating', 'Sales', 'Subscriptions'];
@@ -25,7 +23,7 @@ angular.module('fasa7ny')
             .then(function (res) {
                 $scope.allStats = res.data;
             }, function (res) {
-               
+
             });
         //get stats on demand when button is clicked
         $scope.getStats = function () {
@@ -33,7 +31,7 @@ angular.module('fasa7ny')
                 Stats.year({ businessID: $scope.businessID, startYear: +$scope.startYear, endYear: +$scope.endYear })
                     .then(function (res) {
                         $scope.title = 'Yearly Statistics';
-                
+
                         //clearing data and labels 
                         $scope.labels = [];
                         $scope.data = [];
@@ -43,6 +41,8 @@ angular.module('fasa7ny')
                         var chart = Stats.processData(resData, 'year');
                         $scope.data = chart.data;
                         $scope.labels = chart.labels;
+                    }, function (res) {
+                        $scope.errMsg = res.data;
                     });
             } else if ($scope.type == 'month') {
                 Stats.month({
@@ -63,6 +63,8 @@ angular.module('fasa7ny')
                         var chart = Stats.processData(resData, 'month');
                         $scope.data = chart.data;
                         $scope.labels = chart.labels;
+                    }, function (res) {
+                        $scope.errMsg = res.data;
                     })
             } else if ($scope.type == 'week') {
                 Stats.week({
@@ -80,6 +82,9 @@ angular.module('fasa7ny')
                     var chart = Stats.processData(resData, 'week');
                     $scope.data = chart.data;
                     $scope.labels = chart.labels;
+                }, function (res) {
+                    
+                    $scope.errMsg = res.data;
                 });
             }
         }

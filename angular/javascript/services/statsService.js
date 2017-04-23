@@ -77,7 +77,7 @@ angular.module('fasa7ny')
 
                     });
                     var now = new Date();
-                    now.setMinutes(now.getMinutes() + 10);
+                    now.setDate(now.getDate() + 1);
                     $cookies.put(cookieKey, 'fasa7ny', {
                         expires: now
                     });

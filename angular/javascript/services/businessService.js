@@ -98,6 +98,8 @@ app.factory('Business', ['$http', function ($http) {
     getBooking: function (booking_id) {
       return $http.get('http://127.0.0.1:3000/business/getBooking/' + booking_id);
     },
+
+    // start reviews services
     addReview: function (params) {
       return $http.post('http://127.0.0.1:3000/reviews/writeReview', params);
     },
@@ -117,6 +119,6 @@ app.factory('Business', ['$http', function ($http) {
     downvote: function (params) {
       return $http.post('http://127.0.0.1:3000/reviews/downvoteReview', params);
     }
-
+    //end reviews services
   }
 }]);

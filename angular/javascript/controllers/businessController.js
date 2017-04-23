@@ -1,60 +1,54 @@
-
-
-var app = angular.module('fasa7ny');
-app.controller('businessController', function ($scope, status, $http, Business,
-  Global, $location, $routeParams, $modal, $log, $window, Stats) {
+app.controller('businessController', function ($scope, status, $http, Business, $location, $routeParams, $modal, $log, Stats) {
+  $scope.user = {};
 
   status.local()
     .then(function (res) {
       if (res.data) {
-        if (res.data.user_type == 1)    // user 3ady
+        if (res.data.user_type == 1) {
           $scope.type = 1;
-        else if (res.data.user_type == 2)   // business
-        {
-          if (res.data._id == cur_business.id)  // don't know cur_business.id hatb2a f variable esmo eh
-            $scope.type = 4;   // means loggedin business views his own page (optional)
-          else
-            $scope.type = 2;   // another business
+          $scope.user = res.data;
         }
-        else if (res.data.user_type == 3)    // logged in admin
-          $scope.type = 3;
+        else if (res.data.user_type == 2)
+          $scope.type = 4; //business viewing itself
+        else $scope.type = 3;
       }
       else {
         status.foreign()
           .then(function (res) {
-            if (res.data.user_type) // hena bn-check law fi user loged in via facebook or google ,, bs GHALAT yb2a set l 2 fel else
+            if (res.data.user_type) {
               $scope.type = 1;
-            else $scope.type = 5;      // not logged in aslan (momkn tt3amal undefined maslan)
+              $scope.user = res.data;
+            }
+            else $scope.type = 2;
           });
       }
     });
 
+  // $scope.type = 2; //unregistered user or business visiting another business
+
+  console.log($routeParams.name);
 
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
   $scope.avgRate = 0;
   $scope.sub = "Subscribe";
-
-  Global.setBusiness($routeParams.id); //make this by name
-
-
-  console.log($routeParams.id); // make this by name
   $scope.imagelength = 0;
   $scope.business = {};
-  if ($scope.business.images) {
-    $scope.imagelength = $scope.business.images.length;
-    console.log("images");
-    console.log($scope.business.images);
-    if ($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
-    if ($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
-    if ($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
-    if ($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
-  }
+  $scope.slides = [];
+  $scope.facilities = [];
+  $scope.facilitylength = 0;
+  $scope.phones = [];
+  $scope.methods = [];
 
+  $scope.events = []; //once events
+  $scope.eventlength = 0;
 
+  $scope.sublength = 0;
 
-  Business.get($routeParams.id)
+  Business.get($routeParams.name)
     .then(function (d) {
+
+
       console.log("then");
       status.local()
         .then(function (res) {
@@ -63,13 +57,16 @@ app.controller('businessController', function ($scope, status, $http, Business,
               $scope.type = 1;
               if (d.data.rate) $scope.ratedBy = d.data.rate;
 
+              console.log(res.data);
+              console.log(d.data.result.subscribers);
               $scope.check = 0;
               for (var i = 0; i < d.data.result.subscribers.length; i++) {
-                if (d.data.result.subscribers[i] == d.data.user) {
+                if (d.data.result.subscribers[i] == res.data._id) {
                   $scope.check = 1;
                   $scope.sub = "Unsubscribe";
                 }
-                $window.name = $scope.business.name;
+                console.log($scope.sub);
+                console.log($scope.check);
               }
             }
             else if (res.data.user_type == 3) {
@@ -93,11 +90,10 @@ app.controller('businessController', function ($scope, status, $http, Business,
 
                     $scope.check = 0;
                     for (var i = 0; i < d.data.result.subscribers.length; i++) {
-                      if (d.data.result.subscribers[i] == d.data.user) {
+                      if (d.data.result.subscribers[i] == res.data._id) {
                         $scope.check = 1;
                         $scope.sub = "Unsubscribe";
                       }
-                      $window.name = $scope.business.name;
                     }
                   }
                   else if (res.data.user_type == 3) {
@@ -121,14 +117,22 @@ app.controller('businessController', function ($scope, status, $http, Business,
 
       console.log(d.data.result);
       $scope.business = d.data.result;
+       
+       //check cookies for counting page views
+       Stats.checkCookies($scope.type, $scope.business._id); 
+
 
       $scope.phones = d.data.result.phones;
       $scope.phonelength = 0; //zero means that the business has more than one phone number
       if ($scope.phones.length == 1) $scope.phonelength = 1;
 
+      $scope.sublength = $scope.business.subscribers.length;
+
       $scope.methods = d.data.result.payment_methods;
-      $scope.paymentlength = 0; //zero means that the business has more than one payment method
-      if ($scope.methods.length == 1) $scope.paymentlength = 1;
+      $scope.paymentlength = $scope.methods.length; //zero means that the business has more than one payment method
+      // if($scope.methods.length == 1) $scope.paymentlength = 1;
+      console.log("PAYMENT METHODSSS");
+      console.log($scope.methods);
 
       console.log($scope.paymentlength);
       $scope.categories = d.data.result.category;
@@ -142,41 +146,12 @@ app.controller('businessController', function ($scope, status, $http, Business,
       $scope.eventlength = d.data.events.length;
 
       $scope.avgRate = d.data.result.average_rating;
-
-
-      console.log($scope.business.images);
-      if ($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
-      if ($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
-      if ($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
-      if ($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
+      $scope.slides = $scope.business.images;
       $scope.imagelength = $scope.business.images.length;
-      console.log($scope.imagelength);
-      console.log($scope.image1);
-      console.log($scope.image2);
-      console.log($scope.image3);
-      console.log($scope.image4);
-
-      //check cookies for page views 
-      Stats.checkCookies($scope.type, $scope.business._id);
-
+      console.log("images: ", $scope.slides);
       // console.log($scope.check);
       // console.log($scope.sub);
     });
-
-
-  $scope.goToEdit = function () {
-    $scope.error = "";
-    console.log("controller" + $scope.formData);
-    Business.edit($scope.formData)
-      .then(function successCallback(d) {
-        console.log(d.data);
-        console.log(d.data.business._id);
-        $location.path('/' + d.data.business._id);
-      },
-      function errorCallback(d) {
-        $scope.error = d.data;
-      })
-  };
 
   $scope.subscribe = function (id) {
     console.log("controller subscribe");
@@ -185,6 +160,7 @@ app.controller('businessController', function ($scope, status, $http, Business,
         console.log("sub done");
         $scope.sub = "Unsubscribe";
         $scope.check = 1;
+        $scope.sublength = $scope.sublength + 1;
       })
   };
 
@@ -195,6 +171,7 @@ app.controller('businessController', function ($scope, status, $http, Business,
         console.log("unsub done");
         $scope.sub = "Subscribe";
         $scope.check = 0;
+        $scope.sublength = $scope.sublength - 1;
       })
   };
 
@@ -211,15 +188,6 @@ app.controller('businessController', function ($scope, status, $http, Business,
   };
 
 
-  //  $scope.public = function(){
-  //  	console.log('public ctrl');
-  //  	Business.public()
-  //  	.then(function(d){
-  //  		console.log('public done');
-  //  	})
-  // };
-
-
   $scope.public = function () {
     $scope.message = "Public Button Clicked";
     console.log($scope.message);
@@ -232,49 +200,30 @@ app.controller('businessController', function ($scope, status, $http, Business,
 
     modalInstance.result.then(function (selectedItem) {
       $scope.selected = selectedItem;
+      $scope.business.public = selectedItem.public;
     });
   };
 
   $scope.businessEdit = function () {
     console.log('businessedit ctrl');
     $location.path('/editBusiness');
-
   };
 
 
   $scope.remove = function () {
     $scope.message = "Remove Button Clicked";
     console.log($scope.message);
+    var modalInstance = $modal.open({
+      templateUrl: 'views/removePop.html',
+      controller: Remove,
+      scope: $scope
 
-    Business.hasBookings().then(function (responce) {
-      if (responce.data != 0) {
-
-        var notAllowedModalInstance = $modal.open({
-          templateUrl: 'views/notAllowedRemovePop.html',
-          controller: NotAllowedRemove,
-          scope: $scope
-
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-          $scope.selected = selectedItem;
-        });
-      }
-      else {
-
-        var modalInstance = $modal.open({
-          templateUrl: 'views/removePop.html',
-          controller: Remove,
-          scope: $scope
-
-        });
-
-        modalInstance.result.then(function (selectedItem) {
-          $scope.selected = selectedItem;
-        });
-      }
     });
 
+    modalInstance.result.then(function (selectedItem) {
+      $scope.selected = selectedItem;
+      $scope.business.delete = selectedItem.delete;
+    });
   };
 
 
@@ -288,12 +237,6 @@ app.controller('businessController', function ($scope, status, $http, Business,
     $location.path('/createFacility/' + id);
   };
 
-
-  $scope.createOffer = function (id) {
-    console.log("create offer controller");
-    $location.path('/createOffer/' + id);
-  };
-
   $scope.deleteImage = function (image) {
     $scope.message = "Show delete Form Button Clicked";
     console.log($scope.message);
@@ -305,10 +248,11 @@ app.controller('businessController', function ($scope, status, $http, Business,
       scope: $scope
     });
 
-
     modalInstance.result.then(function (selectedItem) {
       $scope.selected = selectedItem;
-      $window.location.reload();
+      $scope.business = selectedItem.business;
+      $scope.slides = $scope.business.images;
+      $scope.imagelength = $scope.business.images.length;
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
@@ -326,15 +270,10 @@ app.controller('businessController', function ($scope, status, $http, Business,
     modalInstance.result.then(function (selectedItem) {
       $scope.selected = selectedItem;
       $scope.business = selectedItem.business;
-      console.log("business!!");
-      console.log($scope.business);
-      if ($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
-      if ($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
-      if ($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
-      if ($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
-      if ($scope.business.images[4]) $scope.image5 = $scope.business.images[4];
+      $scope.slides = $scope.business.images;
+      console.log("NEWW" + $scope.slides);
       $scope.imagelength = $scope.business.images.length;
-      $window.location.reload();
+
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
@@ -353,6 +292,10 @@ app.controller('businessController', function ($scope, status, $http, Business,
 
     modalInstance.result.then(function (selectedItem) {
       $scope.selected = selectedItem;
+      $scope.phones = selectedItem.phones;
+      $scope.phonelength = selectedItem.phones.length;
+      console.log($scope.phones);
+      console.log("ana henaaaa");
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
@@ -371,6 +314,8 @@ app.controller('businessController', function ($scope, status, $http, Business,
 
     modalInstance.result.then(function (selectedItem) {
       $scope.selected = selectedItem;
+      $scope.methods = selectedItem.methods;
+      $scope.paymentlength = selectedItem.methods.length;
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });
@@ -381,9 +326,8 @@ app.controller('businessController', function ($scope, status, $http, Business,
     $location.path('/createOneEvent/' + id);
   };
 
-  $scope.schedule = function (id) {
-    console.log("schedule controller");
-    $location.path('/schedule/' + id);
+  $scope.schedule = function (name) {
+    $location.path('/schedule/' + name);
   };
 
   $scope.changeImage = function () {
@@ -393,53 +337,33 @@ app.controller('businessController', function ($scope, status, $http, Business,
     Business.changeImage($scope.formData)
       .then(function successCallback(d) {
         console.log("changeImage done");
-        // $route.reload();
-        $window.location.reload();
+        $route.reload();
       },
       function errorCallback(d) {
         $scope.error = d.data;
       });
   }
 
-  // $scope.goToEditFacility = function(facilityId) {
-  //   console.log("edit facility controller");
-  //   $locatin.path('/editFacility/' + facilityId);
-  // }
 
-  $scope.bookFacility = function () {
-    Global.setBusiness($routeParams.id);
-    $location.path('/book_facility');
-  };
-
-  // redirects to stats page 
-  $scope.viewStats = function () {
-    $location.path('/statistics/' + $routeParams.id);
-  }
-
-
-
-  // REVIEWS FUNCTIONS 
-
+  // ============================================
+  //            REVIEWS FUNCTIONS
+  // ============================================
   $scope.addReview = function () {
     Business.addReview({
       review: $scope.reviewBody,
-      userID: $scope.userID,
-      businessID: $scope.id
+      businessID: $scope.business._id
     })
       .then(function (res) {
         $scope.business = res.data;
         $scope.reviewBody = "";
-
-        console.log('HERE');
       }, function (res) {
         alert(res.data);
       });
   };
   $scope.deleteReview = function (review) {
     Business.deleteReview({
-      userID: $scope.userID,
-      reviewUser: review.user.id,
-      businessID: $scope.id,
+      reviewUser: review.user._id,
+      businessID: $scope.business._id,
       review: review
     })
       .then(function (res) {
@@ -448,11 +372,8 @@ app.controller('businessController', function ($scope, status, $http, Business,
   };
 
   $scope.addReply = function (reviewID, replyBody) {
-    // console.log('replyyyy'); 
-
     Business.addReply({
-      userID: $scope.userID,
-      businessID: $scope.id,
+      businessID: $scope.business._id,
       reviewID: reviewID,
       reply: replyBody
     })
@@ -466,8 +387,7 @@ app.controller('businessController', function ($scope, status, $http, Business,
 
   $scope.deleteReply = function (review, reply) {
     Business.deleteReply({
-      userID: $scope.userID,
-      businessID: $scope.id,
+      businessID: $scope.business._id,
       review: review,
       reply: reply
     })
@@ -478,8 +398,7 @@ app.controller('businessController', function ($scope, status, $http, Business,
 
   $scope.upvote = function (review) {
     Business.upvote({
-      userID: $scope.userID,
-      businessID: $scope.id,
+      businessID: $scope.business._id,
       review: review
     })
       .then(function (res) {
@@ -499,10 +418,10 @@ app.controller('businessController', function ($scope, status, $http, Business,
         $scope.business = res.data;
       }, function (res) {
         alert(res.data);
+      }, function (res) {
+        $scope.reviewError = res.data;
       });
   }
-
-
 
 });
 
@@ -515,8 +434,9 @@ var Public = function ($scope, $modalInstance, Business, $route) {
     Business.public()
       .then(function successCallback(d) {
         console.log('pub');
-        $route.reload();
-        $modalInstance.close('closed');
+        $modalInstance.close({
+          public: 1
+        });
       },
       function errorCallback(d) {
         $scope.error = d.data;
@@ -528,6 +448,7 @@ var Public = function ($scope, $modalInstance, Business, $route) {
     $modalInstance.dismiss('cancel');
   };
 };
+
 
 var Remove = function ($scope, $modalInstance, Business, $route) {
   $scope.form = {}
@@ -537,40 +458,41 @@ var Remove = function ($scope, $modalInstance, Business, $route) {
     Business.remove()
       .then(function successCallback(d) {
         console.log('rem');
-        $route.reload();
-        $modalInstance.close('closed');
+        $modalInstance.close({
+          delete: 1
+        });
       },
       function errorCallback(d) {
         $scope.error = d.data;
       });
   };
+
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
 };
 
 
-var NotAllowedRemove = function ($scope, $modalInstance, Business, $route) {
-  $scope.form = {}
-  $scope.submitForm = function () {
-    $route.reload();
-    $modalInstance.close('closed');
-  };
-};
-
 
 var deleteImageCtrl = function ($scope, $modalInstance, Business, $route) {
-  $scope.form = {}
+  $scope.form = {};
+  $scope.error = "";
   $scope.yes = function (image) {
-    // if ($scope.form.editForm.$valid) {
     console.log('user form is in scope');
     console.log(image);
     Business.deleteImage(image)
-      .then(function (d) {
-        console.log("done deleting image");
+      .then(function successCallback(d) {
+        console.log(d.data.business);
+        console.log('image business deleted!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        $modalInstance.close({
+          business: d.data.business
+        });
+      }, function errorCallback(d) {
+        $scope.error = d.data;
       });
-    $route.reload();
-    $modalInstance.close('closed');
+    // $location.path("/business/");
+    // $route.reload();
+    // console.log("????????????????????????????????");
   };
 
   $scope.no = function () {
@@ -579,10 +501,11 @@ var deleteImageCtrl = function ($scope, $modalInstance, Business, $route) {
 };
 
 var addImageCtrl = function ($scope, $modalInstance, Business, $route) {
+  $scope.error = "";
   $scope.addImage = function (formData) {
     console.log('add image is in scope');
     Business.addImage(formData)
-      .then(function (d) {
+      .then(function successCallback(d) {
         // $scope.business = business;
         // business = d.data.business;
 
@@ -591,13 +514,12 @@ var addImageCtrl = function ($scope, $modalInstance, Business, $route) {
         });
         // console.log(d.data.business);
 
+      }, function errorCallback(d) {
+        $scope.error = d.data;
       });
-    console.log("eh yasta?");
-    // $route.reload();
-    // $route.reload();
   };
 
-  $scope.no = function () {
+  $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
 };
@@ -608,9 +530,11 @@ var deletePhoneCtrl = function ($scope, $modalInstance, Business, $route) {
     console.log('delete phone is in scope');
     Business.deletePhone(phone)
       .then(function successCallback(d) {
-        console.log("done deleting phone");
-        $route.reload();
-        $modalInstance.close('closed');
+        console.log("done deleting phone!!!!!!!!!!!!!!!!!");
+        console.log(d.data.business.phones);
+        $modalInstance.close({
+          phones: d.data.business.phones
+        });
       },
       function errorCallback(d) {
         $scope.error = d.data;
@@ -621,7 +545,7 @@ var deletePhoneCtrl = function ($scope, $modalInstance, Business, $route) {
   $scope.no = function () {
     $modalInstance.dismiss('cancel');
   };
-}
+};
 
 var deletePaymentMethodCtrl = function ($scope, $modalInstance, business, Business, $route) {
   $scope.error = "";
@@ -632,20 +556,15 @@ var deletePaymentMethodCtrl = function ($scope, $modalInstance, business, Busine
         $scope.business = business;
         $scope.business = d.data.business;
         console.log("done deleting payment_method");
-        $route.reload();
-        $modalInstance.close('closed');
+        $modalInstance.close({
+          methods: d.data.business.payment_methods
+        });
       },
       function errorCallback(d) {
         $scope.error = d.data;
       });
-
   };
-
   $scope.no = function () {
     $modalInstance.dismiss('cancel');
   };
-
-  //check if user is logged in 
-
 }
-
