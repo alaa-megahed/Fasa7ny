@@ -156,13 +156,16 @@ requestRemoval: function(req,res) {
                         }
                         if (!found)
                             business.phones.push(req.body.phones);
+                        else {
+                            return res.status(500).json("You already have this phone number");
+                        }
                     }
                     if (typeof req.body.payment_methods != "undefined" && req.body.payment_methods.length > 0) {
                         business.payment_methods.push(req.body.payment_methods);
                     }
 
                     if(typeof req.file != "undefined") {
-                      business.images.push(req.file.filename);
+                        business.profilePicture = req.file.filename;
                     }
 
                     if(typeof req.body.password != "undefined" && req.body.password > 0) {
@@ -325,16 +328,14 @@ requestRemoval: function(req,res) {
     },
 
 
-    changeProfilePicture: function(req, res) {
+    changeImage: function(req, res) {
 
       if(req.user && req.user instanceof Business) {
-        // var id = "58f8b9fdf3e7ca15c2ca2c1f";
         var id = req.user.id;
 
         console.log("ana fl backend changeProfilePicture");
         var file = req.file;
-
-        Business.findByIdAndUpdate(id, {$set:{profilePicture:file.filename}}, function(err, updatedBusiness) {
+        Business.findByIdAndUpdate(id, {$push:{images:file.filename}}, {safe:true, upsert: true, new:true}, function(err, updatedBusiness) {
             if(err) res.status(500).json("error in changing the profile picture");
             else res.status(200).json({business:updatedBusiness});
         });
