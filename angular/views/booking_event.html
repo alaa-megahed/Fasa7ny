@@ -1,4 +1,9 @@
-       <section id="about" class="text-center">
+       <div ng-if = "type != 4 && type != 1">
+           <center>
+           <h3>Please log in to view this page.</h3> </center>
+      </div> 
+
+       <section id="about" class="text-center" ng-if="type == 4 || type == 1">
             <div ng-controller="bookingEventController" class="container">
 <!--                 <div class="row">
  -->                
@@ -13,9 +18,10 @@
                     
                    
                       <form ng-model="formData">
+
                         <h3>Number of people  :  <input type="Number" style="color:#000;" ng-model="formData.count" min = {{min}} max = {{max}}><br></h3>
+                        <h4>Available places: {{max}}</h4>
                        
-                        <div> {{betengan}} </div>
                         <!-- <div >
                             <h3> Special Offers:</h3> <br>
 
@@ -49,10 +55,7 @@
                         <button type="submit" ng-if="type == 1" class="btn btn-transparent" ng-disabled="!formData.count" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
 
                        </form>
-                       
-
                        <br><br>
-                        <a href="#!/book_facility">CLICK ME CLICK ME</a>
                     
                 </div>
                         <!-- End row -->
