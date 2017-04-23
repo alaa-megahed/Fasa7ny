@@ -15,14 +15,29 @@ app.factory('Event', ['$http', function($http) {
         edit : function(formData,id){
         	console.log("edit service"+formData);
 
-          if(formData.starttime && formData.endtime)
-            formData.timing = formData.starttime.getHours()+":"+formData.starttime.getMinutes()+"-"+formData.endtime.getHours()+":"+formData.endtime.getMinutes();
+          if(formData.starttime && formData.endtime) {
+            var starthour = formData.starttime.getHours()+"";
+            if(starthour.length == 1) starthour = "0" + starthour;
+
+            var endhour = formData.endtime.getHours()+"";
+            if(endhour.length == 1) endhour = "0" + endhour;
+
+            var startminute = formData.starttime.getMinutes()+"";
+            if(startminute.length == 1) startminute = "0" + startminute;
+
+            var endminute = formData.endtime.getMinutes()+"";
+            if(endminute.length == 1) endminute = "0" + endminute;
+
+            formData.timing = starthour+":"+startminute+"-"+endhour+":"+endminute;
+          }
 
         	return $http.post('http://127.0.0.1:3000/event/edit/'+id, formData);
         },
 
         deleteImage : function(eventId, image) {
           console.log('delete image event service');
+          console.log(eventId);
+          console.log(image);
           return $http.get('http://127.0.0.1:3000/event/deleteImage/' + eventId + "/" + image);
         },
 

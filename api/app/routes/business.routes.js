@@ -21,7 +21,7 @@ business.use('/makepagepublic', function(req, res) {
 //        	// res.render('b.ejs');
 //
 //     });
-business.get('/b/:id', businessController.getBusiness);
+business.get('/b/:name', businessController.getBusiness);
 business.get('/requestRemoval',businessController.requestRemoval)
 business.get('/deletePaymentMethod/:method', businessController.deletePaymentMethod);
 business.post('/editInformation', upload.single('img'), businessController.editInformation);

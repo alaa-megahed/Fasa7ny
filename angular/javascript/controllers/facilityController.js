@@ -4,7 +4,7 @@ $scope.user = {};
 	status.local()
 	 .then(function(res){
 	   if(res.data){
-			 $scope.user = res.data._id;
+			 $scope.user = res.data;
 	     if(res.data.user_type == 1)
 	       $scope.type = 1;
 	     else if(res.data.user_type == 2)
@@ -27,7 +27,7 @@ $scope.user = {};
 		Facility.createFacility($scope.formData)
 		.then(function successCallback(d) {
 			console.log("create facility success");
-			$location.path('/' + $scope.user);
+			$location.path('/business/' + $scope.user.name);
 		},
 		function errorCallback(d){
 			$scope.error = d.data;
@@ -151,7 +151,7 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route)
 						.then(function successCallback(d) {
 							console.log("done deleting facility");
 							$route.reload();
-            				$modalInstance.close('closed');
+            	$modalInstance.close('closed');
 
 						},
 						function errorCallback(d){

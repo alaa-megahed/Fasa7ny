@@ -1755,35 +1755,18 @@ font-size: 18px;
 font-weight: bold;
 }
 
+#slides_control > div{
+height: 400px;
+}
 
-  .carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
-      width: 70%;
-      margin: auto;
-  },
-  .carousel-inner>.item{
-     -webkit-transition: -webkit-transform .5s ease-in-out;
-     -o-transition: -o-transform .5s ease-in-out;
-     transition: transform .5s ease-in-out;
-  },
-  .carousel-inner {
-     background: #000;
-  },
-  .carousel {
-    overflow: hidden;
-  }
-  .item {
-    overflow: hidden;
-  }
-
-  .crop {
-    height: 300px;
-    /*width: 400px;*/
-    overflow: hidden;
+.crop {
+  height: 400px;
+  /*width: 400px;*/
+  overflow: hidden;
 }
 .crop img {
-    height: auto;
-    width: 100%;
+  height: auto;
+  width: 100%;
 }
 
 input[type=radio]:checked ~ label{

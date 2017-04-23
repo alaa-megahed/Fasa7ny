@@ -10,10 +10,10 @@ var BusinessController = {
    // var name = "Habiiba";
    // var name = "Escape Room";
    console.log("backend");
-   if(req.params.id && req.user && req.user instanceof User) {
+   if(req.params.name && req.user && req.user instanceof User) {
       //  var name = req.params.name;
-      var id = req.params.id;
-       Business.findOne({_id: id }).
+      var name = req.params.name;
+       Business.findOne({name: name }).
            exec(function (err, result) {
                if (err)
                    return res.status(500).json("Something went wrong");
@@ -44,9 +44,9 @@ var BusinessController = {
                    })
                  }
            });
-   } else if(req.params.id) {
-     var id = req.params.id;
-     Business.findOne({_id: id }).
+   } else if(req.params.name) {
+     var name = req.params.name;
+     Business.findOne({name: name }).
          exec(function (err, result) {
              if (err)
                  return res.status(500).json("Something went wrong");
@@ -318,6 +318,7 @@ requestRemoval: function(req,res) {
           } else {
             console.log("image deleted");
             console.log(newBusiness);
+            res.status(200).json({business:newBusiness});
           }
         });
       } else res.status(500).json("You are not a logged in business");

@@ -9,15 +9,20 @@ app.config(function($routeProvider){
 		controller  : "navbarController"
 	})
 
+	// .when("/",{
+	// 	templateUrl : "views/slider.html",
+	// 	controller  : "CarouselDemoCtrl"
+	// })
+
 	.when("/search/:id", {
 		templateUrl : "views/searchtest.html",
 		controller  : "searchtestController"
 
 	})
-	.when("/business/:id", {
-		templateUrl : "views/businessPage.html",
-		controller  : "businessController"
-	})
+	// .when("/business/:id", {
+	// 	templateUrl : "views/businessPage.html",
+	// 	controller  : "businessController"
+	// })
 	.when("/editBusiness", {
 		templateUrl : "views/businessEdit.html",
 		controller  : "businessController"
@@ -52,9 +57,9 @@ app.config(function($routeProvider){
 		controller  : "onetimeController"
 	})
 
-	.when("/schedule/:businessId", {
-		templateUrl : "views/schedule.html",
-		controller  : "scheduleController"
+	.when("/schedule/:name", {
+		templateUrl : "views/calendar.html",
+		controller  : "calendarController"
 	})
 
 	.when("/viewEvents/:facilityId", {

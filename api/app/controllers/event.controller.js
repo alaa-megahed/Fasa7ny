@@ -438,26 +438,33 @@ exports.getFacilities = function(req,res)
 
 exports.getEvents = function (req, res) {
 
-		var id = req.params.businessId;
-		console.log(id);
+		var name = req.params.name;
+		console.log(name);
 		console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-		Events.find({ business_id: id }, function (err, events) {
-			if (err) res.status(500).json(err.message);
-			else if (!events) res.status(500).json("Something went wrong");
+
+		Business.findOne({name:name}, function(err, business) {
+			if(err) res.status(500).json(err.message);
+			else if(!business) res.status(500).json("Business not found");
 			else {
-
-				EventOccurrences.find({business_id:id}, function(err, eventocc) {
-					if(err) res.status(500).json(err.message);
-					else if(!eventocc) res.status(500).json("Something went wrong");
+				var id = business._id;
+				console.log(id);
+				Events.find({ business_id: id }, function (err, events) {
+					if (err) res.status(500).json(err.message);
+					else if (!events) res.status(500).json("Something went wrong");
 					else {
-						console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!events/eventocc retrieved');
-						res.status(200).json({events:events, eventocc:eventocc});
+
+						EventOccurrences.find({business_id:id}, function(err, eventocc) {
+							if(err) res.status(500).json(err.message);
+							else if(!eventocc) res.status(500).json("Something went wrong");
+							else {
+								console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!events/eventocc retrieved');
+								res.status(200).json({events:events, eventocc:eventocc});
+							}
+						})
 					}
-				})
-
+				});
 			}
-		});
-
+		})
 }
 
 exports.getDailyEvents = function (req, res) {
@@ -630,15 +637,21 @@ exports.deleteImage = function(req, res) {
 	if(req.user && req.user instanceof Business && typeof req.params.eventId != "undefined" && typeof req.params.image != "undefined") {
 		var eventId = req.params.eventId;
 		var image = req.params.image;
-
+console.log("ANA FE DELETEIMAGEEVENTT");
 		Events.findById(eventId, function(err, event) {
 			if(err || !event) res.status(500).json("something went wrong");
 			else {
 				if(event.business_id == req.user.id) {
-					Events.findByIdAndUpdate(eventId, {$pull:{image:image}}, function(err, updatedEvent) {
+					// event.image.pull({image:image});
+					// event.save(function(err, updatedEvent) {
+					// 	if(err) res.status(500).json("something went wrong");
+					// 	console.log("UPDATED EVEENNTTTT:"+updatedEvent);
+					// 	res.status(200).json({event:updatedEvent});
+					// });
+					Events.findByIdAndUpdate(eventId, {$pull:{image:image}}, {safe:true, upsert: true, new:true}, function(err, updatedEvent) {
 						if(err) res.status(500).json("something went wrong");
-
-						res.status(200).json(updatedEvent);
+						console.log("UPDATED EVEENNTTTT:"+updatedEvent);
+						res.status(200).json({event:updatedEvent});
 					});
 				} else {
 					res.status(500).json("You are not authorized to view this page");
@@ -652,19 +665,20 @@ exports.deleteImage = function(req, res) {
 
 exports.addImage = function(req, res) {
 	if(req.user && req.user instanceof Business && typeof req.params.eventId != "undefined") {
-		console.log("hi?");
+		console.log("hi????????????????");
 		var eventId = req.params.eventId;
 		console.log(eventId);
+		console.log("THIS IS A FILEEEE:"+req.file.filename);
 		Events.findById(eventId, function(err, event) {
-			if(err || !event){ res.status(500).json("something went wrong");
-		}
+			if(err || !event){ res.status(500).json("something went wrong"); }
 			else {
 				if(event.business_id == req.user.id) {
 					console.log("??");
-					Events.findByIdAndUpdate(eventId, {$push: {image: req.file.filename}}, function(err, updatedEvent) {
+					console.log("Fileeee::::::::::::"+req.file);
+					Events.findByIdAndUpdate(eventId, {$push: {image: req.file.filename}}, {safe:true, upsert: true, new:true}, function(err, updatedEvent) {
 						if(err) res.status(500).json("something went wrong");
-
-						res.status(200).json(updatedEvent);
+						console.log(updatedEvent);
+						res.status(200).json({event:updatedEvent});
 					});
 				} else {
 					console.log("lolo");

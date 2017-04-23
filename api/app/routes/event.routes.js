@@ -21,7 +21,7 @@ router.post('/create', RegularEventController.createEvent);
 router.post('/edit/:id', RegularEventController.editEvent);
 router.get('/cancel/:id', RegularEventController.cancelEvent);
 router.get('/cancelO/:occId', RegularEventController.cancelOccurrence);
-router.get('/view/:businessId', RegularEventController.getEvents);
+router.get('/view/:name', RegularEventController.getEvents);
 router.get('/viewO/:eventId', RegularEventController.getOccurrences);
 router.get('/getOnceEventDetails/:eventId', RegularEventController.getOnceEventDetails);
 router.get('/deleteImage/:eventId/:image', RegularEventController.deleteImage);

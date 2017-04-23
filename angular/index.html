@@ -27,21 +27,24 @@
 
 <script src="javascript/controllers/businessController.js"></script>
 <script src="javascript/services/businessService.js"></script>
-<script src="javascript/controllers/CarouselDemoCtrl.js"></script>
 <script src="javascript/controllers/eventController.js"></script>
 <script src="javascript/services/eventService.js"></script>
 <script src="javascript/directives/fileModel.js"></script>
 <script src="javascript/controllers/facilityController.js"></script>
-<script src="javascript/controllers/scheduleController.js"></script>
-<script src="javascript/services/scheduleService.js"></script>
 <script src="javascript/controllers/dailyEventsController.js"></script>
 <script src="javascript/services/dailyEventsService.js"></script>
 <script src="javascript/controllers/viewOccurencesController.js"></script>
 <script src="javascript/services/viewOccurencesService.js"></script>
+<script src="javascript/controllers/calendarController.js"></script>
+<script src="javascript/services/scheduleService.js"></script>
+<script src="javascript/directives/app.scheduler.js"></script>
 
 <script src="javascript/controllers/onetimeController.js"></script>
 <script src="javascript/services/onetimeeventService.js"></script>
 
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="lib/scheduler/dhtmlxscheduler.css">
+<script src="lib/scheduler/dhtmlxscheduler.js"></script>
 <!-- <script src="javascript/services/eventService.js"></script> -->
 
 <script src="javascript/services/facilityService.js"></script>
@@ -186,7 +189,7 @@ Google Font
                       <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signUp()">Sign Up</a></li>
                       <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signIn()">Sign In</a></li>
                       <li ng-if = "user.data.user_type == 1"><a href=""> My Profile </a></li>
-                      <li ng-if = "user.data.user_type == 2"><a ng-click = "goToBusinessPage(user.data._id)" href=""> My Business Page </a></li>
+                      <li ng-if = "user.data.user_type == 2"><a ng-click = "goToBusinessPage(user.data.name)" href=""> My Business Page </a></li>
                       <li ng-if = "user.data.user_type == 3"><a href=""> Admin Requests </a></li>
                       <li><a href="#contact-us">Contact Us</a></li>
                       <li ng-if = "user.data.user_type"><a href="" ng-click = "logout()">Log Out</a></li>
