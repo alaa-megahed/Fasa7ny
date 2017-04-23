@@ -10,9 +10,9 @@
                 <form ng-model="formData" >
                     <div class="styled-select ">    
                      <h3> Facility </h3>                
-                      <select  class="selectpicker" style="width: 300px;color:#000;" required re data-style="btn-primary" ng-model="chosen_facility" ng-change="choose_facility(facility._id)">
+                      <select  class="selectpicker" style="width: 300px;color:#000;" required re data-style="btn-primary" ng-model="chosen_facility" >
                       <h3><option disabled selected value>Choose One</option></h3>                 
-                      <option ng-repeat="facility in facilities" value="{{facility._id}}">{{facility.name}}</option>
+                      <option ng-repeat="facility in facilities" ng-if="facility.business_id == business_id " value="{{facility._id}}">{{facility.name}}</option>
                       </select>
                     </div>
 
@@ -23,7 +23,7 @@
                       <!-- </div> -->
                      
                        <h3> Time slot(s) available :</h3> 
-                      <div ng-repeat="timing in timings | filter : {facility_id:facility} " ng-if="timing.available > 0 && Date(timing.day) == date && Year(timing.day) == year && Month(timing.day) == month " > <!-- && d == date   -->
+                      <div ng-repeat="timing in timings | filter : {facility_id:chosen_facility} " ng-if="timing.available > 0 && Date(timing.day) == date && Year(timing.day) == year && Month(timing.day) == month " > <!-- && d == date   -->
                       <input type="radio" required ng-model="formData.chosen_time" name="chosen_time" ng-change="choose_occ({{timing}})" value="{{timing}}">
                        <label><h4>{{"Timing: "+timing.time + " , available: "+timing.available}}</h4></label>                          
                       </div>

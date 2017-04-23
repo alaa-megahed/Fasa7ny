@@ -347,7 +347,7 @@ requestRemoval: function(req,res) {
 
     hasBookings: function(req, res)
     {
-        if(req.user && req.user instanceof business)
+        if(req.user && req.user instanceof Business)
         {
             var id = req.user._id;
             Booking.find({}, function(err, bookings)
@@ -367,10 +367,9 @@ requestRemoval: function(req,res) {
 
 getFacilityOccs: function(req, res)
 {
-    if(req.user && req.user instanceof business)
+    if(req.user && req.user instanceof Business)
     {
             var id = req.user.id; 
-            var id = "58f0cb2d6bfb6061efd66625";
             var facility_id = req.params.facility;
             EventOccurrences.find({"facility_id": facility_id}, function(err, occs)
             {
@@ -385,7 +384,7 @@ getFacilityOccs: function(req, res)
 
 getEventOccs: function(req, res)
 {
-     if(req.user && req.user instanceof business)
+     if(req.user && req.user instanceof Business)
     {
             var id = req.user.id; 
             var event_id = req.params.event;
@@ -402,7 +401,7 @@ getEventOccs: function(req, res)
 
 getBooking: function(req, res)
 {
-    if(req.user && req.user instanceof business)
+    if(req.user && req.user instanceof Business)
     {
             var id = req.user.id; 
             var booking_id = req.params.booking;

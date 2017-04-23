@@ -255,7 +255,7 @@ exports.updateOffer = function(req, res) {
 
 /* a business can delete an offer.*/
 exports.deleteOffer = function(req, res) {
-   if(req.user && req.user instanceof Business && typeof req.query.id != "undefined") {
+   if(req.user && req.user instanceof Business && typeof req.params.id != "undefined") {
     var id = req.params.id;
     var businessId = req.user.id;
     var d = new Date();

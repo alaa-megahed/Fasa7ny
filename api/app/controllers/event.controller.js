@@ -210,7 +210,7 @@ exports.deleteFacility = function(req,res)
 						{
 							if(err)
 								return res.status(500).json({err:"error removing event occurence"});
-								else res.status(200).json("Done Deleting")
+								// else res.status(200).json("Done Deleting");
 						});
 					}
 					else

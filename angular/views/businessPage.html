@@ -36,6 +36,7 @@
    <input ng-if = "type == 4 && business.public == 0" type="submit" value="Make Page Public" ng-click = "public()" class="btn btn-transparent">
    <input ng-if = "type == 4" type="submit" value="Create a Facility" ng-click = "createFacility(business._id)" class="btn btn-transparent">
    <input ng-if = "type == 4" type="submit" value="Create One-Time Event" ng-click = "createOneEvent(business._id)" class="btn btn-transparent">
+  <input  ng-if = "type == 4" type="submit" value="Create Offer " ng-click = "createOffer(business._id)" class="btn btn-transparent">
     <form ng-click = "businessEdit()" method="get">
        <input ng-if = "type == 4" type="submit" value="Edit Information" class="btn btn-transparent">
      </form>
@@ -293,7 +294,7 @@
 </div><br>
 
 <!-- </div> -->
-<button ng-if="eventlength" onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button>
+<button ng-if="eventlength" onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button><br>
 <div id="Demo2" class="w3-hide w3-container">
 <br>
   <div id="primary" class="sidebar-right">
@@ -340,16 +341,15 @@
     </ul>
 </div>
 
+
+<button  ng-if = "type == 4" ng-click="schedule(business._id)" class="btn btn-transparent"> Check My Schedule &nbsp; </button>
 <br>
-<button ng-click="schedule(business._id)" class="btn btn-transparent"> Check My Schedule &nbsp; </button>
-<br>
+
 
 
 <button onclick="myFunction('Demo3')" class="btn btn-transparent" >Check Our Offers&nbsp;&nbsp;&nbsp;&nbsp;</button>
-
 <div id="Demo3" ng-controller="ViewOffersController" class="w3-hide w3-container">
 <br>
-<button ng-if = "type == 4" ng-click="schedule(business._id)" class="btn btn-transparent"> Check My Schedule </button>
   <div id="primary" class="sidebar-right">
     <div class="container group">
         <div class="row">
@@ -367,8 +367,8 @@
                                  ng-src="http://localhost:3000/photo/{{offer.image}}" class="attachment-blog_small wp-post-image" alt="3" />
                                  <hr>
                                  <center>
-                                  <button  ng-if = "type == 4" class="btn btn-transparent" ng-controller = "EditOffersController" ng-click = "editOffer(offer._id,offer.type)" > Edit Offer </button>
-                                 <button ng-if = "type == 4" class="btn btn-transparent" ng-controller = "DeleteOffersController" ng-click = "deleteOffer(offer._id)"> Delete Offer </button>
+                                  <button ng-if = "type == 4"  class="btn btn-transparent" ng-controller = "EditOffersController" ng-click = "editOffer(offer._id,offer.type)" > Edit Offer </button>
+                                 <button  ng-if = "type == 4"  class="btn btn-transparent" ng-controller = "DeleteOffersController" ng-click = "deleteOffer(offer._id)"> Delete Offer </button>
                                    <hr style="border: 0.5px solid #90EE90">
                                  <center>
                             </div>
@@ -403,11 +403,14 @@
     <hr>
 </div>
 
+
+
 </div>
 
 
             </div>       <!-- End container -->
         </section>    <!-- End Section -->
+
 
 
         <div class="social-icon">

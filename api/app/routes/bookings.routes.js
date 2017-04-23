@@ -38,6 +38,8 @@ var payment    = require('../controllers/payment.controller');
 
     router.post('/refund', payment.refund);
 
+    router.post('/get_booking', booking.getBooking);
+
     router.post('/createRegUserBookings', booking.regUserAddBooking);
 
     router.post('/viewRegUserBookings', booking.regUserViewBookings);

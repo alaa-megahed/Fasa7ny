@@ -2,57 +2,19 @@ var app = angular.module('fasa7ny');
 
 
 //========== View ===========
-app.controller('ViewOffersController', function($scope, $http, status, $location, Offers) {
+app.controller('ViewOffersController', function($scope, $http, $location, Offers,$routeParams) {
       
-      status.local()
-	 .then(function(res){
-	   if(res.data){
-	     if(res.data.user_type == 1)
-	       $scope.type = 1;
-	     else if(res.data.user_type == 2)
-	       $scope.type  = 4;
-	     else $scope.type = 3;
-	   }
-	   else {
-	     status.foreign()
-	     .then(function(res){
-	       if(res.data.user_type)
-	         $scope.type = 1;
-	       else $scope.type = 2;
-	     });
-	   }
-	 });
-
-	 $scope.business_id = res.data.user._id;
+      $scope.business_id = $routeParams.id;
       Offers.get($scope.business_id).then(function(response) {
               $scope.offers = response.data;
         });
 });
 
 
-app.controller('createOffersController',function($scope,$http,status,Facilities,OneTimeEvent,$location)
+app.controller('createOffersController',function($scope,$http,Facilities,OneTimeEvent,$location,$routeParams)
 {
 
-	status.local()
-	 .then(function(res){
-	   if(res.data){
-	     if(res.data.user_type == 1)
-	       $scope.type = 1;
-	     else if(res.data.user_type == 2)
-	       $scope.type  = 4;
-	     else $scope.type = 3;
-	   }
-	   else {
-	     status.foreign()
-	     .then(function(res){
-	       if(res.data.user_type)
-	         $scope.type = 1;
-	       else $scope.type = 2;
-	     });
-	   }
-	 });
-
-	  $scope.business_id = res.data.user._id;
+      $scope.business_id = $routeParams.id;
       Facilities.get($scope.business_id).then(function(response) {
               $scope.facilities = response.data;
               console.log("This business facilities :"+$scope.facilities);
@@ -99,29 +61,9 @@ app.controller('createOffersController',function($scope,$http,status,Facilities,
 
 //========== Edit ============
 
-app.controller('EditOffersController', function($scope, $http,status, $location, Offers, $modal, $window) {
+app.controller('EditOffersController', function($scope, $http, $location, Offers, $modal, $window,$routeParams) {
       
-     status.local()
-	 .then(function(res){
-	   if(res.data){
-	     if(res.data.user_type == 1)
-	       $scope.type = 1;
-	     else if(res.data.user_type == 2)
-	       $scope.type  = 4;
-	     else $scope.type = 3;
-	   }
-	   else {
-	     status.foreign()
-	     .then(function(res){
-	       if(res.data.user_type)
-	         $scope.type = 1;
-	       else $scope.type = 2;
-	     });
-	   }
-	 });
-
-	  $scope.business_id = res.data.user._id;
-
+      $scope.business_id = $routeParams.id;
       Offers.get($scope.business_id).then(function(response) {
               $scope.offers = response.data;
         });
@@ -152,28 +94,8 @@ app.controller('EditOffersController', function($scope, $http,status, $location,
      
 });
 
-app.controller('EditOfferCtrl',function($scope, $http,status, offerId,offerType, $modalInstance, $route, Offers)
+app.controller('EditOfferCtrl',function($scope, $http, offerId,offerType, $modalInstance, $route, Offers,$routeParams)
 {
-	status.local()
-	 .then(function(res){
-	   if(res.data){
-	     if(res.data.user_type == 1)
-	       $scope.type = 1;
-	     else if(res.data.user_type == 2)
-	       $scope.type  = 4;
-	     else $scope.type = 3;
-	   }
-	   else {
-	     status.foreign()
-	     .then(function(res){
-	       if(res.data.user_type)
-	         $scope.type = 1;
-	       else $scope.type = 2;
-	     });
-	   }
-	 });
-
-	$scope.business_id = res.data.user._id;
 	$scope.offerType = offerType;
     $scope.submitForm = function (formData, facilityId) {
        		console.log(formData);	
@@ -220,27 +142,9 @@ app.controller('EditOfferCtrl',function($scope, $http,status, offerId,offerType,
 
 
 // =========== Delete ============
-app.controller('DeleteOffersController', function($scope, $http, $modal, $location, Offers) {
-      status.local()
-	 .then(function(res){
-	   if(res.data){
-	     if(res.data.user_type == 1)
-	       $scope.type = 1;
-	     else if(res.data.user_type == 2)
-	       $scope.type  = 4;
-	     else $scope.type = 3;
-	   }
-	   else {
-	     status.foreign()
-	     .then(function(res){
-	       if(res.data.user_type)
-	         $scope.type = 1;
-	       else $scope.type = 2;
-	     });
-	   }
-	 });
-
-      $scope.business_id = res.data.user._id;
+app.controller('DeleteOffersController', function($scope, $http, $modal, $location, Offers,$routeParams) {
+      
+      $scope.business_id = $routeParams.id;
 	  $scope.deleteOffer = function (offerId) {
 				var modalInstance = $modal.open({
 						templateUrl: 'views/deleteOffer.html',
@@ -262,7 +166,7 @@ app.controller('DeleteOffersController', function($scope, $http, $modal, $locati
       
 });
 
-app.controller('DeleteOfferCtrl',function($http, $scope, $modalInstance, offerId, $route){
+app.controller('DeleteOfferCtrl',function($http, $scope, $modalInstance, offerId, $route,$routeParams){
 	$scope.yes = function () {
             console.log("offerId to be deleted :"+offerId);
 			$http.get('http://127.0.0.1:3000/offers/deleteOffer/'+offerId)

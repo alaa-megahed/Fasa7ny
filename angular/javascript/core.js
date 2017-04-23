@@ -20,7 +20,7 @@ app.config(function($routeProvider){
 		controller  : "bookingEventController"
 	})
 	
-	.when("/book_facility", { //I want the facility name to be passed in the url
+	.when("/book_facility/:id", { //I want the facility name to be passed in the url
 		templateUrl : "views/booking_facility.html",
 		controller  : "bookFacilityController"
 	})
@@ -100,6 +100,11 @@ app.config(function($routeProvider){
 	.when('/bookings/:eventoccId',{
 		templateUrl: "views/occurrence_bookings.html",
 		controller : "viewBookingsController"
+	})
+
+	.when('/success/:bookingId',{
+		templateUrl: "views/successful_booking.html",
+		controller : "successfulBookingController"
 	})
 
 

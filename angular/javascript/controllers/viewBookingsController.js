@@ -25,13 +25,12 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
   occurrenceBookings.get($scope.eventocc).then(function (response)
   {
       $scope.bookings = response.data;
-          
   });
-  $scope.error_message
 
   $scope.deleteBooking = function(bookingID,eventoccId)
   {
-    $http.post('bookings/cancel_booking',{booking_id:bookingID,event_id:eventoccId}).then(
+    console.log("booking id "+ bookingID +"eventocc  "+eventoccId);
+    $http.post('http://127.0.0.1:3000/bookings/cancel_booking',{booking_id:bookingID , event_id:eventoccId}).then(
       function success(response)
       {
         occurrenceBookings.get($scope.eventocc).then(function (response){
@@ -39,12 +38,14 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
       },
       function error(response)
       {
-          $scope.error = response.data;
+          $scope.error_message = response.data;
+          console.log($scope.error_message);
       });
     });
-  }
+  };
         
 });
+
 
  
       

@@ -10,6 +10,28 @@ var configAuth = require("../../config/auth"),
 //================  < BUSINESS BOOKINGS > ====================
 
 
+exports.getBooking = function(req,res)
+{
+  var bookingId = req.body.bookingId;
+
+  if(req.user)
+  {
+    Booking.findById(bookingId, function(err, booking)
+    {
+      if(err || !booking) 
+        return res.status(500).json("Oops, Something went wrong");
+      if(booking.booker != req.user.id)
+      {
+        return res.status(401).json("Not authorized to view content[1]");
+      }
+      return res.status(200).json(booking);      
+    });
+  }
+  else
+    return res.status(401).json("Not authorized to view content[2]");
+}
+
+
 exports.book_event = function (req,res)
 {
   //checking active session
@@ -33,7 +55,7 @@ exports.book_event = function (req,res)
         else
         {
           Events.findById(eventocc.event,function(err,event)
-        {
+         {
               if(err || !event)
                 res.send("Oops, something went wrong, please try again with the correct information[2] ");
               else
@@ -78,16 +100,16 @@ exports.book_event = function (req,res)
                             if(err || !eventoccur)
                               res.send("Oops, something went wrong, please try again with the correct information ");
                             else
-                              res.json(booking);
+                              res.status(200).json(booking);
                           });
                       }
                       });
                      }
 
-                }
+                 }
                 else
                 {
-                   res.send("You do not have authority to access this page");
+                   res.status(403).json("You do not have authority to access this page");
                 }
               }
           });
@@ -468,7 +490,7 @@ exports.regUserAddBooking = function(req, res, next) {
 									 {
 										 user.bookings.push(booking);
 										 user.save();
-										 res.status(200).json("successful booking");
+										 res.status(200).json(booking);
 										 return;
 									 }
 

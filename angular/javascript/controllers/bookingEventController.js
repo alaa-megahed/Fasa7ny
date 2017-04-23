@@ -1,14 +1,13 @@
 
 var app = angular.module('fasa7ny');
 
-app.controller('bookingEventController', function($scope, $http, $location,Global,Event,status, Offers,viewOccurences) 
+app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences) 
 {     
 
     $scope.business_id = Global.getBusiness();
+    // $scope.business_id = $routeParams.id;
 
     $scope.user = {};
-
-
     status.local()
      .then(function(res){
        if(res.data){
@@ -80,6 +79,8 @@ app.controller('bookingEventController', function($scope, $http, $location,Globa
              $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge,})
                     .then(function successCallback(responce){
                       console.log(responce.data);
+                      $location.path('/success/'+responce.data._id);
+
                     }, function errorCallback(responce){
                       console.log(responce.data);
                     }); 
@@ -89,6 +90,8 @@ app.controller('bookingEventController', function($scope, $http, $location,Globa
              $http.post('http://127.0.0.1:3000/bookings/book_event', {count: $scope.formData.count ,event_id: $scope.event_occ._id, charge: $scope.charge, user_id: $scope.user._id})
                     .then(function successCallback(responce){
                       console.log(responce.data);
+                      $location.path('/success/'+responce.data._id);
+
                     }, function errorCallback(responce){
                       console.log(responce.data);
                     }); 
