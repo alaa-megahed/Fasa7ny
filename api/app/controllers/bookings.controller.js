@@ -54,6 +54,7 @@ exports.book_event = function (req,res)
                           count        : count,
                           event_id     : event_id,
                           booker       : req.user.id,
+                          booker_name  : req.user.name,
                           business_id  : req.user.id,
                           charge       : req.body.charge,
                           stripe_charge: req.body.stripe_charge
@@ -184,8 +185,8 @@ exports.edit_booking = function(req,res)
 exports.cancel_booking = function(req,res)
 {
 
-  // if(req.user && req.user instanceof Business)
-  // {
+  if(req.user && req.user instanceof Business)
+  {
 
     var bookingID = req.body.booking_id;       //id of booking to be cancelled
     var event_id  = req.body.event_id;         //event_id of booking to be cancelled
@@ -215,11 +216,11 @@ exports.cancel_booking = function(req,res)
                       {
                         var business = event.business_id;
 
-                         //check if this booking belongs to business currently manipulating it
-                         // if(business != req.user.id)
-                         //    res.status(403).json("You do not have authority to access this page");
-                         //  else
-                           //{
+                         // check if this booking belongs to business currently manipulating it
+                         if(business != req.user.id)
+                            res.status(403).json("You do not have authority to access this page");
+                          else
+                           {
 
                              Booking.findByIdAndRemove(bookingID,function(err,booking)
                               {
@@ -277,18 +278,18 @@ exports.cancel_booking = function(req,res)
                               });
 
 
-                          //}
+                          }
                       }
                     });
                  }
               });
           }
       });
-  // }
-  // else
-  // {
-  //   res.status(401).json("You do not have authority to access this page");
-  // }
+  }
+  else
+  {
+    res.status(401).json("You do not have authority to access this page");
+  }
 
 }
 
@@ -344,31 +345,41 @@ exports.view_event_bookings = function(req,res)
 {
   if(req.user && req.user instanceof Business)
   {
-    var event_id  = req.body.event_id;
+    var event_id  = req.params.event_id;
+    console.log("eventocc  id in node event_id "+event_id);
 
     EventOccurrences.findById(event_id,function(err,eventocc)
     {
         if(err || !eventocc)
-          res.send("Oops, something went wrong, please try again with the correct information ");
+          res.status(500).json("Oops, something went wrong, please try again with the correct information[1] ");
         else
         {
           Events.findById(eventocc.event,function(err,event)
           {
 
               if(err || !event)
-                res.send("Oops, something went wrong, please try again with the correct information ");
+                res.status(500).json("Oops, something went wrong, please try again with the correct information ");
               else
               {
                 //check if this event belongs to business currently viewing its bookings
                 if(event.business_id == req.user.id)
                 {
-                  EventOccurrences.findOne({_id:event_id}).populate('bookings').exec(function(err,bookings)
+                  // EventOccurrences.find({_id:event_id}).populate('bookings').exec(function(err,bookings)
+                  // {
+                  //     if(err || !bookings)
+                  //        res.status(500).json("Oops, something went wrong, please try again with the correct information ");
+                  //      else
+                  //       res.status(200).json(bookings);
+                  // });
+                  Booking.find({event_id:event_id},function(err,bookings)
                   {
-                      if(err || !bookings)
-                         res.send("Oops, something went wrong, please try again with the correct information ");
+                       if(err || !bookings)
+                         res.status(500).json("Oops, something went wrong, please try again with the correct information ");
                        else
-                        res.send(bookings);
+                        res.status(200).json(bookings);
+
                   });
+
                 }
                 else
                 {
@@ -382,7 +393,7 @@ exports.view_event_bookings = function(req,res)
   }
   else
   {
-    res.send("Business not logged in");
+    res.status(401).json("Business not logged in");
   }
 };
 
@@ -409,6 +420,7 @@ exports.regUserAddBooking = function(req, res, next) {
           booker       : req.user.id,
 	        event_id     : req.body.event,
           business_id  : req.body.business_id,
+          booker_name  : req.user.name,
 	        booking_date : date,
           charge       : req.body.charge,
           stripe_charge: req.body.stripe_charge
