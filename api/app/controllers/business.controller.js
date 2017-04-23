@@ -223,10 +223,10 @@ requestRemoval: function(req,res) {
                                 }
                             }
                             if (check) {
-                                Business.findByIdAndUpdate(id, { $pull: { "phones": phone } }, function (err, info) {
+                                Business.findByIdAndUpdate(id, {$pull:{ phones: phone }}, {safe:true, upsert: true, new:true},function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
-                                    if (!info) res.status(500).json("Something went wrong");
-                                    else{ res.status(200).json('phone deleted'); console.log("phone deleted");}
+                                    if (!business) res.status(500).json("Something went wrong");
+                                    else{ res.status(200).json({business:updatedbusiness}); console.log("2222222!!!!"+updatedbusiness);}
                                 });
                             }
                             else {
@@ -276,10 +276,10 @@ requestRemoval: function(req,res) {
                             }
 
                             if (check) {
-                                Business.findByIdAndUpdate(id, { $pull: { "payment_methods": payment } }, function (err, info) {
+                                Business.findByIdAndUpdate(id, { $pull: {payment_methods: payment }}, {safe:true, upsert: true, new:true},function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
-                                    if (!info) res.status(500).json("Something went wrong");
-                                    else {res.status(200).json('payment method deleted'); console.log("payment method deleted");}
+                                    if (!business) res.status(500).json("Something went wrong");
+                                    else {res.status(200).json({business:updatedbusiness}); console.log("payment method deleted");}
                                 });
 
                             }

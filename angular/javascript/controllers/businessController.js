@@ -33,6 +33,8 @@ console.log($routeParams.name);
   $scope.slides = [];
   $scope.facilities = [];
   $scope.facilitylength = 0;
+  $scope.phones = [];
+  $scope.methods = [];
 
   $scope.events = []; //once events
   $scope.eventlength = 0;
@@ -280,6 +282,10 @@ console.log($routeParams.name);
 
       modalInstance.result.then(function (selectedItem) {
           $scope.selected = selectedItem;
+          $scope.phones = selectedItem.phones;
+          $scope.phonelength = selectedItem.phones.length;
+          console.log($scope.phones);
+          console.log("ana henaaaa");
       }, function () {
           $log.info('Modal dismissed at: ' + new Date());
       });
@@ -298,6 +304,8 @@ console.log($routeParams.name);
 
       modalInstance.result.then(function (selectedItem) {
           $scope.selected = selectedItem;
+          $scope.methods = selectedItem.methods;
+          $scope.paymentlength = selectedItem.methods.length;
       }, function () {
           $log.info('Modal dismissed at: ' + new Date());
       });
@@ -432,9 +440,11 @@ console.log($routeParams.name);
                     console.log('delete phone is in scope');
                     Business.deletePhone(phone)
                     .then(function successCallback(d) {
-                      console.log("done deleting phone");
-                       $route.reload();
-                       $modalInstance.close('closed');
+                      console.log("done deleting phone!!!!!!!!!!!!!!!!!");
+                      console.log(d.data.business.phones);
+                       $modalInstance.close({
+                         phones : d.data.business.phones
+                       });
                     },
                     function errorCallback(d){
                       $scope.error = d.data;
@@ -445,7 +455,7 @@ console.log($routeParams.name);
             $scope.no = function () {
                 $modalInstance.dismiss('cancel');
             };
-    }
+    };
 
         var deletePaymentMethodCtrl = function ($scope, $modalInstance, business, Business, $route) {
           $scope.error = "";
@@ -456,15 +466,14 @@ console.log($routeParams.name);
                       $scope.business = business;
                       $scope.business = d.data.business;
                       console.log("done deleting payment_method");
-                       $route.reload();
-                    $modalInstance.close('closed');
+                       $modalInstance.close({
+                         methods : d.data.business.payment_methods
+                       });
                     },
                     function errorCallback(d){
                       $scope.error = d.data;
                     });
-
             };
-
             $scope.no = function () {
                 $modalInstance.dismiss('cancel');
             };
