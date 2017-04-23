@@ -1,25 +1,33 @@
 
 var app = angular.module('fasa7ny');
-app.controller('businessController', function ($scope, status, $http, Business, Global, $location, $routeParams, $modal, $log, $window) {
+app.controller('businessController', function ($scope, status, $http, Business,
+  Global, $location, $routeParams, $modal, $log, $window, Stats) {
 
   status.local()
     .then(function (res) {
       if (res.data) {
-        if (res.data.user_type == 1)
+        if (res.data.user_type == 1)    // user 3ady
           $scope.type = 1;
-        else if (res.data.user_type == 2)
-          $scope.type = 4;
-        else $scope.type = 3;
+        else if (res.data.user_type == 2)   // business
+        {
+          if (res.data._id == cur_business.id)  // don't know cur_business.id hatb2a f variable esmo eh
+            $scope.type = 4;   // means loggedin business views his own page (optional)
+          else
+            $scope.type = 2;   // another business
+        }
+        else if (res.data.user_type == 3)    // logged in admin
+          $scope.type = 3;
       }
       else {
         status.foreign()
           .then(function (res) {
-            if (res.data.user_type)
+            if (res.data.user_type) // hena bn-check law fi user loged in via facebook or google ,, bs GHALAT yb2a set l 2 fel else
               $scope.type = 1;
-            else $scope.type = 2;
+            else $scope.type = 5;      // not logged in aslan (momkn tt3amal undefined maslan)
           });
       }
     });
+
 
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
@@ -146,6 +154,9 @@ app.controller('businessController', function ($scope, status, $http, Business, 
       console.log($scope.image2);
       console.log($scope.image3);
       console.log($scope.image4);
+
+      //check cookies for page views 
+      Stats.checkCookies($scope.type, $scope.business._id);
 
       // console.log($scope.check);
       // console.log($scope.sub);

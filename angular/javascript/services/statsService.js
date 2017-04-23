@@ -1,5 +1,5 @@
 angular.module('fasa7ny')
-    .factory('Stats', function ($http) {
+    .factory('Stats', function ($http, $cookies) {
         var api = 'http://localhost:3000';
         var factory = {};
         factory.year = function (params) {
@@ -16,11 +16,11 @@ angular.module('fasa7ny')
         }
 
         var formatDate = function (date) {
-            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];            
+            var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
             var day = date.getDate();
-            var month = months[date.getMonth()]; 
-            var year = date.getFullYear(); 
-            return day + ' ' + month + ' ' + year; 
+            var month = months[date.getMonth()];
+            var year = date.getFullYear();
+            return day + ' ' + month + ' ' + year;
         }
         factory.processData = function (resData, type) {
             var chart = {};
@@ -55,6 +55,35 @@ angular.module('fasa7ny')
             chart.data.push(sales);
             chart.data.push(subs);
             return chart;
+        }
+
+        factory.checkCookies = function (userType, businessID) {
+            //if logged in user, or not logged in user, or another business, then count page views
+            if (userType == 1 || userType == 2 || userType == 5) {
+                var cookieKey = 'fasa7ny.' + businessID + '.' + userType;
+                var cookie = $cookies.get(cookieKey);
+                console.log(cookie);
+
+                if (typeof cookie == 'undefined' || cookies == null) {
+                    console.log('here');
+
+                    var date = new Date();
+                    $http.post('http://localhost:3000/stats/addStat', {
+                        date: date,
+                        businessID: businessID,
+                        statType: 'views',
+                        amount: 1
+                    }, function (res) {
+
+                    });
+                    var now = new Date();
+                    now.setMinutes(now.getMinutes() + 10);
+                    $cookies.put(cookieKey, 'fasa7ny', {
+                        expires: now
+                    });
+                    console.log($cookies.get(cookieKey));
+                }
+            }
         }
 
         return factory;

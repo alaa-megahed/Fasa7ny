@@ -7,7 +7,8 @@
     <center class="w3-margin-bottom">
         <!--search bar-->
         <form>
-            <input type="text" class="w3-input w3-border-green w3-round-large" placeholder="Search..." autocomplete="on" name="seach" ng-model="keyword">
+            <input type="text" class="w3-input w3-border-green w3-round-large" placeholder="Search..." autocomplete="on" name="seach"
+                ng-model="keyword">
             <button type="submit" title="Search" id="search-submit">
         <i class="fa fa-search"></i></button>
             <!-- search bar end -->
@@ -59,12 +60,20 @@
             <!--area end -->
             <!--min rating -->
             <div class="form-group">
-                <label  for="min-rating">Minimum rating: </label> <br>
+                <label for="min-rating">Minimum rating: </label> <br>
                 <input class="w3-border-green w3-round-large" id="min-rating" type="number" min="0.0" max="5.0" step="0.1" ng-model="minRating">
             </div>
             <!--min rating end -->
         </form>
-
+        <!-- AddToAny BEGIN -->
+        <!--<div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+            <a class="a2a_button_facebook"></a>
+            <a class="a2a_button_twitter"></a>
+            <a class="a2a_button_google_plus"></a>
+        </div>
+        <script async src="https://static.addtoany.com/menu/page.js"></script>-->
+        <!-- AddToAny END -->
 
     </center>
 </div>
@@ -189,10 +198,8 @@
     input,
     option {
         color: #000;
-    
-        outline: none; 
+        outline: none;
     }
-
     
     .styled-select {
         background: url(http://i62.tinypic.com/15xvbd5.png) no-repeat 96% 0;
@@ -337,5 +344,4 @@
         border-radius: 20px;
         padding-left: 15px;
     }
-    
 </style>

@@ -10,8 +10,10 @@ var statsController = require('./stats.controller');
 var path = require('path');
 
 var BusinessController = {
-    getBusiness: function (req, res) {
+    getBusiness: function (req, res, next) {
         //count page views for business except when business is viewing its own page 
+       
+
         if (req.params.id && req.user && req.user instanceof User) {
             //  var name = req.params.name;
             var id = req.params.id;
@@ -81,6 +83,8 @@ var BusinessController = {
                     }
                 })
         } else res.status(500).json("Error");
+
+
     },
 
     /* A business can request to be removed from the website.
