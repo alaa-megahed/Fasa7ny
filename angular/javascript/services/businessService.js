@@ -1,15 +1,23 @@
-// angular.module('businessService', [])
-var app = angular.module('fasa7ny');
+
+
 app.factory('Business', ['$http', function ($http) {
   return {
     get: function (id) {
       console.log("service");
-      return $http.get('http://127.0.0.1:3000/business/b/' + id, { withCredential: true });
+      return $http.get('http://127.0.0.1:3000/business/b/' + id);
     },
-    edit: function (formData) {
-      console.log("service!" + formData);
 
-      return $http.post('http://127.0.0.1:3000/business/editInformation', formData);
+    edit: function (data) {
+
+      var fd = new FormData();
+      for (var key in data)
+        fd.append(key, data[key]);
+
+      console.log(fd);
+      return $http.post('http://127.0.0.1:3000/business/editInformation', fd, {
+        transformRequest: angular.identity,
+        headers: { 'Content-Type': undefined }
+      });
     },
 
     subscribe: function (id) {
@@ -30,7 +38,6 @@ app.factory('Business', ['$http', function ($http) {
     public: function () {
       console.log('public service');
       return $http.get('http://127.0.0.1:3000/business/publicPage');
-
     },
 
     remove: function () {
@@ -38,26 +45,19 @@ app.factory('Business', ['$http', function ($http) {
       return $http.get('http://127.0.0.1:3000/business/requestRemoval');
     },
 
-    hasBookings: function () {
-      return $http.get('http://127.0.0.1:3000/business/hasBookings');
-    },
-
-
     deleteImage: function (image) {
       console.log('delete image service');
       return $http.get('http://127.0.0.1:3000/business/deleteImage/' + image);
     },
 
-
     addImage: function (data) { //for slider
-
       console.log('add image service');
       var fd = new FormData();
       for (var key in data)
         fd.append(key, data[key]);
 
       console.log(fd);
-      return $http.post('http://127.0.0.1:3000/business/editInformation', fd, {
+      return $http.post('http://127.0.0.1:3000/business/changeImage', fd, {
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
       });
@@ -86,8 +86,9 @@ app.factory('Business', ['$http', function ($http) {
         headers: { 'Content-Type': undefined }
       });
     },
-
-    getFacilityOccs: function (facility_id) {
+    hasBookings: function () {
+      return $http.get('http://127.0.0.1:3000/business/hasBookings');
+    }, getFacilityOccs: function (facility_id) {
       return $http.get('http://127.0.0.1:3000/business/getFacilityOccs/' + facility_id);
     },
 
@@ -119,6 +120,11 @@ app.factory('Business', ['$http', function ($http) {
     downvote: function (params) {
       return $http.post('http://127.0.0.1:3000/reviews/downvoteReview', params);
     }
-    //end reviews services
   }
 }]);
+
+
+app.factory('business', function () {
+  return {};
+});
+

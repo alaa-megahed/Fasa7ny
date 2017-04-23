@@ -4,6 +4,7 @@ app.controller('eventController', function ($scope, $http, status, Event, $locat
 	$scope.imageEventlength = 0;
 	$scope.slides = [];
 	$scope.event = {};
+	$scope.eventocc = {};
 
 	$scope.user = {};
 	status.local()
@@ -103,12 +104,34 @@ app.controller('eventController', function ($scope, $http, status, Event, $locat
 		});
 		modalInstance.result.then(function (selectedItem) {
 			$scope.selected = selectedItem;
+		});
+	};
+
+
+	$scope.showForm = function (id) {
+		$scope.message = "Show Form Button Clicked";
+		console.log($scope.message);
+		console.log("1" + $scope.formData);
+		var modalInstance = $modal.open({
+			templateUrl: 'views/editEvent.html',
+			controller: ModalInstanceCtrl,
+			scope: $scope,
+			resolve: {
+				id: function () {
+					return id;
+				}
+			}
+		});
+		modalInstance.result.then(function (selectedItem) {
+			$scope.selected = selectedItem;
 			$scope.event = selectedItem.event;
 			$scope.eventocc = selectedItem.eventocc;
+			console.log($scope.eventocc);
 		});
 	};
 
 	$scope.deleteImageEvent = function (eventId, image) {
+
 		$scope.message = "Show delete Form Button Clicked";
 		console.log($scope.message);
 		console.log(image);
@@ -193,6 +216,7 @@ var DeletePopUp2 = function ($scope, $location, $modalInstance, status, Event, i
 
 
 
+
 var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event, id, $route) {
 	$scope.form = {}
 	$scope.formData = {}
@@ -200,6 +224,12 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event, id, $ro
 	$scope.submitForm = function () {
 		if (($scope.formData.starttime && !$scope.formData.endtime) || (!$scope.formData.starttime && $scope.formData.endtime)) {
 			$scope.error = "Must enter both a start date and end date";
+		}
+		if ($scope.formData.capacity == 0) {
+			$scope.error = "Enter a valid capacity";
+		}
+		if ($scope.formData.price == 0) {
+			$scope.error = "Enter a valid price";
 		}
 		else {
 			console.log('Submit Form' + $scope.formData);
@@ -212,8 +242,8 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event, id, $ro
 						eventocc: d.data.eventocc
 					});
 
-					// $route.reload();
-					// $modalInstance.close('closed');
+					$route.reload();
+					$modalInstance.close('closed');
 				}, function errorCallback(d) {
 					$scope.error = d.data;
 				});
@@ -223,6 +253,7 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event, id, $ro
 	$scope.cancel = function () {
 		$modalInstance.dismiss('cancel');
 	};
+
 };
 
 
