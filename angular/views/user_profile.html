@@ -124,7 +124,7 @@
                                 <p style="display:inline">Total: <span class="color"> {{info.booking.charge}} 150 EGP &nbsp; </p>
                             </span>
 
-                            <div style=" display:inline;  vertical-align: middle; padding-left: 180px">
+                            <div style=" display:inline;  vertical-align: middle; padding-left: 180px;">
                                 <a class="btn btn-booking" href="../single-post.html">Cancel Booking</a> 
                             </div>
 						</div>  <!-- second section end !-->
@@ -184,35 +184,41 @@
                                         </a>
                                     </div>
 
-
-                                    <img src="../img/user_profile/at_sign.png" alt="at_sign_icon" class="image2" align="left" style = "padding-top: 4px">
-                                    <div style="padding-left: 25px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
-                                            {{ user.local.username }}  <!-- ASK !-->
-                                        </a>
+                                    <div ng-if = "user.local.username">
+                                        <img src="../img/user_profile/at_sign.png" alt="at_sign_icon" class="image2" align="left" style = "padding-top: 4px">
+                                        <div style="padding-left: 25px;"> 
+                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                                {{ user.local.username }}  <!-- ASK !-->
+                                            </a>
+                                        </div>
                                     </div>
 
 
-                                    <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon_profile" class="image2" align="left" style = "padding-top: 6px">
-                                    <div style="padding-left: 25px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
-                                            {{ user.phone }}
-                                        </a>
+                                    <div ng-if = "user.phone">
+                                        <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon_profile" class="image2" align="left" style = "padding-top: 6px">
+                                        <div style="padding-left: 25px;"> 
+                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                                {{ user.phone }}
+                                            </a>
+                                        </div>
                                     </div>
 
-
-                                    <img src="../img/user_profile/bdate_icon3.png" alt="bdate_icon_" class="image2" align="left" style = "padding-top: 6px">
-                                    <div style="padding-left: 25px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
-                                            {{ user.birthdate | date}}
-                                        </a>
+                                    <div ng-if = "user.birthdate">
+                                        <img src="../img/user_profile/bdate_icon3.png" alt="bdate_icon_" class="image2" align="left" style = "padding-top: 6px">
+                                        <div style="padding-left: 25px;"> 
+                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                                {{ user.birthdate | date}}
+                                            </a>
+                                        </div>
                                     </div>
 
-                                    <img src="../img/user_profile/gender_icon.png" alt="gender_icon" class="image2" align="left" style = "padding-top: 6px">
-                                    <div style="padding-left: 25px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
-                                            {{ user.gender }}
-                                        </a>
+                                    <div ng-if = "user.gender">
+                                        <img src="../img/user_profile/gender_icon.png" alt="gender_icon" class="image2" align="left" style = "padding-top: 6px">
+                                        <div style="padding-left: 25px;"> 
+                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                                {{ user.gender }}
+                                            </a>
+                                        </div>
                                     </div>
 
                                  

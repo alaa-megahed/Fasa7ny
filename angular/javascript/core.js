@@ -12,7 +12,7 @@ app.config(function($routeProvider){
 	// })
 
 	.when("/", {
-		templateUrl : "views/search_page.html",
+		templateUrl : "views/user_profile.html",
 		controller  : "userController"
 	})
 

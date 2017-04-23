@@ -134,6 +134,12 @@ color: #fff;
     color: #fff;
 }
 
+.btn-search:hover {
+	border: 1px solid transparent;
+	border-color: #6CB670;
+    color: #fff;
+}
+
 /* end of user profile page extras */
 
 .form-control {
@@ -843,6 +849,18 @@ margin-bottom: 10px;
 color: #6cb670;
 }
 
+
+/*=================================================================
+Search Section
+==================================================================*/
+
+#search-sction {
+background-image: url("../img/parallax/twitter.jpg");
+padding-bottom: 100px;
+padding-top: 80px;
+}
+
+
 /*=================================================================
 Pricing section
 ==================================================================*/
@@ -1095,6 +1113,10 @@ width: 100%;
 .contact-form select:hover,
 #contact-submit:hover {
 border-color: #6CB670;
+}
+
+.contact-form .rounded input {
+	border-radius: 5px;
 }
 
 

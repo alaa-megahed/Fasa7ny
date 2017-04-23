@@ -40,10 +40,36 @@
                         <input type="text" placeholder="Address" class="form-control" name="address" id="address" ng-model="formData.address">
                     </div>
 
+                    <div ng-show = "user.gender == Female ">
+                        <select ng-model="formData.gender">
+                              <option value="" disabled selected> -- Choose Gender --</option>
+                              <option value="Male">Male</option>
+                              <option value="Female" selected="selected">Female</option>
+                              <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div ng-show = "user.gender == Male "> 
+                        <select ng-model="formData.gender">
+                              <option value="" disabled selected> -- Choose Gender --</option>
+                              <option value="Male" selected="selected">Male</option>
+                              <option value="Female">Female</option>
+                              <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div ng-show = "user.gender == Other ">
+                        <select ng-model="formData.gender">
+                              <option value="" disabled selected> -- Choose Gender --</option>
+                              <option value="Male">Male</option>
+                              <option value="Female">Female</option>
+                              <option value="Other" selected="selected">Other</option>
+                        </select>
+                    </div>
 
                     <select ng-model="formData.gender">
                           <option value="" disabled selected> -- Choose Gender --</option>
-                          <option value="Male">Male</option>
+                          <option value="Male" selected="selected">Male</option>
                           <option value="Female">Female</option>
                           <option value="Other">Other</option>
                     </select>
