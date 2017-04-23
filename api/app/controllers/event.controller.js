@@ -618,7 +618,15 @@ exports.editEvent = function (req, res) {
 					}
 					event.save(function(err, newevent) {
 						if(err) res.status(500).json("Something went wrong");
-						else res.status(200).json({event:newevent});
+						else {
+							EventOccurrences.find({event: id}, function(err,occs){
+								if(err) res.status(500).json("Something went wrong");
+								else if(!occs) res.status(500).json("Something went wrong");
+								else res.status(200).json({event:newevent, eventocc:occs});
+								
+							})
+							
+						}
 					});
 
 				}

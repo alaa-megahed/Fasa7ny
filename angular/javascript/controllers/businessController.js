@@ -37,6 +37,8 @@ console.log($routeParams.name);
   $scope.events = []; //once events
   $scope.eventlength = 0;
 
+  $scope.sublength = 0;
+
   Business.get($routeParams.name)
   .then(function(d) {
     console.log("then");
@@ -47,13 +49,16 @@ console.log($routeParams.name);
           $scope.type = 1;
           if(d.data.rate) $scope.ratedBy = d.data.rate;
 
+          console.log(res.data);
+          console.log(d.data.result.subscribers);
           $scope.check = 0;
           for(var i = 0; i < d.data.result.subscribers.length; i++) {
-            if(d.data.result.subscribers[i] == d.data.user) {
+            if(d.data.result.subscribers[i] == res.data._id) {
                 $scope.check = 1;
                 $scope.sub = "Unsubscribe";
             }
-            $window.name = $scope.business.name;
+            console.log($scope.sub);
+            console.log($scope.check);
           }
         }
         else if(res.data.user_type == 3) {
@@ -77,11 +82,10 @@ console.log($routeParams.name);
 
               $scope.check = 0;
               for(var i = 0; i < d.data.result.subscribers.length; i++) {
-                if(d.data.result.subscribers[i] == d.data.user) {
+                if(d.data.result.subscribers[i] == res.data._id) {
                     $scope.check = 1;
                     $scope.sub = "Unsubscribe";
                 }
-                $window.name = $scope.business.name;
               }
             }
             else if(res.data.user_type == 3) {
@@ -109,6 +113,8 @@ console.log($routeParams.name);
     $scope.phones = d.data.result.phones;
     $scope.phonelength = 0; //zero means that the business has more than one phone number
     if($scope.phones.length == 1) $scope.phonelength = 1;
+
+    $scope.sublength = $scope.business.subscribers.length;
 
     $scope.methods = d.data.result.payment_methods;
     $scope.paymentlength = $scope.methods.length; //zero means that the business has more than one payment method
@@ -142,6 +148,7 @@ console.log($routeParams.name);
    		console.log("sub done");
       $scope.sub = "Unsubscribe";
       $scope.check = 1;
+      $scope.sublength = $scope.sublength + 1;
    	})
   };
 
@@ -152,6 +159,7 @@ console.log($routeParams.name);
        console.log("unsub done");
        $scope.sub = "Subscribe";
        $scope.check = 0;
+       $scope.sublength = $scope.sublength - 1;
      })
    };
 
