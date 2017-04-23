@@ -83,9 +83,10 @@
       $('#search > form > input[type="search"]').focus();
     });
     $('#search, #search button.close').on('click keyup', function(event) {
-      if (event.target == this || event.target.className == 'close' || event.keyCode == 27 || event.keyCode == 13) {
+      if (event.target == this || event.target.className == 'close' || event.keyCode == 27 || event.keyCode == 13 || event.target.className == 'submit') {
           $(this).removeClass('open');
       }
+
     });
     });
     </script>
@@ -150,7 +151,7 @@
 
     </head>
 
-    <body id="body">
+    <body id="body" ng-cloak>
 
 
       <header id="navigation" class="navbar navbar-inverse" role = "navigation">
@@ -179,8 +180,7 @@
       <div ng-controller = "navbarController">
          <nav class="collapse navbar-collapse navbar-right" role="Navigation" >
              <ul id="nav" class="nav navbar-nav">
-                 <li class="current"><a href="" ng-click = "getHome()">Home</a></li>
-                 <li><a href="#showcase">About Us</a></li>
+                 <li><a href="" ng-click = "getHome()">Home</a></li>
                  <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signUp()">Sign Up</a></li>
                  <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signIn()">Sign In</a></li>
                  <li ng-if = "user.data.user_type == 1"><a href=""> My Profile </a></li>
@@ -213,7 +213,7 @@
                </ul>
              </nav>
 
-             <div id="search" style = "background-color: #2B2C30;" ng-if = "searchAppear" ng-submit = "getSearch()">
+             <div id="search" style = "background-color: #2B2C30;"  ng-submit = "getSearch()">
                <button type="button" class="close">×</button>
                  <form name = "form.userForm" ng-submit = "search()">
                    <input type="search" value="" placeholder="type keyword(s) here"  ng-model = "form.search" />
@@ -248,7 +248,7 @@
 
 
 <!-- start footer -->
-		<footer id="footer" class="bg-one">
+		<footer id="footer" class="bg-one" >
 			<div class="container">
 						<!-- copyright -->
             <div class="copyright text-center">
