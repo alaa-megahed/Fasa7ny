@@ -623,9 +623,9 @@ exports.editEvent = function (req, res) {
 								if(err) res.status(500).json("Something went wrong");
 								else if(!occs) res.status(500).json("Something went wrong");
 								else res.status(200).json({event:newevent, eventocc:occs});
-								
+
 							})
-							
+
 						}
 					});
 

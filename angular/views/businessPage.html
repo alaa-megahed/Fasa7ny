@@ -164,30 +164,148 @@
                                 </ul>
                             </div>
                         </aside>
-                        <!-- End Single Widget -->
-                         <aside class="widget wow fadeInDown">
-                            <div class="widget-title">
-                               <h3>Business' Information</h3>
+
+                        <!-- section title -->
+                        <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                            <h2>Business <span class="color">Details</span></h2>
+                            <div class="border"></div>
+                        </div>
+                        <!-- /section title -->
+                        <div>
+
+                          <div class = "post-item">
+                            <article class = "entry wow fadeInDown" data-wow-duration = "1000ms" data-wow-delay = "300ms">
+                              <div class = "post-excerpt">
+
+                                <div style="padding-left: 23px;">
+                              		<a style="font-size: 20px; color:white; margin-top: 2px; margin-bottom: 2px; opacity: 0">
+                              			no data
+                              		</a>
+                              	</div>
+
+                              	<!-- <img src="../img/user_profile/at_sign.png" alt="at_sign_icon" class="image2" align="left" style = "padding-top: 4px"> -->
+                              	<div style="padding-left: 25px;">
+                                  <div ng-if = "business.area">
+                                		<a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
+                                      <i class = "fa fa-location-arrow" aria-hidder="true" style="color: #6cb670"></i>
+                                			&nbsp;&nbsp;{{ business.area }}
+                                		</a>
+                                  </div>
+                              	</div>
+
+                                <div style="padding-left: 25px;">
+                                  <div ng-if = "business.address">
+                                		<a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
+                                      <i class = "fa fa-map-marker" aria-hidder="true" style="color: #6cb670"></i>
+                                			 &nbsp;&nbsp;{{ business.address }}
+                                		</a>
+                                  </div>
+                              	</div>
+
+
+                              	<!-- <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon_profile" class="image2" align="left" style = "padding-top: 6px"> -->
+                              	<div style="padding-left: 25px;">
+                                  <div ng-if = "phones.length>0">
+                                    <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
+                                      <i class = "fa fa-phone" aria-hidder="true" style="color: #6cb670"></i>
+                                    </a>
+                                    <div style="display:inline-block"  ng-repeat = "phone in phones">
+                                  		<a  style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
+                                  			&nbsp;&nbsp;{{ phone }}
+                                        <a ng-if = "type == 4" ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)">
+                                          <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                  		</a>
+                                    </div>
+                                  </div>
+                              	</div>
+
+
+                              	<!-- <img src="../img/user_profile/bdate_icon3.png" alt="bdate_icon_" class="image2" align="left" style = "padding-top: 6px"> -->
+                              	<div style="padding-left: 25px;">
+                                  <div ng-if = "business.email">
+                                		<a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
+                                      <i class = "fa fa-envelope-o" aria-hidder="true"style="color: #6cb670"></i>
+                                			  &nbsp;&nbsp; {{ business.email }}
+                                		</a>
+                                  </div>
+                              	</div>
+
+                              	<!-- <img src="../img/user_profile/gender_icon.png" alt="gender_icon" class="image2" align="left" style = "padding-top: 6px"> -->
+                              	<div style="padding-left: 25px;">
+                                  <div ng-if = "method">
+                                    <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
+                                      <i class = "fa fa-money" aria-hidder="true" style="color: #6cb670"></i>
+                                    </a>
+                                    <div style="display:inline-block" ng-if = "methods.length>0" ng-repeat = "method in methods">
+                                  		<a  style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
+                                  			&nbsp;&nbsp;{{ method }}
+                                        <a ng-if = "type == 4" ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)">
+                                          <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                      </a>
+                                    </div>
+                                  </div>
+                              	</div>
+
+                                <!-- <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon_profile" class="image2" align="left" style = "padding-top: 6px"> -->
+                                <div style="padding-left: 25px;">
+                                  <div ng-if = "categories.length>0">
+                                    <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
+                                      <i class = "fa fa-tags" aria-hidder="true" style="color: #6cb670"></i>
+                                    </a>
+                                    <div style="display:inline-block"  ng-repeat = "category in categories">
+                                      <a  style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
+                                        &nbsp;&nbsp;{{ category }}
+                                      </a>
+                                    </div>
+                                </div>
+                                </div>
+
+
+
+                              	<div style="padding-left: 23px;">
+                              		<a style="font-size: 20px; color:white; margin-top: 2px; margin-bottom: 2px; opacity: 0">
+                              			no data
+                              		</a>
+                              	</div>
+
+                              </div>
+
                             </div>
-                            <div class="widget-content">
-                                <li>Area: {{ business.area }}</li>
-                                <li>Address: {{ business.address }}</li>
-                                <li>Phone Numbers: </li>
-                                <!-- <li ng-repeat = "phone in phones"> {{ phone }} <button ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)" style="color:#000;"> delete <button> </li> -->
-                                  <li ng-if = "phones.length>0" ng-repeat = "phone in phones"> {{ phone }}
-                                    <a ng-if = "type == 4" ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)">
-                                      <span class="glyphicon glyphicon-trash"></span> </a> </li>
-                                <li>Email: {{ business.email }}</li>
-                                <li>Payment Methods: </li>
-                                  <li ng-if = "methods.length>0" ng-repeat = "method in methods"> {{ method }}
-                                    <a ng-if = "type == 4" ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)">
-                                    <span class="glyphicon glyphicon-trash"></span> </a> </li>
-                            </div>
-                            <div class="widget-content">
-                          </div>
-                        </aside>
-                    </div>
+                          </article>
+                        </div>
                 </div>
+              </div>
+
+
+
+
+
+
+
+
+
+              <!-- <li>Area: {{ business.area }}</li>
+              <li>Address: {{ business.address }}</li>
+              <li>Phone Numbers: </li> -->
+              <!-- <li ng-repeat = "phone in phones"> {{ phone }} <button ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)" style="color:#000;"> delete <button> </li> -->
+                <!-- <li ng-if = "phones.length>0" ng-repeat = "phone in phones"> {{ phone }} -->
+                  <!-- <a ng-if = "type == 4" ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)"> -->
+                    <!-- <span class="glyphicon glyphicon-trash"></span> </a> </li> -->
+              <!-- <li>Email: {{ business.email }}</li>
+              <li>Payment Methods: </li>
+                <li ng-if = "methods.length>0" ng-repeat = "method in methods"> {{ method }}
+                  <a ng-if = "type == 4" ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)">
+                  <span class="glyphicon glyphicon-trash"></span> </a> </li>
+ -->
+
+
+
+
+
+
+
 
 
 
