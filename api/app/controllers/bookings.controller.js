@@ -247,14 +247,14 @@ exports.cancel_booking = function(req,res)
 
                          // check if this booking belongs to business currently manipulating it
                          if(business != req.user.id)
-                            res.status(403).json("You do not have authority to access this page");
+                            return res.status(403).json("You do not have authority to access this page");
                           else
                            {
 
                              Booking.findByIdAndRemove(bookingID,function(err,booking)
                               {
                                 if(err || !booking)
-                                    return res.status(200).json("Oops, something went wrong, please try again with the correct information ");
+                                    return res.status(500).json("Oops, something went wrong, please try again with the correct information ");
                                 else
                                  {
                                     var content = business.name + " cancelled your booking in " + event.name + "     " ;
@@ -268,7 +268,7 @@ exports.cancel_booking = function(req,res)
                                     var charge_id = booking.stripe_charge;
                                     if(!charge_id || charge_id === undefined)
                                     {
-                                      return res.status(200).json(booking);
+                                      // return res.status(200).json(booking);
                                     }
                                     else
                                     {
@@ -281,10 +281,7 @@ exports.cancel_booking = function(req,res)
                                           {
                                             res.status(500).json(err.message);
                                           }
-                                          else
-                                          {
-                                            res.status(200).json("refund successfully completed");
-                                          }
+                                         
                                         });
                                     }
 

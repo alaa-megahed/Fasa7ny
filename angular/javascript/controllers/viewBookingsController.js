@@ -65,9 +65,11 @@ app.controller('viewEventBookings',function($scope,status,$http,$location,occurr
  });
 
 
-    viewOccurences.get($routeParams.eventId).then(function (response) {
-        $scope.event_occ = response.data.eventocc[0];
-     });
+    // viewOccurences.get($routeParams.eventId).then(function (response) {
+    //     $scope.event_occ = response.data.eventocc[0];
+    //  });
+
+    $scope.event_occ = $routeParams.onceEventOcc;
 
     occurrenceBookings.get($scope.event_occ).then(function (response){
         $scope.bookings = response.data;

@@ -99,7 +99,7 @@ app.config(function($routeProvider){
 		controller : "viewBookingsController"
 	})
 
-	.when('/bookings/:eventId',{
+	.when('/bookings/:onceEventOcc',{
 		templateUrl: "views/occurrence_bookings.html",
 		controller : "viewEventBookings"
 	})

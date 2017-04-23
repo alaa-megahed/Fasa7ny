@@ -1,4 +1,4 @@
-app.controller('eventController', function($scope, $http, status, Event,Global, $location, $routeParams, $modal,$window) {
+app.controller('eventController', function($scope, $http, status, Event,Global, $location, $routeParams,occurrenceBookings,viewOccurences, $modal,$window) {
 
 	$scope.user = {};
 		status.local()
@@ -101,7 +101,11 @@ $scope.error = "";
 
      $scope.viewEventBookings = function(eventId)
      {
-        $location.path('/bookings/'+eventId);
+        viewOccurences.get(eventId).then(function (response) {
+        $scope.event_occ = response.data.eventocc[0]._id;
+        $location.path('/bookings/'+$scope.event_occ); // /bookings/:onceEventOcc
+
+         });
      };
 
 });
