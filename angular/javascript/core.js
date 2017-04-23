@@ -15,7 +15,7 @@ app.config(function($routeProvider){
 		controller  : "searchtestController"
 	})	
 
-	.when("/book-event", {
+	.when("/book-event/:id", {
 		templateUrl : "views/booking_event.html",
 		controller  : "bookingEventController"
 	})

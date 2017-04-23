@@ -4,9 +4,29 @@ var app = angular.module('fasa7ny');
 app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences) 
 {     
 
-    // $scope.business_id = Global.getBusiness();
-     $scope.business_id = $routeParams.id;
+    $scope.current_event = $routeParams.id;
+      Event.get($scope.current_event).then(
+          function(response)
+          {
+            $scope.event = response.data.event;
+            $scope.business_id = $scope.event.business_id;
+            console.log("once event details "+ $scope.event);
+               $http.get('http://127.0.0.1:3000/business/b/'+$scope.business_id ).then(
+              function(response)
+              {
+                $scope.business = response.data.result;
 
+                 Offers.get($scope.business_id)
+                  .then(function(response) {
+                         $scope.offers = response.data;
+                         $scope.betengan = "Roody";
+                     });
+              });
+       
+          });
+
+        
+     
     $scope.user = {};
     status.local()
      .then(function(res){
@@ -38,14 +58,9 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
         //   if($scope.business.payment_methods[i] === "cash")
         //     $scope.cash = true;
         // }
-        $scope.current_event = Global.getOnceEvent();
+        // $scope.current_event = Global.getOnceEvent();
 
-        Event.get($scope.current_event).then(
-          function(response)
-          {
-            $scope.event = response.data.event;
-            console.log("once event details "+ $scope.event);
-          });
+      
         console.log($scope.current_event);
 
         viewOccurences.get($scope.current_event).then(function (response) {
@@ -59,18 +74,12 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
         console.log("business id "+$scope.business_id);
 
         $scope.min = 1;
-        var offers;
-        Offers.get($scope.business_id)
-                .then(function(response) {
-                       offers = response.data;
-                       $scope.offers = response.data;
-                       $scope.betengan = "Roody";
-                   });
+       
         $scope.book_cash = function()
         {   
           var chosen_offer = $scope.formData.chosen_offer;
           console.log("count   "+$scope.formData.count+" offer   "+$scope.formData.chosen_offer); //why  undefined?
-          var min_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, offers);
+          var min_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
           $scope.charge = min_charge;
           console.log("charge   " + min_charge); 
           console.log("event occurrence befor http "+ $scope.event_occ._id);

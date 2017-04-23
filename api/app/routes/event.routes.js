@@ -23,6 +23,7 @@ router.get('/getOnceEventDetails/:eventId', RegularEventController.getOnceEventD
 router.get('/facilities',RegularEventController.getAllFacilities);
 router.get('/getEvent/:id', RegularEventController.getEvent);
 router.get('/getOnceEvents/:id',RegularEventController.getOnceEvents);
+router.post('/getOccurrence', RegularEventController.getOccurrence);
 
 router.get('/viewO',RegularEventController.getAllTimings); 
 router.get('/getOnceEventDetails/:businessId/:eventId', RegularEventController.getOnceEventDetails);
