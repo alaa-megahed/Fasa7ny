@@ -97,6 +97,11 @@ app.config(function($routeProvider){
 
 	})
 
+	.when('/bookings/:eventoccId',{
+		templateUrl: "views/occurrence_bookings.html",
+		controller : "viewBookingsController"
+	})
+
 
 	// $locationProvider.html5Mode(true);
 

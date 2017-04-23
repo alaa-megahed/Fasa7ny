@@ -20,13 +20,17 @@ app.controller('viewOccurencesController', function($scope, $http, status,viewOc
    }
  });
 
-
   viewOccurences.get($routeParams.eventId)
 	.then(function(d) {
     $scope.eventocc = d.data.eventocc;
     $scope.time = d.data.eventocc[0].time;
     console.log($scope.eventocc);
   });
+
+  $scope.viewBookings = function(occId)
+  {
+     $location.path('/bookings/'+occId);
+  }
 
   $scope.deleteEvent = function (occId) {
         $scope.message = "Show Occ Delete Button Clicked";

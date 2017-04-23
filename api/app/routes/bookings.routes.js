@@ -25,7 +25,7 @@ var payment    = require('../controllers/payment.controller');
 
     router.post('/cancel_booking',booking.cancel_booking);
 
-    router.post('/view_event_bookings',booking.view_event_bookings);
+    router.get('/view_event_bookings/:event_id',booking.view_event_bookings);
     router.post('/cancel_booking_after_delete', booking.cancel_booking_after_delete);
 
     //below belongs to RegisteredUser
