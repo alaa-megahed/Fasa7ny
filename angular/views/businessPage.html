@@ -22,7 +22,7 @@
    <input ng-if = "type == 4 && business.public == 0" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;Make Page Public&nbsp;&nbsp;&nbsp;&nbsp;" ng-click = "public()" class="btn btn-transparent">
    <input ng-if = "type == 4" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a Facility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" ng-click = "createFacility(business._id)" class="btn btn-transparent">
    <input ng-if = "type == 4" type="submit" value="Create One-Time Event" ng-click = "createOneEvent(business._id)" class="btn btn-transparent">
-    <form ng-click = "businessEdit()" method="get">
+    <form ng-click = "businessEdit()">
        <input ng-if = "type == 4" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit Information&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" class="btn btn-transparent">
      </form>
 
@@ -173,11 +173,14 @@
                                 <li>Address: {{ business.address }}</li>
                                 <li>Phone Numbers: </li>
                                 <!-- <li ng-repeat = "phone in phones"> {{ phone }} <button ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)" style="color:#000;"> delete <button> </li> -->
-                                  <li ng-repeat = "phone in phones"> {{ phone }} <a ng-if = "type == 4" ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)"><span class="glyphicon glyphicon-trash"></span> </a> </li>
+                                  <li ng-repeat = "phone in phones"> {{ phone }}
+                                    <a ng-if = "type == 4" ng-click="phonelength == 1 ? deletePhone(0):deletePhone(phone)">
+                                      <span class="glyphicon glyphicon-trash"></span> </a> </li>
                                 <li>Email: {{ business.email }}</li>
                                 <li>Payment Methods: </li>
-                                <!-- <li ng-repeat = "method in methods"> {{ method }} <button ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)" style="color:#000;"> delete <button></li> -->
-                                  <li ng-repeat = "method in methods"> {{ method }} <a ng-if = "type == 4" ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)"><span class="glyphicon glyphicon-trash"></span> </a> </li>
+                                  <li ng-repeat = "method in methods"> {{ method }}
+                                    <a ng-if = "type == 4" ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)">
+                                    <span class="glyphicon glyphicon-trash"></span> </a> </li>
                             </div>
                             <div class="widget-content">
                           </div>

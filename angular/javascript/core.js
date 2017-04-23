@@ -17,28 +17,17 @@ app.config(function($routeProvider){
 	.when("/search/:id", {
 		templateUrl : "views/searchtest.html",
 		controller  : "searchtestController"
-
 	})
-	// .when("/business/:id", {
-	// 	templateUrl : "views/businessPage.html",
-	// 	controller  : "businessController"
-	// })
+
 	.when("/editBusiness", {
 		templateUrl : "views/businessEdit.html",
-		controller  : "businessController"
+		controller  : "editBusinessController"
 	})
 
 	.when("/business/:name", {
 		templateUrl : "views/businessPage.html",
 		controller  : "businessController"
 	})
-
-
-	.when("/:id", {
-		templateUrl : "views/businessPage.html",
-		controller  : "businessController"
-	})
-
 
 	.when("/eventPage/:eventId", {
 		templateUrl : "views/eventPage.html",

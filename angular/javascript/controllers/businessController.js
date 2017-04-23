@@ -111,8 +111,10 @@ console.log($routeParams.name);
     if($scope.phones.length == 1) $scope.phonelength = 1;
 
     $scope.methods = d.data.result.payment_methods;
-    $scope.paymentlength = 0; //zero means that the business has more than one payment method
-    if($scope.methods.length == 1) $scope.paymentlength = 1;
+    $scope.paymentlength = $scope.methods.length; //zero means that the business has more than one payment method
+    // if($scope.methods.length == 1) $scope.paymentlength = 1;
+    console.log("PAYMENT METHODSSS");
+    console.log($scope.methods);
 
     console.log($scope.paymentlength);
     $scope.categories = d.data.result.category;
@@ -132,30 +134,6 @@ console.log($routeParams.name);
     // console.log($scope.check);
     // console.log($scope.sub);
   });
-
-
-  $scope.goToEdit = function() {
-  $scope.error = "";
-  console.log("controller"+ $scope.formData);
-  var payment = [];
-  var i = 0;
-  if($scope.formData.pay0 == true){
-    payment[i] =  "Cash";
-    i++;
-  }
-   if($scope.formData.pay1 == true) payment[i] =  "Stripe";
-
-   $scope.formData.payment_methods = payment;
-
-    Business.edit($scope.formData)
-    .then(function successCallback(d) {
-      console.log(d.data);
-      console.log(d.data.business.name);
-      $location.path('/'+ d.data.business.name);
-    },function errorCallback(d){
-      $scope.error = d.data;
-    })
-  };
 
    $scope.subscribe = function(id) {
    	console.log("controller subscribe");
@@ -202,6 +180,7 @@ console.log($routeParams.name);
 
     modalInstance.result.then(function (selectedItem) {
         $scope.selected = selectedItem;
+        $scope.business.public = selectedItem.public;
     });
   };
 
@@ -223,6 +202,7 @@ console.log($routeParams.name);
 
     modalInstance.result.then(function (selectedItem) {
         $scope.selected = selectedItem;
+        $scope.business.delete = selectedItem.delete;
     });
   };
 
@@ -348,8 +328,9 @@ console.log($routeParams.name);
             Business.public()
             .then(function successCallback(d){
               console.log('pub');
-              $route.reload();
-            $modalInstance.close('closed');
+            $modalInstance.close({
+              public:1
+            });
             },
             function errorCallback(d){
               $scope.error = d.data;
@@ -371,8 +352,9 @@ console.log($routeParams.name);
             Business.remove()
             .then(function successCallback(d){
               console.log('rem');
-              $route.reload();
-            $modalInstance.close('closed');
+            $modalInstance.close({
+              delete:1
+            });
             },
             function errorCallback(d){
               $scope.error = d.data;
