@@ -84,12 +84,10 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
 
       $scope.book_cash = function()
       {
-        console.log($scope.chosen_facility);
-        
-        console.log($scope.formData.chosen_time);
-        console.log($scope.formData.chosen_time.event);
-        console.log($scope.event);
-        console.log("This is scope.event: "+$scope.event);
+        // console.log($scope.chosen_facility);
+        // console.log($scope.formData.chosen_time.event);
+        // console.log($scope.event);
+        // console.log("This is scope.event: "+$scope.event);
 
         $scope.event_price = $scope.chosen_event.price;
         console.log("chosen eventprice in book cash is "+$scope.event_price);

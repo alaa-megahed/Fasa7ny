@@ -323,47 +323,61 @@ exports.cancel_booking = function(req,res)
 exports.cancel_booking_after_delete = function(req, res)
 {
    var bookingID = req.body.booking_id;       //id of booking to be cancelled
-   // var business_id = req.user._id;
+   var business_id = req.user._id;
+   // var event_occ = req.body.event_occ;
+   console.log("bookingID ahooo "+bookingID);
+   // console.log("event occ yallaaaaaaaa "+ event_occ);
    // TODO add business name in notification after query
-                              Booking.findByIdAndRemove(bookingID,function(err,booking)
-                              {
-                                if(err || !booking)
-                                    return res.status(200).json("Oops, something went wrong, please try again with the correct information ");
-                                else
-                                 {
-                                    // var content = business.name + " cancelled your booking in " + event.name + "     " + Date.now();
-                                    var content = "Nourhan" + " cancelled your booking in "  + "     " ;
-                                    var now = Date.now();
-                                    RegisteredUser.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": {content: content, date: now}}},function(err,user)
-                                    {
-                                      if(err)
-                                       return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
-                                    });
+   Booking.findByIdAndRemove(bookingID,function(err,booking)
+   {
+    if(err || !booking)
+      return res.status(500).json("Oops, something went wrong, please try again with the correct information ");
+      else
+      {
 
-                                    var charge_id = booking.stripe_charge;
-                                    if(!charge_id || charge_id === undefined)
-                                    {
-                                      return res.status(200).json(booking);
-                                    }
-                                    else
-                                    {
-                                      var amount = Math.round(booking.charge * 97);
-                                      var refund = stripe.refunds.create({
-                                          charge: charge_id,
-                                          amount: amount
-                                        }, function(err, refund) {
-                                          if(err)
-                                          {
-                                            res.status(500).json(err.message);
-                                          }
-                                          else
-                                          {
-                                            res.status(200).json("refund successfully completed");
-                                          }
-                                        });
-                                    }
-                                  }
-                              });
+          console.log("req.user._id "+ req.user._id);
+          console.log("booking.business_id "+ booking.business_id);
+          if(req.user.id == booking.business_id)
+          {
+
+          var content = req.user.name + " have cancelled your booking " ;
+          // var content = "Nourhan" + " cancelled your booking in "  + "     " ;
+          var now = Date.now();
+          RegisteredUser.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": {content: content, date: now}}},function(err,user)
+          {
+              if(err)
+                  return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
+          });
+
+          var charge_id = booking.stripe_charge;
+          if(!charge_id || charge_id === undefined)
+          {
+              return res.status(200).json(booking);
+          }
+          else
+          {
+                var amount = Math.round(booking.charge * 97);
+                var refund = stripe.refunds.create({
+                charge: charge_id,
+                amount: amount
+                }, function(err, refund) {
+                if(err)
+                {
+                    return res.status(500).json(err.message);
+                }
+                else
+                {
+                    return res.status(200).json("refund successfully completed");
+                }
+            });
+          }
+        }
+        else
+        {
+          return res.status(401).json("YOU ARE NOT AUTHORIZED");
+        }
+      }
+    });
 
 };
 

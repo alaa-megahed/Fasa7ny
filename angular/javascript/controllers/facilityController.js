@@ -159,8 +159,6 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 									console.log("booking[j] :"+bookings[j]);
 									Business.getBooking(bookings[j]).then(function succcessCallback(response)
 									{
-										console.log("2abl cur booking1  "+response.data.id);
-										console.log("2abl cur booking2  "+response.data._id);
 										var cur_booking = response.data;
 										console.log("cur booking zat nafso :"+cur_booking);
 			
@@ -184,7 +182,7 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 						Facility.deleteFacility(facilityId)
 						.then(function successCallback(d) {
 							console.log("done deleting facility");
-							$route.reload();
+							// $route.reload();
             				$modalInstance.close('closed');
 
 						},

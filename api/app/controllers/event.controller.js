@@ -828,15 +828,15 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 
 
 		EventOccurrences.findById(occurrence_id, function (err, occ) {
-			if (!occ) res.status(500).json("Something went wrong");
+			if (!occ) res.status(500).json("Something went wrong1");
 
 			Events.findById(occ.event, function (err, event) {
-				if (!event) res.status(500).json("Something went wrong");
+				if (!event) res.status(500).json("Something went wrong2");
 				else
 					if (event.business_id == business_id) {
 
 						EventOccurrences.remove({ _id: occurrence_id }, function (err) {
-							if (err) res.status(500).json("Something went wrong");
+							if (err) res.status(500).json("Something went wrong3");
 							// else
 						  //   {
 						  //   	var bookings = occ.bookings;
@@ -872,6 +872,29 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 	}
 
 }
+
+exports.getOccurrence = function(req, res)
+{
+	console.log("in node .. occ id is "+req.body.occ_id);
+	console.log("req.user is "+req.user);
+	if(req.user && req.user instanceof Business)
+	{
+		EventOccurrences.findById(req.body.occ_id, function(err, occ)
+		{
+			if(err) return res.status(500).json("ERROR IN FINDING OCC");
+			console.log("occ nafsha "+occ);
+			console.log("occ.business_id "+occ.business_id );
+			console.log(" req.user._id "+ req.user._id);	
+			if(occ.business_id != req.user.id) return res.status(401).json("YOU ARE NOT AUTORIZED 1");
+			return res.status(200).json(occ);
+		});
+	}
+	else
+		return res.status(401).json("YOU ARE NOT AUTORIZED 2");
+}
+
+
+
 
 //================================ Notifications =====================================
 

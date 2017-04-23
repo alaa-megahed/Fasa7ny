@@ -116,16 +116,41 @@ status.local()
 
 });
 
-var DeletePopUp1 = function ($scope, $modalInstance,dailyEvents,eventId,$route) {
+var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents,eventId,$route) {
     $scope.form = {}
     $scope.submitForm = function () {
-    	console.log('Delete Daily Form');
-        dailyEvents.delete(eventId)
-        .then(function(d){
-        	console.log('del');
+
+      Business.getEventOccs(eventId).then(function successCallback(response)
+        {
+            var occs = response.data;
+            for (var i = 0; i < occs.length; i++)
+            {
+                var bookings = occs[i].bookings;
+                for(var j = 0; j < bookings.length; j++)
+                {
+                $http.post('http://127.0.0.1:3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
+                        .then(function successCallback(response){
+                            console.log(response.data);
+                        }, function errorCallback(response){
+                            console.log(response.data);
+                        });
+
+                    
+                }
+            }
+
+            console.log('Delete Daily Form');
+            dailyEvents.delete(eventId)
+            .then(function(d){  
+              console.log('del');
+              $modalInstance.close('closed');
+            });
+            // $route.reload();
+        }, function errorCallback(response)
+        {
+            console.log(response.data);
         });
-        $route.reload();
-        $modalInstance.close('closed');
+
     };
 
     $scope.cancel = function () {
