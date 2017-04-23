@@ -1,19 +1,18 @@
+
 <div ng-if ="type != 4 && type != 1">
            <center>
-           <h3>Please log in to view this page.</h3> 
+           <h3>Please log in to view this page.{{type}}</h3> 
            </center>
 </div>
+
   <div ng-show="type == 4 || type == 1">
        <section id="about" class="text-center" >
             <div ng-controller="bookingEventController" class="container">
-                           
                 <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
                         <h2>Book<span class="color">ING</span></h2>
                         <div class="border"></div>
                 </div>
-                   
                       <form ng-model="formData">
-
                         <h3>Number of people  :  <input type="Number" style="color:#000;" ng-model="formData.count" min = {{min}} max = {{max}}><br></h3>
                         <h4>Available places: {{max}}</h4>
                        
@@ -53,10 +52,9 @@
                        <br><br>
                     
                 </div>
-            </div>     
-        </section>   
+                </section>
         </div>
-        </div>
+       
 
         
         <!--
@@ -71,13 +69,6 @@
                         <div class="item">
                             
                             <div class="features-item">
-                                
-                               
-
-                                
-                                <!-- features content -->
-                                
-                                <!-- /features content -->
                                 
                             </div>
                         </div>

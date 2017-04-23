@@ -14,7 +14,27 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
               function(response)
               {
                 $scope.business = response.data.result;
-
+                $scope.user = {};
+                status.local().then(function(res){
+                   if(res.data)
+                   {
+                     $scope.user = res.data._id;
+                     if(res.data.user_type == 1)
+                       $scope.type = 1;
+                     else if(res.data.user_type == 2 && $scope.business_id == res.data._id)
+                       $scope.type  = 4;
+                     else if(res.data.user_type == 3) $scope.type = 3;
+                   }
+                   else {
+                     $scope.user = res.data._id;
+                     status.foreign()
+                     .then(function(res){
+                       if(res.data.user_type)
+                         $scope.type = 1;
+                       else $scope.type = 5;
+                     });
+                   }
+                 });
                  Offers.get($scope.business_id)
                   .then(function(response) {
                          $scope.offers = response.data;
@@ -26,27 +46,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
 
         
      
-     $scope.user = {};
-      status.local().then(function(res){
-         if(res.data)
-         {
-           $scope.user = res.data._id;
-           if(res.data.user_type == 1)
-             $scope.type = 1;
-           else if(res.data.user_type == 2 && $scope.business_id == res.data._id)
-             $scope.type  = 4;
-           else if(res.data.user_type == 3) $scope.type = 3;
-         }
-         else {
-           $scope.user = res.data._id;
-           status.foreign()
-           .then(function(res){
-             if(res.data.user_type)
-               $scope.type = 1;
-             else $scope.type = 5;
-           });
-         }
-       });
+     
 
         $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
