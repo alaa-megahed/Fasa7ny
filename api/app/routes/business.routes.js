@@ -28,7 +28,7 @@ business.post('/editInformation', upload.single('img'), businessController.editI
 business.get('/deletePhone/:phone', businessController.deletePhone);
 business.get('/publicPage', businessController.makePagePublic);
 business.get('/deleteImage/:image', businessController.deleteImage);
-business.post('/changeProfilePicture', upload.single('img'), businessController.changeProfilePicture);
+business.post('/changeImage', upload.single('img'), businessController.changeImage);
 
 // business.get('/checkSession', businessController.checkSession);
 

@@ -95,7 +95,7 @@ BusinessSchema.pre('remove', function(next)
         );
 });
 // Indexes this schema in 2dsphere format (critical for running proximity searches)
-// BusinessSchema.index({location: '2dsphere'});
+ BusinessSchema.index({location: '2dsphere'});
 
 
 var Business = mongoose.model('Business', BusinessSchema);

@@ -71,6 +71,11 @@ app.config(function($routeProvider){
 		controller  : "notificationsController"
 
 	})
+	.when("/editLocation", {
+		templateUrl : "views/editLocation.html",
+		controller  : "editLocationController"
+
+	})
 
 
 	// $locationProvider.html5Mode(true);

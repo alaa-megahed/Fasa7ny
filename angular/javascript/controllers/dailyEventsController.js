@@ -83,7 +83,7 @@ status.local()
           });
           modalInstance.result.then(function (selectedItem) {
               $scope.selected = selectedItem;
-              });
+          });
       };
 
       $scope.editDailyEvent = function (eventId) {
@@ -117,15 +117,18 @@ status.local()
 });
 
 var DeletePopUp1 = function ($scope, $modalInstance,dailyEvents,eventId,$route) {
-    $scope.form = {}
+    $scope.form = {};
+    $scope.error = "";
     $scope.submitForm = function () {
     	console.log('Delete Daily Form');
         dailyEvents.delete(eventId)
-        .then(function(d){
+        .then(function successCallback(d){
         	console.log('del');
+          $route.reload();
+          $modalInstance.close('closed');
+        }, function errorCallback(d) {
+          $scope.error = d.data;
         });
-        $route.reload();
-        $modalInstance.close('closed');
     };
 
     $scope.cancel = function () {
@@ -193,7 +196,7 @@ var editDailyEvent = function ($scope, $modalInstance,dailyEvents,eventId,$route
         function errorCallback(d){
           $scope.error = d.data;
         });
-       
+
     };
 
     $scope.cancel = function () {

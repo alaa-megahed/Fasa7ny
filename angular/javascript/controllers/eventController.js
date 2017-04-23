@@ -3,6 +3,7 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 	$scope.imageEventlength = 0;
 	$scope.slides = [];
 	$scope.event = {};
+	$scope.eventocc = {};
 
 	$scope.user = {};
 		status.local()
@@ -95,15 +96,16 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
         controller: ModalInstanceCtrl,
         scope: $scope,
         resolve: {
-					id: function () {
-            return id;
+				id: function () {
+            	return id;
           }
         }
       });
-      modalInstance.result.then(function (selectedItem) {
-        $scope.selected = selectedItem;
-				$scope.event = selectedItem.event;
-				$scope.eventocc = selectedItem.eventocc;
+      	modalInstance.result.then(function (selectedItem) {
+        	$scope.selected = selectedItem;
+			$scope.event = selectedItem.event;
+			$scope.eventocc = selectedItem.eventocc;
+			console.log($scope.eventocc);
       });
   };
 
@@ -194,19 +196,25 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event,id, $rou
          if(($scope.formData.starttime && !$scope.formData.endtime) || (!$scope.formData.starttime && $scope.formData.endtime)){
             $scope.error = "Must enter both a start date and end date";
         }
+        if($scope.formData.capacity == 0){
+        	$scope.error = "Enter a valid capacity";
+        }
+        if($scope.formData.price == 0){
+        	$scope.error = "Enter a valid price";
+        }
         else {
         	console.log('Submit Form'+$scope.formData);
             Event.edit($scope.formData,id)
             .then(function successCallback(d){
             	console.log('done editing the event');
 
-							$modalInstance.close({
-	              event:d.data.event,
-								eventocc:d.data.eventocc
+				$modalInstance.close({
+	            event:d.data.event,
+				eventocc:d.data.eventocc
 	            });
 
-              // $route.reload();
-              // $modalInstance.close('closed');
+              $route.reload();
+              $modalInstance.close('closed');
             }, function errorCallback(d) {
               $scope.error = d.data;
             });

@@ -5,6 +5,7 @@ app.controller('editBusinessController', function($scope, status,$http, Business
   $scope.cash = 0;
   $scope.stripe = 0;
   $scope.both = 0;
+
 		status.local()
 		 .then(function(res){
 		   if(res.data){
@@ -37,35 +38,7 @@ app.controller('editBusinessController', function($scope, status,$http, Business
 
     $scope.formData = {};
 
-  $scope.goToEdit = function() {
-  $scope.error = "";
-  $scope.formData.location = {};
-  $scope.formData.location.Lat = $scope.Lat;
-  $scope.formData.location.Lng = $scope.Lng;
-  console.log("controller"+ JSON.stringify($scope.formData));
-  var payment = [];
-  var i = 0;
-  if($scope.formData.pay0 == true){
-    payment[i] =  "Cash";
-    i++;
-  }
-   if($scope.formData.pay1 == true) payment[i] =  "Stripe";
-
-   $scope.formData.payment_methods = payment;
-
-    Business.edit($scope.formData)
-    .then(function successCallback(d) {
-      console.log("!!!!!!!!!!!!!!!!DATTAAA!!!!!!!!!!!!!!!!!!!");
-      console.log(d.data);
-      console.log(d.data.business.name);
-      $location.path('/business/'+ d.data.business.name);
-    },function errorCallback(d){
-      $scope.error = d.data;
-    })
-  };
-
-
-
+    google.maps.event.addDomListener(window, 'load', $scope.initMap);
 
     $scope.initMap = function () {
 
@@ -105,9 +78,70 @@ app.controller('editBusinessController', function($scope, status,$http, Business
 
 
 
+
     }
 
-    google.maps.event.addDomListener(window, 'scroll', $scope.initMap);
+
+  $scope.goToEdit = function() {
+  $scope.error = "";
+
+  console.log("controller"+ JSON.stringify($scope.formData));
+  var payment = [];
+  var i = 0;
+  if($scope.formData.pay0 == true){
+    payment[i] =  "Cash";
+    i++;
+  }
+   if($scope.formData.pay1 == true) payment[i] =  "Stripe";
+
+   $scope.formData.payment_methods = payment;
+
+    Business.edit($scope.formData)
+    .then(function successCallback(d) {
+      console.log("!!!!!!!!!!!!!!!!DATTAAA!!!!!!!!!!!!!!!!!!!");
+      console.log(d.data);
+      console.log(d.data.business.name);
+      $location.path('/business/'+ d.data.business.name);
+    },function errorCallback(d){
+      $scope.error = d.data;
+    })
+  };
+
+
+  $scope.goToLocEdit = function() {
+  $scope.error = "";
+  $scope.formData.location = {};
+  $scope.formData.location.Lat = $scope.Lat;
+  $scope.formData.location.Lng = $scope.Lng;
+
+  console.log("controller"+ JSON.stringify($scope.formData));
+  var payment = [];
+  var i = 0;
+  if($scope.formData.pay0 == true){
+    payment[i] =  "Cash";
+    i++;
+  }
+   if($scope.formData.pay1 == true) payment[i] =  "Stripe";
+
+   $scope.formData.payment_methods = payment;
+
+    Business.editLocation($scope.formData)
+    .then(function successCallback(d) {
+      console.log("!!!!!!!!!!!!!!!!DATTAAA!!!!!!!!!!!!!!!!!!!");
+      console.log(d.data);
+      console.log(d.data.business.name);
+      $location.path('/business/'+ d.data.business.name);
+    },function errorCallback(d){
+      $scope.error = d.data;
+    })
+  };
+
+
+
+
+
+
+
 
 
 

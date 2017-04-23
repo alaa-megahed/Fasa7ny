@@ -248,6 +248,10 @@ console.log($routeParams.name);
       $location.path('/editBusiness');
    };
 
+   $scope.businessEditLocation = function(){
+     $location.path('/editLocation');
+  };
+
 
   $scope.remove = function () {
     $scope.message = "Remove Button Clicked";
