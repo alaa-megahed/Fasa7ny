@@ -83,7 +83,7 @@
       $('#search > form > input[type="search"]').focus();
     });
     $('#search, #search button.close').on('click keyup', function(event) {
-      if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+      if (event.target == this || event.target.className == 'close' || event.keyCode == 27 || event.keyCode == 13) {
           $(this).removeClass('open');
       }
     });
@@ -179,7 +179,7 @@
       <div ng-controller = "navbarController">
          <nav class="collapse navbar-collapse navbar-right" role="Navigation" >
              <ul id="nav" class="nav navbar-nav">
-                 <li class="current"><a href="#body">Home</a></li>
+                 <li class="current"><a href="" ng-click = "getHome()">Home</a></li>
                  <li><a href="#showcase">About Us</a></li>
                  <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signUp()">Sign Up</a></li>
                  <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signIn()">Sign In</a></li>
@@ -188,6 +188,7 @@
                  <li ng-if = "user.data.user_type == 3"><a href=""> Admin Requests </a></li>
                  <li><a href="#contact-us">Contact Us</a></li>
                  <li ng-if = "user.data.user_type"><a href="" ng-click = "logout()">Log Out</a></li>
+
 
 
 
@@ -212,7 +213,7 @@
                </ul>
              </nav>
 
-             <div id="search" style = "background-color: #2B2C30;" ng-if = "searchAppear" >
+             <div id="search" style = "background-color: #2B2C30;" ng-if = "searchAppear" ng-submit = "getSearch()">
                <button type="button" class="close">×</button>
                  <form name = "form.userForm" ng-submit = "search()">
                    <input type="search" value="" placeholder="type keyword(s) here"  ng-model = "form.search" />
@@ -243,7 +244,7 @@
       <div ng-view></div>
 
 
-        
+
 
 
 <!-- start footer -->

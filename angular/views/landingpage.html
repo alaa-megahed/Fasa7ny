@@ -228,31 +228,29 @@ Start Counter Section
 <div class="row">
 
 	<!-- first count item -->
-	<div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms">
-		<div class="counters-item">
-			<div>
-					<span data-speed="3000" data-to="320">320</span>
+	<!-- <div class="col-md-3 col-sm-6 " ng-repeat = "ad in advertisements" style = "padding : 15px 15px">
+			<div >
+
 			</div>
-			<i class="fa fa-users fa-3x"></i>
-			<h3>Happy Clients</h3>
-		</div>
-	</div>
+	</div> -->
 	<!-- end first count item -->
 
 	<!-- second count item -->
-	<div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="200ms">
-		<div class="counters-item">
+
+	<div class="col-md-3 col-sm-6 col-xs-12 text-center "  ng-repeat = "ad in advertisements" data-wow-delay="200ms">
+		<div >
 			<div>
-					<span data-speed="3000" data-to="565">565</span>
+					<img ng-src = "{{ad.image}}" style = "max-width:100%; max-height:100%" />
 			</div>
-			<i class="fa fa-check-square fa-3x"></i>
-			<h3>Projects completed</h3>
+			<center>
+			<h3>{{ ad.text }}</h3>
+			<center>
 		</div>
 	</div>
 	<!-- end second count item -->
 
 	<!-- third count item -->
-	<div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="400ms">
+	<!-- <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="400ms">
 		<div class="counters-item">
 			<div>
 					<span data-speed="3000" data-to="95">95</span>
@@ -262,11 +260,11 @@ Start Counter Section
 						<h3>Positive feedback</h3>
 
 		</div>
-	</div>
+	</div> -->
 	<!-- end third count item -->
 
 	<!-- fourth count item -->
-	<div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="600ms">
+	<!-- <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="600ms">
 		<div class="counters-item kill-margin-bottom">
 			<div>
 					<span data-speed="3000" data-to="2500">2500</span>
@@ -274,7 +272,7 @@ Start Counter Section
 			<i class="fa fa-coffee fa-3x"></i>
 			<h3>Cups of Coffee</h3>
 		</div>
-	</div>
+	</div> -->
 	<!-- end fourth count item -->
 
 </div> 		<!-- end row -->

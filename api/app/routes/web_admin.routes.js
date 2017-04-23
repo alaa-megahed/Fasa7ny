@@ -14,7 +14,8 @@ var router = express.Router();
 
      router.post('/createAdvertisement', webAdmin.addAdvertisement);
      router.post('/deleteAdvertisement', webAdmin.deleteAdvertisement);
-     router.post('/updateAdvertisements', webAdmin.updateAvailableAdvertisements);
+     router.post('/updateAdvertisements', webAdmin.updateAdvertisements);
+     router.get('/viewAdvertisements', webAdmin.viewAvailableAdvertisements);
 
 
 
