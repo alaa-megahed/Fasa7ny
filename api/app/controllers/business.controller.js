@@ -132,7 +132,8 @@ requestRemoval: function(req,res) {
                         business.description = req.body.description;
                     }
 
-                    if (typeof req.body.location != "undefined" && req.body.location.length > 0) {
+                    if (typeof req.body.location != "undefined") {
+                        console.log("waddap");
                         business.location = req.body.location;
                     }
                     if (typeof req.body.email != "undefined" && req.body.email.length > 0) {

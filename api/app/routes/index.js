@@ -41,14 +41,8 @@ router.use('/photo/:photo', function (req, res) {
 
 
 router.get('/loggedin', function (req, res) {
-
-    console.log("this is req.user  " + req.user);
     res.json(req.user);
 });
 
-router.get('/loggedin1', function (req1, res1) {
-  res1.json(req1.user);
-
-});
 
 module.exports = router;
