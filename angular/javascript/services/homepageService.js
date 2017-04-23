@@ -1,6 +1,6 @@
 angular.module('fasa7ny')
 
-  .factory('Homepage', function($http, $q) {
+  .factory('Homepage', function($http, $q, $location) {
     return {
       get: function() {
         return $http.get('http://127.0.0.1:3000/');
@@ -63,12 +63,17 @@ angular.module('fasa7ny')
         var deferred = $q.defer();
         $http.get("http://localhost:3000/auth/logout").then(function(result){
           deferred.resolve(result);
-         console.log("response is fel backend" + JSON.stringify(deferred.promise));
          return deferred.promise;
         },function(response){
           deferred.reject();
           $location.path('/');
         });
+      },
+      getAds : function(){
+        return $http.get("http://localhost:3000/admin/viewAdvertisements");
+      },
+      updateAds : function(){
+        return $http.post("http://localhost:3000/admin/updateAdvertisements", adInfo);
       }
 
 

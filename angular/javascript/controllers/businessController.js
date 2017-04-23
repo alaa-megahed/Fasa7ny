@@ -1,5 +1,5 @@
-app.controller('businessController', function($scope, status,$http, Business, $location, $routeParams, $modal, $log) {
 
+app.controller('businessController', function($scope, status,$http, Business, $location, $routeParams, $modal, $log, $window, $document) {
 
   status.local()
   .then(function(res){
@@ -68,6 +68,7 @@ console.log($routeParams.name);
             $scope.type = 2;
           }
         } else $scope.type = 2;
+
       }
       else {
         status.foreign()
@@ -136,6 +137,9 @@ console.log($routeParams.name);
     // console.log($scope.check);
     // console.log($scope.sub);
 
+    $scope.location = d.data.result.location;
+
+
 
 
   });
@@ -166,6 +170,7 @@ console.log($routeParams.name);
          title: 'Location',
          draggable:false
      });
+
 
 
 
@@ -471,6 +476,7 @@ console.log($routeParams.name);
     };
 
     var deletePhoneCtrl = function ($scope, $modalInstance, Business, $route) {
+
           $scope.error = "";
             $scope.yes = function (phone) {
                     console.log('delete phone is in scope');

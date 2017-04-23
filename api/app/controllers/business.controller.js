@@ -133,8 +133,8 @@ requestRemoval: function(req,res) {
                     }
 
                     if (typeof req.body.location != "undefined") {
-                        console.log("waddap");
                         business.location = req.body.location;
+                        console.log("ahlan we sahlan");
                     }
                     if (typeof req.body.email != "undefined" && req.body.email.length > 0) {
                         business.email = req.body.email;
@@ -258,7 +258,6 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             if (typeof req.params.method != "undefined") {
                 var id = req.user.id;
-
                 var payment = req.params.method;
                 console.log("ana fl backend delete method");
                 Business.findOne({ _id: id }, function (err, business) {
