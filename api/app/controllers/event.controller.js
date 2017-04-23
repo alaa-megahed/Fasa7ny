@@ -531,64 +531,63 @@ exports.editEvent = function (req, res) {
 						event.location = req.body.location;
 					}
 					if (req.body.price) {
-						console.log("Price"+req.body.price);
-						event.price = req.body.price;
+						if(req.body.price < 0){
+							return res.status(500).json("Enter a valid price");
+						}
+						else {
+							console.log("Price"+req.body.price);
+							event.price = req.body.price;
+						}
+						
 					}
 
-					if (req.body.capacity) {
+					if (req.body.capacity != null) {
+
+						if(req.body.capacity < 0 || req.body.capacity == 0) return res.status(500).json("Enter a valid capacity"); 
 						console.log("ana fl capacity");
 						var oldCapacity = event.capacity;
 						if (oldCapacity < req.body.capacity) {
 
 							var difference = req.body.capacity - oldCapacity;
-							EventOccurrences.find({ event: event._id }, function (err, eventOcc) {
-								if (!eventOcc) res.status(500).json("Something went wrong");
+							EventOccurrences.findOne({ event: event._id }, function (err, eventOcc) {
+								if (!eventOcc) return res.status(500).json("Something went wrong");
+								else {
+									eventOcc.available = eventOcc.available + difference;
+									eventOcc.save(function(err, newocc) {
+										console.log("NEWOCC");
+										console.log(newocc);
+									});
+									console.log("CHANGED EVENT OCC CAPACITY" +req.body.capacity);
+									event.capacity = req.body.capacity;
+									event.save();
 
-								for (var i = 0; i < eventOcc.length; i++) {
-									eventOcc[i].available += difference;
-									eventOcc[i].save();
 								}
 
-							});
-							event.capacity = req.body.capacity;
-							console.log("Event capacity"+event.capacity);
-
+							});	
 						}
 						else if (oldCapacity > req.body.capacity) {
 
-
+							console.log("if");
 							var difference = oldCapacity - req.body.capacity;
-							EventOccurrences.find({ event: event._id }, function (err, eventOcc) {
-								if (!eventOcc) res.status(500).json("Something went wrong");
+							EventOccurrences.findOne({ event: event._id }, function (err, eventOcc) {
+								if (!eventOcc) return res.status(500).json("Something went wrong");
 
-								var check = 0;
-								for (var i = 0; i < eventOcc.length && check == 0; i++) {
-									if (eventOcc[i].available < difference) {
-										check = 1;
-										res.status(500).json("Can not decrease capacity without cancelling extra bookings.");
+									if (eventOcc.available < difference) {
+										return res.status(500).json("Can not decrease capacity without cancelling extra bookings.");
 									}
+									else {
+									console.log("CHANGED EVENT OCC CAPACITY"+ req.body.capacity);
 
-								}
-
-								if (check == 0) {
-									EventOccurrences.find({ event: event._id }, function (err, eventOcc) {
-										if (!eventOcc) res.status(500).json("Something went wrong");
-										for (var i = 0; i < eventOcc.length; i++) {
-											eventOcc[i].available -= difference;
-											eventOcc[i].save();
-										}
-
-									});
-									event.capacity = req.body.capacity;
-
-								}
-
-							});
+										eventOcc.available = eventOcc.available - difference;
+										eventOcc.save(function(err, newocc1) {
+											console.log("NEWOCC1");
+										});
+										event.capacity = req.body.capacity;
+										event.save();
+									}
+								});
 						}
-						else event.capacity = req.body.capacity;
-
-					}
-
+					}	
 					if (typeof req.body.description != "undefined" && req.body.description.length > 0) {
 						event.description = req.body.description;
 					}
@@ -617,13 +616,16 @@ exports.editEvent = function (req, res) {
 
 					}
 					event.save(function(err, newevent) {
-						if(err) res.status(500).json("Something went wrong");
+						if(err) return res.status(500).json("Something went wrong");
 						else {
 							EventOccurrences.find({event: id}, function(err,occs){
-								if(err) res.status(500).json("Something went wrong");
-								else if(!occs) res.status(500).json("Something went wrong");
-								else res.status(200).json({event:newevent, eventocc:occs});
-								
+								console.log("AFTER SAVE");
+								if(err) return res.status(500).json("Something went wrong");
+								else if(!occs) return res.status(500).json("Something went wrong");
+								else {
+									console.log(occs);
+									return res.status(200).json({event:newevent, eventocc:occs});
+								}
 							})
 							
 						}

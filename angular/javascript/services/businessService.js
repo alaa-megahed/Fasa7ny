@@ -7,9 +7,17 @@
                 return $http.get('http://127.0.0.1:3000/business/b/' + id);
             },
 
-            edit : function(formData) {
-            	console.log("service!" + formData);
-            	return $http.post('http://127.0.0.1:3000/business/editInformation', formData);
+            edit : function(data) {
+
+              var fd = new FormData();
+              for(var key in data)
+              fd.append(key, data[key]);
+
+              console.log(fd);
+              return $http.post('http://127.0.0.1:3000/business/editInformation', fd, {
+              transformRequest: angular.identity,
+              headers: { 'Content-Type': undefined }
+              });
             },
 
             subscribe : function(id) {
@@ -49,7 +57,7 @@
                 fd.append(key, data[key]);
 
               console.log(fd);
-              return $http.post('http://127.0.0.1:3000/business/editInformation', fd, {
+              return $http.post('http://127.0.0.1:3000/business/changeImage', fd, {
                 transformRequest: angular.identity,
                 headers: { 'Content-Type': undefined }
               });

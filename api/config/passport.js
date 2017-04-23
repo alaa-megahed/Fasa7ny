@@ -16,12 +16,10 @@ module.exports = function(passport)
    //  serialize and deserialize user, needed for session
 
    passport.serializeUser(function(user, done) {
-      console.log("i am serializing");
         done(null, user.id);
    });
 
    passport.deserializeUser(function(id, done) {
-     console.log("i am deserializing");
          User.findById(id, function(err, user) {
             if(!user)
             {

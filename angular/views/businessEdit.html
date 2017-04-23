@@ -30,8 +30,13 @@
                 <input style="color:#000;" class="w3-input w3-border w3-round" type="url" ng-model = "formData.twitterURL"></input> <br>
                 <h3>Your Youtube Page<h3> <br>
                 <input style="color:#000;" class="w3-input w3-border w3-round" type="url" ng-model = "formData.youtubeURL"></input> <br>
+                <h3>Profile Picture</h3>
+                <input type="file" name="img" class="form-control w3-round" file-model="formData.img">
+
                 </h3>
-                {{error}}
+                <div style = "color:#ff0000">
+                    {{error}}   
+                </div>
                 <button type="submit" ng-click = "goToEdit()" class="btn btn-transparent">Edit Information</button>
 
             </form>
