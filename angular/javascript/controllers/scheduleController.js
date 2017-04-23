@@ -1,5 +1,5 @@
 app.controller('scheduleController', function($scope, $http, Schedule, $location, $routeParams) {
-	console.log("abos edak");
+
 	Schedule.get()
 	.then(function(d) {
 		console.log(d.data);

@@ -1646,8 +1646,6 @@ border-color: #6CB670;
 margin: 0;
 }
 
-
-
 /* ============================================
 	Nourhan css for radio button
 	===========================================*/
@@ -2074,3 +2072,4 @@ input:checked + label:before {
 	width: 400px;
 	padding: 20px;
 }
+

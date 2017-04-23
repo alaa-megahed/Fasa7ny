@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 
-<html class="no-js" ng-app = "fasa7ny">
-<head>
+<html class="no-js" ng-app="fasa7ny">
 
+<head>
+  <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
@@ -12,163 +13,191 @@
   <!-- <script src="http://code.jquery.com/jquery.min.js"></script> -->
   <!-- <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script> -->
 
-<script src="js/jquery-1.11.0.min.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
-<script src="./javascript/core.js"></script>
-<script src="./javascript/controllers/homepageController.js"></script>
-<script src="./javascript/controllers/searchtestController.js"></script>
-<script src="./javascript/controllers/resetPasswordController.js"></script>
-<script src="./javascript/controllers/navbarController.js"></script>
-<!-- <script src="./javascript/controllers/notificationsController.js"></script> -->
-<script src="./javascript/services/statusService.js"></script>
-<script src="./javascript/services/homepageService.js"></script>
-<script src="./javascript/services/resetPasswordService.js"></script>
+  <script src="js/jquery-1.11.0.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.4/ui-bootstrap-tpls.min.js"></script>
+  <script src="./javascript/core.js"></script>
 
-<script src="javascript/controllers/businessController.js"></script>
-<script src="javascript/services/businessService.js"></script>
-<script src="javascript/controllers/CarouselDemoCtrl.js"></script>
-<script src="javascript/controllers/eventController.js"></script>
-<script src="javascript/services/eventService.js"></script>
-<script src="javascript/directives/fileModel.js"></script>
-<script src="javascript/controllers/facilityController.js"></script>
-<script src="javascript/controllers/scheduleController.js"></script>
-<script src="javascript/services/scheduleService.js"></script>
-<script src="javascript/controllers/dailyEventsController.js"></script>
-<script src="javascript/services/dailyEventsService.js"></script>
-<script src="javascript/controllers/viewOccurencesController.js"></script>
-<script src="javascript/services/viewOccurencesService.js"></script>
+  <!--search and stats scripts-->
+  <script src="javascript/filters/searchFilters.js"></script>
+  <!--search service -->
+  <script src="javascript/services/searchService.js"></script>
+  <!--search controller -->
+  <script src="javascript/controllers/searchController.js"></script>
 
-<script src="javascript/controllers/onetimeController.js"></script>
-<script src="javascript/services/onetimeeventService.js"></script>
-<script src="javascript/controllers/bookingEventController.js"></script>
-<script src="javascript/controllers/bookingFacilityController.js"></script>
-<script src="javascript/services/bookingService.js"></script>
-<script src="javascript/services/facilityService.js"></script>
-<script src="javascript/services/globalService.js"></script>
-<script src="javascript/controllers/offersController.js"></script>
+  <script src="javascript/controllers/businessController.js"></script>
+  <script src="bower_components/angularjs-datepicker/src/js/angular-datepicker.js"></script>
+
+  <!--charts -->
+  <script src="bower_components/chart.js/dist/Chart.min.js"></script>
+  <script src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
+  <!--statistics service -->
+
+  <script src="javascript/services/statsService.js"></script>
+  <!--statistics controller -->
+  <script src="javascript/controllers/statsController.js"></script>
+
+  <!--share social media-->
+  <script src="bower_components/angular-socialshare/dist/angular-socialshare.min.js"></script>
+  <script src="bower_components/angular-addthis/dist/angular-addthis.min.js"></script>
+
+  <!--end search and stats scripts-->
 
 
 
+  <script src="./javascript/controllers/homepageController.js"></script>
+  <script src="./javascript/controllers/searchtestController.js"></script>
+  <script src="./javascript/controllers/resetPasswordController.js"></script>
+  <script src="./javascript/controllers/navbarController.js"></script>
+  <!-- <script src="./javascript/controllers/notificationsController.js"></script> -->
+  <script src="./javascript/services/statusService.js"></script>
+  <script src="./javascript/services/homepageService.js"></script>
+  <script src="./javascript/services/resetPasswordService.js"></script>
 
-<!-- <script src="javascript/services/eventService.js"></script> -->
+  <script src="javascript/controllers/businessController.js"></script>
+  <script src="javascript/services/businessService.js"></script>
+  <script src="javascript/controllers/CarouselDemoCtrl.js"></script>
+  <script src="javascript/controllers/eventController.js"></script>
+  <script src="javascript/services/eventService.js"></script>
+  <script src="javascript/directives/fileModel.js"></script>
+  <script src="javascript/controllers/facilityController.js"></script>
+  <script src="javascript/controllers/scheduleController.js"></script>
+  <script src="javascript/services/scheduleService.js"></script>
+  <script src="javascript/controllers/dailyEventsController.js"></script>
+  <script src="javascript/services/dailyEventsService.js"></script>
+  <script src="javascript/controllers/viewOccurencesController.js"></script>
+  <script src="javascript/services/viewOccurencesService.js"></script>
 
-<script src="javascript/services/facilityService.js"></script>
-<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <script src="javascript/controllers/onetimeController.js"></script>
+  <script src="javascript/services/onetimeeventService.js"></script>
+  <script src="javascript/controllers/bookingEventController.js"></script>
+  <script src="javascript/controllers/bookingFacilityController.js"></script>
+  <script src="javascript/services/bookingService.js"></script>
+  <script src="javascript/services/facilityService.js"></script>
+  <script src="javascript/services/globalService.js"></script>
+  <script src="javascript/controllers/offersController.js"></script>
+
+
+
+
+  <!-- <script src="javascript/services/eventService.js"></script> -->
+
+  <script src="javascript/services/facilityService.js"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 
   <script>
-function myFunction(id) {
-    var x = document.getElementById(id);
-    if (x.className.indexOf("w3-show") == -1) {
+    function myFunction(id) {
+      var x = document.getElementById(id);
+      if (x.className.indexOf("w3-show") == -1) {
         x.className += " w3-show";
         x.previousElementSibling.className =
-        x.previousElementSibling.className.replace("w3-dark-grey", "w3-green");
-    } else {
+          x.previousElementSibling.className.replace("w3-dark-grey", "w3-green");
+      } else {
         x.className = x.className.replace(" w3-show", "");
         x.previousElementSibling.className =
-        x.previousElementSibling.className.replace("w3-green", "w3-dark-grey");
+          x.previousElementSibling.className.replace("w3-green", "w3-dark-grey");
+      }
     }
-}
-</script>
+  </script>
 
 
 
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 
-<script>
-function openRightMenu() {
-    document.getElementById("rightMenu").style.display = "block";
-}
-function closeRightMenu() {
-    document.getElementById("rightMenu").style.display = "none";
-}
-</script>
+  <script>
+    function openRightMenu() {
+      document.getElementById("rightMenu").style.display = "block";
+    }
+    function closeRightMenu() {
+      document.getElementById("rightMenu").style.display = "none";
+    }
+  </script>
 
 
-<script>
-$(function () {
-$('a[href="#search"]').on('click', function(event) {
-event.preventDefault();
-$('#search').addClass('open');
-$('#search > form > input[type="search"]').focus();
-});
-$('#search, #search button.close').on('click keyup', function(event) {
-if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
-    $(this).removeClass('open');
-}
-});
-});
-</script>
+  <script>
+    $(function () {
+      $('a[href="#search"]').on('click', function (event) {
+        event.preventDefault();
+        $('#search').addClass('open');
+        $('#search > form > input[type="search"]').focus();
+      });
+      $('#search, #search button.close').on('click keyup', function (event) {
+        if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+          $(this).removeClass('open');
+        }
+      });
+    });
+  </script>
 
 
 
 
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <meta name="description" content="Meghna One page parallax responsive HTML Template">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
   <title>Fasa7ny</title>
 
-<!-- Mobile Specific Meta
+  <!-- Mobile Specific Meta
 ================================================== -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Favicon -->
-<link rel="shortcut icon" type="image/x-icon" href="img/favicon.png"/>
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/x-icon" href="img/favicon.png" />
 
-<!-- CSS
+  <!-- CSS
 ================================================== -->
-<!-- Fontawesome Icon font -->
+  <!-- Fontawesome Icon font -->
   <link rel="stylesheet" href="css/font-awesome.min.css">
 
-<!-- bootstrap.min css -->
+  <!-- bootstrap.min css -->
   <link rel="stylesheet" href="css/bootstrap.min.css">
-<!-- Animate.css -->
+  <!-- Animate.css -->
   <link rel="stylesheet" href="css/animate.css">
-<!-- Owl Carousel -->
+  <!-- Owl Carousel -->
   <link rel="stylesheet" href="css/owl.carousel.css">
-<!-- Grid Component css -->
+  <!-- Grid Component css -->
   <link rel="stylesheet" href="css/component.css">
-<!-- Slit Slider css -->
+  <!-- Slit Slider css -->
   <link rel="stylesheet" href="css/slit-slider.css">
-<!-- Main Stylesheet -->
+  <!-- Main Stylesheet -->
   <link rel="stylesheet" href="css/main.css">
-<!-- Media Queries -->
+  <!-- Media Queries -->
   <link rel="stylesheet" href="css/media-queries.css">
 
   <link rel="stylesheet" href="css/responsive.css">
 
   <link rel="stylesheet" href="css/imagecropper.css">
 
-<!-- <link rel='stylesheet' id='custom-button-mfast-3-css'  href='cdd/blog/style.css' type='text/css' media='all' /> -->
-<link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.css" />
-<link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
-<link rel='stylesheet' id='custom-css'  href='css/custom.css' type='text/css' media='all' />
-<!--
+  <!-- <link rel='stylesheet' id='custom-button-mfast-3-css'  href='cdd/blog/style.css' type='text/css' media='all' /> -->
+  <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
+  <link rel='stylesheet' id='custom-css' href='css/custom.css' type='text/css' media='all' />
+  <!--
 Google Font
 =========================== -->
 
-<!-- Oswald / Title Font -->
-<link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
-<!-- Ubuntu / Body Font -->
-<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300' rel='stylesheet' type='text/css'>
+  <!-- Oswald / Title Font -->
+  <link href='http://fonts.googleapis.com/css?family=Oswald:400,300' rel='stylesheet' type='text/css'>
+  <!-- Ubuntu / Body Font -->
+  <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,300' rel='stylesheet' type='text/css'>
 
-<!-- Modernizer Script for old Browsers -->
+  <!-- Modernizer Script for old Browsers -->
   <script src="js/modernizr-2.6.2.min.js"></script>
 
 
 </head>
 
-    <body id="body">
+<body id="body">
 
 
-      <header id="navigation" class="navbar navbar-inverse" role = "navigation">
-          <div class="container">
-              <div class="navbar-header">
-                  <!-- responsive nav button -->
+  <header id="navigation" class="navbar navbar-inverse" role="navigation">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- responsive nav button -->
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                       <span class="sr-only">Toggle navigation</span>
                       <span class="icon-bar"></span>
@@ -176,153 +205,157 @@ Google Font
                       <span class="icon-bar"></span>
                   </button>
 
-            <!-- /responsive nav button -->
+        <!-- /responsive nav button -->
 
-            <!-- logo -->
-                  <a class="navbar-brand" href="#body">
-                    <h1 id="logo">
-                      <img src="img/logo-meghna.png" alt="Meghna" />
-                    </h1>
-                  </a>
-            <!-- /logo -->
-              </div>
+        <!-- logo -->
+        <a class="navbar-brand" href="#body">
+          <h1 id="logo">
+            <img src="img/logo-meghna.png" alt="Meghna" />
+          </h1>
+        </a>
+        <!-- /logo -->
+      </div>
 
       <!-- main nav -->
-            <div ng-controller = "navbarController">
-              <nav class="collapse navbar-collapse navbar-right" role="Navigation" >
-                  <ul id="nav" class="nav navbar-nav">
-                      <li class="current"><a href="#body">Home</a></li>
-                      <li><a href="#showcase">About Us</a></li>
-                      <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signUp()">Sign Up</a></li>
-                      <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signIn()">Sign In</a></li>
-                      <li ng-if = "user.data.user_type == 1"><a href=""> My Profile </a></li>
-                      <li ng-if = "user.data.user_type == 2"><a ng-click = "goToBusinessPage(user.data._id)" href=""> My Business Page </a></li>
-                      <li ng-if = "user.data.user_type == 3"><a href=""> Admin Requests </a></li>
-                      <li><a href="#contact-us">Contact Us</a></li>
-                      <li ng-if = "user.data.user_type"><a href="" ng-click = "logout()">Log Out</a></li>
+      <div ng-controller="navbarController">
+        <nav class="collapse navbar-collapse navbar-right" role="Navigation">
+          <ul id="nav" class="nav navbar-nav">
+            <li class="current"><a href="#body">Home</a></li>
+            <li><a href="#showcase">About Us</a></li>
+            <li ng-click="viewAll()"><a href="">View All</a></li>
+
+            <li ng-if="!user.data.user_type"><a href="" ng-click="signUp()">Sign Up</a></li>
+            <li ng-if="!user.data.user_type"><a href="" ng-click="signIn()">Sign In</a></li>
+            <li ng-if="user.data.user_type == 1"><a href=""> My Profile </a></li>
+            <li ng-if="user.data.user_type == 2"><a ng-click="goToBusinessPage(user.data._id)" href=""> My Business Page </a></li>
+            <li ng-if="user.data.user_type == 3"><a href=""> Admin Requests </a></li>
+            <li><a href="#contact-us">Contact Us</a></li>
+            <li ng-if="user.data.user_type"><a href="" ng-click="logout()">Log Out</a></li>
 
 
 
-                      <li><a href="#search">Search</a></li>
+            <li><a href="#search">Search</a></li>
 
-                      <li class="dropdown" ng-if = "user.data.user_type == 1" >
-                            <a href=""  ng-mouseover = "decreaseCount()" class="dropbtn" ng-style = notifcolor>Notifications</a>
-                              <div class="dropdown-content" style = "background-color: #2B2C30;" ng-if = "user.data.notifications.length != 0">
-                                <center>
-                                  <h4 class = "notif" style = "color : white" href = "" ng-repeat = "notification in user.data.notifications track by $index"> {{notification}} </h4>
-                                </center>
-                              </div>
-                              <div class="dropdown-content" ng-if = "user.data.notifications.length == 0" style = "background-color: #2B2C30;">
-                                <center>
-                                  <h4 class = "notif" style = "color : white"> No notifications to show </h4>
-                                </center>
-                              </div>
-                      </li>
-                    </ul>
-                  </nav>
+            <li class="dropdown" ng-if="user.data.user_type == 1">
+              <a href="" ng-mouseover="decreaseCount()" class="dropbtn" ng-style=n otifcolor>Notifications</a>
+              <div class="dropdown-content" style="background-color: #2B2C30;" ng-if="user.data.notifications.length != 0">
+                <center>
+                  <h4 class="notif" style="color : white" href="" ng-repeat="notification in user.data.notifications track by $index"> {{notification}} </h4>
+                </center>
+              </div>
+              <div class="dropdown-content" ng-if="user.data.notifications.length == 0" style="background-color: #2B2C30;">
+                <center>
+                  <h4 class="notif" style="color : white"> No notifications to show </h4>
+                </center>
+              </div>
+            </li>
+          </ul>
+        </nav>
 
-                  <div id="search" style = "background-color: #2B2C30;" ng-if = "searchAppear" >
-                    <button type="button" class="close">×</button>
-                      <form name = "form.userForm" ng-submit = "search()">
-                        <input type="search" value="" placeholder="type keyword(s) here"  ng-model = "form.search" />
-                        <button type="submit" class="btn btn-green"  >Search</button>
-                      </form>
-                 </div>
-            </div>
+        <div id="search" style="background-color: #2B2C30;" ng-if="searchAppear">
+          <button type="button" class="close">×</button>
+          <form name="form.userForm" ng-submit="search()">
+            <input type="search" value="" placeholder="type keyword(s) here" ng-model="form.search" />
+            <button type="submit" class="btn btn-green">Search</button>
+          </form>
+        </div>
+      </div>
 
       <!-- /main nav -->
 
-          </div>
-      </header>
+    </div>
+  </header>
 
   <!--End Fixed Navigation==================================== -->
 
 
 
 
-<!--Start Preloader ==================================== -->
-<div id="loading-mask">
-  <div class="loading-img">
-    <img alt="Meghna Preloader" src="img/preloader.gif"  />
+  <!--Start Preloader ==================================== -->
+  <div id="loading-mask">
+    <div class="loading-img">
+      <img alt="Meghna Preloader" src="img/preloader.gif" />
+    </div>
   </div>
-</div>
-<!--End Preloader ==================================== -->
+  <!--End Preloader ==================================== -->
 
 
-      <div ng-view></div>
+  <div ng-view></div>
 
 
-<!-- start footer -->
-    <footer id="footer" class="bg-one">
-      <div class="container">
-            <!-- copyright -->
-            <div class="copyright text-center">
-              <a href="index.html">
-                <img src="img/logo-meghna.png" alt="Meghna" />
-              </a>
+  <!-- start footer -->
+  <footer id="footer" class="bg-one">
+    <div class="container">
+      <!-- copyright -->
+      <div class="copyright text-center">
+        <a href="index.html">
+          <img src="img/logo-meghna.png" alt="Meghna" />
+        </a>
 
-              <p>Copyright &copy; 2017. Drop The Bit.</p>
-            </div>
-            <!-- /copyright -->
-      </div> <!-- end container -->
-    </footer>
-    <!-- end footer -->
+        <p>Copyright &copy; 2017. Drop The Bit.</p>
+      </div>
+      <!-- /copyright -->
+    </div>
+    <!-- end container -->
+  </footer>
+  <!-- end footer -->
 
-    <!-- Back to Top
+  <!-- Back to Top
     ============================== -->
-    <a href="javascript:;" id="scrollUp">
-      <i class="fa fa-angle-up fa-2x"></i>
-     </a>
+  <a href="javascript:;" id="scrollUp">
+    <i class="fa fa-angle-up fa-2x"></i>
+  </a>
 
 
-    <!-- end Footer Area
+  <!-- end Footer Area
     ========================================== -->
 
-    <!--
+  <!--
     Essential Scripts
     =====================================-->
 
 
-    <!-- Main jQuery -->
-    <!-- Bootstrap 3.1 -->
-    <script src="js/bootstrap.min.js"></script>
-    <!-- Slitslider -->
-    <script src="js/jquery.slitslider.js"></script>
-    <script src="js/jquery.ba-cond.min.js"></script>
-    <!-- Parallax -->
-    <script src="js/jquery.parallax-1.1.3.js"></script>
-    <!-- Owl Carousel -->
-    <script src="js/owl.carousel.min.js"></script>
-    <!-- Portfolio Filtering -->
-    <script src="js/jquery.mixitup.min.js"></script>
-    <!-- Custom Scrollbar -->
-    <script src="js/jquery.nicescroll.min.js"></script>
-    <!-- Jappear js -->
-    <script src="js/jquery.appear.js"></script>
-    <!-- Pie Chart -->
-    <script src="js/easyPieChart.js"></script>
-    <!-- jQuery Easing -->
-    <script src="js/jquery.easing-1.3.pack.js"></script>
-    <!-- tweetie.min -->
-    <!-- <script src="js/tweetie.min.js"></script> -->
-    <!-- Google Map API -->
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
-    <!-- Highlight menu item -->
-    <script src="js/jquery.nav.js"></script>
-    <!-- Sticky Nav -->
-    <script src="js/jquery.sticky.js"></script>
-    <!-- Number Counter Script -->
-    <script src="js/jquery.countTo.js"></script>
-    <!-- wow.min Script -->
-    <script src="js/wow.min.js"></script>
-    <!-- For video responsive -->
-    <script src="js/jquery.fitvids.js"></script>
-    <!-- Grid js -->
-    <script src="js/grid.js"></script>
-    <!-- Custom js -->
-    <script src="js/custom.js"></script>
-    <script src="js/classie.js"></script>
+  <!-- Main jQuery -->
+  <!-- Bootstrap 3.1 -->
+  <script src="js/bootstrap.min.js"></script>
+  <!-- Slitslider -->
+  <script src="js/jquery.slitslider.js"></script>
+  <script src="js/jquery.ba-cond.min.js"></script>
+  <!-- Parallax -->
+  <script src="js/jquery.parallax-1.1.3.js"></script>
+  <!-- Owl Carousel -->
+  <script src="js/owl.carousel.min.js"></script>
+  <!-- Portfolio Filtering -->
+  <script src="js/jquery.mixitup.min.js"></script>
+  <!-- Custom Scrollbar -->
+  <script src="js/jquery.nicescroll.min.js"></script>
+  <!-- Jappear js -->
+  <script src="js/jquery.appear.js"></script>
+  <!-- Pie Chart -->
+  <script src="js/easyPieChart.js"></script>
+  <!-- jQuery Easing -->
+  <script src="js/jquery.easing-1.3.pack.js"></script>
+  <!-- tweetie.min -->
+  <!-- <script src="js/tweetie.min.js"></script> -->
+  <!-- Google Map API -->
+  <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+  <!-- Highlight menu item -->
+  <script src="js/jquery.nav.js"></script>
+  <!-- Sticky Nav -->
+  <script src="js/jquery.sticky.js"></script>
+  <!-- Number Counter Script -->
+  <script src="js/jquery.countTo.js"></script>
+  <!-- wow.min Script -->
+  <script src="js/wow.min.js"></script>
+  <!-- For video responsive -->
+  <script src="js/jquery.fitvids.js"></script>
+  <!-- Grid js -->
+  <script src="js/grid.js"></script>
+  <!-- Custom js -->
+  <script src="js/custom.js"></script>
+  <script src="js/classie.js"></script>
 
 
-    </body>
+</body>
+
 </html>

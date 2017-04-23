@@ -1,0 +1,44 @@
+<section>
+        <div class="container">
+            <div class="row" ng-controller="main">
+
+                <div class="col-lg-8">
+                    <h1>Page Views: </h1>
+                    <canvas class="col-lg-8 chart chart-line" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options"
+                        chart-dataset-override="datasetOverride" chart-click="onClick" ng-cloak>
+                    </canvas>
+
+
+
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        Weekly: <input type="radio" value="week" ng-model="type"> Monthly: <input type="radio" value="month"
+                            ng-model="type"> Yearly: <input type="radio" value="year" ng-model="type">
+                        <div ng-show="type == 'week'">
+                            Start date:
+                            <input class="form-group" type="date" name="" value=""> <br> End date:
+                            <input class="form-group" type="date" name="" value="">
+                        </div>
+
+                        <div ng-show="type == 'month'">
+                            Start month:
+                            <input type="number" min="1" max="12" step="1"> End month:
+                            <input type="number" min="1" max="12" step="1">
+
+                        </div>
+
+                        <div ng-show="type == 'year'">
+
+                            <input type="number" min="1900" max="2099" step="1">
+                            <input type="number" min="1900" max="2099" step="1">
+
+                        </div>
+
+                    </div>
+                    <button class="btn btn-primary" type="" ng-click="getStats()">Get Stats</button> {{test}}
+                </div>
+            </div>
+        </div>
+
+    </section>

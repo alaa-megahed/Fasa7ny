@@ -159,10 +159,14 @@ angular.module('fasa7ny')
 
 
     $scope.goToBusinessPage = function(id) {
-      console.log(id);
       $location.path('/business/'+id);
     }
 
+
+    //go to page to view all business pages 
+    $scope.viewAll = function() {
+      $location.path('/view-all'); 
+    }
 
 
 

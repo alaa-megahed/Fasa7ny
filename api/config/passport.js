@@ -16,12 +16,10 @@ module.exports = function(passport)
    //  serialize and deserialize user, needed for session
 
    passport.serializeUser(function(user, done) {
-      console.log("i am serializing");
         done(null, user.id);
    });
 
    passport.deserializeUser(function(id, done) {
-     console.log("i am deserializing");
          User.findById(id, function(err, user) {
             if(!user)
             {
@@ -55,7 +53,6 @@ module.exports = function(passport)
       {
 
 
-          console.log(req.body);
           var check = 0;
           // check weather the username entered is unique
           // search the registered users collection
@@ -188,7 +185,6 @@ module.exports = function(passport)
     {
       var check = 0;
 
-      console.log("username: " + username + "password: " + password);
       // find a user whose username matches the username entered
       // search registered users collection
       User.findOne({ 'local.username' :  username }, function(err, user)
@@ -300,7 +296,6 @@ module.exports = function(passport)
             {
               if (err)
               {
-                 console.log("error: please try again");
                  return done(err);
               }
               return done(null, newUser);

@@ -8,7 +8,6 @@ var mongoose = require('./config/mongoose'),
     app      = express();
 
 
-
 // var Events = require('./app/models/Event');
 
 // var event = new Events();
@@ -84,6 +83,15 @@ var mongoose = require('./config/mongoose'),
 
 // });
 // E.save();
+// var admin = new WebAdmin();
+// admin.local.username = "radwa";
+// admin.local.password = admin.generateHash("1234");
+// admin.save(
+//   function(err)
+//     {if(err) throw err;}
+// );
+
+
 
 app.listen(config.port);
 

@@ -1,5 +1,3 @@
-
-
 jQuery(function ($) { "use strict";
 
 	/* ========================================================================= */
@@ -220,7 +218,6 @@ jQuery(function ($) { "use strict";
 		variable to true and show the name_error div with the fadeIn effect.
 		if it's not 0 then we fadeOut the div( that's if the div is shown and
 		the error is fixed it fadesOut.
-
 		The only difference from these checks is the email checking, we have
 		email.indexOf('@') which checks if there is @ in the email input field.
 		This JavaScript function will return -1 if no occurrence have been found.*/
@@ -426,7 +423,7 @@ $(function() {
 			$nav = $( '#nav-dots > span' ),
 			slitslider = $( '#slitSlider' ).slitslider( {
 
-			    speed : 1600,
+			    speed : 1600,
 
 				onBeforeChange : function( slide, pos ) {
 

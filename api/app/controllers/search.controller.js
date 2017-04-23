@@ -3,12 +3,15 @@ var Business = require('../models/Business');
 SearchController = {
 
     showAll: function (req, res) {
-        Business.find().
+        Business.find({ public: 1 }).
             exec(function (err, result) {
-                if (err)
-                    console.log(err);
-                else
-                    res.render("search.ejs", {result: result});
+                if (err) {
+                    res.status(500);
+                    res.send(err);
+                }
+                else {
+                    res.json(result);
+                }
             });
     },
     search: function (req, res) {
@@ -31,9 +34,7 @@ SearchController = {
             if (err)
                 res.send(err);
             else {
-                console.log(result);
-                res.render('search.ejs', {result: result});
-                // res.json(result);
+                res.json(result);
             }
         });
 
@@ -66,6 +67,8 @@ helper = {
 
         // add filters one by one, according to user input
         var anding = [];
+        //make sute business page is public
+        anding.push({ public: 1 });
         if (category.length > 0) {
             anding.push({ category: new RegExp(category, 'i') });
         }

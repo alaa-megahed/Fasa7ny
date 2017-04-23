@@ -9,7 +9,7 @@ var User = require('mongoose').model('RegisteredUser');
 var Review = require('mongoose').model('Review');
 var Reply = require('mongoose').model('Reply');
 var async = require('async');
-
+var StatsController = require('./stats.controller');
 const nodemailer = require('nodemailer');
 var configAuth = require('../../config/auth');
 
@@ -62,11 +62,19 @@ exports.AddBusiness = function (req, res) {
                                         business.category = req.body.category;
                                         business.email = req.body.email;
 
-                                        business.save(function (err) {
+                                        business.save(function (err, newBusiness) {
 
                                             if (err)
                                                 throw err;
-                                            else { //send confirmation email
+                                            else {
+                                                //add statistics about business 
+                                                StatsController.addStat(new Date(), newBusiness._id, 'views', 0);
+
+                                                //schedule statistics for the future 
+                                                StatsController.schedule(newBusiness._id);
+
+                                                //send confirmation email 
+
                                                 var smtpTransport = nodemailer.createTransport({
                                                     service: 'Gmail',
                                                     auth: {

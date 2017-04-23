@@ -29,9 +29,11 @@
     "update-index-async": "node -e \"var fs=require('fs'),indexFile='/index-async.html',loaderFile='/bower_components/angular-loader/angular-loader.min.js',loaderText=fs.readFileSync(loaderFile,'utf-8').split(/sourceMappingURL=angular-loader.min.js.map/).join('sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map'),indexText=fs.readFileSync(indexFile,'utf-8').split(/\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/).join('//@@NG_LOADER_START@@\\n'+loaderText+'    //@@NG_LOADER_END@@');fs.writeFileSync(indexFile,indexText);\""
   },
   "dependencies": {
+    "angular-chart.js": "^1.1.1",
     "angular-ui-router": "^0.4.2",
     "angularjs-datepicker": "^2.1.17",
     "fullcalendar": "^3.3.1",
+    "chart.js": "^2.5.0",
     "stripe": "^4.18.0"
   }
 }
