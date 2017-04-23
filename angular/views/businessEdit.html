@@ -20,7 +20,8 @@
                 <h3>Add Another Phone<h3> <br>
                 <input style="color:#000;" class="w3-input w3-border w3-round" type="text" ng-model = "formData.phones"></input> <br>
                 <h3>Add Another Payment Method<h3> <br>
-                <input style="color:#000;" class="w3-input w3-border w3-round" type="text" ng-model = "formData.payment_methods"></input> <br>
+               <input type="checkbox" ng-model = "formData.pay0" value="0"><label>&nbsp;Cash&nbsp;&nbsp;</label>
+               <input type="checkbox" ng-model = "formData.pay1" value="1"> <label>Stripe</label><br><br>
                 <h3>Password<h3> <br>
                 <input style="color:#000;" class="w3-input w3-border w3-round" type="password" ng-model = "formData.password"></input> <br>
                 <h3>Your Facebook Page<h3> <br>
