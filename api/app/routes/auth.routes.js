@@ -1,4 +1,3 @@
-
 var AuthController  = require('../controllers/auth.controller');
 var express = require('express'),
     router = express.Router();
@@ -40,6 +39,5 @@ router.get('/reset/:token', AuthController.getReset);
 
 router.post('/reset/:token',AuthController.postReset);
 
-router.get('/getStripePK', AuthController.getStripePK);
 
 module.exports = router;

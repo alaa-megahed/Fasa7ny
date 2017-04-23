@@ -1,4 +1,5 @@
 
+
 var app = angular.module('fasa7ny');
 app.controller('businessController', function ($scope, status, $http, Business,
   Global, $location, $routeParams, $modal, $log, $window, Stats) {
@@ -304,6 +305,7 @@ app.controller('businessController', function ($scope, status, $http, Business,
       scope: $scope
     });
 
+
     modalInstance.result.then(function (selectedItem) {
       $scope.selected = selectedItem;
       $window.location.reload();
@@ -415,6 +417,93 @@ app.controller('businessController', function ($scope, status, $http, Business,
   }
 
 
+
+  // REVIEWS FUNCTIONS 
+
+  $scope.addReview = function () {
+    Business.addReview({
+      review: $scope.reviewBody,
+      userID: $scope.userID,
+      businessID: $scope.id
+    })
+      .then(function (res) {
+        $scope.business = res.data;
+        $scope.reviewBody = "";
+
+        console.log('HERE');
+      }, function (res) {
+        alert(res.data);
+      });
+  };
+  $scope.deleteReview = function (review) {
+    Business.deleteReview({
+      userID: $scope.userID,
+      reviewUser: review.user.id,
+      businessID: $scope.id,
+      review: review
+    })
+      .then(function (res) {
+        $scope.business = res.data;
+      });
+  };
+
+  $scope.addReply = function (reviewID, replyBody) {
+    // console.log('replyyyy'); 
+
+    Business.addReply({
+      userID: $scope.userID,
+      businessID: $scope.id,
+      reviewID: reviewID,
+      reply: replyBody
+    })
+      .then(function (res) {
+        $scope.business = res.data;
+        $scope.replyForm.$setPristine();
+      }, function (res) {
+        alert(res.data);
+      });
+  }
+
+  $scope.deleteReply = function (review, reply) {
+    Business.deleteReply({
+      userID: $scope.userID,
+      businessID: $scope.id,
+      review: review,
+      reply: reply
+    })
+      .then(function (res) {
+        $scope.business = res.data;
+      });
+  }
+
+  $scope.upvote = function (review) {
+    Business.upvote({
+      userID: $scope.userID,
+      businessID: $scope.id,
+      review: review
+    })
+      .then(function (res) {
+        $scope.business = res.data;
+      }, function (res) {
+        alert(res.data);
+      });
+  }
+
+  $scope.downvote = function (review) {
+    Business.downvote({
+      userID: $scope.userID,
+      businessID: $scope.id,
+      review: review
+    })
+      .then(function (res) {
+        $scope.business = res.data;
+      }, function (res) {
+        alert(res.data);
+      });
+  }
+
+
+
 });
 
 
@@ -468,7 +557,6 @@ var NotAllowedRemove = function ($scope, $modalInstance, Business, $route) {
     $modalInstance.close('closed');
   };
 };
-
 
 
 var deleteImageCtrl = function ($scope, $modalInstance, Business, $route) {
@@ -559,7 +647,5 @@ var deletePaymentMethodCtrl = function ($scope, $modalInstance, business, Busine
 
   //check if user is logged in 
 
-
-
-
 }
+

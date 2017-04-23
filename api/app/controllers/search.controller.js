@@ -12,6 +12,7 @@ SearchController = {
                 else {
                     res.json(result);
                 }
+
             });
     },
     search: function (req, res) {

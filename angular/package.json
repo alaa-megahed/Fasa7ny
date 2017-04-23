@@ -34,6 +34,8 @@
     "angularjs-datepicker": "^2.1.17",
     "fullcalendar": "^3.3.1",
     "chart.js": "^2.5.0",
+    "fullcalendar": "^3.3.1",
+
     "stripe": "^4.18.0"
   }
 }

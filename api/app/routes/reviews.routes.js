@@ -4,10 +4,10 @@ var ReviewController = require('../controllers/review.controller');
 
 // review routes
 router.post('/writeReview', ReviewController.writeReview);
-router.get('/upvoteReview', ReviewController.upvoteReview); //change to get
-router.get('/downvoteReview', ReviewController.downvoteReview); //change to get
+router.post('/upvoteReview', ReviewController.upvoteReview); //change to get
+router.post('/downvoteReview', ReviewController.downvoteReview); //change to get
 router.get('/viewReviews', ReviewController.viewReviews);
 router.post('/replyReview', ReviewController.replyReview);
-router.get('/deleteReview', ReviewController.deleteInappropriateReview);
-
+router.post('/deleteReview', ReviewController.deleteReview);
+router.post('/deleteReply', ReviewController.deleteReply);
 module.exports = router;

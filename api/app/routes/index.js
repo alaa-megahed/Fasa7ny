@@ -4,7 +4,7 @@ var search = require('./search.routes.js');
 var business = require('./business.routes.js');
 var bookings = require('./bookings.routes');
 var path = require('path');
-
+var fs = require('fs');
 var reviews = require('./reviews.routes');
 var offers = require('./offers.routes');
 var event = require('./event.routes');
@@ -17,7 +17,7 @@ var admin = require('./web_admin.routes');
 
 var stats = require('./stats.routes');
 var path = require('path');
-
+var stats = require('./stats.routes');
 router.use('/auth', auth);
 router.use('/event', event);
 router.use('/offers', offers);
@@ -29,17 +29,20 @@ router.use('/user', user);
 router.use('/admin', admin);
 router.use('/stats', stats);
 
+
 router.use('/contact', function (req, res) {
     res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
-//
-// router.get('/', function (req, res) {
-//       res.sendFile(path.resolve('../angular/index.html'));
-// });
 
 
+//check if photo exists, send it, if not, send defult avatar 
 router.use('/photo/:photo', function (req, res) {
-    res.sendFile(path.resolve('public/uploads/' + req.params.photo));
+    var filePath = path.resolve('public/uploads/' + req.params.photo);
+    if (fileExists(filePath)) {
+        res.sendFile(path.resolve('public/uploads/' + req.params.photo));
+    } else {
+        res.sendFile(path.resolve('public/uploads/avatar.png'));
+    }
 });
 
 
@@ -51,5 +54,18 @@ router.get('/loggedin', function (req, res) {
 router.get('/loggedin1', function (req1, res1) {
     res1.json(req1.user);
 });
+router.use('/stats', stats);
+
+
+
+//function to check if file exists 
+var fileExists = function (filePath) {
+    try {
+        return fs.statSync(filePath).isFile();
+    }
+    catch (err) {
+        return false;
+    }
+}
 
 module.exports = router;

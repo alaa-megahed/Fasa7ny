@@ -3,12 +3,12 @@ var app = angular.module('fasa7ny');
 app.factory('Business', ['$http', function ($http) {
   return {
     get: function (id) {
-      console.log("service"); 
+      console.log("service");
       return $http.get('http://127.0.0.1:3000/business/b/' + id, { withCredential: true });
     },
-
     edit: function (formData) {
       console.log("service!" + formData);
+
       return $http.post('http://127.0.0.1:3000/business/editInformation', formData);
     },
 
@@ -30,6 +30,7 @@ app.factory('Business', ['$http', function ($http) {
     public: function () {
       console.log('public service');
       return $http.get('http://127.0.0.1:3000/business/publicPage');
+
     },
 
     remove: function () {
@@ -41,12 +42,15 @@ app.factory('Business', ['$http', function ($http) {
       return $http.get('http://127.0.0.1:3000/business/hasBookings');
     },
 
+
     deleteImage: function (image) {
       console.log('delete image service');
       return $http.get('http://127.0.0.1:3000/business/deleteImage/' + image);
     },
 
+
     addImage: function (data) { //for slider
+
       console.log('add image service');
       var fd = new FormData();
       for (var key in data)
@@ -94,15 +98,25 @@ app.factory('Business', ['$http', function ($http) {
     getBooking: function (booking_id) {
       return $http.get('http://127.0.0.1:3000/business/getBooking/' + booking_id);
     },
+    addReview: function (params) {
+      return $http.post('http://127.0.0.1:3000/reviews/writeReview', params);
+    },
+    deleteReview: function (params) {
+      return $http.post('http://127.0.0.1:3000/reviews/deleteReview', params);
+    },
+    addReply: function (params) {
+      return $http.post('http://127.0.0.1:3000/reviews/replyReview', params);
+    },
+    deleteReply: function (params) {
+      return $http.post('http://127.0.0.1:3000/reviews/deleteReply', params);
+    },
+    upvote: function (params) {
+      return $http.post('http://127.0.0.1:3000/reviews/upvoteReview', params);
 
-    // checkSession : function(id) {
-    //   console.log('check session service');
-    //   return $http.get('http://127.0.0.1:3000/business/checkSession')
-    // }
+    },
+    downvote: function (params) {
+      return $http.post('http://127.0.0.1:3000/reviews/downvoteReview', params);
+    }
+
   }
 }]);
-
-
-app.factory('business', function () {
-  return {};
-});

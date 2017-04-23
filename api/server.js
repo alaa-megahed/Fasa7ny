@@ -10,6 +10,7 @@ var mongoose = require('./config/mongoose'),
 
 // var Events = require('./app/models/Event');
 
+
 // var event = new Events();
 // event.name = "Name";
 // event.description = "Event Description";
@@ -17,18 +18,22 @@ var mongoose = require('./config/mongoose'),
 // event.capacity = "30";
 // event.price = "100";
 // event.repeated = "Once";
-// event.business_id = "58f20e01b38dec5d920104f3";
+// event.business_id = "58f7693c51294567b2d8b083";
 // event.save();
 
-// var EventOccurrences = require('./app/models/EventOccurrences');
+var EventOccurrences = require('./app/models/Event').EventOccurrences;
+
 // var Facility = require('./app/models/Facility');
 
 // var facility = new Facility();
 // facility.name = "room1";
 // facility.description = "facility description";
 // facility.capacity = "10";
-// facility.business_id = "58f0cb2d6bfb6061efd66625";
+// business_id = "58f0cb2d6bfb6061efd66625";
+// facility.business_id = "58f7693c51294567b2d8b083";
 // facility.save();
+
+
 // var Business = require('./app/models/Business');
 
 // var business = new Business();
@@ -94,7 +99,6 @@ var mongoose = require('./config/mongoose'),
 
 
 app.listen(config.port);
-
 
 
 module.exports = app;

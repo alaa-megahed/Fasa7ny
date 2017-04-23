@@ -6,6 +6,7 @@
 <div class="w3-sidebar w3-bar-block" style="width:20%;right:0; background-color: inherit;">
     <center class="w3-margin-bottom">
         <!--search bar-->
+
         <form>
             <input type="text" class="w3-input w3-border-green w3-round-large" placeholder="Search..." autocomplete="on" name="seach"
                 ng-model="keyword">
@@ -103,12 +104,13 @@
                             <b class="color">Category: </b>
                             <span ng-repeat="category in business.category"> {{category}}</span>
                             <br>
-                            <a class="w3-button w3-green w3-margin-top" href="/#!/{{business._id}}">View page >> </a>
+                            <a class="w3-button w3-green w3-margin-top" href="/#!/business/{{business._id}}">View page >> </a>
 
                         </div>
                     </div>
                 </div>
             </div>
+
 
 
 
@@ -128,6 +130,7 @@
         transform: rotateY(180deg);
     }
     
+
     .flip-container,
     .front,
     .back {
@@ -147,6 +150,7 @@
     .back {
         backface-visibility: hidden;
         position: absolute;
+
         top: 0;
         left: 0;
     }

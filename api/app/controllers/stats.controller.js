@@ -16,12 +16,13 @@ var StatsController = {
     var statType = req.body.statType;
     var amount = req.body.amount;
     StatsController.addStat(date, businessID, statType, amount);
-    console.log('node stats'); 
-    res.status(200).json("Success"); 
+    console.log('node stats');
+    res.status(200).json("Success");
   },
   addStat: function (date, businessID, statType, amount) {
     var now = new Date(date);
     now.setHours(0, 0, 0, 0);
+
     //update week stats
     //check if there is an entry for this business for this week
     WeekStat.findOne({
@@ -50,6 +51,7 @@ var StatsController = {
         newWeekStat.save(function (err) { if (err) { throw err; } });
       }
     });
+    console.log(now);
 
     MonthStat.findOne({
       business: businessID,
@@ -138,8 +140,6 @@ var StatsController = {
     var businessID = req.body.businessID;
     var startDate = helper.calculateWeek(new Date(req.body.startDate)).startDate;
     var endDate = helper.calculateWeek(new Date(req.body.endDate)).endDate;
-    console.log('start ' + startDate);
-    console.log('end ' + endDate);
 
     WeekStat.find({
       $and: [
@@ -160,7 +160,6 @@ var StatsController = {
 
   },
   getMothStats: function (req, res) {
-    console.log(req.body);
 
     var businessID = req.body.businessID;
     var startMonth = parseInt(req.body.startMonth);
@@ -237,37 +236,8 @@ var StatsController = {
       }
     })
   },
-  // checkPageView(req, res) {
-  //   console.log('bala7');
 
 
-  //   if ((req.user && req.user._id != req.params.id) || !req.user) {
-  //     console.log('STATS');
-
-  //     console.log(req.user);
-
-  //     console.log(req.params.id);
-
-  //     console.log(req.user._id);
-
-  //     var cookieName = 'fasa7ny.' + req.params.id;
-  //     //if has no cookie for this business, then hasn't visitied it last 24 hrs,
-  //     //then add cookies 
-
-  //     console.log(cookieName);
-
-  //     if (typeof req.cookies[cookieName] === 'undefined') {
-  //       console.log('NO COOKIES');
-  //       var value = 1;
-  //       res.cookie(cookieName, value, { maxAge: 24 * 60 * 60 * 30 * 1000, httpOnly: true });
-
-  //       //add page view
-  //       // var date = new Date('2017-04-15');
-  //       statsController.addStat(new Date(), req.params.id, 'views', 1);
-
-  //     }
-  //   }
-  // }
 }
 
 

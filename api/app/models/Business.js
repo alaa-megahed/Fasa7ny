@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 require('mongoose-double')(mongoose);
 var SchemaTypes = mongoose.Schema.Types;
 var RegisteredUser = require('./RegisteredUser');
-
+var Review = require('./Review').ReviewSchema;
 
 var BusinessSchema = new Schema({
     local:
@@ -38,6 +38,7 @@ var BusinessSchema = new Schema({
     location: { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
     address: String,
     area: String,
+
     average_rating: { type: SchemaTypes.Double, default: 0.0 },
     public:
     {
@@ -46,17 +47,20 @@ var BusinessSchema = new Schema({
     payment_methods: [String], //or int?
 
     subscribers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'RegisteredUser', default: [] }], //whenever user subscribes to business, add him to this list.
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review', default: [] }],
+
+    reviews: [Review],
+
     images: [String],
     delete:
     {
         type: Number, default: 0
     },
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review', default: [] }],
+
     profilePicture: String,
     facebookURL: String,
     twitterURL: String,
     youtubeURL: String
+
 });
 
 //created a text index on the desired fields
@@ -91,4 +95,4 @@ BusinessSchema.pre('remove', function (next) {
 });
 
 var Business = mongoose.model('Business', BusinessSchema);
-module.exports = Business;
+module.exports = Business; 

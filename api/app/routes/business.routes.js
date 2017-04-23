@@ -11,17 +11,6 @@ business.use('/makepagepublic', function(req, res) {
   res.render("makePagePublic.ejs", {user:req.user});
 })
 
-// business.get('/', function(req, res){
-//         res.sendFile(path.resolve('public/views/businessPage.html'));
-//        	// res.render('b.ejs');
-
-//     });
-
-// business.get('/edit', function(req, res){
-//         res.sendFile(path.resolve('public/views/businessEdit.html'));
-//        	// res.render('b.ejs');
-//
-//     });
 business.get('/b/:id', businessController.getBusiness);
 
 

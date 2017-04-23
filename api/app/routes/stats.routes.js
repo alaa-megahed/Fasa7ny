@@ -8,5 +8,4 @@ stats.post('/all', StatsController.getAllStats);
 stats.post('/addStat', StatsController.addStatRoute);
 
 
-
 module.exports = stats; 

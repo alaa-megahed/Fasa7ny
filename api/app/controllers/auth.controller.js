@@ -111,7 +111,7 @@ let AuthController =
 		passport.authenticate('facebook', { scope : 'email' })(req, res);},
 
 
-	facebookCallback: function(req, res,next){
+	facebookCallback: function(req, res){
     passport.authenticate('facebook', function(err, user, info) {
           if (err) { return next(err); }
           if (!user) { return res.json("error"); }

@@ -24,9 +24,8 @@ module.exports = function () {
         }
         res.setHeader('Access-Contro-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
         res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization, Accept, X-HTTP-Method-Override");
-        //I tried the other one to allow cookies -Radwa 
-        // res.setHeader('Access-Control-Allow-Credentials', true);
-        res.header("Access-Control-Allow-Credentials", true);
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        // res.header("Access-Control-Allow-Credentials", true);
         next();
     });
 
@@ -49,6 +48,7 @@ module.exports = function () {
 
 
 
+
     require('./passport')(passport);
 
 
@@ -60,6 +60,7 @@ module.exports = function () {
 
     //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
     //require('../app/routes/users.server.routes.js')(app, passport, multer);
+
 
 
 

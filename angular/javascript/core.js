@@ -1,5 +1,5 @@
-var app = angular.module('fasa7ny', ['ngRoute', 'ui.bootstrap', 'chart.js', 
-'720kb.datepicker', 'ngCookies', 'sn.addthis']);
+var app = angular.module('fasa7ny', ['ngRoute', 'ui.bootstrap', 'chart.js',
+	'720kb.datepicker', 'ngCookies', 'sn.addthis']);
 
 app.config(function ($routeProvider) {
 	$routeProvider
@@ -96,10 +96,7 @@ app.config(function ($routeProvider) {
 			controller: "resetPasswordController"
 
 		})
-		.when("/:id", {
-			templateUrl: "views/businessPage.html",
-			controller: "businessController"
-		});
+
 });
 
 
