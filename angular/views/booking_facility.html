@@ -1,10 +1,10 @@
-   
-  <div ng-if ="type != 4 && type != 1">
+<div ng-if ="type != 4 && type != 1">
            <center>
            <h3>Please log in to view this page.</h3> 
            </center>
-  </div>
-        <section id="about" class="text-center" ng-if="type == 4 || type == 1">
+</div>
+  <div ng-show="type == 4 || type == 1">
+        <section id="about" class="text-center"> <!-- ng-if="type == 4 || type == 1" -->
 
               <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
                   <h2>Book<span class="color">ING</span></h2>
@@ -61,13 +61,15 @@
                         {{error_message}}
 
                     <div ng-show="cash">
-                        <button type="submit" ng-if="type == 1|| type == 4" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
+                        <button type="submit"  class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="book_cash()"> BOOK NOW AND PAY CASH</button> <!-- ng-if="type == 1|| type == 4" -->
                     </div>
-                        <button type="submit" ng-if="type == 1" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count || minDate > formData.day " ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
+                        <button type="submit"  class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count || minDate > formData.day " ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button> <!-- ng-if="type == 1" -->
                 </form>
 
                  
-        </section>          
+        </section> 
+                 
+        </div>         
            
 
         <a href="javascript:;" id="scrollUp">

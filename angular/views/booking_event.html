@@ -1,21 +1,16 @@
-       <div ng-if = "type != 4 && type != 1">
+<div ng-if ="type != 4 && type != 1">
            <center>
-           <h3>Please log in to view this page.</h3> </center>
-      </div> 
-
-       <section id="about" class="text-center" ng-if="type == 4 || type == 1">
+           <h3>Please log in to view this page.</h3> 
+           </center>
+</div>
+  <div ng-show="type == 4 || type == 1">
+       <section id="about" class="text-center" >
             <div ng-controller="bookingEventController" class="container">
-<!--                 <div class="row">
- -->                
-        
-                    <!-- section title -->
-                    <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
-                        
+                           
+                <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
                         <h2>Book<span class="color">ING</span></h2>
                         <div class="border"></div>
-                    </div>
-                    <!-- /section title -->
-                    
+                </div>
                    
                       <form ng-model="formData">
 
@@ -58,10 +53,9 @@
                        <br><br>
                     
                 </div>
-                        <!-- End row -->
-
-            </div>      <!-- End container -->
-        </section>   <!-- End section -->
+            </div>     
+        </section>   
+        </div>
         
         <!--
         Start Main Features

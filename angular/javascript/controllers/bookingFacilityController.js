@@ -1,32 +1,28 @@
 var app = angular.module('fasa7ny');
 
 app.controller('bookFacilityController', function($scope, $http, $location,$routeParams, Offers,status,Occurrences,Global,Facilities) {
-  $scope.user = {};
-  $scope.business_id = $routeParams.id;
-    status.local()
-     .then(function(res){
-       if(res.data){
-         if(res.data.user_type == 1)    
-           $scope.type = 1;
-         else if(res.data.user_type == 2)   
-     {
-       if(res.data._id == $scope.business_id)  
-         $scope.type  = 4;   
-       else
-           $scope.type  = 2;   
-     }
-         else if(res.data.user_type == 3)    
-       $scope.type = 3;
-       }
-       else {
-         status.foreign()
-         .then(function(res){
-           if(res.data.user_type) 
+    $scope.business_id = $routeParams.id;
+      $scope.user = {};
+      status.local().then(function(res){
+         if(res.data)
+         {
+           $scope.user = res.data._id;
+           if(res.data.user_type == 1)
              $scope.type = 1;
-           else $scope.type = 5;      
-         });
-       }
-     });
+           else if(res.data.user_type == 2 && $scope.business_id == res.data._id)
+             $scope.type  = 4;
+           else if(res.data.user_type == 3) $scope.type = 3;
+         }
+         else {
+           $scope.user = res.data._id;
+           status.foreign()
+           .then(function(res){
+             if(res.data.user_type)
+               $scope.type = 1;
+             else $scope.type = 5;
+           });
+         }
+       });
 
       console.log("in facility "+ $scope.business_id);
       $scope.business_id = $routeParams.id;
@@ -108,6 +104,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
                       $location.path('/success/'+response.data._id);
                     }, function errorCallback(response){
                       console.log(response.data);
+                      //redirect to not authorized page
                        $scope.error_message = response.data;
                     }); 
          }
@@ -119,6 +116,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
                       $location.path('/success/'+responce.data._id);
 
                     }, function errorCallback(responce){
+                      //redirect to not authorized page
                       console.log(responce.data);
                     }); 
           }
@@ -144,11 +142,13 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
                               $location.path('/success/'+responce.data._id);
 
                             }, function errorCallback(responce){
+                               //redirect to not authorized page
                               console.log(responce.data);
                                $scope.error_message = responce.data;
                             }); 
 
                     }, function errorCallback(responce){
+                       //redirect to not authorized page
                       console.log(responce.data);
                        $scope.error_message = responce.data;
                     });

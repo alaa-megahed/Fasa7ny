@@ -4,34 +4,31 @@ var app = angular.module('fasa7ny');
 app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences) 
 {     
 
-    // $scope.business_id = Global.getBusiness();
-     $scope.business_id = $routeParams.id;
+     $scope.business_id = Global.getBusiness();
+    // $scope.business_id = $routeParams.id;
 
-    $scope.user = {};
-    status.local()
-     .then(function(res){
-       if(res.data){
-         $scope.user = res.data._id;
-         if(res.data.user_type == 1)
-           $scope.type = 1;
-         else if(res.data.user_type == 2)
-          {
-            if(res.data._id == $scope.business_id)
-                $scope.type  = 4;
-             else $scope.type = 2; 
-          }
-         else $scope.type = 3;
-       }
-       else {
-         $scope.user = res.data._id;
-         status.foreign()
-         .then(function(res){
-           if(res.data.user_type)
+     $scope.user = {};
+      status.local().then(function(res){
+         if(res.data)
+         {
+           $scope.user = res.data._id;
+           if(res.data.user_type == 1)
              $scope.type = 1;
-           else $scope.type = 2;
-         });
-       }
-     });
+           else if(res.data.user_type == 2 && $scope.business_id == res.data._id)
+             $scope.type  = 4;
+           else if(res.data.user_type == 3) $scope.type = 3;
+         }
+         else {
+           $scope.user = res.data._id;
+           status.foreign()
+           .then(function(res){
+             if(res.data.user_type)
+               $scope.type = 1;
+             else $scope.type = 5;
+           });
+         }
+       });
+
 
         $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
