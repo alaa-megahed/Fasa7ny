@@ -209,7 +209,7 @@ exports.unsubscribe = function(req,res)
 
 exports.addRating = function(req, res)
 {
-
+	console.log(req.user);
 	 if(req.user && req.user instanceof User) {
 
 		var userID = req.user.id;              // from passport session; changed to body temporarily for testing
