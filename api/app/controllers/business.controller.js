@@ -7,16 +7,11 @@ var Facility = require('mongoose').model('Facility');
 var User = require('mongoose').model('RegisteredUser');
 var async = require('async');
 
-
-
 var BusinessController = {
 
   getBusiness: function (req, res) {
-   // var name = "Habiiba";
-   // var name = "Escape Room";
    console.log("backend");
    if(req.params.name && req.user && req.user instanceof User) {
-      //  var name = req.params.name;
       var name = req.params.name;
        Business.findOne({name: name }).
            exec(function (err, result) {
@@ -126,7 +121,7 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             console.log("ana fl backend");
-            console.log(req.body);
+            console.log(JSON.stringify(req.body.location));
             Business.findById(id, function (err, business) {
                 if (err) res.status(500).json("Something went wrong");
                 else if (!business) res.status(500).json("Business not found");
@@ -135,8 +130,10 @@ requestRemoval: function(req,res) {
                         business.description = req.body.description;
                     }
 
-                    if (typeof req.body.location != "undefined" && req.body.location.length > 0) {
+                    if (typeof req.body.location != "undefined") {
                         business.location = req.body.location;
+                        console.log("ahlan we sahlan");
+                        console.log(JSON.stringify(req.body.location));
                     }
                     if (typeof req.body.email != "undefined" && req.body.email.length > 0) {
                         business.email = req.body.email;
@@ -171,8 +168,8 @@ requestRemoval: function(req,res) {
                         business.profilePicture = req.file.filename;
                     }
 
-                    if(typeof req.body.password != "undefined" && req.body.password > 0) {
-                      business.password = business.generateHash(req.body.password);
+                    if(req.body.password) {
+                      business.local.password = business.generateHash(req.body.password);
                     }
 
                     if(req.body.facebookURL) {
@@ -189,6 +186,9 @@ requestRemoval: function(req,res) {
                     }
 
                     business.save(function(err, newbusiness) {
+                      if(err)
+                        console.log(err);
+                      console.log("SAVE");
                       res.status(200).json({business:newbusiness});
                     });
                     // res.sendFile('/business/b');
@@ -263,7 +263,6 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             if (typeof req.params.method != "undefined") {
                 var id = req.user.id;
-
                 var payment = req.params.method;
                 console.log("ana fl backend delete method");
                 Business.findOne({ _id: id }, function (err, business) {
@@ -347,7 +346,7 @@ requestRemoval: function(req,res) {
         res.status(401).json("YOU ARE NOT AUTHORIZED");
   },
 
-    
+
 
     hasBookings: function(req, res)
     {
@@ -360,7 +359,7 @@ requestRemoval: function(req,res) {
              if(!bookings || bookings == undefined || bookings.length == 0)
                 res.status(200).json(0);
              else
-                res.status(200).json(1);   
+                res.status(200).json(1);
             });
         }
         else
@@ -373,8 +372,7 @@ getFacilityOccs: function(req, res)
 {
     if(req.user && req.user instanceof Business)
     {
-            var id = req.user.id; 
-            var id = "58f0cb2d6bfb6061efd66625";
+            var id = req.user.id;
             var facility_id = req.params.facility;
             EventOccurrences.find({"facility_id": facility_id}, function(err, occs)
             {
@@ -391,7 +389,7 @@ getEventOccs: function(req, res)
 {
      if(req.user && req.user instanceof Business)
     {
-            var id = req.user.id; 
+            var id = req.user.id;
             var event_id = req.params.event;
             EventOccurrences.find({"event": event_id}, function(err, occs)
             {
@@ -408,7 +406,7 @@ getBooking: function(req, res)
 {
     if(req.user && req.user instanceof Business)
     {
-            var id = req.user.id; 
+            var id = req.user.id;
             var booking_id = req.params.booking;
             Booking.findOne({"_id": booking_id}, function(err, booking)
             {
@@ -419,6 +417,18 @@ getBooking: function(req, res)
 
      }
     else res.status(401).json("YOU ARE NOT AUTHORIZED");
+},
+
+getBusinessId : function(req,res)
+{
+    var name = req.body.name;
+    Business.findOne({name:name},function(err,business)
+    {
+        if(err || !business)
+            res.status(500).json("error");
+        else
+            res.status(200).json(business);
+    });
 }
 
 }

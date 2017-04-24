@@ -35,10 +35,12 @@
                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
 
                        <div ng-repeat="occ in eventocc | orderBy : 'day'">
-                         {{occ.day | date}} <br>
+                         {{occ.day | date}} <br> <!-- ng-controller="viewBookingsController" -->
                          {{occ.available}} available places. <br>
-                          <button class="btn btn-transparent" ng-if = "type == 4" ng-click="viewBookings(occ._id)">View Bookings</button>
-                          <button class="btn btn-transparent" ng-if = "type == 4"ng-click="deleteEvent(occ._id)">Delete Occurence</button>
+
+                          <button class="btn btn-transparent"  ng-disabled="occ.bookings.length == 0" ng-if = "type == 4" ng-click="viewBookings(occ._id)">View Bookings</button>
+                          <button  class="btn btn-transparent" ng-if = "type == 4" ng-click="deleteEvent(occ._id)">Delete Time-Slot</button>
+
                           <hr width="60%">
                        </div>
                    </article>

@@ -8,7 +8,6 @@ var config = require('./config'),
     session = require('express-session'),
     schedule = require('node-schedule'),
     async = require('async'),
-    // cors = require('cors'),
     multer = require('multer');
 
 
@@ -46,36 +45,17 @@ module.exports = function() {
     }));
 
 
-
-
     require('./passport')(passport);
-
 
     app.use(passport.initialize());
     app.use(passport.session());
 
-
-
-
     app.set('views', '../angular/views');
-
-    app.set('view engine', 'ejs');
-
-
-    //STATE HERE THE ROUTES YOU REQUIRE, EXAMPLE:
-    //require('../app/routes/users.server.routes.js')(app, passport, multer);
-
-
-
-
-
 
     var router = require('../app/routes');
 
     app.use(router);
 
-
-                                // pass passport for passport configuration
 
     app.use( express.static("../angular") );
     app.use( express.static("public") );

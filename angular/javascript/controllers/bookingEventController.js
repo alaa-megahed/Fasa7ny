@@ -1,52 +1,61 @@
-
 var app = angular.module('fasa7ny');
 
-app.controller('bookingEventController', function($scope, $http, $location,Global,Event,status, Offers,viewOccurences) 
+app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences) 
 {     
 
-    $scope.business_id = Global.getBusiness();
-
-    $scope.user = {};
-
-
-    status.local()
-     .then(function(res){
-       if(res.data){
-         $scope.user = res.data._id;
-         if(res.data.user_type == 1)
-           $scope.type = 1;
-         else if(res.data.user_type == 2)
+    $scope.current_event = $routeParams.id;
+      Event.get($scope.current_event).then(
+          function(response)
           {
-            if(res.data._id == $scope.business_id)
-                $scope.type  = 4;
-             else $scope.type = 2; 
-          }
-         else $scope.type = 3;
-       }
-       else {
-         $scope.user = res.data._id;
-         status.foreign()
-         .then(function(res){
-           if(res.data.user_type)
-             $scope.type = 1;
-           else $scope.type = 2;
-         });
-       }
-     });
+            $scope.event = response.data.event;
+            $scope.business_id = $scope.event.business_id;
+            console.log("once event details "+ $scope.event);
+               $http.get('http://127.0.0.1:3000/business/b/'+$scope.business_id ).then(
+              function(response)
+              {
+                $scope.business = response.data.result;
+                $scope.user = {};
+                status.local().then(function(res){
+                   if(res.data)
+                   {
+                     $scope.user = res.data._id;
+                     if(res.data.user_type == 1)
+                       $scope.type = 1;
+                     else if(res.data.user_type == 2 && $scope.business_id == res.data._id)
+                       $scope.type  = 4;
+                     else if(res.data.user_type == 3) $scope.type = 3;
+                   }
+                   else {
+                     $scope.user = res.data._id;
+                     status.foreign()
+                     .then(function(res){
+                       if(res.data.user_type)
+                         $scope.type = 1;
+                       else $scope.type = 5;
+                     });
+                   }
+                 });
+                 Offers.get($scope.business_id)
+                  .then(function(response) {
+                         $scope.offers = response.data;
+                         $scope.betengan = "Roody";
+                     });
+              });
+       
+          });
+
+        
+     
+     
 
         $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
         //   if($scope.business.payment_methods[i] === "cash")
         //     $scope.cash = true;
         // }
-        $scope.current_event = Global.getOnceEvent();
+        // $scope.current_event = Global.getOnceEvent();
 
-        Event.get($scope.current_event).then(
-          function(response)
-          {
-            $scope.event = response.data.event;
-            console.log("once event details "+ $scope.event);
-          });
+      
         console.log($scope.current_event);
 
         viewOccurences.get($scope.current_event).then(function (response) {
@@ -60,26 +69,22 @@ app.controller('bookingEventController', function($scope, $http, $location,Globa
         console.log("business id "+$scope.business_id);
 
         $scope.min = 1;
-        var offers;
-        Offers.get($scope.business_id)
-                .then(function(response) {
-                       offers = response.data;
-                       $scope.offers = response.data;
-                       $scope.betengan = "Roody";
-                   });
+       
         $scope.book_cash = function()
         {   
           var chosen_offer = $scope.formData.chosen_offer;
           console.log("count   "+$scope.formData.count+" offer   "+$scope.formData.chosen_offer); //why  undefined?
-          var min_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, offers);
+          var min_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
           $scope.charge = min_charge;
           console.log("charge   " + min_charge); 
           console.log("event occurrence befor http "+ $scope.event_occ._id);
           if($scope.type == 1)
           {
-             $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge,})
+             $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge,business_id:$scope.business_id})
                     .then(function successCallback(responce){
                       console.log(responce.data);
+                     $location.path('/success/'+responce.data._id);
+
                     }, function errorCallback(responce){
                       console.log(responce.data);
                     }); 
@@ -89,6 +94,8 @@ app.controller('bookingEventController', function($scope, $http, $location,Globa
              $http.post('http://127.0.0.1:3000/bookings/book_event', {count: $scope.formData.count ,event_id: $scope.event_occ._id, charge: $scope.charge, user_id: $scope.user._id})
                     .then(function successCallback(responce){
                       console.log(responce.data);
+                      $location.path('/success/'+responce.data._id);
+
                     }, function errorCallback(responce){
                       console.log(responce.data);
                     }); 
@@ -107,9 +114,11 @@ app.controller('bookingEventController', function($scope, $http, $location,Globa
             $http.post('http://127.0.0.1:3000/bookings/charge', {stripeToken: token.id, amount: $scope.stripe_charge})
                     .then(function successCallback(responce){
                       console.log("success  charge in responce  "+ responce.data);
-                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ.id, charge: $scope.charge, stripe_charge: responce.data.id, user_id: $scope.user._id, business_id: $scope.business_id})
+                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, stripe_charge: responce.data.id, user_id: $scope.user._id, business_id: $scope.business_id})
                             .then(function successCallback(responce){
                               console.log(responce.data);
+                              $location.path('/success/'+responce.data._id);
+
                             }, function errorCallback(responce){
                               console.log(responce.data);
                             }); 

@@ -99,7 +99,7 @@
                     <div class="back" style="overflow: hidden">
 
                         <img ng-src="http://localhost:3000/photo/{{business.profilePicture}}" class="centered-and-cropped img-flipped">
-                        <div class="w3-display-left w3-container">
+                        <div class="dark-text w3-display-left w3-container">
                             <b class="color">Description: </b>
                             <p> {{business.description}} </p> <br>
                             <b class="color">Address </b> {{business.address}} <br>
@@ -124,6 +124,9 @@
 </div>
 
 <style>
+    .dark-text {
+        color: black
+    }
     flip-container {
         perspective: 1000px;
     }

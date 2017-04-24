@@ -27,6 +27,7 @@ router.use('/search', search);
 router.use('/business', business);
 router.use('/user', user);
 router.use('/admin', admin);
+
 router.use('/stats', stats);
 
 
@@ -37,21 +38,21 @@ router.use('/contact', function (req, res) {
 
 //check if photo exists, send it, if not, send defult avatar 
 router.use('/photo/:photo', function (req, res) {
-    
+
     res.sendFile(path.resolve('public/uploads/' + req.params.photo));
 
 });
 
 
-router.get('/loggedin', function (req, res) {;
-    
+
+router.get('/loggedin', function (req, res) {
     res.json(req.user);
 });
 
 router.get('/loggedin1', function (req1, res1) {
     res1.json(req1.user);
 });
-router.use('/stats', stats);
+
 
 
 

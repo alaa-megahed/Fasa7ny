@@ -5,57 +5,92 @@ angular.module('fasa7ny')
     $scope.user = {};
     $scope.err = "";
     $scope.form = {};
-    $scope.searchAppear = 1;
     $scope.type = -1;
     $scope.notifcolor = {'color' : 'white'} ;
 
+    // var user = Global.getUser();
+    // console.log(user);
 
-    status.local().then(
-      function(result)
-           {
-             $scope.user = result;
-             console.log("Data is " + JSON.stringify(result));
-             if($scope.user.data)
+
+
+    $scope.updateUser = function()
+    {
+      status.local().then(
+        function(result)
              {
-                console.log($scope.user.data.notifications);
-                $scope.type = 0;
-                $scope.user.data.notifications.reverse();
-                $scope.notifications =  $scope.user.data.notifications.slice(1,11);
-                if($scope.user.data.unread_notifications)
-                    $scope.notifcolor = {'color' : 'red'};
-                $scope.type = 0;
-              }
+               $scope.user = result;
 
-              if(!$scope.user.data)
-              {
-                var deferred = $q.defer();
-                status.foreign().then(function(result){
-                  $scope.user = result;
-                  if($scope.user.data)
+               if($scope.user.data)
+               {
+                 console.log("Data is " + JSON.stringify(result));
+                  $scope.type = 0;
+                  if($scope.user.data.notifications)
                   {
-                     $scope.type = 1;
-                     $scope.user.data.notifications.reverse();
-                     $scope.notifications =  $scope.user.data.notifications.slice(1,11);
-                     if($scope.user.data.unread_notifications)
-                         $scope.notifcolor = {'color' : 'red'};
-                   }
+                    $scope.user.data.notifications.reverse();
+                    $scope.notifications =  $scope.user.data.notifications.slice(1,11);
+                  }
 
-                  deferred.resolve(result);
-                 console.log("response is " + JSON.stringify(deferred.promise));
-                },function(response){
-                  deferred.reject();
-                  $location.path('/');
-                });
+                  if($scope.user.data.unread_notifications)
+                      $scope.notifcolor = {'color' : 'red'};
+                  $scope.type = 0;
+                }
 
-              }
+                if(!$scope.user.data)
+                {
+                  var deferred = $q.defer();
+                  status.foreign().then(function(result){
+                    $scope.user = result;
+                    if($scope.user.data)
+                    {
+                       $scope.type = 1;
+                       $scope.user.data.notifications.reverse();
+                       $scope.notifications =  $scope.user.data.notifications.slice(1,11);
+                       if($scope.user.data.unread_notifications)
+                           $scope.notifcolor = {'color' : 'red'};
+                     }
+
+                    deferred.resolve(result);
+                   console.log("response is " + JSON.stringify(deferred.promise));
+                  },function(response){
+                    deferred.reject();
+                    $location.path('/');
+                  });
+
+                }
 
 
-           });
+             });
+
+    }
+
+    $scope.updateUser();
+
+
+    $scope.getAdvertisements = function()
+    {
+      Homepage.getAds().then(function successfulCallback(result){
+
+        $scope.advertisements = result.data;
+
+        //shuffle array to choose random 6 ads
+        var j, x, i;
+        for (i = $scope.advertisements.length; i; i--) {
+            j = Math.floor(Math.random() * i);
+            x = $scope.advertisements[i - 1];
+            $scope.advertisements[i - 1] = $scope.advertisements[j];
+            $scope.advertisements[j] = x;
+        }
+
+
+        $scope.advertisements =  $scope.advertisements.slice(1,9);
 
 
 
 
+      });
+    }
 
+    $scope.getAdvertisements();
 
     $scope.signUp = function() {
       var modalInstance = $modal.open({
@@ -96,6 +131,9 @@ angular.module('fasa7ny')
                 $scope.err = selectedItem.err;
                 if($scope.err === "Oops! Wrong password." || $scope.err === "No user found." )
                   $scope.signIn();
+                else {
+                  $scope.updateUser();
+                }
                 }, function () {
                   $log.info('Modal dismissed at: ' + new Date());
                 });
@@ -103,12 +141,11 @@ angular.module('fasa7ny')
 
     }
 
-
     $scope.search = function(){
 
-      $scope.searchAppear = 0;
       console.log($scope.form.search);
       $location.url('/search/'+$scope.form.search);
+
 
     }
 
@@ -125,36 +162,44 @@ angular.module('fasa7ny')
 
     $scope.facebook = function(){
      $window.location = $window.location.protocol + "//" + "localhost:3000/auth/facebook";
-    //   Homepage.facebook().then(function(){
-    //       $window.location.reload();
-    // });
+
     }
 
     $scope.google = function(){
        $window.location = $window.location.protocol + "//" + "localhost:3000/auth/google";
     }
 
+
+    $scope.personalProfile = function(){
+      $location.path('/profile'); //CHECK NAME
+    }
+
     $scope.logout = function(){
 
-      $scope.user = null;
-      console.log($scope.type);
+
       if(!$scope.type)
       {
         Homepage.logoutLocal().then(function(result){
-          $location.path("/");
+
+          $location.url('/');
+          $scope.updateUser();
+
+        }, function(err){
+          $location.url('/'); //redirect to error page
         })
       }
       else {
-        Homepage.logout().then(function(result)
-        {
-            console.log(result);
-            $location.path("/");
-        })
+        $scope.user = null;
+        Homepage.logout();
       }
 
+    }
 
+    $scope.getHome = function()
+    {
 
-
+      console.log("home");
+      $location.url('/');// get back to this after ads
 
     }
 
@@ -162,6 +207,10 @@ angular.module('fasa7ny')
     $scope.goToBusinessPage = function(name) {
       console.log(name);
       $location.path('/business/'+name);
+    }
+
+    $scope.getNotifications = function(){
+      $location.path('/user/notifications');
     }
 
 
@@ -231,12 +280,12 @@ angular.module('fasa7ny')
                 console.log("Return data "  + JSON.stringify(data));
                 if(data.data === "success")
                 {
-                  $window.location.reload();
                   $modalInstance.close("closed");
                 }
 
                 else
                 {
+
                   $scope.err = data.data;
                   $modalInstance.close({
                     err : $scope.err[0]

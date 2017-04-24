@@ -1,21 +1,21 @@
-       <section id="about" class="text-center">
+
+<div ng-if ="type != 4 && type != 1">
+           <center>
+           <h3>Please log in to view this page.{{type}}</h3> 
+           </center>
+</div>
+
+  <div ng-show="type == 4 || type == 1">
+       <section id="about" class="text-center" >
             <div ng-controller="bookingEventController" class="container">
-<!--                 <div class="row">
- -->                
-        
-                    <!-- section title -->
-                    <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
-                        
+                <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
                         <h2>Book<span class="color">ING</span></h2>
                         <div class="border"></div>
-                    </div>
-                    <!-- /section title -->
-                    
-                   
+                </div>
                       <form ng-model="formData">
                         <h3>Number of people  :  <input type="Number" style="color:#000;" ng-model="formData.count" min = {{min}} max = {{max}}><br></h3>
+                        <h4>Available places: {{max}}</h4>
                        
-                        <div> {{betengan}} </div>
                         <!-- <div >
                             <h3> Special Offers:</h3> <br>
 
@@ -49,16 +49,13 @@
                         <button type="submit" ng-if="type == 1" class="btn btn-transparent" ng-disabled="!formData.count" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
 
                        </form>
-                       
-
                        <br><br>
-                        <a href="#!/book_facility">CLICK ME CLICK ME</a>
                     
                 </div>
-                        <!-- End row -->
+                </section>
+        </div>
+       
 
-            </div>      <!-- End container -->
-        </section>   <!-- End section -->
         
         <!--
         Start Main Features
@@ -72,13 +69,6 @@
                         <div class="item">
                             
                             <div class="features-item">
-                                
-                               
-
-                                
-                                <!-- features content -->
-                                
-                                <!-- /features content -->
                                 
                             </div>
                         </div>

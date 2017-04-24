@@ -30,12 +30,13 @@ var BusinessSchema = new Schema({
         type: String,
         unique: true
     },
-    email: String,
-    phones: [String],
-    description: String,
-    merchant_ID: { type: String, unique: true },
-    category: [String], //or int? can be in more than one category
-    location: { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
+
+    email         : String,
+    phones        : [String],
+    description   : String,
+    merchant_ID   : {type: String, unique: true },
+    category      : [String], 
+    location      : { Lat: SchemaTypes.Double, Lng: SchemaTypes.Double },
     address: String,
     area: String,
 
@@ -96,6 +97,9 @@ BusinessSchema.pre('remove', function (next) {
     }
     );
 });
+// Indexes this schema in 2dsphere format (critical for running proximity searches)
+ BusinessSchema.index({location: '2dsphere'});
+
 
 var Business = mongoose.model('Business', BusinessSchema);
 module.exports = Business; 

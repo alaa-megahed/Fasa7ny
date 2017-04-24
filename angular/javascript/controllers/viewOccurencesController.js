@@ -20,13 +20,17 @@ app.controller('viewOccurencesController', function($scope, $http, status,viewOc
    }
  });
 
-
   viewOccurences.get($routeParams.eventId)
 	.then(function(d) {
     $scope.eventocc = d.data.eventocc;
     $scope.time = d.data.eventocc[0].time;
     console.log($scope.eventocc);
   });
+
+  $scope.viewBookings = function(occId)
+  {
+     $location.path('/bookings/'+occId);
+  }
 
   $scope.deleteEvent = function (occId) {
         $scope.message = "Show Occ Delete Button Clicked";
@@ -51,20 +55,39 @@ app.controller('viewOccurencesController', function($scope, $http, status,viewOc
     };
 });
 
-var DeletePopUp = function ($scope, $modalInstance,viewOccurences,occId,$route) {
+var DeletePopUp = function ($scope, $http, $modalInstance,viewOccurences,occId,$route) {
     $scope.form = {}
     $scope.error ="";
-    $scope.submitForm = function () {
-    	console.log('Delete Occ Form');
-        viewOccurences.delete(occId)
+    $scope.submitForm = function () 
+    {
+      console.log("occ id f delete popup "+ occId);
+      console.log('Delete Occ Form');
+
+      $http.post('http://127.0.0.1:3000/event/getOccurrence', {occ_id: occId}).then(function successCallback(response)
+      {
+        var bookings = response.data.bookings;
+        for(var j = 0; j < bookings.length; j++)
+        {
+          $http.post('http://127.0.0.1:3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
+          .then(function successCallback(response){
+            console.log(response.data);
+          }, function errorCallback(response){
+            console.log(response.data);
+          });
+        }
+
+         viewOccurences.delete(occId)
         .then(function successCallback(d){
-        	console.log('del occ');
-            $route.reload();
+          console.log('del occ');
+            // $route.reload();
         $modalInstance.close('closed');
         },
         function errorCallback(d){
             $scope.error = d.data;
         });
+      });
+
+       
         
     };
 

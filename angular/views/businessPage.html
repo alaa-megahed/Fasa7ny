@@ -1,11 +1,9 @@
 <script>
     var image2 = document.getElementById('profilepic');
     var buttonUpload = document.getElementById('uploadButton');
-
     image2.addEventListener('click', function () {
         buttonUpload.style.display = "inline-block";
     });
-
     buttonUpload.addEventListener('click', function () {
         buttonUpload.style.display = "none";
     });
@@ -13,7 +11,6 @@
 </script>
 <!-- <script src="js/jquery.scrollUp.min.js"></script> -->
 <!-- <script src="js/classie.js"></script> -->
-<link rel="stylesheet" href="css/reviews.css">
 
 <div ng-if="type == 4" class="w3-sidebar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;background-color:#2B2C30;"
     id="rightMenu">
@@ -27,11 +24,21 @@
         <input ng-if="type == 4" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Create a Facility&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
             ng-click="createFacility(business._id)" class="btn btn-transparent">
         <input ng-if="type == 4" type="submit" value="Create One-Time Event" ng-click="createOneEvent(business._id)" class="btn btn-transparent">
+
+        <input ng-if="type == 4" type="submit" value="Create Offer " ng-click="createOffer(business._id)" class="btn btn-transparent">
+        <!-- <form ng-click = "businessEdit()" method="get">
+       <input ng-if = "type == 4" type="submit" value="Edit Information" class="btn btn-transparent"> -->
+
         <form ng-click="businessEdit()">
             <input ng-if="type == 4" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit Information&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
                 class="btn btn-transparent">
+
         </form>
-        <input ng-if="type == 4" type="submit" value="View Statistics" ng-click="viewStats()" class="btn btn-transparent">
+        <form ng-click="businessEditLocation()">
+            <input ng-if="type == 4" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit location&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                class="btn btn-transparent">
+        </form>
+
 
     </center>
     <!-- </div> -->
@@ -104,10 +111,11 @@
                                     <!-- <h4>Slide {{$index+1}}</h4> -->
                                 </slide>
                             </carousel>
+                            <br><br><br><br><br><br><br><br>
                         </div>
 
-                        <br><br><br> &nbsp;&nbsp; <button ng-if="type == 4" class="btn btn-transparent" ng-click="addImage()"
-                            ng-disabled="imagelength == 4"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
+
+                        &nbsp;&nbsp; <button ng-if="type == 4" class="btn btn-transparent" ng-click="addImage()" ng-disabled="imagelength == 4"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
 
                         <hr width="40%">
                         <div class="post-excerpt">
@@ -166,7 +174,9 @@
                     <br>
                     <!-- Single Widget -->
                     <aside class="widget wow fadeInDown">
-
+                        <div class="widget-title">
+                            <h3>Categories</h3>
+                        </div>
                         <div class="widget-content">
                             <ul class="categories">
                                 <li ng-repeat="category in categories"><i class="fa fa-plus"></i> <a href="#">{{ category }}</a></li>
@@ -239,7 +249,7 @@
 
                                     <!-- <img src="../img/user_profile/gender_icon.png" alt="gender_icon" class="image2" align="left" style = "padding-top: 6px"> -->
                                     <div style="padding-left: 25px;">
-                                        <div ng-if="method">
+                                        <div ng-if="methods">
                                             <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
                                                 <i class="fa fa-money" aria-hidder="true" style="color: #6cb670"></i>
                                             </a>
@@ -281,6 +291,7 @@
                         </div>
                         </article>
                     </div>
+
                 </div>
             </div>
 
@@ -305,6 +316,12 @@
                   <a ng-if = "type == 4" ng-click="paymentlength == 1 ? deletePaymentMethod(0):deletePaymentMethod(method)">
                   <span class="glyphicon glyphicon-trash"></span> </a> </li>
  -->
+
+
+
+
+
+
 
 
 
@@ -342,7 +359,7 @@
                                                         <button ng-if="type == 4" ng-controller="facilityController" class="btn btn-transparent" ng-click="addDaily(facility._id,facility.description,facility.capacity, facility.name)">&nbsp;&nbsp; Add Event </button>
                                                         <button ng-if="type == 4 || type == 1" ng-controller="facilityController" class="btn btn-transparent" ng-click="viewEvents(facility._id)">&nbsp;&nbsp;View Events &nbsp;</button>
                                                         <hr style="border: 0.5px solid #90EE90">
-                                                        <center>
+                                                    </center>
                                                 </div>
 
                                                 <!-- post title -->
@@ -369,12 +386,12 @@
                             </div>
                         </div>
                     </div>
-                    <input ng-if="facilitylength" type="submit" value="Book Now!" class="btn btn-transparent w3-green">
+                    <button ng-controller="businessController" ng-if="facilitylength" class="btn btn-transparent w3-green" ng-click="bookFacility()">Book Now!</button>
                     <hr>
-                </div>
-                <br>
+                </div><br>
+
                 <!-- </div> -->
-                <button ng-if="eventlength" onclick="myFunction('Demo2')" class="btn btn-transparent">Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                <button ng-if="eventlength" onclick="myFunction('Demo2')" class="btn btn-transparent">Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button><br>
                 <div id="Demo2" class="w3-hide w3-container">
                     <br>
                     <div id="primary" class="sidebar-right">
@@ -384,7 +401,7 @@
                                 <div ng-repeat="event in events" id="content-blog" class="span9 content group">
 
                                     <div style="background-color:#2B2C30;" class="post type-post status-publish format-video sticky hentry category-web-design hentry-post group blog-small">
-                                        <!-- post featured & title -->
+                                        <!-- post featured & titfle -->
 
                                         <div style="background-color:#2B2C30;" class="thumbnail">
                                             <div style="background-color:#2B2C30;" class="row">
@@ -421,8 +438,69 @@
                     </div>
                     </ul>
                 </div>
+
+
+                <button ng-if="type == 4" ng-click="schedule(business.name)" class="btn btn-transparent"> Check My Schedule &nbsp; </button>
                 <br>
-                <button ng-controller="businessController" ng-click="schedule(business.name)" class="btn btn-transparent"> Check My Schedule </button>
+
+
+
+                <button onclick="myFunction('Demo3')" class="btn btn-transparent">Check Our Offers&nbsp;&nbsp;&nbsp;&nbsp;</button>
+                <div id="Demo3" ng-controller="ViewOffersController" class="w3-hide w3-container">
+                    <br>
+                    <div id="primary" class="sidebar-right">
+                        <div class="container group">
+                            <div class="row">
+                                <!-- START CONTENT -->
+                                <div ng-repeat="offer in offers" id="content-blog" class="span9 content group">
+                                    <div style="background-color:#2B2C30;" class="post type-post status-publish format-video sticky hentry category-web-design hentry-post group blog-small">
+                                        <!-- post featured & title -->
+
+                                        <div style="background-color:#2B2C30;" class="thumbnail">
+                                            <div style="background-color:#2B2C30;" class="row">
+                                                <!-- post featured -->
+                                                <div class="image-wrap span4">
+                                                    <hr>
+                                                    <img class="img-center" width="300" height="260" ng-src="http://localhost:3000/photo/{{offer.image}}" class="attachment-blog_small wp-post-image"
+                                                        alt="3" />
+                                                    <hr>
+                                                    <center>
+                                                        <button ng-if="type == 4" class="btn btn-transparent" ng-controller="EditOffersController" ng-click="editOffer(offer._id,offer.type)"> Edit Offer </button>
+                                                        <button ng-if="type == 4" class="btn btn-transparent" ng-controller="DeleteOffersController" ng-click="deleteOffer(offer._id)"> Delete Offer </button>
+                                                        <hr style="border: 0.5px solid #90EE90">
+                                                        <center>
+                                                </div>
+
+                                                <!-- post title -->
+                                                <div class="span5">
+                                                    <h2 class="post-title">
+                                                        <h3>{{offer.name}}</h3>
+                                                    </h2>
+                                                    <hr width="60%">
+                                                    <div class="the-content">
+                                                        <hr width="60%"> Details:
+                                                        <p> {{offer.details}}</p>
+
+                                                    </div>
+                                                    <div class="the-content">
+                                                        <hr width="60%"> Value:
+                                                        <p> {{offer.value}}</p>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="clear"></div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+
             </div>
 
 
@@ -463,7 +541,7 @@
                                 </div>
                             </div>
                         </div>
-                       
+                        <!-- Respuestas de los comentarios -->
                         <ul class="comments-list reply-list">
                             <li ng-repeat="reply in review.replies">
                                 <!-- Avatar -->
@@ -474,7 +552,7 @@
                                     <div class="comment-head">
                                         <h6 ng-if="reply.authorType == 'user'" class="comment-name">{{reply.user.name}}</h6>
                                         <h6 ng-if="reply.authorType == 'business'" class="comment-name by-author"> {{business.name}}</h6>
-                                        <span style="margin-top: 10px">{{reply.timestamp | date: 'd MMM, yy h:mm a ' }} <i ng-if="type == 3 || (type == 1 && reply.user._id == user._id) || (reply.authorType == 'business' && type == 4) " ng-click="deleteReply(review, reply)" class="delete glyphicon glyphicon-trash"></i></span>
+                                        <span style="margin-top: 10px">{{reply.timestamp | date: 'd MMM, yy h:mm a ' }} <i ng-if="type == 3 || (type == 1 && reply.user._id == user._id) || (type == 4 && reply.authorType == 'business') " ng-click="deleteReply(review, reply)" class="delete glyphicon glyphicon-trash"></i></span>
 
 
                                     </div>
@@ -517,7 +595,7 @@
                             <div class="comment-box">
                                 <div class="comment-head">
                                     <h6 ng-if="type == 1" class="comment-name"> {{user.name}}: </h6>
-                                    <h6 ng-if="type == 4" class="comment-name"> q{{business.name}}: </h6> +
+                                    <h6 ng-if="type == 4" class="comment-name"> {{business.name}}: </h6> +
 
                                 </div>
                                 <div class="comment-content">
@@ -540,6 +618,13 @@
 </section>
 
 
+
+
+
+<div id="googleMap" style="height: 400px; display: none"></div>
+<div id="googleMap2" style="height: 400px;"></div>
+
+
 <div class="social-icon">
     <ul>
         <li ng-if="business.facebookURL"><a ng-if="business.facebookURL" href="{{ business.facebookURL}}" target="_blank"><i class="fa fa-facebook"></i></a></li>
@@ -547,3 +632,282 @@
         <li ng-if="business.youtubeURL"><a ng-if="business.youtubeURL" href="{{ business.youtubeURL}}" target="_blank"><i class="fa fa-youtube"></i></a></li>
     </ul>
 </div>
+
+
+<style>
+    /**
+ * Oscuro: #283035
+ * Azul: #03658c
+ * Detalle: #c7cacb
+ * Fondo: #dee1e3
+ ----------------------------------*/
+    
+    a {
+        color: #03658c;
+        text-decoration: none;
+    }
+    
+    ul {
+        list-style-type: none;
+    }
+    /** ====================
+ * Lista de Comentarios
+ =======================*/
+    
+    .delete:hover {
+        color: red;
+    }
+    
+    #delete:hover {
+        color: red;
+    }
+    
+    .comments-container {
+        margin: 60px auto 15px;
+        width: 70%;
+    }
+    
+    .comments-container h1 {
+        font-size: 36px;
+        color: #283035;
+        font-weight: 400;
+    }
+    
+    .comments-container h1 a {
+        font-size: 18px;
+        font-weight: 700;
+    }
+    
+    .comments-list {
+        margin-top: 30px;
+        position: relative;
+    }
+    /**
+ * Lineas / Detalles
+ -----------------------*/
+    
+    .comments-list:before {
+        content: '';
+        width: 2px;
+        height: 100%;
+        background: #c7cacb;
+        position: absolute;
+        left: 32px;
+        top: 0;
+    }
+    
+    .comments-list:after {
+        content: '';
+        position: absolute;
+        background: #c7cacb;
+        bottom: 0;
+        left: 27px;
+        width: 7px;
+        height: 7px;
+        border: 3px solid #dee1e3;
+        -webkit-border-radius: 50%;
+        -moz-border-radius: 50%;
+        border-radius: 50%;
+    }
+    
+    .reply-list:before,
+    .reply-list:after {
+        display: none;
+    }
+    
+    .reply-list li:before {
+        content: '';
+        width: 60px;
+        height: 2px;
+        background: #c7cacb;
+        position: absolute;
+        top: 25px;
+        left: -55px;
+    }
+    
+    .comments-list li {
+        margin-bottom: 15px;
+        display: block;
+        position: relative;
+    }
+    
+    .comments-list li:after {
+        content: '';
+        display: block;
+        clear: both;
+        height: 0;
+        width: 0;
+    }
+    
+    .reply-list {
+        padding-left: 88px;
+        clear: both;
+        margin-top: 15px;
+    }
+    /**
+ * Avatar
+ ---------------------------*/
+    
+    .comments-list .comment-avatar {
+        width: 65px;
+        height: 65px;
+        position: relative;
+        z-index: 99;
+        float: left;
+        border: 3px solid #FFF;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+    }
+    
+    .comments-list .comment-avatar img {
+        width: 100%;
+        height: 100%;
+    }
+    
+    .reply-list .comment-avatar {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .comment-main-level:after {
+        content: '';
+        width: 0;
+        height: 0;
+        display: block;
+        clear: both;
+    }
+    /**
+ * Caja del Comentario
+ ---------------------------*/
+    
+    .comments-list .comment-box {
+        width: 680px;
+        float: right;
+        position: relative;
+        -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+        -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+    }
+    
+    .comments-list .comment-box:before,
+    .comments-list .comment-box:after {
+        content: '';
+        height: 0;
+        width: 0;
+        position: absolute;
+        display: block;
+        border-width: 10px 12px 10px 0;
+        border-style: solid;
+        border-color: transparent #FCFCFC;
+        top: 8px;
+        left: -11px;
+    }
+    
+    .comments-list .comment-box:before {
+        border-width: 11px 13px 11px 0;
+        border-color: transparent rgba(0, 0, 0, 0.05);
+        left: -12px;
+    }
+    
+    .reply-list .comment-box {
+        width: 610px;
+    }
+    
+    .comment-box .comment-head {
+        background: #FCFCFC;
+        padding: 10px 12px;
+        border-bottom: 1px solid #E5E5E5;
+        overflow: hidden;
+        -webkit-border-radius: 4px 4px 0 0;
+        -moz-border-radius: 4px 4px 0 0;
+        border-radius: 4px 4px 0 0;
+    }
+    
+    .comment-box .comment-head i {
+        float: right;
+        margin-left: 14px;
+        position: relative;
+        top: 2px;
+        color: #A6A6A6;
+        cursor: pointer;
+        -webkit-transition: color 0.3s ease;
+        -o-transition: color 0.3s ease;
+        transition: color 0.3s ease;
+    }
+    
+    .comment-box .comment-head .vote:hover {
+        color: #03658c;
+    }
+    
+    .comment-box .comment-head .delete:hover {
+        color: red;
+    }
+    
+    .comment-box .comment-name {
+        color: #283035;
+        font-size: 14px;
+        font-weight: 700;
+        float: left;
+        margin-right: 10px;
+    }
+    
+    .comment-box .comment-name a {
+        color: #283035;
+    }
+    
+    .comment-box .comment-head span {
+        float: left;
+        color: #999;
+        font-size: 13px;
+        position: relative;
+        top: 1px;
+    }
+    
+    .comment-box .comment-content {
+        background: #FFF;
+        padding: 12px;
+        font-size: 15px;
+        color: #595959;
+        -webkit-border-radius: 0 0 4px 4px;
+        -moz-border-radius: 0 0 4px 4px;
+        border-radius: 0 0 4px 4px;
+    }
+    
+    .comment-box .comment-name.by-author,
+    .comment-box .comment-name.by-author a {
+        color: #03658c;
+    }
+    
+    .comment-box .comment-name.by-author:after {
+        content: 'business';
+        background: #03658c;
+        color: #FFF;
+        font-size: 12px;
+        padding: 3px 5px;
+        font-weight: 700;
+        margin-left: 10px;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+    }
+    /** =====================
+ * Responsive
+ ========================*/
+    
+    @media only screen and (max-width: 766px) {
+        .comments-container {
+            width: 480px;
+        }
+        .comments-list .comment-box {
+            width: 390px;
+        }
+        .reply-list .comment-box {
+            width: 320px;
+        }
+    }
+</style>

@@ -3,7 +3,7 @@
 /* App Module */
 
 app.controller('calendarController', function($scope, Schedule, $routeParams) {
-
+$scope.error = "";
 console.log("gi");
   Schedule.get($routeParams.name)
   .then(function successCallback(d) {
@@ -52,7 +52,7 @@ console.log("gi");
       console.log($scope.events);
       $scope.scheduler = { date : new Date() };
   }, function errorCallback(d) {
-      eror = d.data;
+      $scope.error = d.data;
   });
 
 

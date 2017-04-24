@@ -73,10 +73,9 @@ if the business added an expiration_date that is before the start_date(which if
 
 exports.createOffer = function(req, res,notify_on_create) {
 
-  // if(req.user && req.user instanceof Business) 
-  // {
-  //  var businessId = req.user.id;  //get _id from session
-    var businessId = "58f0f3faaa02d151aa4c987c"; 
+  if(req.user && req.user instanceof Business) 
+  {
+    var businessId = req.user.id;  //get _id from session
     var body = req.body;
     var file = req.file;
     console.log(file);
@@ -175,10 +174,10 @@ exports.createOffer = function(req, res,notify_on_create) {
         });
       
     } //
-  // } else //
-  // {
-  //   res.send("you're not a logged in business");
-  // }
+  } else //
+  {
+    res.status(401).json("you're not a logged in business");
+  }
 };
 
 /* this function is used by the business to update the offers either by
@@ -190,7 +189,7 @@ At the beginning before updating anything, we check if such offer belongs to
 the following business or not */
 exports.updateOffer = function(req, res) {
 
-  if(req.user && req.user instanceof Business && typeof req.query.id != "undefined") {
+  if(req.user && req.user instanceof Business ) {
     var body = req.body;
     var businessId = req.user.id;
     var id = req.body.id;
@@ -203,7 +202,7 @@ exports.updateOffer = function(req, res) {
         if(!offer) res.status(500).json("offer does not exist");
         else
         {
-          if(offer.business.equals(businessId))
+          if(offer.business == businessId)
           {
             if(typeof body.name != 'undefined' && body.name.length != 0) offer.name = body.name;
             if(typeof body.type != 'undefined' && body.type.length != 0) offer.type = body.type;
@@ -248,14 +247,15 @@ exports.updateOffer = function(req, res) {
         }
       }
     })
-  } else res.status(401).json("NOT AUTHORIZED");
+  } 
+  else res.status(401).json("NOT AUTHORIZED");
 };
 
 
 
 /* a business can delete an offer.*/
 exports.deleteOffer = function(req, res) {
-   if(req.user && req.user instanceof Business && typeof req.query.id != "undefined") {
+   if(req.user && req.user instanceof Business && typeof req.params.id != "undefined") {
     var id = req.params.id;
     var businessId = req.user.id;
     var d = new Date();
