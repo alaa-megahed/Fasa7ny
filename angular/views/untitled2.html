@@ -14,7 +14,7 @@
                         <div class="border"></div>
                     </div>
                     <!-- /section title -->
-                       
+
                    <!-- Single Post -->
                     <!-- <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms" ng-repeat = "info in all_info"> -->
                    <div style="max-width: 400px;" >
@@ -41,7 +41,7 @@
                     <button type="submit" ng-click =  "addBusiness()" class="btn btn-transparent">ADD</button>
                 </form>
             </div>
-                       
+
                    <!-- Right Sectinon !-->
             <div id="right-sidebar" class="col-md-4 col-sm-4">
 
@@ -54,7 +54,7 @@
                         <div class="border"></div>
                     </div>
                     <!-- /section title -->
-                       
+
                    <!-- Single Post -->
                     <!-- <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms" ng-repeat = "info in all_info"> -->
                    <div style="max-width: 400px;" >
@@ -68,20 +68,20 @@
                     <h3>End Date</h3> <br>
                      <input style="color:#000;" class="w3-input w3-border w3-round" type="date" placeholder="End Date" ng-model = "business.edate" required></input> <br>
                     <button type="submit" ng-click =  "addAds()" class="btn btn-transparent">ADD</button>
-                  
+
                 </form>
             </div>
-                             
-                          
 
-                          
-                        
-                            
-                             
 
-                         
-                    
-                    
+
+
+
+
+
+
+
+
+
                    <!--  </article> -->
                     <!-- End Single Post -->
 
@@ -90,10 +90,10 @@
 
             </div>
 
-            
 
 
-           
+
+
         </div>      <!-- End row -->
     </div>       <!-- End container -->
 </section>    <!-- End Section -->
@@ -137,30 +137,30 @@
                    <!-- Single Post -->
                     <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms" ng-repeat = "info in all_info">
 
-                       
+
                         <div class="post-excerpt">  <!-- first section beginning !-->
 
                             <!-- Name of Event + w/ + Name of Business !-->
                             <h3>
-                                <a href="../single-post.html"> {{info.event.name}}</a> 
-                                <a href="../single-post.html"> <span class="color">w/</a> 
-                                <a href="../single-post.html"> {{info.business.name}} </a> 
+                                <a href="../single-post.html"> {{info.event.name}}</a>
+                                <a href="../single-post.html"> <span class="color">w/</a>
+                                <a href="../single-post.html"> {{info.business.name}} </a>
                                 <!-- <img src="../img/user_profile/rating_3.png" alt="rating" > !-->
                             </h3>
 
                             <br>
 
-                            <p> {{info.event.description}} </p> 
+                            <p> {{info.event.description}} </p>
 
                             <br>
 
                             <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon" class="image2" align="left">
-                            <div style="padding-left: 23px;" ng-repeat = "phone in info.business.phones"> 
+                            <div style="padding-left: 23px;" ng-repeat = "phone in info.business.phones">
                                <p style="font-size:12px;">  {{phone}} </p>
                             </div>
 
                             <img src="../img/user_profile/location_icon12.png" alt="location_icon" class="image2" align="left">
-                            <div style="padding-left: 23px;"> 
+                            <div style="padding-left: 23px;">
                                <p style="font-size:12px">  {{info.business.address}}</p>
                             </div>
                         </div>  <!-- first section end !-->
@@ -179,7 +179,7 @@
                             </span>
 
                             <div style=" display:inline;  vertical-align: middle; padding-left: 180px">
-                                <a class="btn btn-booking" href="../single-post.html">Cancel Booking</a> 
+                                <a class="btn btn-booking" href="../single-post.html">Cancel Booking</a>
                             </div>
                         </div>  <!-- second section end !-->
                     </article>
