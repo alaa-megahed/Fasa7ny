@@ -87,6 +87,18 @@ app.controller('userController', function($scope, status,$http, User, $location,
 
 	// });
 
+	$scope.cancelBooking =function(bookingId)
+	{
+		$http.post('http://127.0.0.1:3000/bookings/deleteRegUserBooking',{bookingD:bookingId}).then(
+			function success(response)
+			{
+				console.log("successful delete");
+			},function error(response)
+			{
+				console.log("error in delete");
+			});
+	};
+
 
 	$scope.goToEditProfile = function(userID) {
 			var modalInstance = $modal.open({
@@ -157,4 +169,7 @@ var EditProfileCtrl = function ($scope, $modalInstance, userID, User, $route) {
     $scope.cancel = function () {
         $modalInstance.dismiss('cancel');
     };
+
+
+
 };

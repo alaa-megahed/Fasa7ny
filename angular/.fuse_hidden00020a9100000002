@@ -81,7 +81,6 @@
       <script src="javascript/controllers/offersController.js"></script>
       <script src="javascript/controllers/userController.js"></script>
       <script src="javascript/controllers/bookingFacilityController.js"></script>
-      <script src="javascript/controllers/webAdminController.js"></script>
 
       <script src="javascript/services/userService.js"></script>
 
@@ -219,7 +218,7 @@
   <link rel="stylesheet" href="css/imagecropper.css">
 
 
-<link rel='stylesheet' id='custom-button-mfast-3-css'  href='css/blog/style.css' type='text/css' media='all' />
+<link rel='stylesheet' id='custom-button-mfast-3-css'  href='cdd/blog/style.css' type='text/css' media='all' />
 <link rel="stylesheet" type="text/css" media="all" href="css/bootstrap.css" />
 <link rel="stylesheet" type="text/css" media="all" href="css/style.css" />
 <link rel='stylesheet' id='custom-css'  href='css/custom.css' type='text/css' media='all' />
@@ -311,8 +310,7 @@ Google Font
                  <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signIn()">Sign In</a></li>
                  <li ng-if = "user.data.user_type == 1"><a href="" ng-click = "personalProfile()" > My Profile </a></li>
                  <li ng-if = "user.data.user_type == 2"><a href="" ng-click = "goToBusinessPage(user.data.name)"> My Business Page </a></li>
-
-                 <li ng-if = "user.data.user_type == 3"><a href="" ng-click = "getAdminProfile()"> Admin Profile </a></li>
+                 <li ng-if = "user.data.user_type == 3"><a href="" ng-click = "getAdminProfile()"> Admin Requests </a></li>
                  <li><a href="#contact-us">Contact Us</a></li>
                  <li ng-if = "user.data.user_type"><a href="" ng-click = "logout()">Log Out</a></li>
 
