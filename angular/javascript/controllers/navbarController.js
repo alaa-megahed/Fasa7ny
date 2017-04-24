@@ -9,8 +9,11 @@ angular.module('fasa7ny')
     $scope.notifcolor = {'color' : 'white'} ;
 
     // var user = Global.getUser();
-    // console.log(user);
-
+    // conasole.log(user);
+$scope.getAdminProfile = function()
+{
+  $location.path('/webAdminProfile');
+}
 
 
     $scope.updateUser = function()

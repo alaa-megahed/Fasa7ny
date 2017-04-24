@@ -14,7 +14,10 @@ app.config(function($routeProvider){
 		controller  : "userController"
 	})
 
-
+        .when("/webAdminProfile", {
+		templateUrl : "views/web_admin.html",
+		controller  : "webAdminController"
+	})
 	// .when("/",{
 	// 	templateUrl : "views/slider.html",
 	// 	controller  : "CarouselDemoCtrl"
