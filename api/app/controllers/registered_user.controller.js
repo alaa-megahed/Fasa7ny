@@ -13,7 +13,7 @@ exports.getUserDetails =  function (req, res) {
         var user_id = req.params.id;
 
 	    User.findById(user_id, function(err, user) {
-	        if(err) 
+	        if(err)
 	        	console.log("error in finding user");
 	        else {
 	        	//console.log(user);
@@ -30,7 +30,7 @@ exports.getBookingDetails =  function (req, res) {
         //console.log("This is the booking id in user controller :"+ booking_id);
 
 	    Booking.findById(booking_id, function(err, booking) {
-	        if(err) 
+	        if(err)
 	        	console.log("error in finding booking");
 	        else {
 	        	//console.log("This is booking in node "+ booking);
@@ -49,15 +49,15 @@ exports.getBookingDetails =  function (req, res) {
 				        						if(err)
 				        							return res.status(500).json("Something went wrong");
 				        						else {
-				        							// console.log(booking); 
-				        							// console.log(eventocc); 
+				        							// console.log(booking);
+				        							// console.log(eventocc);
 				        							return res.status(200).json({booking: booking, eventocc: eventocc, event: event, business: business});
 				        						}
-				        					});	 	        							
+				        					});
 	        							}
-	    
+
 	        						}
-       						
+
 	        					});
 
 	        				}
@@ -86,7 +86,7 @@ exports.getSubscribedBusiness =  function (req, res) {
 				//console.log("This is business in node subscriptions "+ business);
 				return res.status(200).json({business: business});
 			}
-		});	 	        							
+		});
 	}
 	else {
 		return res.status(500).json("You are not a logged in user");
@@ -118,7 +118,7 @@ exports.subscribe = function(req,res)
 				if(user_found.subscriptions[i] == businessID)
 				{
 					check = 1;
-					return res.status(500).json("Already subscribed");	
+					return res.status(500).json("Already subscribed");
 				}
 			}
 			if(check == 0)
@@ -129,16 +129,16 @@ exports.subscribe = function(req,res)
 					if(err)
 						res.status(500).json("Something went wrong. Please try again.");
 					else {
-						
+
 								user_found.subscriptions.push(businessID);
 								user_found.save();
 								return res.status(200).json("business has been added to subscriptions.");
 					}
-				
-			 });	
+
+			 });
 			}
 
-			
+
 		});
 
 }
@@ -203,7 +203,7 @@ exports.unsubscribe = function(req,res)
 	else {
 		res.status(500).json("You are not logged in");
 	}
-	
+
 }
 
 
@@ -211,7 +211,7 @@ exports.addRating = function(req, res)
 {
 
 	 if(req.user && req.user instanceof User) {
-		 
+
 		var userID = req.user.id;              // from passport session; changed to body temporarily for testing
 	    var businessID = req.params.bid;        // from url parameters; changed from param to body
 	    var rating2 = req.params.rate;		   // from post body
@@ -317,15 +317,17 @@ exports.editInformation = function(req, res) {
 		var file = req.file;
 		console.log("hifile"+file);
 		User.findOne({_id:id}, function(err, user) {
-			if(err)  
+			if(err)
 				return res.status(500).json("error");
 			else {
-				if(!user) 
+				if(!user)
 					return res.status(500).json("user not found");
 				else {
-					console.log("This is the old birthdate:" + user.birthdate);
+          console.log("OLDD:::");
+          console.log(user);
+					// console.log("This is the old birthdate:" + user.birthdate);
 
-					console.log("starting findOne");
+					// console.log("starting findOne");
 					if(body.name) {
 						console.log("Name in body: " + body.name);
 						user.name = body.name;
@@ -334,25 +336,27 @@ exports.editInformation = function(req, res) {
 					 	console.log("Birthdate in body: " + body.birthdate);
 					 	user.birthdate = new Date(body.birthdate);
 					 	if ( isNaN( user.birthdate.getTime() ) ) {
-						    return res.status(500).json('error'); 
-						 }					 	
+						    return res.status(500).json('error');
+						 }
 					 }
 					if(typeof body.phone != "undefined" && body.phone.length > 0) {
 						console.log("Phone in body: " + body.phone);
 						user.phone = body.phone;
 					}
-					if(typeof body.gender != "undefined" && body.gender.length > 0) 
+					if(typeof body.gender != "undefined" && body.gender.length > 0)
 						user.gender = body.gender;
-					if(typeof body.address != "undefined" && body.address.length > 0) 
+					if(typeof body.address != "undefined" && body.address.length > 0)
 						user.address = body.address;
-					if(typeof body.email != "undefined" && body.email.length > 0) 
+					if(typeof body.email != "undefined" && body.email.length > 0)
 						user.email = body.email;
-					if(typeof file != "undefined") 
+					if(typeof file != "undefined")
 						user.profilePic = file.filename;
 					console.log("This is the 'unsaved' user" + user);
-					user.save(function(err) {
+					user.save(function(err, updatedUser) {
+            console.log("UPDATED:::");
+            console.log(updatedUser);
 					  if (err) return res.status(500).json('error');
-					  return res.status(200).json('okay');
+					  return res.status(200).json({user:updatedUser});
 					});
 				}
 			}
