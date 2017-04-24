@@ -4,17 +4,29 @@ var app = angular.module('fasa7ny');
 //========== View ===========
 app.controller('ViewOffersController', function($scope, $http, $location, Offers,$routeParams) {
       
-      $scope.business_id = $routeParams.id;
-      Offers.get($scope.business_id).then(function(response) {
+      $scope.name = $routeParams.name;
+      $http.post('http://127.0.0.1:3000/business/getBusinessId',{name:$scope.name}).then(
+      	function(response)
+      	{
+      		$scope.business_id = response.data._id;
+      		console.log($scope.business_id);
+      		Offers.get($scope.business_id).then(function(response) {
               $scope.offers = response.data;
         });
+      	});
+      
 });
 
 
 app.controller('createOffersController',function($scope,$http,Facilities,OneTimeEvent,status,$location,$routeParams)
 {
 
-    $scope.business_id = $routeParams.businessId;
+    $scope.name = $routeParams.name;
+      $http.post('http://127.0.0.1:3000/business/getBusinessId',{name:$scope.name}).then(
+      	function(response)
+      	{
+      		$scope.business_id = response.data._id;
+      	});
     $scope.user = {};
 
 	status.local()
@@ -90,7 +102,12 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
 app.controller('EditOffersController', function($scope, $http, $route,$location, Offers, $modal, $window,$routeParams) {
       
        // $scope.business_id = "58f0f3faaa02d151aa4c987c";
-       $scope.business_id = $routeParams.id;
+        $scope.name = $routeParams.name;
+      $http.post('http://127.0.0.1:3000/business/getBusinessId',{name:$scope.name}).then(
+      	function(response)
+      	{
+      		$scope.business_id = response.data._id;
+      	});
       console.log("business in edit offer "+$scope.business_id);
       Offers.get($scope.business_id).then(function(response) {
               $scope.offers = response.data;

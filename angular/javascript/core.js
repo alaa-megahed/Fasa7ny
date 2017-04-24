@@ -15,6 +15,11 @@ app.config(function($routeProvider){
 	})
 
 
+	// .when("/",{
+	// 	templateUrl : "views/slider.html",
+	// 	controller  : "CarouselDemoCtrl"
+	// })
+
 	.when("/search/:id", {
 		templateUrl : "views/searchtest.html",
 		controller  : "searchtestController"
@@ -30,27 +35,16 @@ app.config(function($routeProvider){
 		controller  : "bookFacilityController"
 	})
 
-	.when("/business/:id", {
-		templateUrl : "views/businessPage.html",
-		controller  : "businessController"
-	})
 
 	.when("/editBusiness", {
 		templateUrl : "views/businessEdit.html",
-		controller  : "businessController"
+		controller  : "editBusinessController"
 	})
 
 	.when("/business/:name", {
 		templateUrl : "views/businessPage.html",
 		controller  : "businessController"
 	})
-
-
-	.when("/:id", {
-		templateUrl : "views/businessPage.html",
-		controller  : "businessController"
-	})
-
 
 	.when("/eventPage/:eventId", {
 		templateUrl : "views/eventPage.html",
@@ -67,14 +61,15 @@ app.config(function($routeProvider){
 		controller  : "onetimeController"
 	})
 
-
 	.when("/createOffer/:businessId", {
 			templateUrl : "views/createOffer.html"
 	})
 
-	.when("/schedule/:id", {
-		templateUrl : "views/schedule.html",
-		controller  : "scheduleController"
+	
+	.when("/schedule/:name", {
+		templateUrl : "views/calendar.html",
+		controller  : "calendarController"
+
 	})
 
 	.when("/viewEvents/:facilityId", {
@@ -96,6 +91,21 @@ app.config(function($routeProvider){
 	.when("/auth/reset/:token", {
 		templateUrl : "views/resetPassword.html",
 		controller  : "resetPasswordController"
+
+	})
+	.when("/user/notifications", {
+		templateUrl : "views/notifications.html",
+		controller  : "notificationsController"
+
+	})
+	.when("/editLocation", {
+		templateUrl : "views/editLocation.html",
+		controller  : "editLocationController"
+
+	})
+	.when("/error", {
+		templateUrl : "views/error.html",
+		controller  : "navbarController"
 
 	})
 

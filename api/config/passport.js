@@ -16,12 +16,10 @@ module.exports = function(passport)
    //  serialize and deserialize user, needed for session
 
    passport.serializeUser(function(user, done) {
-      console.log("i am serializing");
         done(null, user.id);
    });
 
    passport.deserializeUser(function(id, done) {
-     console.log("i am deserializing");
          User.findById(id, function(err, user) {
             if(!user)
             {
@@ -53,9 +51,8 @@ module.exports = function(passport)
       },
       function(req, username, password, done)
       {
-
-
-          console.log(req.body);
+          if(!req.body)
+            return res.json("Error. Please enter valid information");
           var check = 0;
           // check weather the username entered is unique
           // search the registered users collection
@@ -86,7 +83,6 @@ module.exports = function(passport)
                       }
                       newUser.address        = req.body.address;
                       newUser.gender         = req.body.gender;
-                      newUser.profilePic     = req.body.profilePic;
                       // save the user
                       newUser.save(function(err) {
                         if (err)

@@ -283,12 +283,8 @@ exports.createEvent = function (req, res) {
 					event.facility_id = req.body.facility_id;
 				}
 
-				if (typeof req.file == "undefined") {
-					event.image = " ";
-				}
-				else {
+				if (typeof req.file != "undefined") {
 					event.image = req.file.filename;
-
 				}
 
 
@@ -521,22 +517,36 @@ exports.getEvents = function (req, res) {
 			else if (!events) res.status(500).json("Something went wrong");
 			else {
 
-				EventOccurrences.find({business_id:id}, function(err, eventocc) {
-					if(err) res.status(500).json(err.message);
-					else if(!eventocc) res.status(500).json("Something went wrong");
-					else {
-						console.log('events/eventocc retrieved')
-						res.status(200).json({events:events, eventocc:eventocc});
-					}
-				})
+		var name = req.params.name;
 
+		Business.findOne({name:name}, function(err, business) {
+			if(err) res.status(500).json(err.message);
+			else if(!business) res.status(500).json("Business not found");
+			else {
+				var id = business._id;
+				console.log(id);
+				Events.find({ business_id: id }, function (err, events) {
+					if (err) res.status(500).json(err.message);
+					else if (!events) res.status(500).json("Something went wrong");
+					else {
+
+						EventOccurrences.find({business_id:id}, function(err, eventocc) {
+							if(err) res.status(500).json(err.message);
+							else if(!eventocc) res.status(500).json("Something went wrong");
+							else {
+								res.status(200).json({events:events, eventocc:eventocc});
+							}
+						});
+					}
+				});
 			}
+
 		});
 	}
-	else {
+});
+	}else {
 		res.status(401).json('You are not a logged in business');
 	}
-
 }
 
 exports.getDailyEvents = function (req, res) {
@@ -636,64 +646,63 @@ exports.editEvent = function (req, res) {
 						event.location = req.body.location;
 					}
 					if (req.body.price) {
-						console.log("Price"+req.body.price);
-						event.price = req.body.price;
+						if(req.body.price < 0){
+							return res.status(500).json("Enter a valid price");
+						}
+						else {
+							console.log("Price"+req.body.price);
+							event.price = req.body.price;
+						}
+
 					}
 
-					if (req.body.capacity) {
+					if (req.body.capacity != null) {
+
+						if(req.body.capacity < 0 || req.body.capacity == 0) return res.status(500).json("Enter a valid capacity");
 						console.log("ana fl capacity");
 						var oldCapacity = event.capacity;
 						if (oldCapacity < req.body.capacity) {
 
 							var difference = req.body.capacity - oldCapacity;
-							EventOccurrences.find({ event: event._id }, function (err, eventOcc) {
-								if (!eventOcc) res.status(500).json("Something went wrong");
+							EventOccurrences.findOne({ event: event._id }, function (err, eventOcc) {
+								if (!eventOcc) return res.status(500).json("Something went wrong");
+								else {
+									eventOcc.available = eventOcc.available + difference;
+									eventOcc.save(function(err, newocc) {
+										console.log("NEWOCC");
+										console.log(newocc);
+									});
+									console.log("CHANGED EVENT OCC CAPACITY" +req.body.capacity);
+									event.capacity = req.body.capacity;
+									event.save();
 
-								for (var i = 0; i < eventOcc.length; i++) {
-									eventOcc[i].available += difference;
-									eventOcc[i].save();
 								}
 
 							});
-							event.capacity = req.body.capacity;
-							console.log("Event capacity"+event.capacity);
-
 						}
 						else if (oldCapacity > req.body.capacity) {
 
-
+							console.log("if");
 							var difference = oldCapacity - req.body.capacity;
-							EventOccurrences.find({ event: event._id }, function (err, eventOcc) {
-								if (!eventOcc) res.status(500).json("Something went wrong");
+							EventOccurrences.findOne({ event: event._id }, function (err, eventOcc) {
+								if (!eventOcc) return res.status(500).json("Something went wrong");
 
-								var check = 0;
-								for (var i = 0; i < eventOcc.length && check == 0; i++) {
-									if (eventOcc[i].available < difference) {
-										check = 1;
-										res.status(500).json("Can not decrease capacity without cancelling extra bookings.");
+									if (eventOcc.available < difference) {
+										return res.status(500).json("Can not decrease capacity without cancelling extra bookings.");
 									}
+									else {
+									console.log("CHANGED EVENT OCC CAPACITY"+ req.body.capacity);
 
-								}
-
-								if (check == 0) {
-									EventOccurrences.find({ event: event._id }, function (err, eventOcc) {
-										if (!eventOcc) res.status(500).json("Something went wrong");
-										for (var i = 0; i < eventOcc.length; i++) {
-											eventOcc[i].available -= difference;
-											eventOcc[i].save();
-										}
-
-									});
-									event.capacity = req.body.capacity;
-
-								}
-
-							});
+										eventOcc.available = eventOcc.available - difference;
+										eventOcc.save(function(err, newocc1) {
+											console.log("NEWOCC1");
+										});
+										event.capacity = req.body.capacity;
+										event.save();
+									}
+								});
 						}
-						else event.capacity = req.body.capacity;
-
 					}
-
 					if (typeof req.body.description != "undefined" && req.body.description.length > 0) {
 						event.description = req.body.description;
 					}
@@ -722,8 +731,15 @@ exports.editEvent = function (req, res) {
 
 					}
 					event.save(function(err, newevent) {
-						if(err) res.status(500).json("Something went wrong");
-						else res.status(200).json({event:newevent});
+						if(err) return res.status(500).json("Something went wrong");
+						else {
+							EventOccurrences.find({event: id}, function(err,occs){
+								if(err) res.status(500).json("Something went wrong");
+								else if(!occs) res.status(500).json("Something went wrong");
+								else res.status(200).json({event:newevent, eventocc:occs});
+							})
+
+						}
 					});
 
 				}
@@ -736,6 +752,65 @@ exports.editEvent = function (req, res) {
 		res.status(500).json('You are not a logged in business');
 	}
 
+}
+
+exports.deleteImage = function(req, res) {
+	if(req.user && req.user instanceof Business && typeof req.params.eventId != "undefined" && typeof req.params.image != "undefined") {
+		var eventId = req.params.eventId;
+		var image = req.params.image;
+console.log("ANA FE DELETEIMAGEEVENTT");
+		Events.findById(eventId, function(err, event) {
+			if(err || !event) res.status(500).json("something went wrong");
+			else {
+				if(event.business_id == req.user.id) {
+					// event.image.pull({image:image});
+					// event.save(function(err, updatedEvent) {
+					// 	if(err) res.status(500).json("something went wrong");
+					// 	console.log("UPDATED EVEENNTTTT:"+updatedEvent);
+					// 	res.status(200).json({event:updatedEvent});
+					// });
+					Events.findByIdAndUpdate(eventId, {$pull:{image:image}}, {safe:true, upsert: true, new:true}, function(err, updatedEvent) {
+						if(err) res.status(500).json("something went wrong");
+						console.log("UPDATED EVEENNTTTT:"+updatedEvent);
+						res.status(200).json({event:updatedEvent});
+					});
+				} else {
+					res.status(500).json("You are not authorized to view this page");
+				}
+			}
+		});
+	} else {
+		res.status(500).json('You are not authorized to view this page');
+	}
+}
+
+exports.addImage = function(req, res) {
+	if(req.user && req.user instanceof Business && typeof req.params.eventId != "undefined") {
+		console.log("hi????????????????");
+		var eventId = req.params.eventId;
+		console.log(eventId);
+		console.log("THIS IS A FILEEEE:"+req.file.filename);
+		Events.findById(eventId, function(err, event) {
+			if(err || !event){ res.status(500).json("something went wrong"); }
+			else {
+				if(event.business_id == req.user.id) {
+					console.log("??");
+					console.log("Fileeee::::::::::::"+req.file);
+					Events.findByIdAndUpdate(eventId, {$push: {image: req.file.filename}}, {safe:true, upsert: true, new:true}, function(err, updatedEvent) {
+						if(err) res.status(500).json("something went wrong");
+						console.log(updatedEvent);
+						res.status(200).json({event:updatedEvent});
+					});
+				} else {
+					console.log("lolo");
+					res.status(500).json("You are not authorized to view this page");
+				}
+			}
+		});
+	} else {
+		console.log("koko");
+		res.status(500).json('You are not authorized to view this page');
+	}
 }
 
 

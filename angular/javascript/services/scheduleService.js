@@ -1,8 +1,9 @@
 app.factory('Schedule', ['$http', function($http) {
     return {
-        get : function() {
+        get : function(name) {
           console.log("!!");
-            return $http.get('http://127.0.0.1:3000/event/view');
+          console.log(name);
+            return $http.get('http://127.0.0.1:3000/event/view/' + name);
         }
   }
 }]);

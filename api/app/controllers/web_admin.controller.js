@@ -8,10 +8,24 @@ var Offer = require('mongoose').model('Offer');
 var User = require('mongoose').model('RegisteredUser');
 var Review = require('mongoose').model('Review');
 var Reply = require('mongoose').model('Reply');
+var Advertisement = require('mongoose').model('Advertisement');
 var async = require('async');
+
 
 const nodemailer = require('nodemailer');
 var configAuth = require('../../config/auth');
+
+
+var Ad = new Advertisement ({
+
+      image       : "img/iceage.jpg", //should be changed to req.file.filename
+      text        : "Fly as a kite",
+      start_date  :new Date(),
+      end_date    : new Date('10/4/2018') + 1000000
+    }
+  );
+Ad.save();
+
 
 
 exports.AddBusiness = function (req, res) {
@@ -173,7 +187,7 @@ exports.WebAdminDeleteBusiness = function (req, res) {
                         });
                     }
                 }
-            }); 
+            });
         });
 
         Business.findByIdAndRemove(req.params.id, function (err, business) {
@@ -192,8 +206,6 @@ exports.WebAdminDeleteBusiness = function (req, res) {
 
 }
 
-
-
 exports.webAdminViewRequestedDelete = function (req, res) {
 
 if(req.user && req.user instanceof WebAdmin)
@@ -206,7 +218,7 @@ if(req.user && req.user instanceof WebAdmin)
   else {
     return res.send("Unauthorized access. Please log in.");
   }
-    
+
 }
 
 
@@ -281,54 +293,84 @@ exports.deleteAdvertisement = function(req,res)
 
 
 
-exports.updateAvailableAdvertisements = function(req,res)
+// exports.updateAvailableAdvertisements = function(req,res)
+// {
+//   var rule = new schedule.RecurrenceRule();
+//   rule.dayOfWeek = [new schedule.Range(0,6)];
+//   //rule.hour = 00;
+//   rule.minute = 00;
+//
+//
+//   var j = schedule.scheduleJob(rule, function()
+//   {
+//     var d = new Date();
+//     Advertisement.find({}, function(err, ads)
+//     {
+//       console.log(ads);
+//       for(var i = 0; i < ads.length; i++)
+//       {
+//         if(ads[i].end_date < d || ads[i].start_date > d)
+//         {
+//           console.log("this has expired: " + ads[i]);
+//           ads[i].available = 0;
+//           ads[i].save();
+//         }
+//         else {
+//           ads[i].available = 1;
+//           ads[i].save();
+//         }
+//       }
+//
+//
+//         return res.json("successful");
+//
+//     })
+//   });
+
+
+//}
+
+exports.viewAvailableAdvertisements = function(req,res)
 {
-  var rule = new schedule.RecurrenceRule();
-  rule.dayOfWeek = [new schedule.Range(0,6)];
-  rule.hour = 00;
-  rule.minute = 00;
 
-
-  var j = schedule.scheduleJob(rule, function()
-  {
-    var d = new Date();
     Advertisement.find({}, function(err, ads)
     {
-      console.log(ads);
-      for(var i = 0; i < ads.length; i++)
+      if(err)
+        return res.json(err);
+      else
       {
-        if(ads[i].end_date < d || ads[i].start_date > d)
+        var today = new Date();
+        var send = [];
+        for(var i = 0; i < ads.length; i++)
         {
-          console.log("this has expired: " + ads[i]);
-          ads[i].available = 0;
-          ads[i].save();
+          if( ads[i].start_date > today || ads[i].end_date < today)
+          {
+            ads[i].available = 0;
+            ads[i].save();
+          }
+          else {
+            send.push(ads[i]);
+          }
         }
-        else {
-          ads[i].available = 1;
-          ads[i].save();
-        }
+
+        return res.json(send);
+
       }
 
-
-      res.send("successful");
-
-    })
-  });
+    });
 
 
 }
 
-exports.viewAvailableAdvertisements = function(req,res)
-{
-  if(req.user && req.user instanceof WebAdmin)
-  {
-    Advertisement.find({available : 1}, function(err, ads)
-    {
-      res.send(ads);
-    });
-  }
-  else {
-    return res.send("Unauthorized access. Please log in.");
-  }
 
+exports.updateAdvertisements = function(req,res)
+{
+  Advertisement.findByIdAndUpdate(req.body.ad, {available:0}, function(err, ad)
+  {
+    if(err)
+      return res.json("error");
+      else {
+        return res.json("success");
+      }
+  })
 }

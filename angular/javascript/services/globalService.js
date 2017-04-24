@@ -1,4 +1,6 @@
-app.service('Global', function() {
+var app = angular.module('fasa7ny');
+app.service('Global', ['$http' , '$q', function($http, $q) 
+{
   
   // this.currentBusinessPage;
   // this.currentOnceEvent;
@@ -20,6 +22,5 @@ app.service('Global', function() {
   }
 
 
-});
-
+}]);
 

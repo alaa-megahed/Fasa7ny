@@ -4,7 +4,7 @@ console.log("one time");
 		status.local()
 		 .then(function(res){
 		   if(res.data){
-				 $scope.user = res.data._id;
+				 $scope.user = res.data;
 		     if(res.data.user_type == 1)
 		       $scope.type = 1;
 		     else if(res.data.user_type == 2)
@@ -30,9 +30,8 @@ console.log("one time");
 		console.log("Create event 1");
 		OneTimeEvent.create($scope.formData)
 		.then(function successCallback(d) {
-			console.log("create facility success");
-			console.log($scope.user);
-			$location.path('/'+$scope.user);
+			console.log($scope.user.name);
+			$location.path('/business/'+$scope.user.name);
 		},
 		function errorCallback(d){
 			$scope.error = d.data;

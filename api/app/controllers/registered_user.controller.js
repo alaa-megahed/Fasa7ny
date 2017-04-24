@@ -110,38 +110,35 @@ exports.subscribe = function(req,res)
 		User.findOne({_id: userID}, function(err, user_found)
 		{
 			if(err) {
-				res.status(500).json("Error in findOne() of subscribe-user");
-				return;
-
+				return res.status(500).json("Error in findOne() of subscribe-user");
 			}
-
-
-			Business.findByIdAndUpdate(businessID,{$push: {"subscribers" : user_found}},{safe: true, upsert: true, new : true},
-			function(err, business)
+			var check = 0;
+			for(var i = 0; i < user_found.subscriptions.length; i++)
 			{
-				if(err)
-					res.status(500).json("Something went wrong. Please try again.");
-				else {
-					if (user_found) {
-						var check = 0;
-						for(var i = 0; i < user_found.subscriptions.length; i++)
-						{
-							if(user_found.subscriptions[i] == businessID)
-								check = 1;
-						}
-
-						if(check == 1)
-							return res.status(500).json("Already subscribed");
-						else
-						{
-							user_found.subscriptions.push(business);
-							user_found.save();
-							return res.status(200).json("business has been added to subscriptions.");
-						}
-
+				if(user_found.subscriptions[i] == businessID)
+				{
+					check = 1;
+					return res.status(500).json("Already subscribed");	
 				}
 			}
-		 });
+			if(check == 0)
+			{
+				Business.findByIdAndUpdate(businessID,{$push: {"subscribers" : user_found}},{safe: true, upsert: true, new : true},
+				function(err, business)
+				{
+					if(err)
+						res.status(500).json("Something went wrong. Please try again.");
+					else {
+						
+								user_found.subscriptions.push(businessID);
+								user_found.save();
+								return res.status(200).json("business has been added to subscriptions.");
+					}
+				
+			 });	
+			}
+
+			
 		});
 
 }

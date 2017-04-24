@@ -1,6 +1,6 @@
 
 var app = angular.module('fasa7ny');
-app.controller('businessController', function($scope, status,$http, Business,Global, $location, $routeParams, $modal, $log, $window) {
+app.controller('businessController', function($scope, status,$http, Business, $location,Global, $routeParams, $modal, $log, $window, $document) {
 
   status.local()
   .then(function(res){
@@ -21,31 +21,31 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
     }
   });
 
+
+  // $scope.type = 2; //unregistered user or business visiting another business
+
   $scope.maxRating = 5;
   $scope.ratedBy = 0;
   $scope.avgRate = 0;
   $scope.sub = "Subscribe";
 
-  Global.setBusiness($routeParams.id); //make this by name
+  // Global.setBusiness($routeParams.id); //make this by name
 
 
-  console.log($routeParams.id); // make this by name
   $scope.imagelength = 0;
   $scope.business = {};
-  if($scope.business.images)
-  {
-    $scope.imagelength = $scope.business.images.length;
-    console.log("images");
-    console.log($scope.business.images);
-    if($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
-    if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
-    if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
-    if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
-  }
+  $scope.slides = [];
+  $scope.facilities = [];
+  $scope.facilitylength = 0;
+  $scope.phones = [];
+  $scope.methods = [];
 
+  $scope.events = []; //once events
+  $scope.eventlength = 0;
 
+  $scope.sublength = 0;
 
-  Business.get($routeParams.id)
+  Business.get($routeParams.name)
   .then(function(d) {
     console.log("then");
     status.local()
@@ -55,13 +55,16 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
           $scope.type = 1;
           if(d.data.rate) $scope.ratedBy = d.data.rate;
 
+          console.log(res.data);
+          console.log(d.data.result.subscribers);
           $scope.check = 0;
           for(var i = 0; i < d.data.result.subscribers.length; i++) {
-            if(d.data.result.subscribers[i] == d.data.user) {
+            if(d.data.result.subscribers[i] == res.data._id) {
                 $scope.check = 1;
                 $scope.sub = "Unsubscribe";
             }
-            $window.name = $scope.business.name;
+            console.log($scope.sub);
+            console.log($scope.check);
           }
         }
         else if(res.data.user_type == 3) {
@@ -74,6 +77,7 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
             $scope.type = 2;
           }
         } else $scope.type = 2;
+
       }
       else {
         status.foreign()
@@ -85,11 +89,10 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
 
               $scope.check = 0;
               for(var i = 0; i < d.data.result.subscribers.length; i++) {
-                if(d.data.result.subscribers[i] == d.data.user) {
+                if(d.data.result.subscribers[i] == res.data._id) {
                     $scope.check = 1;
                     $scope.sub = "Unsubscribe";
                 }
-                $window.name = $scope.business.name;
               }
             }
             else if(res.data.user_type == 3) {
@@ -118,9 +121,13 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
     $scope.phonelength = 0; //zero means that the business has more than one phone number
     if($scope.phones.length == 1) $scope.phonelength = 1;
 
+    $scope.sublength = $scope.business.subscribers.length;
+
     $scope.methods = d.data.result.payment_methods;
-    $scope.paymentlength = 0; //zero means that the business has more than one payment method
-    if($scope.methods.length == 1) $scope.paymentlength = 1;
+    $scope.paymentlength = $scope.methods.length; //zero means that the business has more than one payment method
+    // if($scope.methods.length == 1) $scope.paymentlength = 1;
+    console.log("PAYMENT METHODSSS");
+    console.log($scope.methods);
 
     console.log($scope.paymentlength);
     $scope.categories = d.data.result.category;
@@ -134,102 +141,53 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
     $scope.eventlength = d.data.events.length;
 
     $scope.avgRate = d.data.result.average_rating;
-
-
-    console.log($scope.business.images);
-    if($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
-    if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
-    if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
-    if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
+    $scope.slides = $scope.business.images;
     $scope.imagelength = $scope.business.images.length;
-    console.log($scope.imagelength);
-    console.log($scope.image1);
-    console.log($scope.image2);
-    console.log($scope.image3);
-    console.log($scope.image4);
-
+    console.log("images: ",$scope.slides);
     // console.log($scope.check);
     // console.log($scope.sub);
+
+    $scope.location = d.data.result.location;
+
+
+
+
   });
 
 
-          $scope.goToEdit = function() {
-          $scope.error = "";
-             console.log("controller"+ $scope.formData);
-             Business.edit($scope.formData)
-             .then(function successCallback(d) {
-            console.log(d.data);
-                 console.log(d.data.business._id);
-            $location.path('/'+ d.data.business._id);
-         	},
-          function errorCallback(d){
-            $scope.error = d.data;
-          })
-         };
-
-         $scope.subscribe = function(id) {
-         	console.log("controller subscribe");
-         	Business.subscribe(id)
-         	.then(function(d) {
-         		console.log("sub done");
-            $scope.sub = "Unsubscribe";
-            $scope.check = 1;
-         	})
-        };
-
-         $scope.unsubscribe = function(id) {
-           console.log("controller unsubscribe");
-           Business.unsubscribe(id)
-           .then(function(d) {
-             console.log("unsub done");
-             $scope.sub = "Subscribe";
-             $scope.check = 0;
-           })
-         };
-
-         $scope.rateBy = function (star, bid) {
-           console.log(star+"!");
-           Business.rate(star, bid)
-           .then(function(d) {
-             console.log("rating done");
-             $scope.avgRate = d.data.average_rating;
-             console.log($scope.avgRate);
-             console.log(d.data.average_rating);
-             $scope.ratedBy = star;
-           });
-         };
+  $scope.initMap = function () {
 
 
-        //  $scope.public = function(){
-        //  	console.log('public ctrl');
-        //  	Business.public()
-        //  	.then(function(d){
-        //  		console.log('public done');
-        //  	})
-        // };
+    if($scope.business.location)
+    {
+      var myLatLng2 = new google.maps.LatLng($scope.business.location.Lat, $scope.business.location.Lng);
+      var mapProp2 =
+      {
+        center:myLatLng2,
+        zoom:5,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+
+      };
+
+      var map2 =new google.maps.Map(document.getElementById("googleMap2"), mapProp2);
 
 
-        $scope.public = function () {
-        $scope.message = "Public Button Clicked";
-        console.log($scope.message);
-        var modalInstance = $modal.open({
-            templateUrl: 'views/publicPop.html',
-            controller: Public,
-            scope: $scope
+      var marker2 = new google.maps.Marker
+     ({
+         position: myLatLng2,
+         map: map2,
+         title: 'Location',
+         draggable:false
+     });
 
-        });
 
-        modalInstance.result.then(function (selectedItem) {
-            $scope.selected = selectedItem;
-            });
-    };
 
-          $scope.businessEdit = function(){
-         	console.log('businessedit ctrl');
-          $location.path('/editBusiness');
+    }
 
-         };
+    };   
 
+      google.maps.event.addDomListener(window, 'scroll', $scope.initMap);
+  
 
         $scope.remove = function () {
           $scope.message = "Remove Button Clicked";
@@ -270,17 +228,6 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
     };
 
 
-         $scope.getEvent = function(eventId) {
-          console.log("get Event ctrl");
-          $location.path('/eventPage/' + eventId);
-         };
-
-        $scope.createFacility = function(id) {
-          console.log("create facility controller");
-          $location.path('/createFacility/'+ id);
-        };
-
-
         $scope.createOffer = function(id) {
           console.log("create offer controller");
           $location.path('/createOffer/'+ id);
@@ -297,112 +244,213 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
                 scope: $scope
             });
 
-            modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-                $window.location.reload();
-            }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
-            });
-        };
+  }
 
-        $scope.addImage = function () {
-            $scope.message = "Show image Form Button Clicked";
-            console.log($scope.message);
-            var modalInstance = $modal.open({
-                templateUrl: 'views/addImage.html',
-                controller: addImageCtrl,
-                scope: $scope
-            });
 
-            modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-                $scope.business = selectedItem.business;
-                console.log("business!!");
-                console.log($scope.business);
-                if($scope.business.images[0]) $scope.image1 = $scope.business.images[0];
-                if($scope.business.images[1]) $scope.image2 = $scope.business.images[1];
-                if($scope.business.images[2]) $scope.image3 = $scope.business.images[2];
-                if($scope.business.images[3]) $scope.image4 = $scope.business.images[3];
-                if($scope.business.images[4]) $scope.image5 = $scope.business.images[4];
-                $scope.imagelength = $scope.business.images.length;
-                $window.location.reload();
-            }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
-            });
-        };
 
-        $scope.deletePhone = function (phone) {
-            $scope.message = "Show delete Form Button Clicked";
-            console.log($scope.message);
-            console.log(phone);
-            $scope.phone = phone;
-            var modalInstance = $modal.open({
-                templateUrl: 'views/deletePhone.html',
-                controller: deletePhoneCtrl,
-                scope: $scope
-            });
 
-            modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-            }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
-            });
-        };
 
-        $scope.deletePaymentMethod = function (method) {
-            $scope.message = "Show delete Form Button Clicked";
-            console.log($scope.message);
-            console.log(method);
-            $scope.method = method;
-            var modalInstance = $modal.open({
-                templateUrl: 'views/deletePaymentMethod.html',
-                controller: deletePaymentMethodCtrl,
-                scope: $scope
-            });
 
-            modalInstance.result.then(function (selectedItem) {
-                $scope.selected = selectedItem;
-            }, function () {
-                $log.info('Modal dismissed at: ' + new Date());
-            });
-        };
+   $scope.subscribe = function(id) {
+   	console.log("controller subscribe");
+   	Business.subscribe(id)
+   	.then(function(d) {
+   		console.log("sub done");
+      $scope.sub = "Unsubscribe";
+      $scope.check = 1;
+      $scope.sublength = $scope.sublength + 1;
+   	})
+  };
 
-        $scope.createOneEvent = function(id) {
-          console.log("create event controller"+id);
-          $location.path('/createOneEvent/'+ id);
-        };
+   $scope.unsubscribe = function(id) {
+     console.log("controller unsubscribe");
+     Business.unsubscribe(id)
+     .then(function(d) {
+       console.log("unsub done");
+       $scope.sub = "Subscribe";
+       $scope.check = 0;
+       $scope.sublength = $scope.sublength - 1;
+     })
+   };
 
-        $scope.schedule = function(id) {
-           console.log("schedule controller");
-           $location.path('/schedule/' + id);
-       };
+   $scope.rateBy = function (star, bid) {
+     console.log(star+"!");
+     Business.rate(star, bid)
+     .then(function(d) {
+       console.log("rating done");
+       $scope.avgRate = d.data.average_rating;
+       console.log($scope.avgRate);
+       console.log(d.data.average_rating);
+       $scope.ratedBy = star;
+     });
+   };
 
-       $scope.changeImage = function() {
-         $scope.error = "";
-        console.log("changeImage controller");
-        console.log($scope.formData);
-        Business.changeImage($scope.formData)
-        .then(function successCallback(d) {
-          console.log("changeImage done");
-          // $route.reload();
-          $window.location.reload();
-        },
-        function errorCallback(d){
-          $scope.error = d.data;
-        });
-       }
 
-        // $scope.goToEditFacility = function(facilityId) {
-        //   console.log("edit facility controller");
-        //   $locatin.path('/editFacility/' + facilityId);
-        // }
+  $scope.public = function () {
+    $scope.message = "Public Button Clicked";
+    console.log($scope.message);
+    var modalInstance = $modal.open({
+        templateUrl: 'views/publicPop.html',
+        controller: Public,
+        scope: $scope
+
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+        $scope.business.public = selectedItem.public;
+    });
+  };
+
+    $scope.businessEdit = function(){
+     	console.log('businessedit ctrl');
+      $location.path('/editBusiness');
+   };
+
+   $scope.businessEditLocation = function(){
+     $location.path('/editLocation');
+  };
+
+
+  $scope.remove = function () {
+    $scope.message = "Remove Button Clicked";
+    console.log($scope.message);
+    var modalInstance = $modal.open({
+        templateUrl: 'views/removePop.html',
+        controller: Remove,
+        scope: $scope
+
+    });
 
         $scope.bookFacility = function(){
             Global.setBusiness($routeParams.id);
             $location.path('/book_facility/'+$routeParams.id);
           };
 
+    modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+        $scope.business.delete = selectedItem.delete;
     });
+  };
+
+
+   $scope.getEvent = function(eventId) {
+    console.log("get Event ctrl");
+    $location.path('/eventPage/' + eventId);
+   };
+
+  $scope.createFacility = function(id) {
+    console.log("create facility controller");
+    $location.path('/createFacility/'+ id);
+  };
+
+  $scope.deleteImage = function (image) {
+      $scope.message = "Show delete Form Button Clicked";
+      console.log($scope.message);
+      console.log(image);
+      $scope.image = image;
+      var modalInstance = $modal.open({
+          templateUrl: 'views/deleteImage.html',
+          controller: deleteImageCtrl,
+          scope: $scope
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+          $scope.selected = selectedItem;
+          $scope.business = selectedItem.business;
+          $scope.slides = $scope.business.images;
+          $scope.imagelength = $scope.business.images.length;
+      }, function () {
+          $log.info('Modal dismissed at: ' + new Date());
+      });
+  };
+
+  $scope.addImage = function () {
+      $scope.message = "Show image Form Button Clicked";
+      console.log($scope.message);
+      var modalInstance = $modal.open({
+          templateUrl: 'views/addImage.html',
+          controller: addImageCtrl,
+          scope: $scope
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+          $scope.selected = selectedItem;
+          $scope.business = selectedItem.business;
+          $scope.slides = $scope.business.images;
+          console.log("NEWW" + $scope.slides);
+          $scope.imagelength = $scope.business.images.length;
+
+      }, function () {
+          $log.info('Modal dismissed at: ' + new Date());
+      });
+  };
+
+  $scope.deletePhone = function (phone) {
+      $scope.message = "Show delete Form Button Clicked";
+      console.log($scope.message);
+      console.log(phone);
+      $scope.phone = phone;
+      var modalInstance = $modal.open({
+          templateUrl: 'views/deletePhone.html',
+          controller: deletePhoneCtrl,
+          scope: $scope
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+          $scope.selected = selectedItem;
+          $scope.phones = selectedItem.phones;
+          $scope.phonelength = selectedItem.phones.length;
+          console.log($scope.phones);
+          console.log("ana henaaaa");
+      }, function () {
+          $log.info('Modal dismissed at: ' + new Date());
+      });
+  };
+
+  $scope.deletePaymentMethod = function (method) {
+      $scope.message = "Show delete Form Button Clicked";
+      console.log($scope.message);
+      console.log(method);
+      $scope.method = method;
+      var modalInstance = $modal.open({
+          templateUrl: 'views/deletePaymentMethod.html',
+          controller: deletePaymentMethodCtrl,
+          scope: $scope
+      });
+
+      modalInstance.result.then(function (selectedItem) {
+          $scope.selected = selectedItem;
+          $scope.methods = selectedItem.methods;
+          $scope.paymentlength = selectedItem.methods.length;
+      }, function () {
+          $log.info('Modal dismissed at: ' + new Date());
+      });
+  };
+
+  $scope.createOneEvent = function(id) {
+    console.log("create event controller"+id);
+    $location.path('/createOneEvent/'+ id);
+  };
+
+  $scope.schedule = function(name) {
+     $location.path('/schedule/' + name);
+  };
+
+  $scope.changeImage = function() {
+   $scope.error = "";
+  console.log("changeImage controller");
+  console.log($scope.formData);
+  Business.changeImage($scope.formData)
+  .then(function successCallback(d) {
+    console.log("changeImage done");
+    $route.reload();
+  },
+  function errorCallback(d){
+    $scope.error = d.data;
+  });
+  };
+  });
 
 
     var Public = function ($scope, $modalInstance,Business,$route) {
@@ -413,8 +461,9 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
             Business.public()
             .then(function successCallback(d){
               console.log('pub');
-              $route.reload();
-            $modalInstance.close('closed');
+            $modalInstance.close({
+              public:1
+            });
             },
             function errorCallback(d){
               $scope.error = d.data;
@@ -435,8 +484,9 @@ app.controller('businessController', function($scope, status,$http, Business,Glo
             Business.remove()
             .then(function successCallback(d){
               console.log('rem');
-              $route.reload();
-            $modalInstance.close('closed');
+            $modalInstance.close({
+              delete:1
+            });
             },
             function errorCallback(d){
               $scope.error = d.data;
@@ -459,17 +509,24 @@ var NotAllowedRemove = function ($scope, $modalInstance,Business,$route) {
 
 
     var deleteImageCtrl = function ($scope, $modalInstance, Business, $route) {
-        $scope.form = {}
+        $scope.form = {};
+        $scope.error = "";
         $scope.yes = function (image) {
-            // if ($scope.form.editForm.$valid) {
-                console.log('user form is in scope');
-    						console.log(image);
-    						Business.deleteImage(image)
-    						.then(function(d) {
-    							console.log("done deleting image");
-    						});
-    						$route.reload();
-                $modalInstance.close('closed');
+          console.log('user form is in scope');
+					console.log(image);
+					Business.deleteImage(image)
+					.then(function successCallback(d) {
+            console.log(d.data.business);
+            console.log('image business deleted!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+            $modalInstance.close({
+              business:d.data.business
+            });
+					}, function errorCallback(d) {
+            $scope.error = d.data;
+          });
+          // $location.path("/business/");
+          // $route.reload();
+          // console.log("????????????????????????????????");
         };
 
         $scope.no = function () {
@@ -478,10 +535,11 @@ var NotAllowedRemove = function ($scope, $modalInstance,Business,$route) {
     };
 
     var addImageCtrl = function ($scope, $modalInstance, Business, $route) {
+      $scope.error = "";
         $scope.addImage = function (formData) {
                 console.log('add image is in scope');
                 Business.addImage(formData)
-                .then(function(d) {
+                .then(function successCallback(d) {
                   // $scope.business = business;
                   // business = d.data.business;
 
@@ -490,26 +548,28 @@ var NotAllowedRemove = function ($scope, $modalInstance,Business,$route) {
                   });
                   // console.log(d.data.business);
 
+                }, function errorCallback(d) {
+                  $scope.error = d.data;
                 });
-                console.log("eh yasta?");
-                // $route.reload();
-                // $route.reload();
         };
 
-        $scope.no = function () {
+        $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
     };
 
     var deletePhoneCtrl = function ($scope, $modalInstance, Business, $route) {
+
           $scope.error = "";
             $scope.yes = function (phone) {
                     console.log('delete phone is in scope');
                     Business.deletePhone(phone)
                     .then(function successCallback(d) {
-                      console.log("done deleting phone");
-                       $route.reload();
-                       $modalInstance.close('closed');
+                      console.log("done deleting phone!!!!!!!!!!!!!!!!!");
+                      console.log(d.data.business.phones);
+                       $modalInstance.close({
+                         phones : d.data.business.phones
+                       });
                     },
                     function errorCallback(d){
                       $scope.error = d.data;
@@ -520,7 +580,7 @@ var NotAllowedRemove = function ($scope, $modalInstance,Business,$route) {
             $scope.no = function () {
                 $modalInstance.dismiss('cancel');
             };
-  }
+    };
 
         var deletePaymentMethodCtrl = function ($scope, $modalInstance, business, Business, $route) {
           $scope.error = "";
@@ -531,15 +591,14 @@ var NotAllowedRemove = function ($scope, $modalInstance,Business,$route) {
                       $scope.business = business;
                       $scope.business = d.data.business;
                       console.log("done deleting payment_method");
-                       $route.reload();
-                    $modalInstance.close('closed');
+                       $modalInstance.close({
+                         methods : d.data.business.payment_methods
+                       });
                     },
                     function errorCallback(d){
                       $scope.error = d.data;
                     });
-
             };
-
             $scope.no = function () {
                 $modalInstance.dismiss('cancel');
             };

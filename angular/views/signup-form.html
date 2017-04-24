@@ -23,7 +23,7 @@
         <!-- USERNAME -->
         <div class="form-group" >
             <label>Username</label>
-            <input type="text" name="username" class="form-control" ng-model="formData.username" ng-minlength="3" ng-maxlength="8" required>
+            <input type="text" name="username" class="form-control" ng-model="formData.username" ng-minlength="1" ng-maxlength="50" required>
             <p ng-show="form.userForm.username.$error.minlength" class="help-block">Username is too short.</p>
             <p ng-show="form.userForm.username.$error.maxlength" class="help-block">Username is too long.</p>
         </div>
@@ -31,7 +31,7 @@
         <!-- PASSWORD-->
         <div class="form-group" >
             <label>Password</label>
-            <input type="password" name="password" class="form-control" ng-model="formData.password" ng-minlength="3" ng-maxlength="8" required>
+            <input type="password" name="password" class="form-control" ng-model="formData.password" ng-minlength="8" ng-maxlength="50" required>
             <p ng-show="form.userForm.password.$error.minlength" class="help-block">Password is too short.</p>
             <p ng-show="form.userForm.password.$error.maxlength" class="help-block">Password is too long.</p>
         </div>

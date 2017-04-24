@@ -7,16 +7,14 @@ var Facility = require('mongoose').model('Facility');
 var User = require('mongoose').model('RegisteredUser');
 var async = require('async');
 
+
 var BusinessController = {
 
   getBusiness: function (req, res) {
-   // var name = "Habiiba";
-   // var name = "Escape Room";
    console.log("backend");
-   if(req.params.id && req.user && req.user instanceof User) {
-      //  var name = req.params.name;
-      var id = req.params.id;
-       Business.findOne({_id: id }).
+   if(req.params.name && req.user && req.user instanceof User) {
+      var name = req.params.name;
+       Business.findOne({name: name }).
            exec(function (err, result) {
                if (err)
                    return res.status(500).json("Something went wrong");
@@ -47,9 +45,9 @@ var BusinessController = {
                    })
                  }
            });
-   } else if(req.params.id) {
-     var id = req.params.id;
-     Business.findOne({_id: id }).
+   } else if(req.params.name) {
+     var name = req.params.name;
+     Business.findOne({name: name }).
          exec(function (err, result) {
              if (err)
                  return res.status(500).json("Something went wrong");
@@ -124,7 +122,7 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             console.log("ana fl backend");
-            console.log(req.body);
+            console.log(JSON.stringify(req.body.location));
             Business.findById(id, function (err, business) {
                 if (err) res.status(500).json("Something went wrong");
                 else if (!business) res.status(500).json("Business not found");
@@ -133,8 +131,10 @@ requestRemoval: function(req,res) {
                         business.description = req.body.description;
                     }
 
-                    if (typeof req.body.location != "undefined" && req.body.location.length > 0) {
+                    if (typeof req.body.location != "undefined") {
                         business.location = req.body.location;
+                        console.log("ahlan we sahlan");
+                        console.log(JSON.stringify(req.body.location));
                     }
                     if (typeof req.body.email != "undefined" && req.body.email.length > 0) {
                         business.email = req.body.email;
@@ -157,17 +157,20 @@ requestRemoval: function(req,res) {
                         }
                         if (!found)
                             business.phones.push(req.body.phones);
+                        else {
+                            return res.status(500).json("You already have this phone number");
+                        }
                     }
                     if (typeof req.body.payment_methods != "undefined" && req.body.payment_methods.length > 0) {
                         business.payment_methods.push(req.body.payment_methods);
                     }
 
                     if(typeof req.file != "undefined") {
-                      business.images.push(req.file.filename);
+                        business.profilePicture = req.file.filename;
                     }
 
-                    if(typeof req.body.password != "undefined" && req.body.password > 0) {
-                      business.password = business.generateHash(req.body.password);
+                    if(req.body.password) {
+                      business.local.password = business.generateHash(req.body.password);
                     }
 
                     if(req.body.facebookURL) {
@@ -184,6 +187,9 @@ requestRemoval: function(req,res) {
                     }
 
                     business.save(function(err, newbusiness) {
+                      if(err)
+                        console.log(err);
+                      console.log("SAVE");
                       res.status(200).json({business:newbusiness});
                     });
                     // res.sendFile('/business/b');
@@ -224,10 +230,10 @@ requestRemoval: function(req,res) {
                                 }
                             }
                             if (check) {
-                                Business.findByIdAndUpdate(id, { $pull: { "phones": phone } }, function (err, info) {
+                                Business.findByIdAndUpdate(id, {$pull:{ phones: phone }}, {safe:true, upsert: true, new:true},function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
-                                    if (!info) res.status(500).json("Something went wrong");
-                                    else{ res.status(200).json('phone deleted'); console.log("phone deleted");}
+                                    if (!business) res.status(500).json("Something went wrong");
+                                    else{ res.status(200).json({business:updatedbusiness}); console.log("2222222!!!!"+updatedbusiness);}
                                 });
                             }
                             else {
@@ -258,7 +264,6 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             if (typeof req.params.method != "undefined") {
                 var id = req.user.id;
-
                 var payment = req.params.method;
                 console.log("ana fl backend delete method");
                 Business.findOne({ _id: id }, function (err, business) {
@@ -277,10 +282,10 @@ requestRemoval: function(req,res) {
                             }
 
                             if (check) {
-                                Business.findByIdAndUpdate(id, { $pull: { "payment_methods": payment } }, function (err, info) {
+                                Business.findByIdAndUpdate(id, { $pull: {payment_methods: payment }}, {safe:true, upsert: true, new:true},function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
-                                    if (!info) res.status(500).json("Something went wrong");
-                                    else {res.status(200).json('payment method deleted'); console.log("payment method deleted");}
+                                    if (!business) res.status(500).json("Something went wrong");
+                                    else {res.status(200).json({business:updatedbusiness}); console.log("payment method deleted");}
                                 });
 
                             }
@@ -319,22 +324,21 @@ requestRemoval: function(req,res) {
           } else {
             console.log("image deleted");
             console.log(newBusiness);
+            res.status(200).json({business:newBusiness});
           }
         });
       } else res.status(500).json("You are not a logged in business");
     },
 
 
-    changeProfilePicture: function(req, res) {
+    changeImage: function(req, res) {
 
       if(req.user && req.user instanceof Business) {
-        // var id = "58f8b9fdf3e7ca15c2ca2c1f";
         var id = req.user.id;
 
         console.log("ana fl backend changeProfilePicture");
         var file = req.file;
-
-        Business.findByIdAndUpdate(id, {$set:{profilePicture:file.filename}}, function(err, updatedBusiness) {
+        Business.findByIdAndUpdate(id, {$push:{images:file.filename}}, {safe:true, upsert: true, new:true}, function(err, updatedBusiness) {
             if(err) res.status(500).json("error in changing the profile picture");
             else res.status(200).json({business:updatedBusiness});
         });
@@ -414,6 +418,18 @@ getBooking: function(req, res)
 
      }
     else res.status(401).json("YOU ARE NOT AUTHORIZED");
+},
+
+getBusinessId : function(req,res)
+{
+    var name = req.body.name;
+    Business.findOne({name:name},function(err,business)
+    {
+        if(err)
+            res.status(500).json("error");
+        else
+            res.status(200).json(business);
+    });
 }
 
 }

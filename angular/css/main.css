@@ -1883,10 +1883,18 @@ font-weight: bold;
     height: 300px;
     /*width: 400px;*/
     overflow: hidden;
+#slides_control > div{
+height: 400px;
+}
+
+.crop {
+  height: 400px;
+  /*width: 400px;*/
+  overflow: hidden;
 }
 .crop img {
-    height: auto;
-    width: 100%;
+  height: auto;
+  width: 100%;
 }
 
 input[type=radio]:checked ~ label{
@@ -1895,6 +1903,7 @@ input[type=radio]:checked ~ label{
 /*==========================================Farida==================================
  It will not work without the style tag, so don't remove it. (I know it doesn't make sense)
  ===================================================================================*/
+<style>
 <style>
 ul {
     list-style-type: none;
@@ -1947,6 +1956,7 @@ li.dropdown {
 
 .notif:hover {
   background-color: #6cb670;
+  border-radius: 25px;
 }
 
 #search {
@@ -2204,4 +2214,5 @@ input:checked + label:before {
 	width: 400px;
 	padding: 20px;
 }
+
 
