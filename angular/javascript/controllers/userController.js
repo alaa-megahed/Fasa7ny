@@ -122,6 +122,15 @@ app.controller('userController', function($scope, status,$http, User, $location,
 		});
 	}
 
+
+	// $scope.cancelBooking = function(bookingId) {
+	// 	User.cancelBooking(bookingId).then(function successCallback(d){
+	// 		console.log("success");
+	// 	}, function errorCallback(d) {
+	// 		console.log("error");
+	// 	})
+	// }
+
 });
 
 

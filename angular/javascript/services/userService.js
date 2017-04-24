@@ -19,7 +19,7 @@ app.factory('User', ['$http', function($http) {
                 fd.append(key, formData[key]);
 
               console.log(fd);
-              
+
 
 	    	return $http.post('http://127.0.0.1:3000/user/editInfo/' + userID, fd, {
                 transformRequest: angular.identity,

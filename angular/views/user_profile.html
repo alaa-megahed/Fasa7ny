@@ -1,10 +1,10 @@
 <!-- Start Preloader
-==================================== 
+====================================
 <div id="loading-mask">
 	<div class="loading-img">
 		<img alt="Meghna Preloader" src="../img/preloader.gif"  />
 	</div>
-</div>  
+</div>
  End Preloader
 ==================================== -->
 
@@ -34,7 +34,7 @@
                     <div class="image-upload" style="float: left: 0; right: 0; margin: 0 auto;" >
                         <label for="file-input">
                             <div class="container2 image-cropper" >
-                              <img ng-src='http://localhost:3000/photo/{{user.profilePic}}' alt="Avatar" id = "profilepic" class="image" style="width:100%;"> 
+                              <img ng-src='http://localhost:3000/photo/{{user.profilePic}}' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
                               <div class="middle">
                                 <div style="font-size: 20px; color:lightgrey;"> Change profile picture</div>
                               </div>
@@ -43,7 +43,7 @@
                         <input id="file-input" type="file" file-model="formData.img"/>
                         <br>
                         <button class="btn btn-booking" id = "uploadButton" ng-click = "changeImage(user._id)" style = "display:block; margin: 0 auto; display: none;"> Upload  </button>
-                    
+
                         <!-- full name & email display !-->
                         <div class="blog-title" style="margin: 0 auto;">
                             <h1> {{ user.name }} </h1>
@@ -52,7 +52,7 @@
                     </div>
 
                 </form>
-  
+
 			</div>     <!-- End col-lg-12 -->
 		</div>	    <!-- End row -->
 	</div>       <!-- End container -->
@@ -83,35 +83,35 @@
                    <!-- Single Post -->
                     <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms" ng-repeat = "info in all_info">
 
-                       
+
 						<div class="post-excerpt">  <!-- first section beginning !-->
 
                             <!-- Name of Event + w/ + Name of Business !-->
 							<h3>
-                                <a href="../single-post.html"> {{info.event.name}}</a> 
-                                <a href="../single-post.html"> <span class="color">w/</a> 
-                                <a href="../single-post.html"> {{info.business.name}} </a> 
+                                <a href="../single-post.html"> {{info.event.name}}</a>
+                                <a href="../single-post.html"> <span class="color">w/</a>
+                                <a href="../single-post.html"> {{info.business.name}} </a>
                                 <!-- <img src="../img/user_profile/rating_3.png" alt="rating" > !-->
                             </h3>
 
                             <br>
 
-                            <p> {{info.event.description}} </p> 
+                            <p> {{info.event.description}} </p>
 
                             <br>
 
                             <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon" class="image2" align="left">
-                            <div style="padding-left: 23px;" ng-repeat = "phone in info.business.phones"> 
+                            <div style="padding-left: 23px;" ng-repeat = "phone in info.business.phones">
                                <p style="font-size:12px;">  {{phone}} </p>
                             </div>
 
                             <img src="../img/user_profile/location_icon12.png" alt="location_icon" class="image2" align="left">
-                            <div style="padding-left: 23px;"> 
+                            <div style="padding-left: 23px;">
 							   <p style="font-size:12px">  {{info.business.address}}</p>
                             </div>
 						</div>  <!-- first section end !-->
 
-						<div class="post-meta2" ">  <!-- second section beginning !-->
+						<div class="post-meta2">  <!-- second section beginning !-->
 							<span class="post-date">
 								<i class="fa fa-calendar"></i> {{info.eventocc.day | date }} @ {{info.eventocc.time  }}
 							</span>
@@ -125,7 +125,7 @@
                             </span>
 
                             <div style=" display:inline;  vertical-align: middle; padding-left: 180px;">
-                                <button class="btn btn-booking" ng-click="cancelBooking()">Cancel Booking</button> 
+                                <button class="btn btn-booking" ng-click="cancelBooking(info._id)">Cancel Booking</button>
                             </div>
 						</div>  <!-- second section end !-->
                     </article>
@@ -136,7 +136,7 @@
 
             </div>
 
-            
+
 
 
             <!-- RIGHT Section -->
@@ -150,7 +150,7 @@
                 <!-- /section title -->
 
                 <!-- Subcscriptions Part -->
-                <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">  
+                <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
 
 
 
@@ -173,21 +173,21 @@
                     <div class="post-item">
                         <!-- Single Post -->
                         <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
-                           
+
                             <div class="post-excerpt">  <!-- first section beginning !-->
                                 <!-- profile details !-->
                                 <div>
 
-                                    <div style="padding-left: 23px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 2px; margin-bottom: 2px; opacity: 0"> 
+                                    <div style="padding-left: 23px;">
+                                        <a style="font-size: 20px; color:white; margin-top: 2px; margin-bottom: 2px; opacity: 0">
                                             no data
                                         </a>
                                     </div>
 
                                     <div ng-if = "user.local.username">
                                         <img src="../img/user_profile/at_sign.png" alt="at_sign_icon" class="image2" align="left" style = "padding-top: 4px">
-                                        <div style="padding-left: 25px;"> 
-                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                        <div style="padding-left: 25px;">
+                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
                                                 {{ user.local.username }}  <!-- ASK !-->
                                             </a>
                                         </div>
@@ -196,8 +196,8 @@
 
                                     <div ng-if = "user.phone">
                                         <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon_profile" class="image2" align="left" style = "padding-top: 6px">
-                                        <div style="padding-left: 25px;"> 
-                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                        <div style="padding-left: 25px;">
+                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
                                                 {{ user.phone }}
                                             </a>
                                         </div>
@@ -205,8 +205,8 @@
 
                                     <div ng-if = "user.birthdate">
                                         <img src="../img/user_profile/bdate_icon3.png" alt="bdate_icon_" class="image2" align="left" style = "padding-top: 6px">
-                                        <div style="padding-left: 25px;"> 
-                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                        <div style="padding-left: 25px;">
+                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
                                                 {{ user.birthdate | date}}
                                             </a>
                                         </div>
@@ -214,17 +214,17 @@
 
                                     <div ng-if = "user.gender">
                                         <img src="../img/user_profile/gender_icon.png" alt="gender_icon" class="image2" align="left" style = "padding-top: 6px">
-                                        <div style="padding-left: 25px;"> 
-                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;"> 
+                                        <div style="padding-left: 25px;">
+                                            <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
                                                 {{ user.gender }}
                                             </a>
                                         </div>
                                     </div>
 
-                                 
 
-                                    <div style="padding-left: 23px;"> 
-                                        <a style="font-size: 20px; color:white; margin-top: 2px; margin-bottom: 2px; opacity: 0"> 
+
+                                    <div style="padding-left: 23px;">
+                                        <a style="font-size: 20px; color:white; margin-top: 2px; margin-bottom: 2px; opacity: 0">
                                             no data
                                         </a>
                                     </div>

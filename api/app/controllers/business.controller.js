@@ -347,7 +347,7 @@ requestRemoval: function(req,res) {
         res.status(401).json("YOU ARE NOT AUTHORIZED");
   },
 
-    
+
 
     hasBookings: function(req, res)
     {
@@ -360,7 +360,7 @@ requestRemoval: function(req,res) {
              if(!bookings || bookings == undefined || bookings.length == 0)
                 res.status(200).json(0);
              else
-                res.status(200).json(1);   
+                res.status(200).json(1);
             });
         }
         else
@@ -373,7 +373,7 @@ getFacilityOccs: function(req, res)
 {
     if(req.user && req.user instanceof Business)
     {
-            var id = req.user.id; 
+            var id = req.user.id;
             var facility_id = req.params.facility;
             EventOccurrences.find({"facility_id": facility_id}, function(err, occs)
             {
@@ -390,7 +390,7 @@ getEventOccs: function(req, res)
 {
      if(req.user && req.user instanceof Business)
     {
-            var id = req.user.id; 
+            var id = req.user.id;
             var event_id = req.params.event;
             EventOccurrences.find({"event": event_id}, function(err, occs)
             {
@@ -407,7 +407,7 @@ getBooking: function(req, res)
 {
     if(req.user && req.user instanceof Business)
     {
-            var id = req.user.id; 
+            var id = req.user.id;
             var booking_id = req.params.booking;
             Booking.findOne({"_id": booking_id}, function(err, booking)
             {
@@ -425,7 +425,7 @@ getBusinessId : function(req,res)
     var name = req.body.name;
     Business.findOne({name:name},function(err,business)
     {
-        if(err)
+        if(err || !business)
             res.status(500).json("error");
         else
             res.status(200).json(business);

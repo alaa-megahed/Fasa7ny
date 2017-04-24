@@ -184,10 +184,10 @@ app.controller('businessController', function($scope, status,$http, Business, $l
 
     }
 
-    };   
+    };
 
       google.maps.event.addDomListener(window, 'scroll', $scope.initMap);
-  
+
 
         $scope.remove = function () {
           $scope.message = "Remove Button Clicked";
@@ -197,7 +197,7 @@ app.controller('businessController', function($scope, status,$http, Business, $l
           {
             if(responce.data != 0)
             {
-              
+
               var notAllowedModalInstance = $modal.open({
                   templateUrl: 'views/notAllowedRemovePop.html',
                   controller: NotAllowedRemove,
@@ -322,10 +322,7 @@ app.controller('businessController', function($scope, status,$http, Business, $l
 
     });
 
-        $scope.bookFacility = function(){
-            Global.setBusiness($routeParams.id);
-            $location.path('/book_facility/'+$routeParams.id);
-          };
+
 
     modalInstance.result.then(function (selectedItem) {
         $scope.selected = selectedItem;
@@ -333,6 +330,17 @@ app.controller('businessController', function($scope, status,$http, Business, $l
     });
   };
 
+  $scope.bookFacility = function(){
+    $scope.name = $routeParams.name;
+    console.log("BOOK!!");
+    $http.post('http://127.0.0.1:3000/business/getBusinessId',{name:$scope.name}).then(
+  function(response)
+  {
+    console.log($scope.business_id);
+    $scope.business_id = response.data._id;
+    $location.path('/book_facility/'+$scope.business_id);
+  });
+    };
 
    $scope.getEvent = function(eventId) {
     console.log("get Event ctrl");
@@ -603,9 +611,9 @@ var NotAllowedRemove = function ($scope, $modalInstance,Business,$route) {
                 $modalInstance.dismiss('cancel');
             };
 
-            //check if user is logged in 
-            
+            //check if user is logged in
 
 
-         
+
+
 }

@@ -41,7 +41,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
         //   if($scope.business.payment_methods[i] === "cash")
         //     $scope.cash = true;
         // }
-      
+
       $scope.choose_date = function(date)
       {
         $scope.date  = date.getDate();
@@ -104,7 +104,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
                       console.log(response.data);
                       //redirect to not authorized page
                        $scope.error_message = response.data;
-                    }); 
+                    });
          }
          else if($scope.type == 4)
           {
@@ -116,16 +116,16 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
                     }, function errorCallback(responce){
                       //redirect to not authorized page
                       console.log(responce.data);
-                    }); 
+                    });
           }
-                    
+
       }
 
       $scope.stripe_handler = StripeCheckout.configure({
           key: "pk_test_O1Gn3Rl11nLaHckNqvJOzaYz",
           locale: 'auto',
           currency : "egp",
-          token: function(token) 
+          token: function(token)
           {
             console.log("token   "+ token);
             console.log("token.id   "+ token.id);
@@ -143,7 +143,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
                                //redirect to not authorized page
                               console.log(responce.data);
                                $scope.error_message = responce.data;
-                            }); 
+                            });
 
                     }, function errorCallback(responce){
                        //redirect to not authorized page
@@ -155,18 +155,18 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
         $scope.open_stripe = function()
         {
           console.log($scope.chosen_facility);
-          $scope.event_price = $scope.chosen_event.price;          
+          $scope.event_price = $scope.chosen_event.price;
           var basic_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
           var new_charge = basic_charge * 103;
           $scope.stripe_charge = Math.round(new_charge);
-          $scope.charge  = $scope.stripe_charge / 100; 
+          $scope.charge  = $scope.stripe_charge / 100;
           console.log("charge in stripe " + $scope.stripe_charge);
           $scope.stripe_handler.open({
             name: $scope.event.name,
             description: $scope.formData.count + " places",       // TODO add offer
             amount: $scope.stripe_charge
           });
-        }  
+        }
 
 });
 
@@ -206,12 +206,12 @@ var apply_best_offer_facility = function(facility, event_occ, price, capacity, c
                             {
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;
-                                // console.log("min_count   "+newcharge);  
+                                // console.log("min_count   "+newcharge);
                             }
                             if(offers[i].type === "duration" && (new Date()).getTime() >= new Date(offers[i].start_date).getTime() && new Date(offers[i].expiration_date).getTime() > (new Date()).getTime())
                             {
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
-                                min_charge = (min_charge > newcharge) ? newcharge : min_charge;     
+                                min_charge = (min_charge > newcharge) ? newcharge : min_charge;
                             }
                             if(offers[i].type === "first_lucky" && (capacity - event_occ.available) < offers[i].lucky_first)
                             {
@@ -219,13 +219,11 @@ var apply_best_offer_facility = function(facility, event_occ, price, capacity, c
                                 var lucky = offers[i].lucky_first - (capacity - event_occ.available);
                                 var apply_on = (lucky < count) ? lucky : count;
                                 var newcharge = ((apply_on * event.price) - offers[i].value / 100 * apply_on * event.price) + (count - apply_on) * event.price;
-                                min_charge = (min_charge > newcharge) ? newcharge : min_charge; 
-                                // console.log("first lucky  "+ newcharge); 
+                                min_charge = (min_charge > newcharge) ? newcharge : min_charge;
+                                // console.log("first lucky  "+ newcharge);
                             }
                         }
                     }
                 }
                 return min_charge;
 }
-                        
-     
