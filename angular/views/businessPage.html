@@ -24,8 +24,8 @@
    <input ng-if = "type == 4" type="submit" value="Create One-Time Event" ng-click = "createOneEvent(business._id)" class="btn btn-transparent">
 
   <input  ng-if = "type == 4" type="submit" value="Create Offer " ng-click = "createOffer(business._id)" class="btn btn-transparent">
-    <form ng-click = "businessEdit()" method="get">
-       <input ng-if = "type == 4" type="submit" value="Edit Information" class="btn btn-transparent">
+    <!-- <form ng-click = "businessEdit()" method="get">
+       <input ng-if = "type == 4" type="submit" value="Edit Information" class="btn btn-transparent"> -->
 
     <form ng-click = "businessEdit()">
        <input ng-if = "type == 4" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Edit Information&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" class="btn btn-transparent">
@@ -104,9 +104,10 @@
                                       <!-- <h4>Slide {{$index+1}}</h4> -->
                                   </slide>
                                 </carousel>
+<br><br><br><br><br><br><br><br>
                               </div>
 
-<br><br><br>
+
               &nbsp;&nbsp;  <button ng-if = "type == 4" class="btn btn-transparent" ng-click="addImage()" ng-disabled="imagelength == 4"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
 
                               <hr width="40%">
@@ -243,7 +244,7 @@
 
                               	<!-- <img src="../img/user_profile/gender_icon.png" alt="gender_icon" class="image2" align="left" style = "padding-top: 6px"> -->
                               	<div style="padding-left: 25px;">
-                                  <div ng-if = "method">
+                                  <div ng-if = "methods">
                                     <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
                                       <i class = "fa fa-money" aria-hidder="true" style="color: #6cb670"></i>
                                     </a>
@@ -352,7 +353,7 @@
                                  <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "addDaily(facility._id,facility.description,facility.capacity, facility.name)">&nbsp;&nbsp; Add Event </button>
                                  <button ng-if = "type == 4 || type == 1" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "viewEvents(facility._id)">&nbsp;&nbsp;View Events &nbsp;</button>
                                  <hr style="border: 0.5px solid #90EE90">
-                                 <center>
+                               </center>
                             </div>
 
                             <!-- post title -->
