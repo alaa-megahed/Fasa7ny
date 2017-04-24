@@ -17,14 +17,14 @@ module.exports = function() {
     var app = express();
 
     app.use('*',function(req, res, next){
-      var allowedOrigins = [null,'http://54.187.92.64:8000', 'http://54.187.92.64:8000', 'http://54.187.92.64:3000', 'http://54.187.92.64:3000', 'https://www.facebook.com'];
-      var origin = req.headers.origin;
-      if(allowedOrigins.indexOf(origin) > -1){
-        res.setHeader('Access-Control-Allow-Origin', origin);
-      }
+      // var allowedOrigins = [null,'http://54.187.92.64:8000', 'http://54.187.92.64:8000', 'http://54.187.92.64:3000', 'http://54.187.92.64:3000', 'https://www.facebook.com'];
+      // var origin = req.headers.origin;
+      // if(allowedOrigins.indexOf(origin) > -1){
+        res.setHeader('Access-Control-Allow-Origin', "*");
+      // }
         res.setHeader('Access-Contro-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
         res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, Authorization, Accept, X-HTTP-Method-Override");
-        res.setHeader('Access-Control-Allow-Credentials', true);
+      //  res.setHeader('Access-Control-Allow-Credentials', true);
         next();
     });
 
