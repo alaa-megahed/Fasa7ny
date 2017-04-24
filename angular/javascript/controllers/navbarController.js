@@ -197,6 +197,7 @@ $scope.getAdminProfile = function()
             $scope.updateUser();
         })
       }
+    }
 
       $scope.getHome = function()
       {
@@ -209,12 +210,6 @@ $scope.getAdminProfile = function()
         console.log("hiii");
         $scope.searchAppear = 1;
       }
-
-
-
-
-
-    }
 
 
     $scope.goToBusinessPage = function(id) {
