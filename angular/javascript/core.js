@@ -17,6 +17,8 @@ app.config(function($routeProvider){
 		controller  : "webAdminController"
 	})
 
+
+
 	// .when("/", {
 	// 	templateUrl : "views/bookings.html",
 	// 	controller  : "bookingController"

@@ -17,6 +17,14 @@ var configAuth = require('../../config/auth');
 
 exports.AddBusiness = function (req, res) {
 
+  if(req.user && req.user instanceof WebAdmin){
+        if(!req.body.email || !req.body.merchant_ID || !req.body.name || !req.body.username || !req.body.category)
+    {
+         console.log("f 7aga fadya");
+      return res.status(200).json("Please fill in all necessary components");
+    }
+    else
+    {
     //test if name and merchant_ID
     Business.find({
         $or: [
@@ -96,7 +104,7 @@ exports.AddBusiness = function (req, res) {
                                                 });
                                                 console.log(3);
                                                 //res.render("admin_profile", { user: req.user });
-                                                res.status(200).json("successfully added");
+                                                res.status(200).json("Business is successfully added and an email has been sent");
 
                                             }
                                         });
@@ -128,6 +136,12 @@ exports.AddBusiness = function (req, res) {
 
         });
 }
+}
+ else {
+    return res.status(200).json("Unauthorized access. Please log in."); 
+    
+  }
+}
 
 
 
@@ -135,7 +149,7 @@ exports.AddBusiness = function (req, res) {
 
 exports.WebAdminDeleteBusiness = function (req, res) {
 
-
+if(req.user && req.user instanceof WebAdmin){
     Business.findById(req.params.id, function (err, business) {
         if(err) res.status(500).json(err.message);
 
@@ -189,6 +203,11 @@ exports.WebAdminDeleteBusiness = function (req, res) {
        
     });
 
+}
+ else {
+    return res.status(200).json("Unauthorized access. Please log in."); 
+    
+  }
 
 }
 
@@ -196,20 +215,20 @@ exports.WebAdminDeleteBusiness = function (req, res) {
 
 exports.webAdminViewRequestedDelete = function (req, res) {
 
-// if(req.user && req.user instanceof WebAdmin)
-//   {
+if(req.user && req.user instanceof WebAdmin)
+  {
 
     Business.find({ delete: 1 }, function (err, requests) {
      
         res.status(200).json(requests);
     });
   }
-  // else {
-  //   return res.status(200).json("Unauthorized access. Please log in."); 
-  //   //res.send("Unauthorized access. Please log in.");
-  // }
+  else {
+    return res.status(200).json("Unauthorized access. Please log in."); 
     
-// }
+  }
+    
+}
 
 
 
@@ -226,15 +245,17 @@ exports.addAdvertisement = function(req,res)
 {
 
     
-  // if(req.user && req.user instanceof WebAdmin)
-  // {
-
+  if(req.user && req.user instanceof WebAdmin)
+  {
+      if(req.file){
 
     if(!req.file.filename || !req.body.text || !req.body.sdate || !req.body.edate)
-    {
+    {    
          console.log("f 7aga fadya");
       return res.status(200).json("Please fill in all necessary components");
     }
+    else
+    {
     var ad = new Advertisement(
       {
         image       : req.file.filename, //should be changed to req.file.filename
@@ -246,16 +267,22 @@ exports.addAdvertisement = function(req,res)
 
     ad.save(function(err,ad){
       if(err)
-        throw err;
+       res.status(500).json("error");
       else{
         
-        return res.status(200).json("successfully created advertisement");
+         res.status(200).json("successfully created advertisement");
 }
     });
- //  }
-  // else {
-  //   return res.status(200).json("Unauthorized access. Please log in.");
-  // }
+  }
+              }
+              else
+              {
+                res.status(200).json("Please fill in all necessary components");
+              }
+    }
+  else {
+    return res.status(401).json("Unauthorized access. Please log in.");
+  }
 
 
 }
@@ -267,8 +294,8 @@ exports.addAdvertisement = function(req,res)
 exports.deleteAdvertisement = function(req,res)
 {
 
-    // if(req.user && req.user instanceof WebAdmin)
-    // {
+    if(req.user && req.user instanceof WebAdmin)
+    {
       Advertisement.findByIdAndRemove(req.params.id, function(err,ad)
       {
         if(err)
@@ -278,7 +305,11 @@ exports.deleteAdvertisement = function(req,res)
         }
 
       });
-    // }
+    }
+    else {
+    return res.status(401).json("Unauthorized access. Please log in.");
+  }
+
 
 
 
@@ -342,17 +373,17 @@ exports.viewAvailableAdvertisements = function(req,res)
 
 exports.viewAllAdvertisements = function(req,res)
 {
-  // if(req.user && req.user instanceof WebAdmin)
-  // {
+  if(req.user && req.user instanceof WebAdmin)
+  {
 
     Advertisement.find({},function(err, ads)
     {
       
       res.status(200).json(ads);
     });
-  // }
-  // else {
-  //   return res.send("Unauthorized access. Please log in.");
-  // }
+  }
+  else {
+    return res.status(401).json("Unauthorized access. Please log in.");
+  }
 
 }

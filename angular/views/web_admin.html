@@ -5,9 +5,10 @@
     <div class="container" ng-app = "fasa7ny" ng-controller="webAdminController" >
         <div class="row">
 
+        
             <!-- / Start Add Business Area -->
-            <div class="contact-form col-md-6 wow fadeInUp" data-wow-duration="500ms" ng-controller="webAdminController" >
-
+            <div class="contact-form col-md-6 wow fadeInUp" data-wow-duration="500ms" ng-controller="webAdminController"  ng-if = "type==3">
+                            <label style="color:    #FF0000;" >{{msg}}</label>
                 <!-- section title -->
                 <div class="title text-center wow fadeIn" data-wow-duration="500ms">
                     <h2>Add <span class="color">Business</span></h2>
@@ -43,9 +44,9 @@
 
                     <select  required ng-model="business.category">
                           <option value="" disabled selected> -- Business Category --</option>
-                          <option value="volvo">Thrill</option>
-                          <option value="saab">Escape</option>
-                          <option value="mercedes">Outlet</option>
+                          <option value="Thrill">Thrill</option>
+                          <option value="Escape">Escape</option>
+                          <option value="Outlet">Outlet</option>
                     </select>
 
                     <br>
@@ -63,33 +64,32 @@
 
                 
             <!-- / Start Add Ad Area -->
-            <div class="contact-form col-md-6 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+            <div class="col-md-6 "   ng-controller="webAdminController" ng-if = "type==3">
+            <label style="color:    #FF0000;" >{{msg}}</label>
 
-                <!-- section title -->
                 <div class="title text-center wow fadeIn" data-wow-duration="500ms">
                     <h2>Add <span class="color">Advertisement</span></h2>
                     <div class="border"></div>
                 </div>
-                <!-- /section title -->
 
-                <form id="contact-form">
+                <form  id="contact-form">
                 
                     <div class="form-group">
-                        <textarea rows="4" placeholder="Advertisement Body" class="form-control" name="message" id="message" data-ng-model= "advertisement.text" required></textarea>   
+                        <textarea rows= "3" placeholder="Advertisement Body" class="form-control" name="message" id="message" data-ng-model= "advertisement.text" required></textarea>   
                     </div>
 
                     <div class="form-group">
                         Start Date
-                        <input type="date" placeholder="Start Date" class="form-control" name="name" id="name" ng-model = "business.sdate" required>
+                        <input type="date" placeholder="Start Date" class="form-control" name="name" id="name" ng-model = "advertisement.sdate" required>
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group" >
                     End Date
-                        <input type="date" placeholder="End Date" class="form-control" name="email" id="email" ng-model = "business.edate" required>
+                        <input type="date"  placeholder="End Date" class="form-control" name="email" id="email" ng-model = "advertisement.edate" required>
                     </div>
                     
                     <div class="form-group">
-                        <input type="file" class="form-control" name="subject" id="subject" file-model="advertisement.image">
+                        <input type="file" class="form-control" name="image" file-model="advertisement.image">
                     </div>
                     
                     
@@ -115,7 +115,7 @@
 <!-- Start Added Businesses Section
 =========================================== -->     
 <section id="contact-us" >
-    <div class="container" ng-app = "fasa7ny" ng-controller="webAdminController">
+    <div class="container" ng-app = "fasa7ny" ng-controller="webAdminController" ng-if = "type==3">
         <div class="row">
             
             <!-- section title -->
@@ -166,7 +166,7 @@
 
 <!-- Start Added Advertisements Section
 ==================================== -->
-<section id="services" class="bg-one" ng-app = "fasa7ny" ng-controller="webAdminController">
+<section id="services" class="bg-one" ng-app = "fasa7ny" ng-controller="webAdminController" ng-if = "type==3">
     <div class="container">
         <div class="row">
             
@@ -191,16 +191,21 @@
                         </div>
                         <div class="post-excerpt">
                             <p>{{ ad.text }}</p>
+
+                            
                             <button ng-click = "deleteAd(ad)" class="btn btn-transparent"> Delete</button>
                            
                         </div>
+
+                                    
                         <div class="post-meta">
-                            <span class="post-date">
-                                <i class="fa fa-calendar"></i>{{ad.sdate}}
-                            </span>
+                        <span class="post-date">
+                                        <i class="fa fa-calendar"></i> {{ad.sdate| date }}
+                                    </span>
+                                
                            <span class="post-date">
-                                <i class="fa fa-calendar"></i>{{ad.edate}}
-                            </span>
+                                <i class="fa fa-calendar"></i> {{ad.edate | date}}
+                            </span> 
                         </div>
                     </article>
                    
