@@ -1,4 +1,4 @@
-ƒangular.module('fasa7ny')
+angular.module('fasa7ny')
 .factory('resetPassword', function($http) {
   return {
     reset: function(token, formData) {
