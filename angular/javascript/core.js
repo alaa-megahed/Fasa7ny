@@ -8,6 +8,11 @@ app.config(function($routeProvider){
 		templateUrl : "views/landingpage.html",
 		controller  : "navbarController"
 	})
+	
+	.when("/profile", {							//NAVE
+		templateUrl : "views/user_profile.html",
+		controller  : "userController"
+	})
 
 
 	.when("/search/:id", {

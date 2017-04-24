@@ -25,19 +25,13 @@ router.use('/business', business);
 router.use('/user', user);
 router.use('/admin', admin);
 router.use('/contact', function(req, res) {
-    res.send('Contact us with a business proposal at fasa7ny@gmail.com');
+res.send('Contact us with a business proposal at fasa7ny@gmail.com');
 });
-//
-// router.get('/', function (req, res) {
-//       res.sendFile(path.resolve('../angular/index.html'));
-// });
-
 
 router.use('/photo/:photo', function (req, res) {
    console.log(path.resolve('public/uploads/' + req.params.photo));
    res.sendFile(path.resolve('public/uploads/' + req.params.photo));
 });
-
 
 router.get('/loggedin', function (req, res) {
 
@@ -47,6 +41,9 @@ router.get('/loggedin', function (req, res) {
 
 router.get('/loggedin1', function (req1, res1) {
   res1.json(req1.user);
+
 });
+
+
 
 module.exports = router;

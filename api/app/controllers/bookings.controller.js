@@ -353,7 +353,7 @@ exports.cancel_booking_after_delete = function(req, res)
           if(!charge_id || charge_id === undefined)
           {
               return res.status(200).json(booking);
-          }
+          } 
           else
           {
                 var amount = Math.round(booking.charge * 97);
@@ -446,95 +446,94 @@ exports.regUserAddBooking = function(req, res, next) {
 
   if(req.user)
   {
-		if(req.user instanceof RegisteredUser)
-		{
+    if(req.user instanceof RegisteredUser)
+    {
 
 
       if(req.body.count <= 0)
         return res.status(400).json("Can't have negative or zero count.");
     
-			var date = new Date();
-	    var booking = new Booking(
-	      {
-	        count        : req.body.count,
+      var date = new Date();
+      var booking = new Booking(
+        {
+          count        : req.body.count,
           booker       : req.user.id,
-	        event_id     : req.body.event,
+          event_id     : req.body.event,
           business_id  : req.body.business_id,
           booker_name  : req.user.name,
-	        booking_date : date,
+          booking_date : date,
           charge       : req.body.charge,
           stripe_charge: req.body.stripe_charge
-	      });
+        });
 
-	    booking.save(function(err,booking)
-			 {
-	        if (!err)
-					{
-						//decreases capacity of event occurence and stores booking in event occurence's list of bookings
-						 EventOccurrences.findOne({_id:req.body.event},  function(err,eve)
-						 {
-								if(err || !eve )
-								{
-									res.status(500).json("Error adding booking. Please try again!");
-									return;
-								}
-								else
-								{
-									eve.available = eve.available - req.body.count;
-									if(eve.available < 0)
-									{
+      booking.save(function(err,booking)
+       {
+          if (!err)
+          {
+            //decreases capacity of event occurence and stores booking in event occurence's list of bookings
+             EventOccurrences.findOne({_id:req.body.event},  function(err,eve)
+             {
+                if(err || !eve )
+                {
+                  res.status(500).json("Error adding booking. Please try again!");
+                  return;
+                }
+                else
+                {
+                  eve.available = eve.available - req.body.count;
+                  if(eve.available < 0)
+                  {
                     booking.remove();
-										res.status(500).json("Not enough spaces - please decrease count of booking.");
-										return;
-									}
-									else
-									{
-											eve.bookings.push(booking);
-											eve.save();
-									}
+                    res.status(500).json("Not enough spaces - please decrease count of booking.");
+                    return;
+                  }
+                  else
+                  {
+                      eve.bookings.push(booking);
+                      eve.save();
+                  }
 
-									//finds registered user and adds this event to his/her list of bookings
+                  //finds registered user and adds this event to his/her list of bookings
                   // RegisteredUser.findOne({_id:req.user.id}, function(err, user)
 
-									RegisteredUser.findOne({_id:req.user.id}, function(err, user)
-								 {
-									 if(err || !user)
-									 {
+                  RegisteredUser.findOne({_id:req.user.id}, function(err, user)
+                 {
+                   if(err || !user)
+                   {
                      booking.remove();
-										 res.status(500).json("Error saving booking. Please try again.");
-										 return;
-									 }
-									 else
-									 {
-										 user.bookings.push(booking);
-										 user.save();
-										 res.status(200).json(booking);
-										 return;
-									 }
+                     res.status(500).json("Error saving booking. Please try again.");
+                     return;
+                   }
+                   else
+                   {
+                     user.bookings.push(booking);
+                     user.save();
+                     res.status(200).json(booking);
+                     return;
+                   }
 
-								 });
-								}
-						 });
-	        }
-	        else
-					{
-						return res.status(500).json("Error. Please try again. hena1");
-	        }
-	    });
+                 });
+                }
+             });
+          }
+          else
+          {
+            return res.status(500).json("Error. Please try again. hena1");
+          }
+      });
 
-	  }
+    }
 
-	}
+  }
 
-	else
-	{
-		res.status(401).json("Please log in to book events");
-		return;
+  else
+  {
+    res.status(401).json("Please log in to book events");
+    return;
   }
 
 
 };
-
 
 
 //Registered user views booking using his/her id
@@ -542,32 +541,32 @@ exports.regUserViewBookings = function(req,res,next){
 
   if(req.user)
   {
-		if(req.user instanceof RegisteredUser)
-		{
-			RegisteredUser.findOne({_id:req.user.id}).populate('bookings').exec(function(err, bookings)
-			{
-				if(err || !bookings)
-				{
-					res.send("Error finding bookings or possibly no bookings");
-					return;
-				}
-				else
-				{
-					res.send(bookings.bookings);
-					return;
-				}
-	    });
-		}
-		else
-		{
-			res.send("You are not a registered user.");
-			return;
-		}
+    if(req.user instanceof RegisteredUser)
+    {
+      RegisteredUser.findOne({_id:req.user.id}).populate('bookings').exec(function(err, bookings)
+      {
+        if(err || !bookings)
+        {
+          res.send("Error finding bookings or possibly no bookings");
+          return;
+        }
+        else
+        {
+          res.send(bookings.bookings);
+          return;
+        }
+      });
+    }
+    else
+    {
+      res.send("You are not a registered user.");
+      return;
+    }
   }
  else
   {
     res.send("Please log in to view upcoming bookings.");
-		return;
+    return;
   }
 
 };
@@ -580,44 +579,44 @@ exports.regUserEditBookings = function(req,res,next){
 
   if(req.user)
   {
-		if(req.user instanceof RegisteredUser)
-		{
-			Booking.findById(req.body.bookingE, function(err,booking)
-			{
-				if(err || !booking)
-					res.send("Error editing booking");
-				else
-				{
-					if(booking.booker == req.user.id)
-					{
-						//updates available places
-						EventOccurrences.findOne(booking.event_id, function(err, eve)
-						{
+    if(req.user instanceof RegisteredUser)
+    {
+      Booking.findById(req.body.bookingE, function(err,booking)
+      {
+        if(err || !booking)
+          res.send("Error editing booking");
+        else
+        {
+          if(booking.booker == req.user.id)
+          {
+            //updates available places
+            EventOccurrences.findOne(booking.event_id, function(err, eve)
+            {
               if(err || !eve)
                 return res.send("Error!");
-							eve.available = eve.available + booking.count - req.body.count;
-							if(eve.available < 0 || req.body.count == 0)
-								res.send("Invalid amount. Please try again.");
-							else
-							{
-								eve.save();
-								booking.count = req.body.count;
-								booking.save();
-								res.send("successful edit");
-							}
-						});
-					}
-					else
-					{
-						res.send("Not one of your bookings.");
-					}
-				}
-	    });
-		}
-		else
-		{
-			res.send("You are not a registered user.");
-		}
+              eve.available = eve.available + booking.count - req.body.count;
+              if(eve.available < 0 || req.body.count == 0)
+                res.send("Invalid amount. Please try again.");
+              else
+              {
+                eve.save();
+                booking.count = req.body.count;
+                booking.save();
+                res.send("successful edit");
+              }
+            });
+          }
+          else
+          {
+            res.send("Not one of your bookings.");
+          }
+        }
+      });
+    }
+    else
+    {
+      res.send("You are not a registered user.");
+    }
   }
   else
   {
@@ -635,28 +634,28 @@ exports.regUserDeleteBookings = function(req,res,next){
   console.log("in node bookingD is   "+req.body.bookingD);
   // if(req.user)
   // {
-		// if(req.user instanceof RegisteredUser)
-		// {
-			Booking.findById(req.body.bookingD, function(err,booking)
-			{
-				if(err || !booking)
-				{
-					res.send("Error deleting booking. Please recheck information and try again.");
-					return;
-				}
-				else
-				{
-					// if(booking.booker == req.user.id)
-					// {
-						// RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
-						// {
-						// 	if(err || !user ) return res.send("Error");
-						// });
-						// EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.bookingD}}, function(err,eve)
-						// {
-						// 	if(err || !eve) return res.status(500).json("Error.");
-							// eve.available = eve.available + booking.count;
-							// eve.save();
+    // if(req.user instanceof RegisteredUser)
+    // {
+      Booking.findById(req.body.bookingD, function(err,booking)
+      {
+        if(err || !booking)
+        {
+          res.send("Error deleting booking. Please recheck information and try again.");
+          return;
+        }
+        else
+        {
+          // if(booking.booker == req.user.id)
+          // {
+            // RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
+            // {
+            //  if(err || !user ) return res.send("Error");
+            // });
+            // EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.bookingD}}, function(err,eve)
+            // {
+            //  if(err || !eve) return res.status(500).json("Error.");
+              // eve.available = eve.available + booking.count;
+              // eve.save();
               booking.remove(function(err) {
                 if(err)return res.status(500).json(err.message);
                 else
@@ -686,22 +685,22 @@ exports.regUserDeleteBookings = function(req,res,next){
                 }           
 
               });
-						// });
+            // });
 
-					}
-					// else
-					// {
-					// 	res.send("Not one of your bookings.");
-					// 	return;
-					// }
-		// 		}
+          }
+          // else
+          // {
+          //  res.send("Not one of your bookings.");
+          //  return;
+          // }
+    //    }
 
-		 	});
-		// }
-		// else
-		// {
-		// 	res.send("Not a registered user.");
-		// }
+      });
+    // }
+    // else
+    // {
+    //  res.send("Not a registered user.");
+    // }
 
   // }
   // else

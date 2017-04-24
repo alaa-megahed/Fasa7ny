@@ -1,13 +1,109 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('RegisteredUser');
+var Booking = mongoose.model('Booking');
+var Event = mongoose.model('Events');
+var EventOccurrence = mongoose.model('EventOccurrences');
 var Business = mongoose.model('Business');
 var Rating = mongoose.model('Rating');
 
 
+
+
+exports.getUserDetails =  function (req, res) {
+        var user_id = req.params.id;
+
+	    User.findById(user_id, function(err, user) {
+	        if(err) 
+	        	console.log("error in finding user");
+	        else {
+	        	//console.log(user);
+	        	res.json({user:user});
+	        }
+	    });
+}
+
+
+exports.getBookingDetails =  function (req, res) {
+		if(req.user && req.user instanceof User){
+        var user_id = req.user.id;
+        var booking_id = req.params.booking;
+        //console.log("This is the booking id in user controller :"+ booking_id);
+
+	    Booking.findById(booking_id, function(err, booking) {
+	        if(err) 
+	        	console.log("error in finding booking");
+	        else {
+	        	//console.log("This is booking in node "+ booking);
+	        	if(booking) {
+	        		EventOccurrence.findById(booking.event_id, function(err, eventocc) {
+	        			if(err)
+	        				return res.status(500).json("Something went wrong");
+	        			else {
+	        				if(eventocc) {
+	        					Event.findById(eventocc.event, function(err, event) {
+	        						if(err)
+	        							return res.status(500).json("Something went wrong");
+	        						else {
+			    						if(event) {
+				        					Business.findById(event.business_id, function(err, business) {
+				        						if(err)
+				        							return res.status(500).json("Something went wrong");
+				        						else {
+				        							// console.log(booking); 
+				        							// console.log(eventocc); 
+				        							return res.status(200).json({booking: booking, eventocc: eventocc, event: event, business: business});
+				        						}
+				        					});	 	        							
+	        							}
+	    
+	        						}
+       						
+	        					});
+
+	        				}
+	        			}
+	        		});
+	        	}
+	        }
+	    });
+	}
+	else {
+		return res.status(500).json("You are not a logged in user");
+	}
+}
+
+
+
+exports.getSubscribedBusiness =  function (req, res) {
+	if(req.user && req.user instanceof User){
+        var user_id = req.user.id;
+        var business_id = req.params.business_id;
+
+		Business.findById(business_id, function(err, business) {
+			if(err)
+				return res.status(500).json("error in finding business subscription");
+			else {
+				//console.log("This is business in node subscriptions "+ business);
+				return res.status(200).json({business: business});
+			}
+		});	 	        							
+	}
+	else {
+		return res.status(500).json("You are not a logged in user");
+	}
+}
+
+
+
+
+
+
 exports.subscribe = function(req,res)
 {
+
 	if(req.user && req.user instanceof User) {
 		var userID = req.user.id;
+
 		var businessID = req.params.id;
 		var subscribed_business;
 		console.log("business sub");
@@ -54,8 +150,10 @@ else res.status(500).json("You are not logged in");
 
 exports.unsubscribe = function(req,res)
 {
+
 	if(req.user && req.user instanceof User) {
 		var userID = req.user.id;
+
 	    var businessID = req.params.id;
 	    var subscribed_business;
 			console.log("business unsub");
@@ -119,7 +217,6 @@ exports.addRating = function(req, res)
 		 
 		var userID = req.user.id;              // from passport session; changed to body temporarily for testing
 	    var businessID = req.params.bid;        // from url parameters; changed from param to body
-
 	    var rating2 = req.params.rate;		   // from post body
 			console.log("entered addRating");
 	    var rating_query = {user_ID: userID, business_ID: businessID};
@@ -162,8 +259,6 @@ exports.average_rating = function(req,res)
 {
 	console.log("entered average_rating");
     var businessID = req.params.bid;
-		// var businessID = "58e666a20d04c180d969d591";
-
 
 	Rating.find({business_ID:businessID}, function(err,ratings) { //this exists mainly to postpone the function
 		Rating.aggregate([{$group: {_id : '$business_ID', average: {$avg: '$rating'}}}],
@@ -196,56 +291,77 @@ exports.average_rating = function(req,res)
 }
 
 
-exports.customize = function(req,res)
-{
-	if(req.user && req.user instanceof User)
-	{
-		// return res.send("Bookings: " +  user_found.bookings + "\n Subscriptions: "  + user_found.subscriptions);
-		return res.render('user_profile.ejs', {
-        user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });
+// exports.customize = function(req,res)
+// {
+// 	if(req.user && req.user instanceof User)
+// 	{
+// 		// return res.send("Bookings: " +  user_found.bookings + "\n Subscriptions: "  + user_found.subscriptions);
+// 		return res.render('user_profile.ejs', {
+//         user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });
 
-	}
-	else {
-		res.send("Please log in.");
-		return;
-	}
+// 	}
+// 	else {
+// 		res.status(403).json("Please log in.");
+// 		return;
+// 	}
 
-}
+// }
 
 
 
 /* A user can edit his personal information. He can edit name, birthdate,
 phone, gender, address, email or profilePic.*/
 exports.editInformation = function(req, res) {
-	if(req.user && req.user instanceof User) {
-		var id = req.user.id;
+	 if(req.user && req.user instanceof User) {
+		console.log("inside editInfo");
+		var id = req.params.userID;
 		var body = req.body;
+		console.log("This is the body name: " + body.name);
 		var file = req.file;
-
+		console.log("hifile"+file);
 		User.findOne({_id:id}, function(err, user) {
-			if(err)  res.send("error");
+			if(err)  
+				return res.status(500).json("error");
 			else {
-				if(!user) res.send("user not found");
+				if(!user) 
+					return res.status(500).json("user not found");
 				else {
-					if(typeof body.name != "undefined" && body.name.length > 0) user.name = body.name;
-					if(typeof body.birthdate != "undefined" && body.birthdate.length > 0) user.birthdate = new Date(body.birthdate);
-					if(typeof body.phone != "undefined" && body.phone.length > 0) user.phone = body.phone;
-					if(typeof body.gender != "undefined" && body.gender.length > 0) user.gender = body.gender;
-					if(typeof body.address != "undefined" && body.address.length > 0) user.address = body.address;
-					if(typeof body.email != "undefined" && body.email.length > 0) user.email = body.email;
-					if(typeof file != "undefined") user.profilePic = file.filename;
+					console.log("This is the old birthdate:" + user.birthdate);
 
-					user.save(function(err, updateduser) {
-						if(err) res.send("error in saving the user");
-						else if(!updateduser) res.send("user does not exist");
-						else res.send(updateduser);
+					console.log("starting findOne");
+					if(body.name) {
+						console.log("Name in body: " + body.name);
+						user.name = body.name;
+					}
+					 if (body.birthdate && body.birthdate !== 'null') {
+					 	console.log("Birthdate in body: " + body.birthdate);
+					 	user.birthdate = new Date(body.birthdate);
+					 	if ( isNaN( user.birthdate.getTime() ) ) {
+						    return res.status(500).json('error'); 
+						 }					 	
+					 }
+					if(typeof body.phone != "undefined" && body.phone.length > 0) {
+						console.log("Phone in body: " + body.phone);
+						user.phone = body.phone;
+					}
+					if(typeof body.gender != "undefined" && body.gender.length > 0) 
+						user.gender = body.gender;
+					if(typeof body.address != "undefined" && body.address.length > 0) 
+						user.address = body.address;
+					if(typeof body.email != "undefined" && body.email.length > 0) 
+						user.email = body.email;
+					if(typeof file != "undefined") 
+						user.profilePic = file.filename;
+					console.log("This is the 'unsaved' user" + user);
+					user.save(function(err) {
+					  if (err) return res.status(500).json('error');
+					  return res.status(200).json('okay');
 					});
 				}
 			}
 		});
-	} else res.send("you are not authorized to view this page");
+	 } else return res.status(500).json("you are not authorized to view this page");
 }
-
 
 
 //To get notifications
@@ -256,11 +372,9 @@ exports.resetUnread = function(req,res){
 		User.findByIdAndUpdate(req.user.id, {unread_notifications : 0} , function(err,user){
 			if(err)
 				return res.status(500).send(err);
-			
-
-		})
+		});
 	}
 	else {
-		res.json("Unauthorized access.");
+		return res.status(200).json("Unauthorized access.");
 	}
 }
