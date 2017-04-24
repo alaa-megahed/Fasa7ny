@@ -177,7 +177,7 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 
 });
 
-var DeletePopUp2 = function ($scope, $http, $location, $modalInstance,Event, Business, id,bid, $route,$window) {
+var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Event, Business, id,bid, $route,$window) {
     $scope.form = {};
     $scope.error = "";
     $scope.submitForm = function ()

@@ -54,44 +54,13 @@ app.controller('userController', function($scope, status,$http, User, $location,
     }
   });
 
-	// $scope.bookings ;
-	// User.getUserDetails($scope.id).then(function(d) {
-	// 	//console.log(d.data.user);
-	// 	//console.log("line 6 userController");
- //    	$scope.user = d.data.user;
-
-    	//$scope.subscribed_businessesIDs = d.data.user.subscriptions;
-    	// $scope.subscribed_businessesIDs = ["58f6b2cea97a083153a0d256", "58f6b43f5f77f0316cec84b3"];
-    // 	$scope.subscribed_businesses = [];
-		// for(i = 0; i < $scope.user.subscriptions.length; i++) {
-		// 	User.getSubscribedBusiness($scope.user.subscriptions[i]).then(function(d) {
-		// 		$scope.subscribed_businesses.push(d.data);
-		// 	});
-		// }
-		//
-		//
-		//
-    // 	//$scope.bookings = d.data.user.bookings;
-    // 	// $scope.bookings = ["58f758db36646333e9fd6ec0", "58f758f236646333e9fd6ec1"];
-    // 	$scope.all_info = [];
-		// for(i = 0; i < $scope.user.bookings.length; i++) {
-		// 	//console.log("This is scope bookings[i]" + $scope.bookings[i]);
-		// 	User.getBookingDetails($scope.user.bookings[i]).then(function successCallback(d) {
-		// 		//console.log($scope.bookings[i])	;
-		// 		$scope.all_info.push(d.data);
-		// 	}, function errorCallback(d) {
-		// 		$scope.error = d.data;
-		// 	});
-		// }
-
-
-	// });
 
 	$scope.cancelBooking =function(bookingId)
 	{
-		$http.post('http://127.0.0.1:3000/bookings/deleteRegUserBooking',{bookingD:bookingId}).then(
+		$http.post('http://127.0.0.1:3000/bookings/deleteRegUserBookings',{bookingD:bookingId}).then(
 			function success(response)
 			{
+				$route.reload();
 				console.log("successful delete");
 			},function error(response)
 			{

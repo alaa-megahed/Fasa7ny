@@ -124,7 +124,7 @@
         $('#search > form > input[type="search"]').focus();
         });
         $('#search, #search button.close').on('click keyup', function(event) {
-        if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+        if (event.target == this || event.target.className == 'close' || event.keyCode == 27 || event.target.classname == 'btn btn-green') {
             $(this).removeClass('open');
         }
         });
@@ -313,13 +313,12 @@ Google Font
                  <li ng-if = "user.data.user_type == 2"><a href="" ng-click = "goToBusinessPage(user.data.name)"> My Business Page </a></li>
 
                  <li ng-if = "user.data.user_type == 3"><a href="" ng-click = "getAdminProfile()"> Admin Profile </a></li>
-                 <li><a href="#contact-us">Contact Us</a></li>
                  <li ng-if = "user.data.user_type"><a href="" ng-click = "logout()">Log Out</a></li>
 
 
 
 
-                 <li><a href="#search">Search</a></li>
+                 <!-- <li><a href="#search">Search</a></li> -->
 
 
                  <li class="dropdown" ng-if = "user.data.user_type == 1" >
@@ -358,7 +357,7 @@ Google Font
 
               </div>
 
-      <div ng-view></div>
+      <div ng-view autoscroll = "true"></div>
 
   		<footer id="footer" class="bg-one">
         <div class="container">

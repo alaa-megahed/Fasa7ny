@@ -1,16 +1,20 @@
 <!-- Start Preloader
 ====================================
 <div id="loading-mask">
-	<div class="loading-img">
-		<img alt="Meghna Preloader" src="../img/preloader.gif"  />
-	</div>
+    <div class="loading-img">
+        <img alt="Meghna Preloader" src="../img/preloader.gif"  />
+    </div>
 </div>
  End Preloader
 ==================================== -->
 
 <!-- Start Top Section (image + name + email)
 ============================================= -->
+<div ng-if="type!=1">
+  <center>  You are not authorized to view this page. </center>
+</div>
 
+<div ng-if="type==1">
 <script>
     var image2 = document.getElementById('profilepic');
     var buttonUpload = document.getElementById('uploadButton');
@@ -53,9 +57,9 @@
 
                 </form>
 
-			</div>     <!-- End col-lg-12 -->
-		</div>	    <!-- End row -->
-	</div>       <!-- End container -->
+            </div>     <!-- End col-lg-12 -->
+        </div>      <!-- End row -->
+    </div>       <!-- End container -->
 </section>    <!-- End Section -->
 
 
@@ -84,10 +88,10 @@
                     <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms" ng-repeat = "info in all_info">
 
 
-						<div class="post-excerpt">  <!-- first section beginning !-->
+                        <div class="post-excerpt">  <!-- first section beginning !-->
 
                             <!-- Name of Event + w/ + Name of Business !-->
-							<h3>
+                            <h3>
                                 <a href="../single-post.html"> {{info.event.name}}</a>
                                 <a href="../single-post.html"> <span class="color">w/</a>
                                 <a href="../single-post.html"> {{info.business.name}} </a>
@@ -107,27 +111,27 @@
 
                             <img src="../img/user_profile/location_icon12.png" alt="location_icon" class="image2" align="left">
                             <div style="padding-left: 23px;">
-							   <p style="font-size:12px">  {{info.business.address}}</p>
+                               <p style="font-size:12px">  {{info.business.address}}</p>
                             </div>
-						</div>  <!-- first section end !-->
+                        </div>  <!-- first section end !-->
 
-						<div class="post-meta2">  <!-- second section beginning !-->
-							<span class="post-date">
-								<i class="fa fa-calendar"></i> {{info.eventocc.day | date }} @ {{info.eventocc.time  }}
-							</span>
+                        <div class="post-meta2">  <!-- second section beginning !-->
+                            <span class="post-date">
+                                <i class="fa fa-calendar"></i> {{info.eventocc.day | date }} @ {{info.eventocc.time  }}
+                            </span>
 
-							<span class="author">
-								<i class="fa fa-user"></i> {{info.booking.count}} person(s)</a>
-							</span>
+                            <span class="author">
+                                <i class="fa fa-user"></i> {{info.booking.count}} person(s)</a>
+                            </span>
 
-                            <span>
+                            <!-- <span> -->
                                 <p style="display:inline">Total: <span class="color"> {{info.booking.charge}} 150 EGP &nbsp; </p>
                             </span>
 
                             <div style=" display:inline;  vertical-align: middle; padding-left: 180px;">
-                                <button class="btn btn-booking" ng-click="cancelBooking(info._id)">Cancel Booking</button>
+                                <button class="btn btn-booking" ng-click="cancelBooking(info.booking._id)">Cancel Booking</button>
                             </div>
-						</div>  <!-- second section end !-->
+                        </div>  <!-- second section end !-->
                     </article>
                     <!-- End Single Post -->
 
@@ -222,8 +226,8 @@
                                     </div>
                                     <div ng-if = "user.address">
                                     <i class="fa fa-location-arrow fa-1.5x" aria-hidden="true" align="left" style="color: #e3370a; top: 6px; left: 0"></i>
-                                        <div style="padding-left: 25px;"> 
-                                            <a style="font-size: 20px; color:white; position: relative;"> 
+                                        <div style="padding-left: 25px;">
+                                            <a style="font-size: 20px; color:white; position: relative;">
                                                 {{ user.address }}
                                             </a>
                                         </div>
@@ -248,10 +252,11 @@
                 </article>
             </div> <!-- End RIGHT Section -->
 
-		</div>	    <!-- End row -->
-	</div>       <!-- End container -->
+        </div>      <!-- End row -->
+    </div>       <!-- End container -->
 </section>    <!-- End Section -->
 
 
 
 <a href="#" id="scrollUp"><i class="fa fa-angle-up fa-2x"></i></a>
+</div>

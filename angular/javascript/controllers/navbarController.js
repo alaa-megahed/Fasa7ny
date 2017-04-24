@@ -8,9 +8,9 @@ angular.module('fasa7ny')
     $scope.searchAppear = 1;
     $scope.type = -1;
     $scope.notifcolor = {'color' : 'white'} ;
-    $scope.category1 = "category1";
-    $scope.category2 = "category2";
-    $scope.category3 = "category3";
+    $scope.category1 = "thrill";
+    $scope.category2 = "outlet";
+    $scope.category3 = "escape";
 
     // var user = Global.getUser();
 
@@ -193,7 +193,7 @@ $scope.getAdminProfile = function()
         Homepage.logout().then(function(result)
         {
             console.log(result);
-            $location.url('/');
+            $location.path('/');
             $scope.updateUser();
         })
       }

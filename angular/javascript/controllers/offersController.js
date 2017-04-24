@@ -3,7 +3,7 @@ var app = angular.module('fasa7ny');
 
 //========== View ===========
 app.controller('ViewOffersController', function($scope, $http, $location, Offers,$routeParams) {
-      
+
       $scope.name = $routeParams.name;
       $http.post('http://127.0.0.1:3000/business/getBusinessId',{name:$scope.name}).then(
       	function(response)
@@ -14,45 +14,42 @@ app.controller('ViewOffersController', function($scope, $http, $location, Offers
               $scope.offers = response.data;
         });
       	});
-      
+
 });
 
 
 app.controller('createOffersController',function($scope,$http,Facilities,OneTimeEvent,status,$location,$routeParams)
 {
+          $scope.formData = {};
+          $scope.user = {};
+      		$scope.business_id = $routeParams.businessId;
+          console.log($scope.business_id);
+          status.local()
+             .then(function(res){
+               if(res.data){
+                 $scope.user = res.data;
+                 if(res.data.user_type == 1)
+                   $scope.type = 1;
+                 else if(res.data.user_type == 2 && res.data._id == $scope.business_id)
+                 {
+                  console.log($scope.business_id);
+                   $scope.type  = 4;
 
-    $scope.name = $routeParams.name;
-      $http.post('http://127.0.0.1:3000/business/getBusinessId',{name:$scope.name}).then(
-      	function(response)
-      	{
-      		$scope.business_id = response.data._id;
-      	});
-    $scope.user = {};
+                 }
+                 else if(res.data.user_type == 3) $scope.type = 3;
+               }
+               else {
+                 $scope.user = res.data._id;
+                 status.foreign()
+                 .then(function(res){
+                   if(res.data.user_type)
+                     $scope.type = 1;
+                   else $scope.type = 2;
+                 });
+               }
+             });
 
-	status.local()
-		 .then(function(res){
-		   if(res.data){
-				 $scope.user = res.data._id;
-		     if(res.data.user_type == 1)
-		       $scope.type = 1;
-		     else if(res.data.user_type == 2 && res.data._id == $scope.business_id)
-		     {
-		     	console.log($scope.business_id);
-		     	 $scope.type  = 4;
 
-		     }
-		     else if(res.data.user_type == 3) $scope.type = 3;
-		   }
-		   else {
-				 $scope.user = res.data._id;
-		     status.foreign()
-		     .then(function(res){
-		       if(res.data.user_type)
-		         $scope.type = 1;
-		       else $scope.type = 2;
-		     });
-		   }
-		 });
 
       Facilities.get($scope.business_id).then(function(response) {
               $scope.facilities = response.data;
@@ -87,7 +84,7 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
         headers: { 'Content-Type': undefined }
       }).then(function successCallback(response){
                       console.log(response.data);
-                      $location.path('/'+$scope.business_id);
+                      $location.path('/business/'+ $scope.user.name);
                     }, function errorCallback(response){
                       console.log(response.data);
                       $scope.error_message = response.data;
@@ -100,7 +97,7 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
 //========== Edit ============
 
 app.controller('EditOffersController', function($scope, $http, $route,$location, Offers, $modal, $window,$routeParams) {
-      
+
        // $scope.business_id = "58f0f3faaa02d151aa4c987c";
         $scope.name = $routeParams.name;
       $http.post('http://127.0.0.1:3000/business/getBusinessId',{name:$scope.name}).then(
@@ -136,15 +133,15 @@ app.controller('EditOffersController', function($scope, $http, $route,$location,
 					// $window.location.reload();
 					$route.reload();
 			});
-	  };        
-     
+	  };
+
 });
 
 app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerType, $modalInstance, $route, Offers,$routeParams)
 {
 	$scope.offerType = offerType;
     $scope.submitForm = function (formData, facilityId) {
-       		console.log(formData);	
+       		console.log(formData);
        		var fd = new FormData();
 		  for(var key in formData)
 		  {
@@ -153,8 +150,8 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerTy
 		    fd.append(key, formData[key]);
 		  }
 		  console.log("image controller offer");
-		  
-		 
+
+
 
 		 fd.append("id",offerId);
 		 console.log(fd);
@@ -164,7 +161,8 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerTy
         headers: { 'Content-Type': undefined }
       }).then(function successCallback(response){
                       console.log(response.data);
-                      $location.path('/'+$scope.business_id);
+                      // $location.path('/'+$scope.business_id);
+                      $route.reload();
                     }, function errorCallback(response){
                       console.log(response.data);
                       $scope.error_message = response.data;
@@ -175,7 +173,7 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerTy
    //                    console.log(response.data);
    //                  }, function errorCallback(response){
    //                    console.log(response.data);
-   //                  }); 
+   //                  });
 
 						$route.reload();
             $modalInstance.close('closed');
@@ -189,7 +187,7 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerTy
 
 // =========== Delete ============
 app.controller('DeleteOffersController', function($scope, $http, $modal, $location, Offers,$routeParams) {
-      
+
       $scope.business_id = $routeParams.id;
 	  $scope.deleteOffer = function (offerId) {
 				var modalInstance = $modal.open({
@@ -209,7 +207,7 @@ app.controller('DeleteOffersController', function($scope, $http, $modal, $locati
 						$log.info('Modal dismissed at: ' + new Date());
 				});
 		};
-      
+
 });
 
 app.controller('DeleteOfferCtrl',function($http, $scope, $modalInstance, offerId, $route,$routeParams){
@@ -230,4 +228,3 @@ app.controller('DeleteOfferCtrl',function($http, $scope, $modalInstance, offerId
         $modalInstance.dismiss('cancel');
     };
 });
-

@@ -65,7 +65,8 @@ app.config(function($routeProvider){
 	})
 
 	.when("/createOffer/:businessId", {
-			templateUrl : "views/createOffer.html"
+			templateUrl : "views/createOffer.html",
+			controller  : "createOffersController"
 	})
 
 	
