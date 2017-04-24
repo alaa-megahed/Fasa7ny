@@ -14,6 +14,13 @@
 <!-- <script src="js/jquery.scrollUp.min.js"></script> -->
 <!-- <script src="js/classie.js"></script> -->
 
+<div ng-show = "type != 4 && business.public == 0">
+<center>
+  <h2>You are not authorised to view this page</h2>
+  </center>
+</div>
+
+<div ng-show = "business.public == 1 || type == 4">
   <div ng-if = "type == 4" class="w3-sidebar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;background-color:#2B2C30;" id="rightMenu">
     <!-- <div class="w3-grey"> -->
   <button ng-if = "type == 4" onclick="closeRightMenu()" class=" w3-button w3-large" style="background-color:#2B2C30;" >&times;</button>
@@ -89,7 +96,7 @@
                   <div id="blog-posts" class="col-md-8 col-sm-8">
                       <div class="post-item">
 
-                          <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                          <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms" ng-show = "business.public == 1 || type == 4">
 
                             <div ng-if="imagelength > 0" id="slides_control">
                                 <carousel interval="myInterval">
@@ -110,7 +117,7 @@
 
               &nbsp;&nbsp;  <button ng-if = "type == 4" class="btn btn-transparent" ng-click="addImage()" ng-disabled="imagelength == 4"> &nbsp;&nbsp;Add Image &nbsp;&nbsp;</button>
 
-                              <hr width="40%">
+                              <hr ng-show = "business.public == 1 || type == 4" width="40%">
                               <div class="post-excerpt">
                                   <p>{{ business.description }}</p>
 
@@ -161,30 +168,19 @@
 
 
 <br>
-<hr>
+<hr ng-show = "business.public == 1 || type == 4">
 <br>
 <br>
-                       <!-- Single Widget -->
-                        <aside class="widget wow fadeInDown">
-                            <div class="widget-title">
-                               <h3>Categories</h3>
-                            </div>
-                            <div class="widget-content">
-                                <ul class="categories">
-                                    <li ng-repeat = "category in categories"><i class="fa fa-plus"></i> <a href="#">{{ category }}</a></li>
-                                </ul>
-                            </div>
-                        </aside>
-
+                      
                         <!-- section title -->
-                        <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                        <div ng-show = "business.public == 1 || type == 4"  class="title text-center wow fadeIn" data-wow-duration="500ms">
                             <h2>Business <span class="color">Details</span></h2>
                             <div class="border"></div>
                         </div>
                         <!-- /section title -->
                         <div>
 
-                          <div class = "post-item">
+                          <div ng-show = "business.public == 1 || type == 4" class = "post-item">
                             <article class = "entry wow fadeInDown" data-wow-duration = "1000ms" data-wow-delay = "300ms">
                               <div class = "post-excerpt">
 
@@ -437,7 +433,7 @@
 
 
 
-<button onclick="myFunction('Demo3')" class="btn btn-transparent" >Check Our Offers&nbsp;&nbsp;&nbsp;&nbsp;</button>
+<button ng-show = "business.public == 1 || type == 4" onclick="myFunction('Demo3')" class="btn btn-transparent" >Check Our Offers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <div id="Demo3" ng-controller="ViewOffersController" class="w3-hide w3-container">
 <br>
   <div id="primary" class="sidebar-right">
@@ -512,3 +508,4 @@
               <li ng-if="business.youtubeURL"><a ng-if="business.youtubeURL" href="{{ business.youtubeURL}}" target="_blank"><i class="fa fa-youtube"></i></a></li>
           </ul>
         </div>
+</div>

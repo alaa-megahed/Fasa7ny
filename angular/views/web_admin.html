@@ -1,12 +1,18 @@
 
 <!--  Start Add Business & Ad Section
 =========================================== -->     
-<section id="team-skills" class="parallax-section" >
-    <div class="container" ng-app = "fasa7ny" ng-controller="webAdminController" >
-        <div class="row">
 
-        
+  
+
+        <div ng-if = "type !=3">
+        <center>
+        <h2>You are not authorised to view this page</h2>
+         </center>   
+        </div>
             <!-- / Start Add Business Area -->
+            <section id="team-skills" class="parallax-section" ng-if = "type==3">
+              <div class="container" ng-app = "fasa7ny" ng-controller="webAdminController" >
+        <div class="row">
             <div class="contact-form col-md-6 wow fadeInUp" data-wow-duration="500ms" ng-controller="webAdminController"  ng-if = "type==3">
                             <label style="color:    #FF0000;" >{{msg}}</label>
                 <!-- section title -->
