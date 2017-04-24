@@ -13,6 +13,7 @@ angular.module('fasa7ny')
     $scope.category3 = "category3";
 
     // var user = Global.getUser();
+
     // console.log(user);
 
     $scope.goToSearch = function(category)
@@ -24,9 +25,12 @@ angular.module('fasa7ny')
       $location.path('/profile');
     }
 
-    $scope.getAdminProfile = function(){
-      $location.path('webAdminProfile');
-    }
+    // conasole.log(user);
+$scope.getAdminProfile = function()
+{
+  $location.path('/webAdminProfile');
+}
+
 
     $scope.updateUser = function()
     {
