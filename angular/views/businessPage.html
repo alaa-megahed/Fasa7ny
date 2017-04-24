@@ -378,7 +378,7 @@
         </div>
       </div>
     </div>
-    <button ng-controller="businessController" ng-if="facilitylength" class="btn btn-transparent w3-green"  ng-click="bookFacility()" >Book Now!</button>   
+    <button ng-controller="businessController" ng-if="facilitylength" class="btn btn-transparent w3-green"  ng-click="bookFacility()" >Book Now!</button>
     <hr>
 </div><br>
 
@@ -431,7 +431,7 @@
 </div>
 
 
-<button  ng-if = "type == 4" ng-click="schedule(business._id)" class="btn btn-transparent"> Check My Schedule &nbsp; </button>
+<button  ng-if = "type == 4" ng-click="schedule(business.name)" class="btn btn-transparent"> Check My Schedule &nbsp; </button>
 <br>
 
 
@@ -474,7 +474,7 @@
 
                                 </div>
                                 <div class="the-content">
-                                    <hr width="60%"> Value: 
+                                    <hr width="60%"> Value:
                                     <p> {{offer.value}}</p>
 
                                 </div>
