@@ -1,4 +1,4 @@
-ƒ// angular.module('businessService', [])
+// angular.module('businessService', [])
 var app = angular.module('fasa7ny');
     app.factory('Business', ['$http', function($http) {
         return {
