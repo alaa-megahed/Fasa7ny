@@ -12,7 +12,7 @@ angular.module('fasa7ny')
      });
    },
    foreign: function() {
-     return $http.get('http://54.187.92.64:3000/loggedin');
+     return $http.get('http://54.187.92.64:3000/loggedin',  { headers: {'Content-Type': 'application/json'} });
    }
 
   }
