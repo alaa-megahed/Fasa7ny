@@ -2,15 +2,19 @@ var Business = require('../models/Business');
 
 SearchController = {
 
-    showAll: function (req, res) {
-        Business.find().
-            exec(function (err, result) {
-                if (err)
-                    console.log(err);
-                else
-                    res.render("search.ejs", {result: result});
-            });
-    },
+  showAll: function (req, res) {
+     Business.find({ public: 1 }).
+         exec(function (err, result) {
+             if (err) {
+                 res.status(500);
+                 res.send(err);
+             }
+             else {
+                 res.json(result);
+             }
+
+        });
+ },
     search: function (req, res) {
         var formData = req.body;
         var sortBy = formData.sortBy;

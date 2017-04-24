@@ -164,10 +164,11 @@ var mongoose = require('./config/mongoose'),
 
 
 // var Business = require('./app/models/Business');
-
+//
 // var business = new Business();
-// business.local.username = "EscapeRoom";
-// business.name = "Escape Room";
+// business.local.username = "BreakOut";
+// business.name = "BreakOut";
+// business.merchant_ID = "111";
 // business.local.password = business.generateHash("111");
 // business.save(function(err){
 // if(err) throw err;
@@ -188,7 +189,7 @@ var mongoose = require('./config/mongoose'),
 //  var Event = require('./app/models/Event').Events;
 // var ev = new Event(
 // 	{
-	
+
 // 	location : "lolla",
 // 	name : "koko ",
 // 	description : "please",

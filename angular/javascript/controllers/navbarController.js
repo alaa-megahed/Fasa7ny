@@ -1,6 +1,6 @@
 angular.module('fasa7ny')
 
-  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global) {
+  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global, $route) {
 
     $scope.user = {};
     $scope.err = "";
@@ -15,6 +15,11 @@ angular.module('fasa7ny')
     // var user = Global.getUser();
 
     // console.log(user);
+
+
+    $scope.viewAll = function() {
+      $location.path('/view-all');
+    }
 
     $scope.goToSearch = function(category)
     {
@@ -202,7 +207,7 @@ $scope.getAdminProfile = function()
       $scope.getHome = function()
       {
 
-        $location.path('/');// get back to this after ads
+        $location.path("/");// get back to this after ads
       }
 
       $scope.getSearch = function()
@@ -230,7 +235,7 @@ $scope.getAdminProfile = function()
   })
 
 
-  .controller('ModalInstanceCtrl', function ($scope, $http, $window, $modalInstance, userForm, Homepage) {
+  .controller('ModalInstanceCtrl', function ($scope, $http, $window, $modalInstance, userForm, Homepage, $route) {
       $scope.form = {};
 
       $scope.submitForm = function (formData) {
@@ -241,7 +246,8 @@ $scope.getAdminProfile = function()
 
               if(data.data === "success")
               {
-                $window.location.reload();
+                // $window.location.reload();
+                $route.reload();
                 $modalInstance.close("closed");
               }
 
@@ -271,7 +277,7 @@ $scope.getAdminProfile = function()
 
 
 
-  .controller('ModalInstanceCtrl1', function ($scope, $window, $http, $modal,$modalInstance, userForm, Homepage) {
+  .controller('ModalInstanceCtrl1', function ($scope, $window, $http, $modal,$modalInstance, userForm, Homepage, $route) {
       $scope.form = {};
       $scope.formData = {};
       $scope.forgot = 0;
@@ -286,6 +292,7 @@ $scope.getAdminProfile = function()
                 if(data.data === "success")
                 {
                   $modalInstance.close("closed");
+                  $route.reload();
                 }
 
                 else

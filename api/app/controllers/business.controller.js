@@ -118,7 +118,7 @@ requestRemoval: function(req,res) {
 
 
     editInformation: function (req, res) {
-
+      console.log(req.body);
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             console.log("ana fl backend");
@@ -185,12 +185,14 @@ requestRemoval: function(req,res) {
                     if(req.body.youtubeURL) {
                       business.youtubeURL = req.body.youtubeURL;
                     }
-
+                    console.log("BUSINESSSS");
+                    console.log(business);
                     business.save(function(err, newbusiness) {
-                      if(err)
-                        console.log(err);
-                      console.log("SAVE");
-                      res.status(200).json({business:newbusiness});
+                      if(err) res.status(500).json("something went wrong");
+                      else {
+                        console.log("SAVE");
+                        res.status(200).json({business:newbusiness});
+                      }
                     });
                     // res.sendFile('/business/b');
 

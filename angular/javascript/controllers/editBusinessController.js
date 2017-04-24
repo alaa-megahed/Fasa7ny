@@ -5,6 +5,7 @@ app.controller('editBusinessController', function($scope, status,$http, Business
   $scope.cash = 0;
   $scope.stripe = 0;
   $scope.both = 0;
+  $scope.formData = {};
 
 		status.local()
 		 .then(function(res){
@@ -95,7 +96,7 @@ app.controller('editBusinessController', function($scope, status,$http, Business
    if($scope.formData.pay1 == true) payment[i] =  "Stripe";
 
    $scope.formData.payment_methods = payment;
-
+   console.log($scope.formData);
     Business.edit($scope.formData)
     .then(function successCallback(d) {
       console.log("!!!!!!!!!!!!!!!!DATTAAA!!!!!!!!!!!!!!!!!!!");
