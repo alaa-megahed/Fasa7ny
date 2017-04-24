@@ -1,17 +1,32 @@
 angular.module('fasa7ny')
 
-  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status) {
+  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global) {
 
     $scope.user = {};
     $scope.err = "";
     $scope.form = {};
+    $scope.searchAppear = 1;
     $scope.type = -1;
     $scope.notifcolor = {'color' : 'white'} ;
+    $scope.category1 = "category1";
+    $scope.category2 = "category2";
+    $scope.category3 = "category3";
 
     // var user = Global.getUser();
     // console.log(user);
 
+    $scope.goToSearch = function(category)
+    {
+      $location.path("/search/" + category);
+    }
 
+    $scope.personalProfile = function(){
+      $location.path('/profile');
+    }
+
+    $scope.getAdminProfile = function(){
+      $location.path('webAdminProfile');
+    }
 
     $scope.updateUser = function()
     {
@@ -69,23 +84,12 @@ angular.module('fasa7ny')
     $scope.getAdvertisements = function()
     {
       Homepage.getAds().then(function successfulCallback(result){
+        console.log("Ads are" + JSON.stringify(result));
+
+        console.log("A single ad is " + JSON.stringify(result.data[0]));
 
         $scope.advertisements = result.data;
-
-        //shuffle array to choose random 6 ads
-        var j, x, i;
-        for (i = $scope.advertisements.length; i; i--) {
-            j = Math.floor(Math.random() * i);
-            x = $scope.advertisements[i - 1];
-            $scope.advertisements[i - 1] = $scope.advertisements[j];
-            $scope.advertisements[j] = x;
-        }
-
-
-        $scope.advertisements =  $scope.advertisements.slice(1,9);
-
-
-
+        console.log("Ads bro " +  JSON.stringify($scope.advertisements));
 
       });
     }
@@ -141,6 +145,7 @@ angular.module('fasa7ny')
 
     }
 
+//NEED TO AZABAT THE SEARCH
     $scope.search = function(){
 
       console.log($scope.form.search);
@@ -169,47 +174,53 @@ angular.module('fasa7ny')
        $window.location = $window.location.protocol + "//" + "localhost:3000/auth/google";
     }
 
-
-    $scope.personalProfile = function(){
-      $location.path('/profile'); //CHECK NAME
-    }
-
     $scope.logout = function(){
 
-
+      console.log($scope.type);
       if(!$scope.type)
       {
         Homepage.logoutLocal().then(function(result){
-
           $location.url('/');
           $scope.updateUser();
 
-        }, function(err){
-          $location.url('/'); //redirect to error page
         })
       }
       else {
-        $scope.user = null;
-        Homepage.logout();
+        Homepage.logout().then(function(result)
+        {
+            console.log(result);
+            $location.url('/');
+            $scope.updateUser();
+        })
       }
 
+      $scope.getHome = function()
+      {
+
+        $location.path('/');// get back to this after ads
+      }
+
+      $scope.getSearch = function()
+      {
+        console.log("hiii");
+        $scope.searchAppear = 1;
+      }
+
+
+
+
+
     }
 
-    $scope.getHome = function()
-    {
 
-      console.log("home");
-      $location.url('/');// get back to this after ads
-
-    }
-
-
-    $scope.goToBusinessPage = function(name) {
-      console.log(name);
-      $location.path('/business/'+name);
+    $scope.goToBusinessPage = function(id) {
+      console.log("yellehwiii");
+      console.log(id);
+      $location.path('/business/'+id);
     }
 
     $scope.getNotifications = function(){
+      console.log("hiii");
       $location.path('/user/notifications');
     }
 

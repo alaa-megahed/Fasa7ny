@@ -632,10 +632,10 @@ exports.regUserEditBookings = function(req,res,next){
 exports.regUserDeleteBookings = function(req,res,next){
 
   console.log("in node bookingD is   "+req.body.bookingD);
-  // if(req.user)
-  // {
-    // if(req.user instanceof RegisteredUser)
-    // {
+  if(req.user)
+  {
+    if(req.user instanceof RegisteredUser)
+    {
       Booking.findById(req.body.bookingD, function(err,booking)
       {
         if(err || !booking)
@@ -645,17 +645,17 @@ exports.regUserDeleteBookings = function(req,res,next){
         }
         else
         {
-          // if(booking.booker == req.user.id)
-          // {
-            // RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
-            // {
-            //  if(err || !user ) return res.send("Error");
-            // });
-            // EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.bookingD}}, function(err,eve)
-            // {
-            //  if(err || !eve) return res.status(500).json("Error.");
-              // eve.available = eve.available + booking.count;
-              // eve.save();
+          if(booking.booker == req.user.id)
+          {
+            RegisteredUser.findByIdAndUpdate(req.user.id, {"$pull" : {bookings: req.body.bookingD}}, function(err,user)
+            {
+             if(err || !user ) return res.send("Error");
+            });
+            EventOccurrences.findByIdAndUpdate(booking.event_id, {"$pull" : {bookings: req.body.bookingD}}, function(err,eve)
+            {
+             if(err || !eve) return res.status(500).json("Error.");
+              eve.available = eve.available + booking.count;
+              eve.save();
               booking.remove(function(err) {
                 if(err)return res.status(500).json(err.message);
                 else
@@ -685,28 +685,28 @@ exports.regUserDeleteBookings = function(req,res,next){
                 }           
 
               });
-            // });
+            });
 
           }
-          // else
-          // {
-          //  res.send("Not one of your bookings.");
-          //  return;
-          // }
-    //    }
+          else
+          {
+           res.send("Not one of your bookings.");
+           return;
+          }
+       }
 
       });
-    // }
-    // else
-    // {
-    //  res.send("Not a registered user.");
-    // }
+    }
+    else
+    {
+     res.send("Not a registered user.");
+    }
 
-  // }
-  // else
-  // {
-  //   res.send("Please log in to delete bookings");
-  // }
+  }
+  else
+  {
+    res.send("Please log in to delete bookings");
+  }
 
 }
 
