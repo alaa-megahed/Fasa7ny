@@ -83,8 +83,7 @@ Welcome Slider
 			<div class="bg-img bg-img-1" ></div>
 		<div class="carousel-caption">
 			<div>
-				<img class="wow fadeInUp" src="img/fasa7ny.png" alt="Meghna">
-				<h3 data-wow-duration="500ms"  data-wow-delay="500ms" class="heading animated fadeInRight">WHERE THE FUN BEGINS</h3>
+				<img class="wow fadeInUp" src="img/fasa7ny_main3.png" alt="Meghna">
 		 </div>
 		</div>
 		</div>
@@ -97,8 +96,8 @@ Welcome Slider
 			<div class="bg-img bg-img-2"></div>
 		<div class="carousel-caption">
 			<div>
-				<h2 class="heading animated fadeInDown">Jump above your worries!</h2>
-				<h3 class="animated fadeInUp">See the latest offers from your favorite trampoline parks</h3>
+				<img class="wow fadeInUp" src="img/jump8.png" alt="Meghna">
+	
 				<!-- <a class="btn btn-green animated fadeInUp" href="#">Get Started</a> -->
 			</div>
 		</div>
@@ -112,8 +111,7 @@ Welcome Slider
 			<div class="bg-img bg-img-3"></div>
 		<div class="carousel-caption">
 			<div>
-				<h2 class="heading animated fadeInRight">Soar across the desert</h2>
-				<h3 class="animated fadeInLeft">You're only a few clicks away from your latest adventure </h3>
+				<img class="wow fadeInUp" src="img/desert3.png" alt="Meghna">
 			</div>
 		</div>
 		</div>
@@ -141,143 +139,221 @@ Welcome Slider
 
 <!-- Start Portfolio Section
 =========================================== -->
-
-<section id="showcase" ng-cloak>
-		<div class="container">
-		<div class="row wow fadeInDown" data-wow-duration="500ms">
-			<div class="col-lg-12">
-
-				<!-- section title -->
-				<div class="title text-center">
-					<h2>Choose Your <span class="color">Challenge</span></h2>
-					<div class="border"></div>
-				</div>
-				<!-- /section title -->
-
-
-
-			</div> <!-- /end col-lg-12 -->
-		</div> <!-- end row -->
-	</div>
-
-
 <!-- portfolio items -->
-<div class="portfolio-item-wrapper wow fadeInUp" data-wow-duration="500ms">
-				<ul id="og-grid" class="og-grid">
 
-					<!-- single portfolio item -->
-					<li class="mix app">
-						<a ng-href="/#!/search/category1" data-largesrc="img/portfolio/portx1.jpg" data-title="CATEGORY 1 NAME" data-description="CATEGORY 1 DESCRIPTION" ng-click = "">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>CATEGORY 1</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
 
-					<!-- single portfolio item -->
-					<li class="mix web">
-						<a ng-href="/#!/search/category2"  data-largesrc="img/portfolio/portx1.jpg" data-title="CATEGORY 2 NAME" data-description="CATEGORY 2 DESCRIPTION">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>CATEGORY 2</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
-
-					<!-- single portfolio item -->
-					<li class="mix photoshop">
-						<a ng-href="/#!/search/category3" data-largesrc="img/portfolio/portx1.jpg" data-title="CATEGORY 3 NAME" data-description="CATEGORY 3 DESCRIPTION">
-							<img src="img/portfolio/portx1.jpg" alt="Meghna">
-							<div class="hover-mask">
-								<h3>CATEGORY 3</h3>
-								<span>
-									<i class="fa fa-plus fa-2x"></i>
-								</span>
-							</div>
-						</a>
-					</li>
-					<!-- /single portfolio item -->
+		<!-- Start Services Section
+		==================================== -->
+		
+		<section id="services" >
+			<div class="container">
+				<div class="row">
+					
+					<!-- section title -->
+					<div class="title text-center wow fadeIn" data-wow-duration="500ms">
+						<h2> What Do You <span class="color">Feel Like Doing</span> today?</h2>
+						<div class="border"></div>
+					</div>
+					<!-- /section title -->
+					<div style="margin:0 auto; ">
+					
 
 
 
-				</ul> <!-- end og grid -->
-				</div>  <!-- portfolio items wrapper -->
+				    <article ng-mouseenter="options=true" ng-mouseleave="options=false" class="col-md-4 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms">
+				        <img ng-src='img/thrill_final.png' alt="Avatar" id = "thrill" class="image" style="object-fit: cover" ng-hide="options">
+				        <img ng-src='img/thrill_back_final.png' alt="Avatar" id = "thrill_back" class="image" style="object-fit: cover" ng-show="options">
+				        <br>
+				        <div style = " padding-left: 80px">
+				            <button class="btn btn-booking" ng-click = "" ng-show="options" > Show More </button>
+				        </div>
+				    </article>
 
 
+				    <article ng-mouseenter="options2=true" ng-mouseleave="options2=false" class="col-md-4 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms">
+				        <img ng-src='img/outlet_final.png' alt="Avatar" id = "outlet" class="image" style="object-fit: cover" ng-hide="options2">
+				        <img ng-src='img/outlet_back_final.png' alt="Avatar" id = "outlet_back" class="image" style="object-fit: cover" ng-show="options2">
+						<br>
+				        <div style = " padding-left: 80px">
+				            <button class="btn btn-booking" ng-click = "" ng-show="options2"> Show More </button>
+				        </div>
+				    </article>
 
+
+				    <article ng-mouseenter="options3=true" ng-mouseleave="options3=false" class="col-md-4 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms">
+				        <img ng-src='img/escape3.png' alt="Avatar" id = "escape" class="image" style="object-fit: cover" ng-hide="options3">
+				        <img ng-src='img/escape_back_final.png' alt="Avatar" id = "escape_back" class="image" style="object-fit: cover" ng-show="options3">
+				          <br>
+				        <div style = " padding-left: 100px">
+				            <button class="btn btn-booking" ng-click = "" ng-show="options3"> Show More </button>
+				        </div>
+				    </article>
+
+					</div>
+						
+				</div> 		<!-- End row -->
+			</div>   	<!-- End container -->
+		</section>   <!-- End section -->
 
 </section>   <!-- End section -->
 
 
 
-<!--
-Start Counter Section
+<!-- Start Added Advertisements Section
 ==================================== -->
+<section id="services" class="bg-one">
+    <div class="container">
+        <div class="row">
+            
+            <!-- section title -->
+            <div class="title text-center wow fadeIn" data-wow-duration="500ms">
+                <h2>Some  <span class="color">Advertisements</span></h2>
+                <div class="border"></div>
+            </div>
+            <!-- /section title -->
+            
+            <!-- Single Ad Item -->
+            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
+                <div class="post-item">
+   
+                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                       
+                        <div class="post-thumb">
+                            <a href="single-post.html">
+                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="post-excerpt">
+                            <h3><a href="single-post.html">Post with featured image</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
+                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
+                        </div>
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="fa fa-calendar"></i>30 jun 2014
+                            </span>
+                            <span class="comments">
+                                <i class="fa fa-comments"></i>18 Comments
+                            </span>
+                            <span class="post-view">
+                                <i class="fa fa-eye"></i>265 Views
+                            </span>
+                        </div>
+                    </article>
+                   
+                </div>
+            </article>
+            <!-- End Single Ad Item -->
 
-<section id="counter" class="parallax-section" ng-cloak>
-<div class="container">
-<div class="row">
 
-	<!-- first count item -->
-	<!-- <div class="col-md-3 col-sm-6 " ng-repeat = "ad in advertisements" style = "padding : 15px 15px">
-			<div >
+            <!-- Single Ad Item -->
+            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
+                <div class="post-item">
 
-			</div>
-	</div> -->
-	<!-- end first count item -->
+                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                       
+                        <div class="post-thumb">
+                            <a href="single-post.html">
+                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="post-excerpt">
+                            <h3><a href="single-post.html">Post with featured image</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
+                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
+                        </div>
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="fa fa-calendar"></i>30 jun 2014
+                            </span>
+                            <span class="comments">
+                                <i class="fa fa-comments"></i>18 Comments
+                            </span>
+                            <span class="post-view">
+                                <i class="fa fa-eye"></i>265 Views
+                            </span>
+                        </div>
+                    </article>
 
-	<!-- second count item -->
+                </div>
+            </article>
+            <!-- End Single Ad Item -->
 
-	<div class="col-md-3 col-sm-6 col-xs-12 text-center "  ng-repeat = "ad in advertisements" data-wow-delay="200ms">
-		<div >
-			<div>
-					<img ng-src = "{{ad.image}}" style = "max-width:100%; max-height:100%" />
-			</div>
-			<center>
-			<h3>{{ ad.text }}</h3>
-			<center>
-		</div>
-	</div>
-	<!-- end second count item -->
 
-	<!-- third count item -->
-	<!-- <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="400ms">
-		<div class="counters-item">
-			<div>
-					<span data-speed="3000" data-to="95">95</span>
-				<span>%</span>
-			</div>
-			<i class="fa fa-thumbs-up fa-3x"></i>
-						<h3>Positive feedback</h3>
 
-		</div>
-	</div> -->
-	<!-- end third count item -->
+            <!-- Single Ad Item -->
+            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
+                <div class="post-item">
 
-	<!-- fourth count item -->
-	<!-- <div class="col-md-3 col-sm-6 col-xs-12 text-center wow fadeInDown" data-wow-duration="500ms" data-wow-delay="600ms">
-		<div class="counters-item kill-margin-bottom">
-			<div>
-					<span data-speed="3000" data-to="2500">2500</span>
-			</div>
-			<i class="fa fa-coffee fa-3x"></i>
-			<h3>Cups of Coffee</h3>
-		</div>
-	</div> -->
-	<!-- end fourth count item -->
+                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                       
+                        <div class="post-thumb">
+                            <a href="single-post.html">
+                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="post-excerpt">
+                            <h3><a href="single-post.html">Post with featured image</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
+                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
+                        </div>
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="fa fa-calendar"></i>30 jun 2014
+                            </span>
+                            <span class="comments">
+                                <i class="fa fa-comments"></i>18 Comments
+                            </span>
+                            <span class="post-view">
+                                <i class="fa fa-eye"></i>265 Views
+                            </span>
+                        </div>
+                    </article>
 
-</div> 		<!-- end row -->
-</div>   	<!-- end container -->
-</section>   <!-- end section -->
+                </div>
+            </article>
+            <!-- End Single Ad Item -->
+
+
+
+            <!-- Single Ad Item -->
+            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
+                <div class="post-item">
+
+                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
+                       
+                        <div class="post-thumb">
+                            <a href="single-post.html">
+                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                            </a>
+                        </div>
+                        <div class="post-excerpt">
+                            <h3><a href="single-post.html">Post with featured image</a></h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
+                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
+                        </div>
+                        <div class="post-meta">
+                            <span class="post-date">
+                                <i class="fa fa-calendar"></i>30 jun 2014
+                            </span>
+                            <span class="comments">
+                                <i class="fa fa-comments"></i>18 Comments
+                            </span>
+                            <span class="post-view">
+                                <i class="fa fa-eye"></i>265 Views
+                            </span>
+                        </div>
+                    </article>
+
+                </div>
+            </article>
+            <!-- End Single Ad Item -->
+
+
+                
+        </div>      <!-- End row -->
+    </div>      <!-- End container -->
+</section>   <!-- End section -->
 
 
 

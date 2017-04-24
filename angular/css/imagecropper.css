@@ -1,3 +1,41 @@
+  .container3 {
+      position: relative;
+      margin: auto;
+      width: 50%;
+  }
+
+  .container3:hover .image {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  opacity: 0.3;
+}
+
+.container3:hover .middle {
+  opacity: 1;
+}
+
+
+.container3:hover .overlay {
+  position:absolute;
+  width: 200px;
+  height: 200px;
+  z-index: 100;
+  background: transparent url('thrill_back3.png') no-repeat;
+  cursor: pointer;
+}
+
+
+  .image-cropper {
+      width: 200px;
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 50%;
+  }
+
   .container2 {
       position: relative;
       margin: auto;
@@ -35,13 +73,6 @@
     opacity: 1;
   }
 
-  .image-cropper {
-      width: 200px;
-      height: 200px;
-      position: relative;
-      overflow: hidden;
-      border-radius: 50%;
-  }
 
 .image-upload > input
 {
