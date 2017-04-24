@@ -8,7 +8,7 @@ app.config(function($routeProvider){
 		templateUrl : "views/landingpage.html",
 		controller  : "navbarController"
 	})
-	
+
 	.when("/profile", {							//NAVE
 		templateUrl : "views/user_profile.html",
 		controller  : "userController"
@@ -26,13 +26,13 @@ app.config(function($routeProvider){
 	.when("/search/:id", {
 		templateUrl : "views/searchtest.html",
 		controller  : "searchtestController"
-	})	
+	})
 
 	.when("/book-event/:id", {
 		templateUrl : "views/booking_event.html",
 		controller  : "bookingEventController"
 	})
-	
+
 	.when("/book_facility/:id", { //I want the facility name to be passed in the url
 		templateUrl : "views/booking_facility.html",
 		controller  : "bookFacilityController"
@@ -69,7 +69,7 @@ app.config(function($routeProvider){
 			controller  : "createOffersController"
 	})
 
-	
+
 	.when("/schedule/:name", {
 		templateUrl : "views/calendar.html",
 		controller  : "calendarController"
@@ -133,6 +133,6 @@ app.config(function($routeProvider){
 });
 
 
-app.config(['$httpProvider', function($httpProvider) {
-  $httpProvider.defaults.withCredentials = true;
-}]);
+// app.config(['$httpProvider', function($httpProvider) {
+//   $httpProvider.defaults.withCredentials = true;
+// }]);
