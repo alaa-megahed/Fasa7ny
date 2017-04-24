@@ -165,7 +165,7 @@ Welcome Slider
 				        <img ng-src='img/thrill_back_final.png' alt="Avatar" id = "thrill_back" class="image" style="object-fit: cover" ng-show="options">
 				        <br>
 				        <div style = " padding-left: 80px">
-				            <button class="btn btn-booking" ng-click = "" ng-show="options" > Show More </button>
+				            <button class="btn btn-booking" ng-click = "goToSearch(category1)" ng-show="options" > Show More </button>
 				        </div>
 				    </article>
 
@@ -175,7 +175,7 @@ Welcome Slider
 				        <img ng-src='img/outlet_back_final.png' alt="Avatar" id = "outlet_back" class="image" style="object-fit: cover" ng-show="options2">
 						<br>
 				        <div style = " padding-left: 80px">
-				            <button class="btn btn-booking" ng-click = "" ng-show="options2"> Show More </button>
+				            <button class="btn btn-booking" ng-click = "goToSearch(category2)" ng-show="options2"> Show More </button>
 				        </div>
 				    </article>
 
@@ -185,7 +185,7 @@ Welcome Slider
 				        <img ng-src='img/escape_back_final.png' alt="Avatar" id = "escape_back" class="image" style="object-fit: cover" ng-show="options3">
 				          <br>
 				        <div style = " padding-left: 100px">
-				            <button class="btn btn-booking" ng-click = "" ng-show="options3"> Show More </button>
+				            <button class="btn btn-booking" ng-click = "goToSearch(category3)" ng-show="options3"> Show More </button>
 				        </div>
 				    </article>
 
@@ -213,6 +213,7 @@ Welcome Slider
             <!-- /section title -->
             
             <!-- Single Ad Item -->
+            <div  ng-repeat = "ad in advertisements">
             <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
                 <div class="post-item">
    
@@ -220,135 +221,18 @@ Welcome Slider
                        
                         <div class="post-thumb">
                             <a href="single-post.html">
-                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
+                                <img ng-src="{{ad.image}}" alt="3D Beach Art | Meghna" class="img-responsive">
                             </a>
                         </div>
                         <div class="post-excerpt">
-                            <h3><a href="single-post.html">Post with featured image</a></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
-                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
-                        </div>
-                        <div class="post-meta">
-                            <span class="post-date">
-                                <i class="fa fa-calendar"></i>30 jun 2014
-                            </span>
-                            <span class="comments">
-                                <i class="fa fa-comments"></i>18 Comments
-                            </span>
-                            <span class="post-view">
-                                <i class="fa fa-eye"></i>265 Views
-                            </span>
+                            <p>{{ ad.text }}</p>
                         </div>
                     </article>
                    
                 </div>
             </article>
+            </div>
             <!-- End Single Ad Item -->
-
-
-            <!-- Single Ad Item -->
-            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
-                <div class="post-item">
-
-                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
-                       
-                        <div class="post-thumb">
-                            <a href="single-post.html">
-                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="post-excerpt">
-                            <h3><a href="single-post.html">Post with featured image</a></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
-                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
-                        </div>
-                        <div class="post-meta">
-                            <span class="post-date">
-                                <i class="fa fa-calendar"></i>30 jun 2014
-                            </span>
-                            <span class="comments">
-                                <i class="fa fa-comments"></i>18 Comments
-                            </span>
-                            <span class="post-view">
-                                <i class="fa fa-eye"></i>265 Views
-                            </span>
-                        </div>
-                    </article>
-
-                </div>
-            </article>
-            <!-- End Single Ad Item -->
-
-
-
-            <!-- Single Ad Item -->
-            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
-                <div class="post-item">
-
-                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
-                       
-                        <div class="post-thumb">
-                            <a href="single-post.html">
-                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="post-excerpt">
-                            <h3><a href="single-post.html">Post with featured image</a></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
-                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
-                        </div>
-                        <div class="post-meta">
-                            <span class="post-date">
-                                <i class="fa fa-calendar"></i>30 jun 2014
-                            </span>
-                            <span class="comments">
-                                <i class="fa fa-comments"></i>18 Comments
-                            </span>
-                            <span class="post-view">
-                                <i class="fa fa-eye"></i>265 Views
-                            </span>
-                        </div>
-                    </article>
-
-                </div>
-            </article>
-            <!-- End Single Ad Item -->
-
-
-
-            <!-- Single Ad Item -->
-            <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
-                <div class="post-item">
-
-                    <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
-                       
-                        <div class="post-thumb">
-                            <a href="single-post.html">
-                                <img src="img/blog/3D-beach-art.jpg" alt="3D Beach Art | Meghna" class="img-responsive">
-                            </a>
-                        </div>
-                        <div class="post-excerpt">
-                            <h3><a href="single-post.html">Post with featured image</a></h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat? Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae modi quisquam laboriosam, expedita ea natus tempora unde sed sequi velit, quia veniam libero quos sunt praesentium nisi odit architecto fugiat?</p>
-                            <a class="btn btn-transparent" href="single-post.html">Read more</a>
-                        </div>
-                        <div class="post-meta">
-                            <span class="post-date">
-                                <i class="fa fa-calendar"></i>30 jun 2014
-                            </span>
-                            <span class="comments">
-                                <i class="fa fa-comments"></i>18 Comments
-                            </span>
-                            <span class="post-view">
-                                <i class="fa fa-eye"></i>265 Views
-                            </span>
-                        </div>
-                    </article>
-
-                </div>
-            </article>
-            <!-- End Single Ad Item -->
-
 
                 
         </div>      <!-- End row -->
@@ -373,7 +257,8 @@ Welcome Slider
 	<!-- Contact Details -->
 	<div class="contact-info col-md-6 wow fadeInUp" data-wow-duration="500ms">
 		<h3>Contact Details</h3>
-		<p>To contact us, please use one of the following </p>
+		<p>To contact us, please use one of the following: </p>
+		<br>
 		<div class="contact-details">
 			<div class="con-info clearfix">
 				<i class="fa fa-home fa-lg"></i>

@@ -8,11 +8,17 @@ angular.module('fasa7ny')
     $scope.searchAppear = 1;
     $scope.type = -1;
     $scope.notifcolor = {'color' : 'white'} ;
+    $scope.category1 = "category1";
+    $scope.category2 = "category2";
+    $scope.category3 = "category3";
 
     // var user = Global.getUser();
     // console.log(user);
 
-
+    $scope.goToSearch = function(category)
+    {
+      $location.path("/search/" + category);
+    }
 
     $scope.updateUser = function()
     {
