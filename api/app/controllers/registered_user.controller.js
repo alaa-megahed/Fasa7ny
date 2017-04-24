@@ -101,7 +101,7 @@ exports.getSubscribedBusiness = function (req, res) {
 
 
 exports.subscribe = function (req, res) {
-
+console.log(req.user);
 	if (req.user && req.user instanceof User) {
 
 		var userID = req.user.id;
@@ -146,7 +146,8 @@ exports.subscribe = function (req, res) {
 
 
 exports.unsubscribe = function (req, res) {
-
+	console.log(req.user);
+	
 	if (req.user && req.user instanceof User) {
 		var userID = req.user.id;
 

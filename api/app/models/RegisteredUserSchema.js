@@ -2,6 +2,7 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     bcrypt = require('bcrypt-nodejs');
 
+
 var RegisteredUserSchema = new Schema({
 
     name: String,
@@ -58,18 +59,3 @@ var RegisteredUserSchema = new Schema({
     bookings: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Booking', default: [] }],
     subscriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Business', default: [] }]
 });
-
-
-// generating a hash (encrypted password)
-RegisteredUserSchema.methods.generateHash = function (password) {
-    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-};
-
-// checking if (encrypted) password is valid
-RegisteredUserSchema.methods.validPassword = function (password) {
-    return bcrypt.compareSync(password, this.local.password);
-};
-
-
-var RegisteredUser = mongoose.model('RegisteredUser', RegisteredUserSchema);
-module.exports = RegisteredUser; 

@@ -1,7 +1,6 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
-  RegisteredUserSchema = require('./RegisteredUser').RegisteredUserSchema,
-  BusinessSchema = require('./Business').BusinessSchema;
+  RegisteredUserSchema = require('./RegisteredUserSchema'); 
 
 var ReplySchema = new Schema({
   reply: String,

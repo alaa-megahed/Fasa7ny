@@ -1,7 +1,7 @@
 var LocalStrategy = require('passport-local').Strategy,
     FacebookStrategy = require('passport-facebook').Strategy,
     GoogleStrategy = require('passport-google-oauth').OAuth2Strategy,
-    User = require('../app/models/RegisteredUser').RegisteredUser,
+    User = require('../app/models/RegisteredUser'),
     Business = require('../app/models/Business'),
     Admin = require('../app/models/WebAdmin'),
     configAuth = require('./auth');
