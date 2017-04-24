@@ -12,7 +12,7 @@ app.config(function($routeProvider){
 	// })
 
 	//webAdminProfile
-	.when("/", {
+	.when("/webAdminProfile", {
 		templateUrl : "views/web_admin.html",
 		controller  : "webAdminController"
 	})
