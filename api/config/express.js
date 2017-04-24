@@ -20,7 +20,7 @@ module.exports = function() {
       // var allowedOrigins = [null,'http://54.187.92.64:8000', 'http://54.187.92.64:8000', 'http://54.187.92.64:3000', 'http://54.187.92.64:3000', 'https://www.facebook.com'];
       // var origin = req.headers.origin;
       // if(allowedOrigins.indexOf(origin) > -1){
-        // var origin = req.get('origin');
+        var origin = req.get('origin');
         res.setHeader('Access-Control-Allow-Origin', origin);
         //res.setHeader('Access-Control-Allow-Origin', "req.headers.origin");
       // }
