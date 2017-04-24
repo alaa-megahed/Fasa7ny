@@ -333,7 +333,7 @@ app.controller('businessController', function($scope, status,$http, Business, $l
   $scope.bookFacility = function(){
     $scope.name = $routeParams.name;
     console.log("BOOK!!");
-    $http.post('http://127.0.0.1:3000/business/getBusinessId',{name:$scope.name}).then(
+    $http.post('http://54.187.92.64:3000/business/getBusinessId',{name:$scope.name}).then(
   function(response)
   {
     console.log($scope.business_id);
