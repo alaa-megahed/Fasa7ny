@@ -411,7 +411,7 @@ exports.createEvent = function (req, res) {
 								res.status(500).json(err.message);
 							else
 							{
-							var notification = {content:req.user.name + " added " + req.body.name,date: Date.now()}; 
+							var notification = {content:req.user.name + " added " + req.body.name,date: Date.now()};
 
 									async.each(req.user.subscribers, function(subscriber, callback){
 										User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": notification}},function(err,user)
@@ -442,7 +442,7 @@ exports.createEvent = function (req, res) {
 	}
 }
 
-exports.getOnceEvents = function(req,res) 
+exports.getOnceEvents = function(req,res)
 {
 	//whoever views business page can see all "once" events, no restrictions
 	var business_id = req.params.id;
@@ -582,7 +582,7 @@ exports.getOccurrences = function (req, res) {
 
 		EventOccurrences.find({ event: req.params.eventId }, function (err, events) {
 			if (err || !events) res.status(500).json("Something went wrong");
-			else 
+			else
 				{
 					console.log(events);
 					console.log(events);
@@ -619,7 +619,7 @@ exports.getAllFacilities = function(req,res)
 			res.send("error in get facilities");
 		else
 			res.json(facilities);
-	});	
+	});
 }
 
 /* A business can edit an event or an event occurrence based on the changed field. */
@@ -630,7 +630,7 @@ exports.editEvent = function (req, res) {
 	if (req.user && req.user instanceof Business && typeof req.params.id != "undefined") {
 		var id = req.params.id;
 		var business_id = req.user.id;
-
+		var check = 1;
 		Events.findById(id, function (err, event) {
 			console.log("ana fl event");
 			if (err) res.status(500).json("Something went wrong");
@@ -656,53 +656,6 @@ exports.editEvent = function (req, res) {
 
 					}
 
-					if (req.body.capacity != null) {
-
-						if(req.body.capacity < 0 || req.body.capacity == 0) return res.status(500).json("Enter a valid capacity");
-						console.log("ana fl capacity");
-						var oldCapacity = event.capacity;
-						if (oldCapacity < req.body.capacity) {
-
-							var difference = req.body.capacity - oldCapacity;
-							EventOccurrences.findOne({ event: event._id }, function (err, eventOcc) {
-								if (!eventOcc) return res.status(500).json("Something went wrong");
-								else {
-									eventOcc.available = eventOcc.available + difference;
-									eventOcc.save(function(err, newocc) {
-										console.log("NEWOCC");
-										console.log(newocc);
-									});
-									console.log("CHANGED EVENT OCC CAPACITY" +req.body.capacity);
-									event.capacity = req.body.capacity;
-									event.save();
-
-								}
-
-							});
-						}
-						else if (oldCapacity > req.body.capacity) {
-
-							console.log("if");
-							var difference = oldCapacity - req.body.capacity;
-							EventOccurrences.findOne({ event: event._id }, function (err, eventOcc) {
-								if (!eventOcc) return res.status(500).json("Something went wrong");
-
-									if (eventOcc.available < difference) {
-										return res.status(500).json("Can not decrease capacity without cancelling extra bookings.");
-									}
-									else {
-									console.log("CHANGED EVENT OCC CAPACITY"+ req.body.capacity);
-
-										eventOcc.available = eventOcc.available - difference;
-										eventOcc.save(function(err, newocc1) {
-											console.log("NEWOCC1");
-										});
-										event.capacity = req.body.capacity;
-										event.save();
-									}
-								});
-						}
-					}
 					if (typeof req.body.description != "undefined" && req.body.description.length > 0) {
 						event.description = req.body.description;
 					}
@@ -730,18 +683,21 @@ exports.editEvent = function (req, res) {
 						});
 
 					}
+					console.log("CHECK:" + check);
+					if(check){
 					event.save(function(err, newevent) {
 						if(err) return res.status(500).json("Something went wrong");
 						else {
 							EventOccurrences.find({event: id}, function(err,occs){
+								console.log("BATAAALLLL");
 								if(err) res.status(500).json("Something went wrong");
 								else if(!occs) res.status(500).json("Something went wrong");
-								else res.status(200).json({event:newevent, eventocc:occs});
+								else return res.status(200).json({event:newevent, eventocc:occs});
 							})
 
 						}
 					});
-
+				}
 				}
 				else res.status(500).json("Can not edit this event");
 			}
@@ -824,7 +780,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 		Events.findById(id, function (err, event) {
 			if (!event) res.status(500).json("Something went wrong");
 			else
-				if (event.business_id == business_id) 
+				if (event.business_id == business_id)
 				{
 					Events.remove({ _id: id }, function (err) {
 						if (err) res.status(500).json("Something went wrong");
@@ -959,7 +915,7 @@ exports.getOccurrence = function(req, res)
 			if(err) return res.status(500).json("ERROR IN FINDING OCC");
 			console.log("occ nafsha "+occ);
 			console.log("occ.business_id "+occ.business_id );
-			console.log(" req.user._id "+ req.user._id);	
+			console.log(" req.user._id "+ req.user._id);
 			if(occ.business_id != req.user.id) return res.status(401).json("YOU ARE NOT AUTORIZED 1");
 			return res.status(200).json(occ);
 		});
