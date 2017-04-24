@@ -71,7 +71,7 @@ angular.module('fasa7ny')
         });
       },
       getAds : function(){
-        return $http.get("http://54.187.92.64:3000/admin/viewAdvertisements", { headers: {'Content-Type': 'application/json'} );
+        return $http.get("http://54.187.92.64:3000/admin/viewAdvertisements", { headers: {'Content-Type': 'application/json'} });
       },
       updateAds : function(){
         return $http.post("http://54.187.92.64:3000/admin/updateAdvertisements", adInfo);
