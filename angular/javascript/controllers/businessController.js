@@ -419,8 +419,7 @@ app.controller('businessController', function ($scope, status, $http, Business, 
 
   $scope.downvote = function (review) {
     Business.downvote({
-      userID: $scope.userID,
-      businessID: $scope.id,
+      businessID: $scope.business._id,
       review: review,
       user: $scope.user
     })

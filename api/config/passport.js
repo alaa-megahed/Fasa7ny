@@ -183,9 +183,7 @@ module.exports = function(passport)
     function(req, username, password, done)
     {
       var check = 0;
-
-      console.log("username: " + username + "password: " + password);
-      // find a user whose username matches the username entered
+     // find a user whose username matches the username entered
       // search registered users collection
       User.findOne({ 'local.username' :  username }, function(err, user)
       {
@@ -347,7 +345,7 @@ passport.use(new GoogleStrategy({
                     newUser.save(function(err) {
                         if (err)
                         {
-                          console.log("error: please try again");
+                        
                           return done(err);
                         }
                         return done(null, newUser);

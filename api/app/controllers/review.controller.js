@@ -9,7 +9,7 @@ var WebAdmin = mongoose.model('WebAdmin');
  then pushing this review to the array of reviews of the business*/
 exports.writeReview = function (req, res) {
 
-  if (req.body.user && req.body.user instanceof RegisteredUser && typeof req.body.review != "undefined"
+  if (req.body.user && req.body.user.user_type == 1 && typeof req.body.review != "undefined"
     && req.body.review.length > 0 && typeof req.body.businessID != "undefined") {
 
     //getting the user ID and business ID as input to the POST request from angular 
@@ -55,7 +55,7 @@ the upvotes will be incremented*/
 exports.upvoteReview = function (req, res) {
 
   //only a signed in user can upvote a review 
-  if (req.body.user && req.body.user instanceof RegisteredUser && typeof req.body.review != "undefined"
+  if (req.body.user && req.body.user.user_type == 1 && typeof req.body.review != "undefined"
     && typeof req.body.businessID != "undefined") {
     var businessID = req.body.businessID;
     var reviewID = req.body.review._id;
@@ -110,7 +110,7 @@ array and the downvotes will be incremented*/
 exports.downvoteReview = function (req, res) {
 
   //only a signed in user can downvote a review
-  if (req.body.user && req.body.user instanceof RegisteredUser && typeof req.body.review != "undefined"
+   if (req.body.user && req.body.user.user_type == 1 && typeof req.body.review != "undefined"
     && typeof req.body.businessID != "undefined") {
     var businessID = req.body.businessID;
     var reviewID = req.body.review._id;
@@ -266,8 +266,8 @@ review will be removed from the reviews array at the business */
 exports.deleteReview = function (req, res) {
   if (req.body.user && typeof req.body.review != "undefined"
     && typeof req.body.businessID != "undefined"
-    && ((req.body.user instanceof RegisteredUser && req.body.user._id == req.body.review.user._id)
-      || (req.body.user instanceof WebAdmin))) {
+    && ((req.body.user.user_type == 1 && req.body.user._id == req.body.review.user._id)
+      || (req.body.user.user_type == 3))) {
     var userID = req.body.user._id;
     var reviewUser = req.body.review.user._id;
     var businessID = req.body.businessID;
