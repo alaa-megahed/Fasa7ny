@@ -1,7 +1,7 @@
 var app = angular.module('fasa7ny');
 
-app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences) 
-{     
+app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences)
+{
 
     $scope.current_event = $routeParams.id;
       Event.get($scope.current_event).then(
@@ -10,10 +10,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
             $scope.event = response.data.event;
             $scope.business_id = $scope.event.business_id;
             console.log("once event details "+ $scope.event);
-               $http.get('http://127.0.0.1:3000/business/b/'+$scope.business_id ).then(
-              function(response)
-              {
-                $scope.business = response.data.result;
+
                 $scope.user = {};
                 status.local().then(function(res){
                    if(res.data)
@@ -38,15 +35,15 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
                  Offers.get($scope.business_id)
                   .then(function(response) {
                          $scope.offers = response.data;
-                         $scope.betengan = "Roody";
+
                      });
-              });
-       
+
+
           });
 
-        
-     
-     
+
+
+
 
         $scope.cash = true;
         // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
@@ -55,7 +52,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
         // }
         // $scope.current_event = Global.getOnceEvent();
 
-      
+
         console.log($scope.current_event);
 
         viewOccurences.get($scope.current_event).then(function (response) {
@@ -63,20 +60,20 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
           console.log(response.data.eventocc);
           $scope.event_occ = response.data.eventocc[0];
           console.log($scope.event_occ.available);
-          $scope.max = $scope.event_occ.available; 
+          $scope.max = $scope.event_occ.available;
         });
         console.log("????"+$scope.event_occ);
         console.log("business id "+$scope.business_id);
 
         $scope.min = 1;
-       
+
         $scope.book_cash = function()
-        {   
+        {
           var chosen_offer = $scope.formData.chosen_offer;
           console.log("count   "+$scope.formData.count+" offer   "+$scope.formData.chosen_offer); //why  undefined?
           var min_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
           $scope.charge = min_charge;
-          console.log("charge   " + min_charge); 
+          console.log("charge   " + min_charge);
           console.log("event occurrence befor http "+ $scope.event_occ._id);
           if($scope.type == 1)
           {
@@ -87,7 +84,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
 
                     }, function errorCallback(responce){
                       console.log(responce.data);
-                    }); 
+                    });
            }
           else if($scope.type == 4)
           {
@@ -98,16 +95,16 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
 
                     }, function errorCallback(responce){
                       console.log(responce.data);
-                    }); 
+                    });
           }
-        }        
-        
+        }
+
         $scope.stripe_handler = StripeCheckout.configure(
         {
           key: "pk_test_O1Gn3Rl11nLaHckNqvJOzaYz",
           locale: 'auto',
           currency : "egp",
-          token: function(token) 
+          token: function(token)
           {
             console.log("token   "+ token);
             console.log("token.id   "+ token.id);
@@ -121,7 +118,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
 
                             }, function errorCallback(responce){
                               console.log(responce.data);
-                            }); 
+                            });
 
                     }, function errorCallback(responce){
                       console.log(responce.data);
@@ -133,7 +130,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
           var basic_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, offers);
           var new_charge = basic_charge * 103;
           $scope.stripe_charge = Math.round(new_charge);
-          $scope.charge  = $scope.stripe_charge / 100; 
+          $scope.charge  = $scope.stripe_charge / 100;
           console.log("charge in stripe " + $scope.stripe_charge);
           $scope.stripe_handler.open({
             name: $scope.event.name,
@@ -163,12 +160,12 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
                             {
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;
-                                // console.log("min_count   "+newcharge);  
+                                // console.log("min_count   "+newcharge);
                             }
                             if(offers[i].type === "duration" && (new Date()).getTime() >= new Date(offers[i].start_date).getTime() && new Date(offers[i].expiration_date).getTime() > (new Date()).getTime())
                             {
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
-                                min_charge = (min_charge > newcharge) ? newcharge : min_charge;     
+                                min_charge = (min_charge > newcharge) ? newcharge : min_charge;
                             }
                             if(offers[i].type === "first_lucky" && (event.capacity - event_occ.available) < offers[i].lucky_first)
                             {
@@ -176,8 +173,8 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
                                 var lucky = offers[i].lucky_first - (event.capacity - event_occ.available);
                                 var apply_on = (lucky < count) ? lucky : count;
                                 var newcharge = ((apply_on * event.price) - offers[i].value / 100 * apply_on * event.price) + (count - apply_on) * event.price;
-                                min_charge = (min_charge > newcharge) ? newcharge : min_charge; 
-                                // console.log("first lucky  "+ newcharge); 
+                                min_charge = (min_charge > newcharge) ? newcharge : min_charge;
+                                // console.log("first lucky  "+ newcharge);
                             }
                         }
                     }
@@ -186,5 +183,5 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
                 console.log("min_charge  "+ min_charge);
                 return min_charge;
         }
-                        
+
 });
