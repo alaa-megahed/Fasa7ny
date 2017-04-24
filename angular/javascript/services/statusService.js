@@ -3,7 +3,7 @@ angular.module('fasa7ny')
   return {
     local: function() {
     return $http({
-       url: 'http://127.0.0.1:3000/loggedin',
+       url: 'http://54.187.92.64:3000/loggedin',
        method: "GET",
        withCredentials: true,
        headers: {
@@ -12,7 +12,7 @@ angular.module('fasa7ny')
      });
    },
    foreign: function() {
-     return $http.get('http://localhost:3000/loggedin');
+     return $http.get('http://54.187.92.64:3000/loggedin');
    }
 
   }

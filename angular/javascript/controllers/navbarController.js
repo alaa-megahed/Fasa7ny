@@ -170,12 +170,12 @@ $scope.getAdminProfile = function()
     }
 
     $scope.facebook = function(){
-     $window.location = $window.location.protocol + "//" + "localhost:3000/auth/facebook";
+     $window.location = $window.location.protocol + "//" + "54.187.92.64:3000/auth/facebook";
 
     }
 
     $scope.google = function(){
-       $window.location = $window.location.protocol + "//" + "localhost:3000/auth/google";
+       $window.location = $window.location.protocol + "//" + "54.187.92.64:3000/auth/google";
     }
 
     $scope.logout = function(){

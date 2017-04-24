@@ -5,7 +5,7 @@ var app = angular.module('fasa7ny');
 app.controller('ViewOffersController', function($scope, $http, $location, Offers,$routeParams) {
 
       $scope.name = $routeParams.name;
-      $http.post('http://127.0.0.1:3000/business/getBusinessId',{name:$scope.name}).then(
+      $http.post('http://54.187.92.64:3000/business/getBusinessId',{name:$scope.name}).then(
       	function(response)
       	{
       		$scope.business_id = response.data._id;
@@ -79,7 +79,7 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
 		 // console.log($scope.formData.facility_id);
 		 // console.log($scope.formData.event_id);
 
-      	$http.post('http://127.0.0.1:3000/offers/createOffer', fd,{
+      	$http.post('http://54.187.92.64:3000/offers/createOffer', fd,{
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
       }).then(function successCallback(response){
@@ -100,7 +100,7 @@ app.controller('EditOffersController', function($scope, $http, $route,$location,
 
        // $scope.business_id = "58f0f3faaa02d151aa4c987c";
         $scope.name = $routeParams.name;
-      $http.post('http://127.0.0.1:3000/business/getBusinessId',{name:$scope.name}).then(
+      $http.post('http://54.187.92.64:3000/business/getBusinessId',{name:$scope.name}).then(
       	function(response)
       	{
       		$scope.business_id = response.data._id;
@@ -156,7 +156,7 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerTy
 		 fd.append("id",offerId);
 		 console.log(fd);
 
-      	$http.post('http://127.0.0.1:3000/offers/updateOffer', fd,{
+      	$http.post('http://54.187.92.64:3000/offers/updateOffer', fd,{
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
       }).then(function successCallback(response){
@@ -168,7 +168,7 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerTy
                       $scope.error_message = response.data;
                     });
 
-			// $http.post('http://127.0.0.1:3000/offers/updateOffer', {id:offerId, name:formData.name, value:formData.value , details:formData.details})
+			// $http.post('http://54.187.92.64:3000/offers/updateOffer', {id:offerId, name:formData.name, value:formData.value , details:formData.details})
 			// .then(function successCallback(response){
    //                    console.log(response.data);
    //                  }, function errorCallback(response){
@@ -213,7 +213,7 @@ app.controller('DeleteOffersController', function($scope, $http, $modal, $locati
 app.controller('DeleteOfferCtrl',function($http, $scope, $modalInstance, offerId, $route,$routeParams){
 	$scope.yes = function () {
             console.log("offerId to be deleted :"+offerId);
-			$http.get('http://127.0.0.1:3000/offers/deleteOffer/'+offerId)
+			$http.get('http://54.187.92.64:3000/offers/deleteOffer/'+offerId)
 			.then(function successCallback(response){
                       console.log(response.data);
                     }, function errorCallback(response){

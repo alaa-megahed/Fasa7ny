@@ -6,7 +6,7 @@ app.factory('Facility', ['$http', function($http) {
         fd.append(key, data[key]);
 
       console.log(fd);
-      return $http.post('http://127.0.0.1:3000/event/createFacility', fd, {
+      return $http.post('http://54.187.92.64:3000/event/createFacility', fd, {
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
       });
@@ -21,7 +21,7 @@ app.factory('Facility', ['$http', function($http) {
         fd.append(key, data[key]);
       }
       console.log(fd);
-      return $http.post('http://127.0.0.1:3000/event/editFacility/' + facilityId, fd, {
+      return $http.post('http://54.187.92.64:3000/event/editFacility/' + facilityId, fd, {
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
       });
@@ -30,7 +30,7 @@ app.factory('Facility', ['$http', function($http) {
     deleteFacility : function(facilityId) {
       console.log("delete facility service");
 
-      return $http.get('http://127.0.0.1:3000/event/deleteFacility/' + facilityId);
+      return $http.get('http://54.187.92.64:3000/event/deleteFacility/' + facilityId);
     },
 
      addDaily : function(fid,description,capacity,name,formData){
@@ -57,7 +57,7 @@ app.factory('Facility', ['$http', function($http) {
 
           console.log("day:" + formData.day);
           console.log("Name:"+formData.name);
-          return $http.post('http://127.0.0.1:3000/event/create', formData);
+          return $http.post('http://54.187.92.64:3000/event/create', formData);
         }
   }
 }]);

@@ -162,7 +162,7 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 										var cur_booking = response.data;
 										console.log("cur booking zat nafso :"+cur_booking);
 			
-										$http.post('http://127.0.0.1:3000/bookings/cancel_booking_after_delete', {booking_id: cur_booking._id})
+										$http.post('http://54.187.92.64:3000/bookings/cancel_booking_after_delete', {booking_id: cur_booking._id})
 												.then(function successCallback(response){
 											            console.log(response.data);
 											     }, function errorCallback(response){

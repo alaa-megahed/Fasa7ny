@@ -21,12 +21,12 @@ app.factory('OneTimeEvent', ['$http', function($http) {
           console.log("!!" + formData.timing);
           formData.repeat = "Once";
           console.log(formData);
-            return $http.post('http://127.0.0.1:3000/event/create', formData);
+            return $http.post('http://54.187.92.64:3000/event/create', formData);
         },
 
         getOnceEvents : function(businessId)
         {
-        	return $http.get('http://127.0.0.1:3000/event/getOnceEvents/'+businessId);
+        	return $http.get('http://54.187.92.64:3000/event/getOnceEvents/'+businessId);
         }
   }
 }]);
