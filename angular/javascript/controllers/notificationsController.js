@@ -1,5 +1,5 @@
 angular.module('fasa7ny')
-.controller('notificationsController', function($scope, status) {
+.controller('notificationsController', function($scope, status, $q) {
 
   status.local().then(
     function(result)
@@ -21,12 +21,13 @@ angular.module('fasa7ny')
               status.foreign().then(function(result){
                 if(result.data)
                 {
-                  if(result.data.notifications)
+                  if(result.data.notifications.length > 0)
                   {
                    result.data.notifications.reverse();
                    $scope.notifications =  result.data.notifications;
                   }
                   else {
+                    console.log("waddap");
                     $scope.err = "No notifications to show.";
                   }
 

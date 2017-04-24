@@ -4,6 +4,7 @@ var mongoose = require('./config/mongoose'),
     config   = require('./config/config'),
     express  = require('./config/express'),
     db       = mongoose(),
+    Business = require("./app/models/Business")
 
     app      = express();
 

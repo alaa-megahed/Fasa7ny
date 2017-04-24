@@ -92,7 +92,7 @@ $(function () {
   $('#search > form > input[type="search"]').focus();
 });
 $('#search, #search button.close').on('click keyup', function(event) {
-  if (event.target == this || event.target.className == 'close' || event.keyCode == 27 || event.keyCode == 13 || event.target.className == 'submit') {
+  if (event.target == this || event.target.className == 'close' || event.keyCode == 27 || event.keyCode == 13 || event.target.className == 'btn btn-green' ) {
       $(this).removeClass('open');
   }
 
@@ -194,7 +194,7 @@ Google Font
                  <li><a href="" ng-click = "getHome()">Home</a></li>
                  <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signUp()">Sign Up</a></li>
                  <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signIn()">Sign In</a></li>
-                 <li ng-if = "user.data.user_type == 1"><a href=""> My Profile </a></li>
+                 <li ng-if = "user.data.user_type == 1"><a href="" ng-click = "personalProfile()" > My Profile </a></li>
                  <li ng-if = "user.data.user_type == 2"><a href="" ng-click = "goToBusinessPage(user.data.name)"> My Business Page </a></li>
                  <li ng-if = "user.data.user_type == 3"><a href=""> Admin Requests </a></li>
                  <li><a href="#contact-us">Contact Us</a></li>

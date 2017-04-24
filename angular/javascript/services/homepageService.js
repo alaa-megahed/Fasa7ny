@@ -63,6 +63,7 @@ angular.module('fasa7ny')
         var deferred = $q.defer();
         $http.get("http://localhost:3000/auth/logout").then(function(result){
           deferred.resolve(result);
+          $location.path("/");
          return deferred.promise;
         },function(response){
           deferred.reject();

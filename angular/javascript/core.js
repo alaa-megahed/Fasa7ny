@@ -76,6 +76,11 @@ app.config(function($routeProvider){
 		controller  : "editLocationController"
 
 	})
+	.when("/error", {
+		templateUrl : "views/error.html",
+		controller  : "navbarController"
+
+	})
 
 
 	// $locationProvider.html5Mode(true);

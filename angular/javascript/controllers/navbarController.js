@@ -169,6 +169,11 @@ angular.module('fasa7ny')
        $window.location = $window.location.protocol + "//" + "localhost:3000/auth/google";
     }
 
+
+    $scope.personalProfile = function(){
+      $location.path('/profile'); //CHECK NAME
+    }
+
     $scope.logout = function(){
 
 
@@ -179,15 +184,13 @@ angular.module('fasa7ny')
           $location.url('/');
           $scope.updateUser();
 
+        }, function(err){
+          $location.url('/'); //redirect to error page
         })
       }
       else {
         $scope.user = null;
-        Homepage.logout().then(function(result)
-        {
-            console.log(result);
-            $location.path("/");
-        })
+        Homepage.logout();
       }
 
     }

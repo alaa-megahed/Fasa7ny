@@ -98,6 +98,7 @@ let AuthController =
 	logout: function(req, res) {
 
 		req.session.destroy(function (err) {
+      if(err) return res.status(500).json("error");
 
       req.logout();
       res.json("successful");
@@ -114,11 +115,11 @@ let AuthController =
 	facebookCallback: function(req, res,next){
     passport.authenticate('facebook', function(err, user, info) {
           if (err) { return next(err); }
-          if (!user) { return res.json("error"); }
+          if (!user) { return res.json("Error! Please go back to http://localhost:8000 to try and sign in again."); }
           req.logIn(user, function(err) {
             if (err) { return next(err); }
             req.session.save(function(){
-             return res.redirect("http://localhost:8000/");
+              res.redirect("http://localhost:8000/");
            });
           });
         })(req, res);
@@ -160,7 +161,7 @@ let AuthController =
 	getForgetPassword: function(req, res){
 		res.render('frogetPassword.ejs');
 	},
-
+//same email problem
 	forgotPassword: function(req, res, next) {
     if(req.body.email){
 
@@ -269,7 +270,7 @@ let AuthController =
     	}
   		], function(err) {
     	if (err) return next(err);
-    	res.redirect('/');
+    	return res.redirect('http://localhost:8000');
   	  });
 	}
 },
@@ -332,6 +333,7 @@ let AuthController =
     function(done) {
       var check = 0;
           Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
+            console.log(1);
             if(!business)
             {
               check++;
@@ -344,7 +346,7 @@ let AuthController =
             // save the new password, and reset token related attributes
             else
             {
-              business.local.password = business.generateHash(req.body.password);
+               business.local.password = business.generateHash(req.body.password);
               business.local.resetPasswordToken = undefined;
               business.local.resetPasswordExpires = undefined;
               business.save(function(err, business){
@@ -353,10 +355,13 @@ let AuthController =
                   console.log("error: can not update the password, please try again");
                   return res.json("error: can not update the password, please try again");
                  }
+                 done(err, business);
+
               });
             }
           });
       User.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
+          console.log(2);
         if (!user) {
 
           console.log(req.params.token);
@@ -409,7 +414,7 @@ let AuthController =
           console.log("ERROR: can not send email to the entered email, please try again");
           return res.redirect("ERROR: can not send email to the entered email, please try again");
         }
-        res.json('Success! Your password has been changed.');
+        return res.json('Success! Your password has been changed.');
         done(err);
       });
     }

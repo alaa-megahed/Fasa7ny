@@ -170,8 +170,8 @@ requestRemoval: function(req,res) {
                         business.profilePicture = req.file.filename;
                     }
 
-                    if(typeof req.body.password != "undefined" && req.body.password > 0) {
-                      business.password = business.generateHash(req.body.password);
+                    if(req.body.password) {
+                      business.local.password = business.generateHash(req.body.password);
                     }
 
                     if(req.body.facebookURL) {
