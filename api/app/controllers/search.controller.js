@@ -2,8 +2,7 @@ var Business = require('../models/Business');
 
 SearchController = {
 
-    showAll: function (req, res) {
-        console.log(req.user); 
+    showAll: function (req, res) { 
         Business.find({ public: 1 }).
             exec(function (err, result) {
                 if (err) {
@@ -19,7 +18,6 @@ SearchController = {
     search: function (req, res) {
         var formData = req.body;
         var sortBy = formData.sortBy;
-        console.log(formData);
         var queryBody = helper.makeQuery(formData); // retrieve query body
 
         var query = Business.find(queryBody);
@@ -78,8 +76,7 @@ helper = {
             anding.push({ area: new RegExp(area, 'i') });
         }
         if (minRating.length > 0) {
-            var minRatingFloat = parseFloat(minRating);
-            console.log(minRatingFloat);
+            var minRatingFloat = parseFloat(minRating); 
             anding.push({ average_rating: { $gte: minRatingFloat } });
         }
         if (anding.length > 0) {

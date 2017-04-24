@@ -30,7 +30,6 @@ angular.module('fasa7ny')
         }
         Search.get()
             .then(function (res) {
-                console.log(res.data);
                 $scope.businesses = res.data;
                 $scope.chunkedBusinesses = chunk($scope.businesses, 4);
             }, function (res) {

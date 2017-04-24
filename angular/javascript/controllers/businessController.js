@@ -386,13 +386,13 @@ app.controller('businessController', function ($scope, status, $http, Business, 
     })
       .then(function (res) {
         $scope.business = res.data;
-        $scope.replyForm.$setPristine();
       }, function (res) {
         alert(res.data);
       });
   }
 
   $scope.deleteReply = function (review, reply) {
+    console.log('HENAAAAAAAAAA');
     Business.deleteReply({
       businessID: $scope.business._id,
       review: review,
@@ -431,6 +431,11 @@ app.controller('businessController', function ($scope, status, $http, Business, 
       }, function (res) {
         $scope.reviewError = res.data;
       });
+  }
+
+  // REDIRECTS TO STATS PAGE 
+  $scope.viewStats = function () {
+    $location.url('/statistics/' + $scope.business._id);
   }
 
 });

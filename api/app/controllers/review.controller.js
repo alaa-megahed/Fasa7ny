@@ -159,7 +159,6 @@ First, we must check if the user who is replying a business or a RegisteredUser
 then add the reply to the replies array in the review */
 exports.replyReview = function (req, res) {
   //only a signed in user or a business replying to its own reviews can reply to reviews 
-  console.log(req.body);
 
   if (typeof req.body.reviewID != "undefined"
     && typeof req.body.businessID != "undefined" && typeof req.body.reply != 'undefined'
@@ -231,14 +230,16 @@ exports.deleteReply = function (req, res) {
 
   if (req.body.user && typeof req.body.review != "undefined"
     && typeof req.body.businessID != "undefined"
-    && typeof req.body.reply != 'undefined' && typeof req.body.reply.user != 'undefined'
-    && ((req.body.user instanceof RegisteredUser && req.body.user._id == req.body.reply.user._id)
-      || (req.body.user instanceof WebAdmin))) {
+    && typeof req.body.reply != 'undefined'
+    && ((req.body.user.user_type == 1
+    && req.body.reply.authorType == 'user' &&
+    req.body.user._id == req.body.reply.user._id)
+      || (req.body.user.user_type == 3))
+      || (req.body.user._id == req.body.businessID && req.body.reply.authorType == 'business')) {
 
     var userID = req.body.user._id;
     var businessID = req.body.businessID;
     var reviewID = req.body.review._id;
-    var replyUser = req.body.reply.user._id;
     var replyID = req.body.reply._id;
     Business.findById(businessID, function (err, business) {
       if (err)

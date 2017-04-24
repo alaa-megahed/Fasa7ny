@@ -57,8 +57,6 @@ angular.module('fasa7ny')
                 if (categoryF && ratingF && areaF)
                     out.push(input[i]);
             }
-            console.log(filterArea + " " + filterCategory + " " + minRating);
-            console.log(out);
 
             return out;
         }
