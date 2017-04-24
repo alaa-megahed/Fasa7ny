@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 
 require('mongoose-double')(mongoose);
 var SchemaTypes = mongoose.Schema.Types;
-var RegisteredUser = require('./RegisteredUser');
+var RegisteredUser = require('./RegisteredUser').RegisteredUser;
 var Review = require('./Review').ReviewSchema;
 
 var BusinessSchema = new Schema({

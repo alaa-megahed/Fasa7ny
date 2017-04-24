@@ -9,12 +9,12 @@ var WebAdmin = mongoose.model('WebAdmin');
  then pushing this review to the array of reviews of the business*/
 exports.writeReview = function (req, res) {
 
-  if (req.user && req.user instanceof RegisteredUser && typeof req.body.review != "undefined"
+  if (req.body.user && req.body.user instanceof RegisteredUser && typeof req.body.review != "undefined"
     && req.body.review.length > 0 && typeof req.body.businessID != "undefined") {
 
     //getting the user ID and business ID as input to the POST request from angular 
     var businessID = req.body.businessID;
-    var id = req.user._id;
+    var id = req.body.user._id;
 
     Business.findOne({ _id: businessID }, function (err, business) {
       if (err) console.log(err);
@@ -55,11 +55,11 @@ the upvotes will be incremented*/
 exports.upvoteReview = function (req, res) {
 
   //only a signed in user can upvote a review 
-  if (req.user && req.user instanceof RegisteredUser && typeof req.body.review != "undefined"
+  if (req.body.user && req.body.user instanceof RegisteredUser && typeof req.body.review != "undefined"
     && typeof req.body.businessID != "undefined") {
     var businessID = req.body.businessID;
     var reviewID = req.body.review._id;
-    var userID = req.user._id;
+    var userID = req.body.user._id;
 
     Business.findById(businessID, function (err, business) {
       var review = business.reviews.id(reviewID); //if this review  belongs to this business 
@@ -110,11 +110,11 @@ array and the downvotes will be incremented*/
 exports.downvoteReview = function (req, res) {
 
   //only a signed in user can downvote a review
-  if (req.user && req.user instanceof RegisteredUser && typeof req.body.review != "undefined"
+  if (req.body.user && req.body.user instanceof RegisteredUser && typeof req.body.review != "undefined"
     && typeof req.body.businessID != "undefined") {
     var businessID = req.body.businessID;
     var reviewID = req.body.review._id;
-    var userID = req.user._id;
+    var userID = req.body.user._id;
 
     Business.findById(businessID, function (err, business) {
       var review = business.reviews.id(reviewID);
@@ -159,14 +159,17 @@ First, we must check if the user who is replying a business or a RegisteredUser
 then add the reply to the replies array in the review */
 exports.replyReview = function (req, res) {
   //only a signed in user or a business replying to its own reviews can reply to reviews 
+  console.log(req.body);
 
-  if (req.user && typeof req.body.review != "undefined"
+  if (typeof req.body.reviewID != "undefined"
     && typeof req.body.businessID != "undefined" && typeof req.body.reply != 'undefined'
-    && (req.user instanceof RegisteredUser || (req.user instanceof Business && req.user._id == req.body.businessID))) {
-    var businessID = req.body.businessID;
-    var reviewID = req.body.review._id;
-    var userID = req.user._id;
+  ) {
+    console.log('ho yo');
 
+    var businessID = req.body.businessID;
+    var reviewID = req.body.reviewID;
+    var userID = req.body.user._id;
+    var reply = req.body.reply; 
     // var id = req.user.id;
     // var r = req.body.reply;
     // var reviewId = req.query.id;  //req.params.
@@ -174,7 +177,8 @@ exports.replyReview = function (req, res) {
       if (err)
         console.log(err);
       else {
-        if (business.reviews.id(reviewID) != null) { //if review belongs to this business 
+        if (business.reviews.id(reviewID) != null) {
+          //if review belongs to this business 
           if (userID != businessID) { //if user is replying to user review
             RegisteredUser.findById(userID, function (err, user) {
               if (err)
@@ -210,6 +214,8 @@ exports.replyReview = function (req, res) {
             });
 
           }
+        } else {
+          res.status(500).json('You are not allowed to perform this action.');
         }
       }
     })
@@ -223,13 +229,13 @@ exports.replyReview = function (req, res) {
  */
 exports.deleteReply = function (req, res) {
 
-  if (req.user && typeof req.body.review != "undefined"
+  if (req.body.user && typeof req.body.review != "undefined"
     && typeof req.body.businessID != "undefined"
     && typeof req.body.reply != 'undefined' && typeof req.body.reply.user != 'undefined'
-    && ((req.user instanceof RegisteredUser && req.user._id == req.body.reply.user._id)
-      || (req.user instanceof WebAdmin))) {
+    && ((req.body.user instanceof RegisteredUser && req.body.user._id == req.body.reply.user._id)
+      || (req.body.user instanceof WebAdmin))) {
 
-    var userID = req.user._id;
+    var userID = req.body.user._id;
     var businessID = req.body.businessID;
     var reviewID = req.body.review._id;
     var replyUser = req.body.reply.user._id;
@@ -257,11 +263,11 @@ if he is a webadmin because otherwise the review cannot be deleted.
 When the review is deleted, all the replies must be deleted as well as the
 review will be removed from the reviews array at the business */
 exports.deleteReview = function (req, res) {
-  if (req.user && typeof req.body.review != "undefined"
+  if (req.body.user && typeof req.body.review != "undefined"
     && typeof req.body.businessID != "undefined"
-    && ((req.user instanceof RegisteredUser && req.user._id == req.body.review.user._id)
-      || (req.user instanceof WebAdmin))) {
-    var userID = req.user._id;
+    && ((req.body.user instanceof RegisteredUser && req.body.user._id == req.body.review.user._id)
+      || (req.body.user instanceof WebAdmin))) {
+    var userID = req.body.user._id;
     var reviewUser = req.body.review.user._id;
     var businessID = req.body.businessID;
     var reviewID = req.body.review._id;

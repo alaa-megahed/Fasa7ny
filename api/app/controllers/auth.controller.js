@@ -1,7 +1,7 @@
 var passport = require('passport'),
   async = require('async'),
   crypto = require('crypto'),
-  User = require('../models/RegisteredUser'),
+  User = require('../models/RegisteredUser').RegisteredUser,
   Business = require('../models/Business'),
   nodemailer = require("nodemailer"),
   configAuth = require('../../config/auth'),

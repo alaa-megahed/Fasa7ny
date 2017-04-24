@@ -4,13 +4,17 @@ app.controller('businessController', function ($scope, status, $http, Business, 
   status.local()
     .then(function (res) {
       if (res.data) {
+        $scope.user = res.data;
         if (res.data.user_type == 1) {
           $scope.type = 1;
           $scope.user = res.data;
         }
         else if (res.data.user_type == 2)
           $scope.type = 4; //business viewing itself
-        else $scope.type = 3;
+        else {
+          $scope.type = 3;
+          $scope.user = res.data;
+        }
       }
       else {
         status.foreign()
@@ -117,9 +121,9 @@ app.controller('businessController', function ($scope, status, $http, Business, 
 
       console.log(d.data.result);
       $scope.business = d.data.result;
-       
-       //check cookies for counting page views
-       Stats.checkCookies($scope.type, $scope.business._id); 
+
+      //check cookies for counting page views
+      Stats.checkCookies($scope.type, $scope.business._id);
 
 
       $scope.phones = d.data.result.phones;
@@ -351,7 +355,8 @@ app.controller('businessController', function ($scope, status, $http, Business, 
   $scope.addReview = function () {
     Business.addReview({
       review: $scope.reviewBody,
-      businessID: $scope.business._id
+      businessID: $scope.business._id,
+      user: $scope.user
     })
       .then(function (res) {
         $scope.business = res.data;
@@ -364,7 +369,8 @@ app.controller('businessController', function ($scope, status, $http, Business, 
     Business.deleteReview({
       reviewUser: review.user._id,
       businessID: $scope.business._id,
-      review: review
+      review: review,
+      user: $scope.user
     })
       .then(function (res) {
         $scope.business = res.data;
@@ -375,7 +381,8 @@ app.controller('businessController', function ($scope, status, $http, Business, 
     Business.addReply({
       businessID: $scope.business._id,
       reviewID: reviewID,
-      reply: replyBody
+      reply: replyBody,
+      user: $scope.user
     })
       .then(function (res) {
         $scope.business = res.data;
@@ -389,7 +396,8 @@ app.controller('businessController', function ($scope, status, $http, Business, 
     Business.deleteReply({
       businessID: $scope.business._id,
       review: review,
-      reply: reply
+      reply: reply,
+      user: $scope.user
     })
       .then(function (res) {
         $scope.business = res.data;
@@ -399,7 +407,8 @@ app.controller('businessController', function ($scope, status, $http, Business, 
   $scope.upvote = function (review) {
     Business.upvote({
       businessID: $scope.business._id,
-      review: review
+      review: review,
+      user: $scope.user
     })
       .then(function (res) {
         $scope.business = res.data;
@@ -412,7 +421,8 @@ app.controller('businessController', function ($scope, status, $http, Business, 
     Business.downvote({
       userID: $scope.userID,
       businessID: $scope.id,
-      review: review
+      review: review,
+      user: $scope.user
     })
       .then(function (res) {
         $scope.business = res.data;

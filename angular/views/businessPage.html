@@ -476,7 +476,7 @@
                                     <div class="comment-head">
                                         <h6 ng-if="reply.authorType == 'user'" class="comment-name">{{reply.user.name}}</h6>
                                         <h6 ng-if="reply.authorType == 'business'" class="comment-name by-author"> {{business.name}}</h6>
-                                        <span style="margin-top: 10px">{{reply.timestamp | date: 'd MMM, yy h:mm a ' }} <i ng-if="type == 3 || (type == 1 && reply.user._id == user._id)" ng-click="deleteReply(review, reply)" class="delete glyphicon glyphicon-trash"></i></span>
+                                        <span style="margin-top: 10px">{{reply.timestamp | date: 'd MMM, yy h:mm a ' }} <i ng-if="type == 3 || (type == 1 && reply.user._id == user._id) || (reply.authorType == 'business' && type == 4) " ng-click="deleteReply(review, reply)" class="delete glyphicon glyphicon-trash"></i></span>
 
 
                                     </div>
