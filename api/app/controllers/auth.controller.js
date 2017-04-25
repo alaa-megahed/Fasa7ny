@@ -117,7 +117,7 @@ let AuthController =
           if (err) { return next(err); }
           if (!user) { return res.json("Error! Please go back to http://54.187.92.64:8000 to try and sign in again."); }
           req.logIn(user, function(err) {
-            if (err) { return next(err); }
+            if (err) { return res.json("Error! Please go back to http://54.187.92.64:8000 to try and sign in again."); }
             req.session.save(function(){
               res.redirect("http://54.187.92.64:8000/");
            });
@@ -141,10 +141,10 @@ let AuthController =
 
   googleCallback: function(req, res){
     passport.authenticate('google', function(err, user, info) {
-          if (err) { return next(err); }
-          if (!user) { return res.json("error"); }
+          if (err) { return res.json("Error! Please go back to http://54.187.92.64:8000 to try and sign in again.");}
+          if (!user) { return res.json("Error! Please go back to http://54.187.92.64:8000 to try and sign in again."); }
           req.logIn(user, function(err) {
-            if (err) { return next(err); }
+            if (err) { return res.json("Error! Please go back to http://54.187.92.64:8000 to try and sign in again."); }
             req.session.save(function(){
              return res.redirect("http://54.187.92.64:8000/");
            });
