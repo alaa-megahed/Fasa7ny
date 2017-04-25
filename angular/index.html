@@ -144,6 +144,19 @@
       });
     </script>
 
+    <script>
+        var image2 = document.getElementById('profilepic');
+        var buttonUpload = document.getElementById('uploadButton');
+
+        image2.addEventListener('click', function() {
+          buttonUpload.style.display = "inline-block";
+        });
+
+        buttonUpload.addEventListener('click', function() {
+            buttonUpload.style.display = "none";
+        });
+    </script>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="description" content="Meghna One page parallax responsive HTML Template">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
