@@ -122,6 +122,32 @@ border: 1px solid transparent;
 color: #fff;
 }
 
+/* user profile page extras */
+
+.btn-booking {
+	border: 1px solid #4e595f;
+	padding: 5px 20px;
+}
+
+.btn-booking:focus {
+    background-color: transparent;
+    border-color: #6cb670;
+}
+
+.btn-booking:hover {
+    background-color: #6cb670;
+	border: 1px solid transparent;
+    color: #fff;
+}
+
+.btn-search:hover {
+	border: 1px solid transparent;
+	border-color: #6CB670;
+    color: #fff;
+}
+
+/* end of user profile page extras */
+
 .form-control {
 background-color: #2f383d;
 border-radius: 0;
@@ -843,6 +869,18 @@ margin-bottom: 10px;
 color: #6cb670;
 }
 
+
+/*=================================================================
+Search Section
+==================================================================*/
+
+#search-sction {
+background-image: url("../img/parallax/twitter.jpg");
+padding-bottom: 100px;
+padding-top: 80px;
+}
+
+
 /*=================================================================
 Pricing section
 ==================================================================*/
@@ -1078,11 +1116,29 @@ border: 1px solid #4e595f;
 height: 38px;
 }
 
+.contact-form select {
+background-color: transparent;
+border: 1px solid #4e595f;
+height: 38px;
+width: 100%;
+
+}
+
+.myClickState {
+  border-color: lime;
+}
+
 .contact-form input:hover,
 .contact-form textarea:hover,
+.contact-form select:hover,
 #contact-submit:hover {
 border-color: #6CB670;
 }
+
+.contact-form .rounded input {
+	border-radius: 5px;
+}
+
 
 #contact-submit {
 border: 1px solid #4e595f;
@@ -1093,7 +1149,7 @@ margin: 0;
 
 .contact-form textarea.form-control {
 padding: 10px;
-height: 120px;
+height: 97px;
 }
 
 .contact-info p {
@@ -1351,6 +1407,81 @@ margin-right: 5px;
 .post-meta a:hover {
 color: #6CB670;
 }
+
+
+/* user profile page extras */
+
+.post-meta2 {
+	background-color: #3d444a;
+	border-top: 1px solid #4e595f;
+	font-size: 13px;
+	margin: 20px 0 0;
+	padding: 0px 20px 10px;
+    vertical-align: middle;
+}
+
+.post-meta2 > span {
+	border-right: 1px solid #4e595f;
+	display: inline-block;
+	font-size: 12px;
+	margin: 10px 10px 0 0;
+	padding-right: 10px;
+	vertical-align: middle;
+
+}
+
+.post-meta2 > span:last-child {
+    border-right: 0;
+    vertical-align: middle;
+
+}
+
+.post-meta2 > span > i {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+
+
+
+.post-meta3 {
+	background-color: #3d444a;
+	border-top: 1px solid #4e595f;
+	font-size: 13px;
+	margin: 20px 0 0;
+	padding: 0px 20px 10px;
+    vertical-align: middle;
+}
+
+.post-meta3 > span {
+	border-right: 1px solid #4e595f;
+	display: inline-block;
+	font-size: 12px;
+	margin: 10px 10px 0 0;
+	padding-right: 10px;
+	vertical-align: middle;
+
+}
+
+.post-meta3 > span:last-child {
+    border-right: 0;
+    vertical-align: middle;
+
+}
+
+.post-meta3 > span > i {
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.post-meta3:hover {
+    background-color: #6cb670;
+	border: 1px solid transparent;
+    color: #fff;
+}
+
+/* end of user profile page extras */
+
 
 .post-excerpt .more {
 margin-top: 20px;

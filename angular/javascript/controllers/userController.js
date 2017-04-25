@@ -1,7 +1,7 @@
 
 var app = angular.module('fasa7ny');
 
-app.controller('userController', function($scope, status,$http, User, $location, $routeParams, $modal, $window, $route) {
+app.controller('userController', function($scope, status,$http, User, $location, $routeParams, $modal, $window, $route, $log) {
 
 	$scope.user = {};
 	$scope.error = "";
@@ -91,6 +91,8 @@ app.controller('userController', function($scope, status,$http, User, $location,
 	$scope.changeImage = function(userID) {
 		console.log("ana fl change image controller")
 		console.log("OLD"+$scope.user.profilePic);
+		console.log("PROFILE ZEFTT:");
+		console.log($scope.formData.img);
 		User.changeImage(userID,$scope.formData).then(function successCallback(d) {
 			console.log("done changeImage");
 			console.log(d.data.user.profilePic);
