@@ -89,6 +89,8 @@ app.controller('editBusinessController', function($scope, status,$http, Business
   console.log("controller"+ JSON.stringify($scope.formData));
   var payment = [];
   var i = 0;
+  console.log("PAY0"+$scope.formData.pay0);
+  console.log("PAY1"+$scope.formData.pay1);
   if($scope.formData.pay0 == true){
     payment[i] =  "Cash";
     i++;
@@ -97,6 +99,8 @@ app.controller('editBusinessController', function($scope, status,$http, Business
 
    $scope.formData.payment_methods = payment;
    console.log($scope.formData);
+   console.log("PAYMENNTT");
+   console.log(payment);
     Business.edit($scope.formData)
     .then(function successCallback(d) {
       console.log("!!!!!!!!!!!!!!!!DATTAAA!!!!!!!!!!!!!!!!!!!");

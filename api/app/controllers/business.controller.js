@@ -122,7 +122,7 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             console.log("ana fl backend");
-            console.log(JSON.stringify(req.body.location));
+            console.log(req.file);
             Business.findById(id, function (err, business) {
                 if (err) res.status(500).json("Something went wrong");
                 else if (!business) res.status(500).json("Business not found");
@@ -161,8 +161,13 @@ requestRemoval: function(req,res) {
                             return res.status(500).json("You already have this phone number");
                         }
                     }
-                    if (typeof req.body.payment_methods != "undefined" && req.body.payment_methods.length > 0) {
-                        business.payment_methods.push(req.body.payment_methods);
+
+                    if(req.body.pay0) {
+                      business.payment_methods.push("Cash");
+                    }
+
+                    if(req.body.pay1) {
+                      business.payment_methods.push("Stripe");
                     }
 
                     if(typeof req.file != "undefined") {

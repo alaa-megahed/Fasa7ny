@@ -44,7 +44,7 @@ app.controller('businessController', function($scope, status,$http, Business, $l
   $scope.eventlength = 0;
 
   $scope.sublength = 0;
-
+  $scope.offerslength = 0;
   Business.get($routeParams.name)
   .then(function(d) {
     console.log("then");

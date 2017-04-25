@@ -330,7 +330,7 @@ Google Font
                        <a href=""  ng-mouseover = "decreaseCount()" class="dropbtn" ng-style = notifcolor>Notifications ({{user.data.unread_notifications}})</a>
                          <div class="dropdown-content" style = "background-color: #2B2C30; padding: 12px 16px; border-radius: 25px;" ng-if = "user.data.notifications.length != 0">
                            <center>
-                             <a class = "notif" style = "color : #6cb670; text-align:center" href = "" ng-repeat = "notification in user.data.notifications track by $index"> {{    notification  }} </a>
+                             <a class = "notif" style = "color : #6cb670; text-align:center" href = "" ng-repeat = "notification in user.data.notifications track by $index"> {{    notification.content  }} </a>
                              <hr>
                             <a href= "" ng-click = "getNotifications()" class = "notif" style = "color : green; text-align:center">View All</a>
                            </center>
