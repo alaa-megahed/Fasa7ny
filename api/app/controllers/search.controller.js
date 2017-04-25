@@ -3,6 +3,8 @@ var Business = require('../models/Business');
 SearchController = {
 
   showAll: function (req, res) {
+      console.log(req.user);
+      
      Business.find({ public: 1 }).
          exec(function (err, result) {
              if (err) {
