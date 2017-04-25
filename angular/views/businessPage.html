@@ -448,10 +448,10 @@
                         <div style="background-color:#2B2C30;" class="row">
                             <!-- post featured -->
                             <div class="image-wrap span4">
-                              <hr>
-                                <img  class="img-center"  width="300" height="260"
+                              <hr ng-if="offer.image">
+                                <img ng-if="offer.image" class="img-center"  width="300" height="260"
                                  ng-src="http://localhost:3000/photo/{{offer.image}}" class="attachment-blog_small wp-post-image" alt="3" />
-                                 <hr>
+                                 <hr ng-if="offer.image">
                                  <center>
                                   <button ng-if = "type == 4"  class="btn btn-transparent" ng-controller = "EditOffersController" ng-click = "editOffer(offer._id,offer.type)" > Edit Offer </button>
                                  <button  ng-if = "type == 4"  class="btn btn-transparent" ng-controller = "DeleteOffersController" ng-click = "deleteOffer(offer._id)"> Delete Offer </button>
@@ -464,7 +464,6 @@
                                 <h2 class="post-title">
                                     <h3>{{offer.name}}</h3>
                                 </h2>
-                                <hr width="60%">
                                 <div class="the-content">
                                     <hr width="60%"> Details:
                                     <p> {{offer.details}}</p>

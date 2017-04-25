@@ -14,23 +14,19 @@ app.config(function($routeProvider){
 		controller  : "userController"
 	})
 
-        .when("/webAdminProfile", {
+  .when("/webAdminProfile", {
 		templateUrl : "views/web_admin.html",
 		controller  : "webAdminController"
 	})
-	// .when("/",{
-	// 	templateUrl : "views/slider.html",
-	// 	controller  : "CarouselDemoCtrl"
-	// })
 
 	.when("/search/:keyword", {
-	           templateUrl: "views/search.html",
-	           controller: "SearchController"
+    templateUrl: "views/search.html",
+    controller: "SearchController"
 	})
 
 	.when('/view-all', {
-           templateUrl: 'views/search.html',
-           controller: 'SearchController'
+    templateUrl: 'views/search.html',
+    controller: 'SearchController'
   })
 
 	.when("/book-event/:id", {
@@ -70,8 +66,8 @@ app.config(function($routeProvider){
 	})
 
 	.when("/createOffer/:businessId", {
-			templateUrl : "views/createOffer.html",
-			controller  : "createOffersController"
+		templateUrl : "views/createOffer.html",
+		controller  : "createOffersController"
 	})
 
 
@@ -82,19 +78,19 @@ app.config(function($routeProvider){
 	})
 
 	.when("/viewEvents/:facilityId", {
-			templateUrl : "views/viewEvents.html",
-			controller  : "dailyEventsController"
+		templateUrl : "views/viewEvents.html",
+		controller  : "dailyEventsController"
 	})
 
-	.when("/offers",{
+	.when("/offers", {
 		templateUrl : "views/offersView.html",
 		controller  : "ViewOffersController"
 	})
 
 
 	.when("/viewOccurences/:eventId", {
-			templateUrl : "views/viewOccurences.html",
-			controller  : "viewOccurencesController"
+		templateUrl : "views/viewOccurences.html",
+		controller  : "viewOccurencesController"
 
 	})
 	.when("/auth/reset/:token", {
@@ -132,11 +128,7 @@ app.config(function($routeProvider){
 		templateUrl: "views/successful_booking.html",
 		controller : "successfulBookingController"
 	})
-
-
-
 });
-
 
 app.config(['$httpProvider', function($httpProvider) {
   $httpProvider.defaults.withCredentials = true;

@@ -15,9 +15,13 @@ angular.module('fasa7ny')
     // var user = Global.getUser();
 
     // console.log(user);
-
+    $scope.getHome = function() {
+      $window.location = "/";
+      // $location.path("/");// get back to this after ads
+    }
 
     $scope.viewAll = function() {
+      console.log("VIEW ALL");
       $location.path('/view-all');
     }
 
@@ -156,11 +160,8 @@ $scope.getAdminProfile = function()
 
 //NEED TO AZABAT THE SEARCH
     $scope.search = function(){
-
       console.log($scope.form.search);
       $location.url('/search/'+$scope.form.search);
-
-
     }
 
     $scope.decreaseCount = function(){
@@ -179,11 +180,11 @@ $scope.getAdminProfile = function()
 
     }
 
-    $scope.google = function(){
+    $scope.google = function() {
        $window.location = $window.location.protocol + "//" + "localhost:3000/auth/google";
     }
 
-    $scope.logout = function(){
+    $scope.logout = function() {
 
       console.log($scope.type);
       if(!$scope.type)
@@ -191,7 +192,6 @@ $scope.getAdminProfile = function()
         Homepage.logoutLocal().then(function(result){
           $location.url('/');
           $scope.updateUser();
-
         })
       }
       else {
@@ -204,14 +204,11 @@ $scope.getAdminProfile = function()
       }
     }
 
-      $scope.getHome = function()
-      {
-
+      $scope.getHome = function() {
         $location.path("/");// get back to this after ads
       }
 
-      $scope.getSearch = function()
-      {
+      $scope.getSearch = function() {
         console.log("hiii");
         $scope.searchAppear = 1;
       }
