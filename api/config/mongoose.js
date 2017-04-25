@@ -8,7 +8,7 @@ require('../app/models/Rating');
 require('../app/models/Review');
 require('../app/models/Facility');
 require('../app/models/Advertisement');
-// require('../app/models/Statistic');
+require('../app/models/Statistic');
 
 
 

@@ -32,7 +32,7 @@ var mongoose = require('./config/mongoose'),
 // });
 
 
-// var business = new Businesses();
+// var business = new Business();
 // business.local.username = "Naaame";
 // business.description = "Business Descriptions";
 // business.area = "New Cairo";

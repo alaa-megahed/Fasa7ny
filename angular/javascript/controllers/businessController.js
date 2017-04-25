@@ -454,7 +454,9 @@ app.controller('businessController', function ($scope, status, $http, Business, 
       });
   };
 
-
+  $scope.viewStats = function() {
+    $location.path('/statistics/' + $scope.business._id); 
+  }
 
 });
 

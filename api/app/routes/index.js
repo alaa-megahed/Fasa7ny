@@ -14,7 +14,7 @@ var event = require('./event.routes');
 var auth = require('./auth.routes');
 var user = require('./registered_user.routes');
 var admin = require('./web_admin.routes');
-// var stats = require('./stats.routes');
+var stats = require('./stats.routes');
 
 router.use('/auth', auth);
 router.use('/event', event);
@@ -39,6 +39,6 @@ router.get('/loggedin', function (req, res) {
 });
 
 
-// router.use('/stats', stats);
+router.use('/stats', stats);
 
 module.exports = router;

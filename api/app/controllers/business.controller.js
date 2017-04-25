@@ -11,7 +11,7 @@ var async = require('async');
 var BusinessController = {
 
   getBusiness: function (req, res) {
-   console.log("backend");
+   console.log("get business " + req.user );
    if(req.params.name && req.user && req.user instanceof User) {
       var name = req.params.name;
        Business.findOne({name: name }).
