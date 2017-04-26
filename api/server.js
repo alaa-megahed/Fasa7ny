@@ -4,8 +4,6 @@ var mongoose = require('./config/mongoose'),
     config   = require('./config/config'),
     express  = require('./config/express'),
     db       = mongoose(),
-    Business = require("./app/models/Business")
-
     app      = express();
 
 
@@ -23,13 +21,13 @@ var mongoose = require('./config/mongoose'),
 // event.save();
 
 
-//  var Admin = require('./app/models/WebAdmin');
-//  var webAdmin = new Admin();
-//  webAdmin.local.username = "Jaki";
-//   webAdmin.local.password = webAdmin.generateHash("1234");
-//   webAdmin.save(function(err){
-// if(err) throw err;
-// });
+ var Admin = require('./app/models/WebAdmin');
+ var webAdmin = new Admin();
+ webAdmin.local.username = "WebAdmin";
+  webAdmin.local.password = webAdmin.generateHash("Password1234");
+  webAdmin.save(function(err){
+if(err) throw err;
+});
 
 
 // var business = new Businesses();
