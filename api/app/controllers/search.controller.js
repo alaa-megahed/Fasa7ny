@@ -6,11 +6,10 @@ SearchController = {
      Business.find({ public: 1 }).
          exec(function (err, result) {
              if (err) {
-                 res.status(500);
-                 res.send(err);
+                 res.status(500).json('Oops..something went wrong.'); 
              }
              else {
-                 res.json(result);
+                 res.status(200).json(result);
              }
 
         });
