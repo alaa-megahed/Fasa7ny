@@ -1,5 +1,5 @@
 
-var app = angular.module('fasa7ny', ['ngRoute', 'ui.bootstrap', 'ngCookies']);
+var app = angular.module('fasa7ny', ['ngRoute', 'ui.bootstrap', 'ngCookies', 'chart.js']);
 
 app.config(function ($routeProvider) {
 	$routeProvider

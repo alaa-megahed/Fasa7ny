@@ -1,14 +1,35 @@
 angular.module('fasa7ny')
-    .controller('StatsController', function ($scope, Stats, $routeParams) {
-
-
+    .controller('StatsController', function ($scope, Stats, $routeParams, status) {
+        // $scope.type = 1;
         $scope.businessID = $routeParams.id;
         $scope.title = 'Statistics';
         $scope.maxDate = new Date() + "";
         $scope.errMsg = '';
+        status.local()
+            .then(function (res) {
+                if (res.data) {
+                    console.log(res.data);
+
+                    if (res.data.user_type == 1)
+                        $scope.type = 1;
+                    else if (res.data.user_type == 2)
+                        $scope.type = 4;
+                    else $scope.type = 3;
+                }
+                else {
+                    status.foreign()
+                        .then(function (res) {
+                            if (res.data.user_type)
+                                $scope.type = 1;
+                            else $scope.type = 2;
+                        });
+                }
+            });
+        console.log('stats type ' + $scope.type);
+
 
         //the 5 metrics tracked in our stats system
-        $scope.series = ['Views', 'Attendees', 'Rating', 'Sales', 'Subscriptions'];
+        $scope.series = ['Views', 'Customers', 'Rating', 'Sales', 'Subscriptions'];
 
         //initilaization with dummy data as a demo 
         $scope.data = [
@@ -83,7 +104,7 @@ angular.module('fasa7ny')
                     $scope.data = chart.data;
                     $scope.labels = chart.labels;
                 }, function (res) {
-                    
+
                     $scope.errMsg = res.data;
                 });
             }

@@ -46,7 +46,6 @@ $scope.getAdminProfile = function()
 
                if($scope.user.data)
                {
-                 console.log("Data is " + JSON.stringify(result));
                   $scope.type = 0;
                   if($scope.user.data.notifications)
                   {
@@ -74,7 +73,6 @@ $scope.getAdminProfile = function()
                      }
 
                     deferred.resolve(result);
-                   console.log("response is " + JSON.stringify(deferred.promise));
                   },function(response){
                     deferred.reject();
                     $location.path('/');
@@ -93,12 +91,9 @@ $scope.getAdminProfile = function()
     $scope.getAdvertisements = function()
     {
       Homepage.getAds().then(function successfulCallback(result){
-        console.log("Ads are" + JSON.stringify(result));
 
-        console.log("A single ad is " + JSON.stringify(result.data[0]));
 
         $scope.advertisements = result.data;
-        console.log("Ads bro " +  JSON.stringify($scope.advertisements));
 
       });
     }
@@ -157,7 +152,6 @@ $scope.getAdminProfile = function()
 //NEED TO AZABAT THE SEARCH
     $scope.search = function(){
 
-      console.log($scope.form.search);
       $location.url('/search/'+$scope.form.search);
 
 
@@ -171,7 +165,6 @@ $scope.getAdminProfile = function()
     }
 
     $scope.searchCategory = function(category){
-      console.log("category issss" + category);
     }
 
     $scope.facebook = function(){
@@ -185,7 +178,6 @@ $scope.getAdminProfile = function()
 
     $scope.logout = function(){
 
-      console.log($scope.type);
       if(!$scope.type)
       {
         Homepage.logoutLocal().then(function(result){
@@ -197,7 +189,6 @@ $scope.getAdminProfile = function()
       else {
         Homepage.logout().then(function(result)
         {
-            console.log(result);
             $location.path('/');
             $scope.updateUser();
         })
@@ -212,19 +203,15 @@ $scope.getAdminProfile = function()
 
       $scope.getSearch = function()
       {
-        console.log("hiii");
         $scope.searchAppear = 1;
       }
 
 
     $scope.goToBusinessPage = function(id) {
-      console.log("yellehwiii");
-      console.log(id);
       $location.path('/business/'+id);
     }
 
     $scope.getNotifications = function(){
-      console.log("hiii");
       $location.path('/user/notifications');
     }
 
@@ -285,10 +272,8 @@ $scope.getAdminProfile = function()
 
       $scope.submitForm = function () {
           if ($scope.form.userForm.$valid) {
-            console.log("signin");
-            console.log($scope.formData);
               Homepage.signIn($scope.formData).then(function(data){
-                console.log("Return data "  + JSON.stringify(data));
+                // console.log("Return data "  + JSON.stringify(data));
                 if(data.data === "success")
                 {
                   $modalInstance.close("closed");
@@ -336,13 +321,11 @@ $scope.getAdminProfile = function()
   .controller('ModalInstanceCtrl2', function ($scope, $timeout, $window, $modalStack, $http,$modalInstance, Homepage) {
         $scope.form = {};
         $scope.submitForm = function (formData) {
-            console.log(formData);
                 Homepage.forgotPassword(formData).then(function(data)
                   {
                     $scope.err = "";
                     $scope.success = "";
 
-                    console.log(JSON.stringify(data));
                     if(data.data.startsWith("An e-mail has been sent to "))
                     {
                         console.log("hello");

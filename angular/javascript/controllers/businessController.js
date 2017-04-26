@@ -1,7 +1,7 @@
 
 var app = angular.module('fasa7ny');
 app.controller('businessController', function ($scope, status, $http, Business, $location, Global, $routeParams, $modal, $log, $window, $document, Stats) {
-$scope.type = 1; //must be initialized otherwise is undefined later 
+  // $scope.type = {}; //must be initialized otherwise is undefined later 
 
   status.local()
     .then(function (res) {
@@ -118,9 +118,9 @@ $scope.type = 1; //must be initialized otherwise is undefined later
       console.log(d.data.result);
       $scope.business = d.data.result;
 
-       //check cookies for page views count 
-      Stats.checkCookies($scope.type, $scope.business._id); 
-     
+      //check cookies for page views count 
+      Stats.checkCookies($scope.type, $scope.business._id);
+
 
       $scope.phones = d.data.result.phones;
       $scope.phonelength = 0; //zero means that the business has more than one phone number
@@ -260,6 +260,8 @@ $scope.type = 1; //must be initialized otherwise is undefined later
         $scope.sub = "Unsubscribe";
         $scope.check = 1;
         $scope.sublength = $scope.sublength + 1;
+      }, function (res) {
+        alert(res.data);
       })
   };
 
@@ -271,6 +273,8 @@ $scope.type = 1; //must be initialized otherwise is undefined later
         $scope.sub = "Subscribe";
         $scope.check = 0;
         $scope.sublength = $scope.sublength - 1;
+      }, function (res) {
+        alert(res.data);
       })
   };
 
@@ -459,8 +463,8 @@ $scope.type = 1; //must be initialized otherwise is undefined later
       });
   };
 
-  $scope.viewStats = function() {
-    $location.path('/statistics/' + $scope.business._id); 
+  $scope.viewStats = function () {
+    $location.path('/statistics/' + $scope.business._id);
   }
 
 });
