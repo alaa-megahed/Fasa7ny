@@ -33,5 +33,6 @@ angular.module('fasa7ny')
             }, function (res) {
                 alert(res.data);
             });
-        
+        // $scope.chunkedBusinesses = chunk($scope.businesses, 4);
+        // console.log($scope.chunkedBusinesses);
     }); 
