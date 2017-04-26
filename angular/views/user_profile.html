@@ -10,9 +10,7 @@
 
 <!-- Start Top Section (image + name + email)
 ============================================= -->
-<div ng-if="type!=1">
-  <center>  You are not authorized to view this page. </center>
-</div>
+
 
 <div ng-if="type==1">
 <!-- <script>
@@ -256,7 +254,9 @@
     </div>       <!-- End container -->
 </section>    <!-- End Section -->
 
-
+<div ng-if="type!=1">
+  <center>  You are not authorized to view this page. </center>
+</div>
 
 <a href="#" id="scrollUp"><i class="fa fa-angle-up fa-2x"></i></a>
 </div>

@@ -45,11 +45,14 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
 
 
 
-        $scope.cash = true;
-        // for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
-        //   if($scope.business.payment_methods[i] === "cash")
-        //     $scope.cash = true;
-        // }
+        $scope.cash = false;
+        $scope.stripe = false;
+        for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
+          if($scope.business.payment_methods[i] === "Cash")
+            $scope.cash = true;
+          if($scope.business.payment_methods[i] == "Stripe")
+              $scope.stripe = true;
+        }
         // $scope.current_event = Global.getOnceEvent();
 
 
