@@ -4,10 +4,7 @@ angular.module('fasa7ny')
             if (typeof input == 'undefined' || input.length == 0) { return input }
 
             var out = [];
-            if (typeof filterCategory != 'undefined') {
-                filterCategory = filterCategory.toLowerCase();
 
-            }
             for (var i = 0; i < input.length && typeof input[i] != 'undefined'; i++) {
                 var categoryF = true;
                 var ratingF = true;
@@ -17,17 +14,18 @@ angular.module('fasa7ny')
 
                 var categories = input[i].category; //array of business categories
 
-                if (filterCategory == 'all' || filterCategory == '' || typeof filterCategory == 'undefined') { //selected categories is all 
+                if (filterCategory == 'all' || filterCategory == '' || typeof filterArea == 'undefined') { //selected categories is all 
                     categoryF = true; // display all
+                 
+
                 } else {
                     if (categories == 'undefined') { // business has no categories 
 
                         categoryF = false; //don't display it 
-                    } else {
+                    } else if (typeof categories != 'undefined') {
                         categoryF = false; //check if business has filter category
-                        for (var j = 0; typeof categories[j] != 'undefined' && j < categories.length; j++) {
-                            if (categories[j].toLowerCase() == filterCategory) {
-                               
+                        for (var j = 0; typeof categories[i] != 'undefined' && j < categories.length; j++) {
+                            if (categories[j] == filterCategory) {
                                 categoryF = true;
                             }
                         }
@@ -66,10 +64,10 @@ angular.module('fasa7ny')
     .filter('empty', function () {
         return function (rows) {
             if (typeof rows == 'undefined' || rows.length == 0) return;
-            var out = [];
+            var out = []; 
             for (var i = 0; i < rows.length; i++) {
                 if (typeof rows[i] != 'undefined' && rows[i].length > 0)
-                    out.push(rows[i]);
+                    out.push(rows[i]); 
             }
             return out;
         }
