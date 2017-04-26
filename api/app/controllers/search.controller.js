@@ -4,7 +4,6 @@ var Business = mongoose.model('Business');
 SearchController = {
 
     showAll: function (req, res) {
-        console.log("search " + req.user); 
 
         Business.find({ public: 1 }).
             exec(function (err, result) {

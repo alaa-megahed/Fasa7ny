@@ -51,7 +51,7 @@ var StatsController = {
         newWeekStat.save(function (err) { if (err) { throw err; } });
       }
     });
-    console.log(now);
+
 
     MonthStat.findOne({
       business: businessID,
@@ -158,8 +158,8 @@ var StatsController = {
           res.status(500).json('Oops.. something went wrong.');
         }
         else {
-          console.log(result);
-          res.json(result);
+
+          res.status(200).json(result);
         }
       });
 
@@ -169,7 +169,7 @@ var StatsController = {
 
   },
   getMothStats: function (req, res) {
-
+    console.log('stats controller ' + req.user);
     var businessID = req.body.businessID;
     var startMonth = parseInt(req.body.startMonth);
     var startYear = parseInt(req.body.startYear);
@@ -209,7 +209,7 @@ var StatsController = {
 
         else {
           console.log(result);
-          res.json(result);
+          res.status(200).json(result);
 
         }
       });
@@ -220,7 +220,7 @@ var StatsController = {
   },
   getYearStats: function (req, res) {
     console.log(req.body);
-    
+
     var businessID = req.body.businessID;
     var startYear = parseInt(req.body.startYear);
     var endYear = parseInt(req.body.endYear);
@@ -236,7 +236,7 @@ var StatsController = {
       query.exec(
         function (err, result) {
           if (err) {
-            
+
             res.status(500).json('Oops.. something went wrong.');
           } else {
             res.json(result);

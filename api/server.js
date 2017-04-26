@@ -25,8 +25,8 @@ var mongoose = require('./config/mongoose'),
 
 //  var Admin = require('./app/models/WebAdmin');
 //  var webAdmin = new Admin();
-//  webAdmin.local.username = "Jaki";
-//   webAdmin.local.password = webAdmin.generateHash("1234");
+//  webAdmin.local.username = "radwa";
+//   webAdmin.local.password = webAdmin.generateHash("123");
 //   webAdmin.save(function(err){
 // if(err) throw err;
 // });
