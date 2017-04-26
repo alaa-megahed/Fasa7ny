@@ -21,13 +21,13 @@ var mongoose = require('./config/mongoose'),
 // event.save();
 
 
- var Admin = require('./app/models/WebAdmin');
- var webAdmin = new Admin();
- webAdmin.local.username = "WebAdmin";
-  webAdmin.local.password = webAdmin.generateHash("Password1234");
-  webAdmin.save(function(err){
-if(err) throw err;
-});
+//  var Admin = require('./app/models/WebAdmin');
+//  var webAdmin = new Admin();
+//  webAdmin.local.username = "WebAdmin";
+//   webAdmin.local.password = webAdmin.generateHash("Password1234");
+//   webAdmin.save(function(err){
+// if(err) throw err;
+// });
 
 
 // var business = new Businesses();
