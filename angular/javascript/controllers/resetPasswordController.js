@@ -10,7 +10,7 @@ angular.module('fasa7ny')
         {
             $scope.success = data.data;
             $timeout(function() {
-            $window.location = $window.location.protocol + "//" + "localhost:8000" + $window.location.pathname + "/";
+            $window.location = $window.location.protocol + "//" + "54.187.92.64:8000" + $window.location.pathname + "/";
           }, 2000);
         }
 

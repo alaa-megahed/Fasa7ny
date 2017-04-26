@@ -1,15 +1,15 @@
 app.factory('User', ['$http', function($http) {
     return {
 	    getUserDetails : function(id) {
-	        return $http.get('http://127.0.0.1:3000/user/u/' + id);
+	        return $http.get('http://54.187.92.64:3000/user/u/' + id);
 	    },
 
 	    getBookingDetails: function(booking) {
-	        return $http.get('http://127.0.0.1:3000/user/bookings/' + booking);
+	        return $http.get('http://54.187.92.64:3000/user/bookings/' + booking);
 	    },
 
 	    getSubscribedBusiness: function(business_id) {
-	        return $http.get('http://127.0.0.1:3000/user/subs/' + business_id);
+	        return $http.get('http://54.187.92.64:3000/user/subs/' + business_id);
 	    },
 
 	    editUserInfo: function(userID, formData) {
@@ -21,7 +21,7 @@ app.factory('User', ['$http', function($http) {
               console.log(fd);
 
 
-	    	return $http.post('http://127.0.0.1:3000/user/editInfo/' + userID, fd, {
+	    	return $http.post('http://54.187.92.64:3000/user/editInfo/' + userID, fd, {
                 transformRequest: angular.identity,
                 headers: { 'Content-Type': undefined }
               });
@@ -35,7 +35,7 @@ app.factory('User', ['$http', function($http) {
             console.log("change image service");
             console.log(fd);
 
-	    	return $http.post('http://127.0.0.1:3000/user/editInfo/' + userID, fd, {
+	    	return $http.post('http://54.187.92.64:3000/user/editInfo/' + userID, fd, {
                 transformRequest: angular.identity,
                 headers: { 'Content-Type': undefined }
               });

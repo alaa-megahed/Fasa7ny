@@ -1,13 +1,13 @@
 
 <!--  Start Add Business & Ad Section
-=========================================== -->     
+=========================================== -->
 
-  
+
 
         <div ng-if = "type !=3">
         <center>
         <h2>You are not authorised to view this page</h2>
-         </center>   
+         </center>
         </div>
             <!-- / Start Add Business Area -->
             <section id="team-skills" class="parallax-section" ng-if = "type==3">
@@ -23,19 +23,19 @@
                 <!-- /section title -->
 
                 <form id="contact-form" >
-                
+
                     <div class="form-group">
-                        <input type="text" placeholder="Username" class="form-control" name="name" id="name" data-ng-model= "business.username" required> 
+                        <input type="text" placeholder="Username" class="form-control" name="name" id="name" data-ng-model= "business.username" required>
                     </div>
 
                     <div class="form-group">
                         <input type="text" placeholder="Name" class="form-control" name="subject" id="subject" ng-model = "business.name" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <input type="email" placeholder="Email" class="form-control" name="email" id="email" data-ng-model="business.email" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <input type="text" placeholder="Merchant ID" class="form-control" name="subject" id="subject" data-ng-model="business.merchant_ID" required>
                     </div>
@@ -57,18 +57,18 @@
 
                     <br>
                     <br>
-                    
+
                     <div id="cf-submit">
                         <button type="submit" id="contact-submit" class="btn btn-transparent"  ng-click =  "addBusiness()" > ADD </button>
-                    </div>                      
-                    
+                    </div>
+
                 </form>
             </div>
             <!-- / End Add Business Area -->
 
 
 
-                
+
             <!-- / Start Add Ad Area -->
             <div class="col-md-6 "   ng-controller="webAdminController" ng-if = "type==3">
             <label style="color:    #FF0000;" >{{msg}}</label>
@@ -79,30 +79,30 @@
                 </div>
 
                 <form  id="contact-form">
-                
+
                     <div class="form-group">
-                        <textarea rows= "3" placeholder="Advertisement Body" class="form-control" name="message" id="message" data-ng-model= "advertisement.text" required></textarea>   
+                        <textarea rows= "3" placeholder="Advertisement Body" class="form-control" name="message" id="message" data-ng-model= "advertisement.text" required></textarea>
                     </div>
 
                     <div class="form-group">
                         Start Date
                         <input type="date" placeholder="Start Date" class="form-control" name="name" id="name" ng-model = "advertisement.sdate" required>
                     </div>
-                    
+
                     <div class="form-group" >
                     End Date
                         <input type="date"  placeholder="End Date" class="form-control" name="email" id="email" ng-model = "advertisement.edate" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <input type="file" class="form-control" name="image" file-model="advertisement.image">
                     </div>
-                    
-                    
+
+
                     <div id="cf-submit">
                         <button type="submit" id="contact-submit" class="btn btn-transparent"  ng-click =  "addAds()" >  ADD </button>
-                    </div>                      
-                    
+                    </div>
+
                 </form>
             </div>
             <!-- / End Add Ad Area -->
@@ -119,21 +119,21 @@
 
 
 <!-- Start Added Businesses Section
-=========================================== -->     
+=========================================== -->
 <section id="contact-us" >
     <div class="container" ng-app = "fasa7ny" ng-controller="webAdminController" ng-if = "type==3">
         <div class="row">
-            
+
             <!-- section title -->
             <div class="title text-center wow fadeIn" data-wow-duration="500ms">
                 <h2>Requested <span class="color">To be Deleted</span></h2>
                 <div class="border"></div>
             </div>
             <!-- /section title -->
-            
-            
+
+
             <!-- Single Business Item -->
-            
+
             <!-- End Single Business Item -->
 
       <ul>
@@ -141,17 +141,17 @@
       <li data-ng-repeat= "request in requests" ><article class="col-md-3 col-sm-6 col-xs-12 wow fadeInUp" data-wow-duration="500ms" data-wow-delay="400ms">
                 <div class="service-block text-center">
                     <h2 style="font-size: 30px"><span class="color">{{request.name}} </span></h2>
-              
-                                                                
-                    <button class="btn btn-booking" ng-click = "deleteBusiness(request)" style = "display:block; margin: 0 auto;"> Delete Business </button>                  
+
+
+                    <button class="btn btn-booking" ng-click = "deleteBusiness(request)" style = "display:block; margin: 0 auto;"> Delete Business </button>
                 </div>
             </article></li>
       </ul>
 
-          
 
 
-          
+
+
 
 
 
@@ -175,46 +175,46 @@
 <section id="services" class="bg-one" ng-app = "fasa7ny" ng-controller="webAdminController" ng-if = "type==3">
     <div class="container">
         <div class="row">
-            
+
             <!-- section title -->
             <div class="title text-center wow fadeIn" data-wow-duration="500ms">
                 <h2>Remove <span class="color">Advertisements</span></h2>
                 <div class="border"></div>
             </div>
             <!-- /section title -->
-            
+
              <ul>
                 <li data-ng-repeat= "ad in ads" >  <!-- Single Ad Item -->
             <article class="col-md-4 wow fadeInUp" data-wow-duration="500ms">
                 <div class="post-item">
-   
+
                     <article class="entry wow fadeInDown"  data-wow-duration="1000ms" data-wow-delay="300ms">
-                       
+
                         <div class="post-thumb">
-                            
-                                <img ng-src='http://localhost:3000/photo/{{ad.image}}' alt="3D Beach Art | Meghna" class="img-responsive">
+
+                                <img ng-src='http://54.187.92.64:3000/photo/{{ad.image}}' alt="3D Beach Art | Meghna" class="img-responsive">
                             </a>
                         </div>
                         <div class="post-excerpt">
                             <p>{{ ad.text }}</p>
 
-                            
+
                             <button ng-click = "deleteAd(ad)" class="btn btn-transparent"> Delete</button>
-                           
+
                         </div>
 
-                                    
+
                         <div class="post-meta">
                         <span class="post-date">
                                         <i class="fa fa-calendar"></i> {{ad.sdate| date }}
                                     </span>
-                                
+
                            <span class="post-date">
                                 <i class="fa fa-calendar"></i> {{ad.edate | date}}
-                            </span> 
+                            </span>
                         </div>
                     </article>
-                   
+
                 </div>
             </article>
             <!-- End Single Ad Item -->
@@ -222,14 +222,14 @@
 
              </ul>
 
- 
-           
-
-            
 
 
 
-           
+
+
+
+
+
 
 
 
@@ -256,7 +256,7 @@
              </div>
  -->
 
-                
+
         </div>      <!-- End row -->
     </div>      <!-- End container -->
 </section>   <!-- End section -->

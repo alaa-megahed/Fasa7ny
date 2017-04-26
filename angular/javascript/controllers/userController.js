@@ -57,7 +57,7 @@ app.controller('userController', function($scope, status,$http, User, $location,
 
 	$scope.cancelBooking =function(bookingId)
 	{
-		$http.post('http://127.0.0.1:3000/bookings/deleteRegUserBookings',{bookingD:bookingId}).then(
+		$http.post('http://54.187.92.64:3000/bookings/deleteRegUserBookings',{bookingD:bookingId}).then(
 			function success(response)
 			{
 				$route.reload();

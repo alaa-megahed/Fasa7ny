@@ -33,7 +33,7 @@
             <div class="image-upload" style="float: left: 0; right: 0; margin: 0 auto;" >
               <label for="file-input">
                 <div class=" image-cropper" >
-                  <img ng-src='http://localhost:3000/photo/{{business.profilePicture}}' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
+                  <img ng-src='http://54.187.92.64:3000/photo/{{business.profilePicture}}' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
                   <div class="middle">
                     <div ng-if = "type == 4" style="font-size: 20px; color:lightgrey;"> Change profile picture</div>
                   </div>
@@ -74,7 +74,7 @@
                 <carousel interval="myInterval">
                   <slide ng-repeat="slide in slides">
                     <div class="crop">
-                      <img style="margin:auto;" ng-src="http://localhost:3000/photo/{{slide}}">
+                      <img style="margin:auto;" ng-src="http://54.187.92.64:3000/photo/{{slide}}">
                     </div>
                     <div style="text-align:left">
                     &nbsp;&nbsp;  <button  ng-if = "type == 4" class="btn btn-transparent" ng-click="deleteImage(slide)"> Delete Image </button>
@@ -300,7 +300,7 @@
                             <div class="image-wrap span4">
                               <hr>
                                 <img style="width: auto\9;height: auto;max-width: 100%; vertical-align: middle;border: 0; -ms-interpolation-mode: bicubic;" width="365" height="340"
-                                 src="http://localhost:3000/photo/{{facility.image}}" class="attachment-blog_small wp-post-image" alt="3" />
+                                 src="http://54.187.92.64:3000/photo/{{facility.image}}" class="attachment-blog_small wp-post-image" alt="3" />
                                  <hr>
                                  <center>
                                   <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "goToEditFacility(facility._id)"> Edit Facility </button>
@@ -408,7 +408,7 @@
                             <div class="image-wrap span4">
                               <hr ng-if="offer.image">
                                 <img ng-if="offer.image" class="img-center"  width="300" height="260"
-                                 ng-src="http://localhost:3000/photo/{{offer.image}}" class="attachment-blog_small wp-post-image" alt="3" />
+                                 ng-src="http://54.187.92.64:3000/photo/{{offer.image}}" class="attachment-blog_small wp-post-image" alt="3" />
                                  <hr ng-if="offer.image">
                                  <center>
                                   <button ng-if = "type == 4"  class="btn btn-transparent" ng-controller = "EditOffersController" ng-click = "editOffer(offer._id,offer.type)" > Edit Offer </button>

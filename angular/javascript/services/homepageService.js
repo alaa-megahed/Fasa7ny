@@ -3,11 +3,11 @@ angular.module('fasa7ny')
   .factory('Homepage', function($http, $q, $location) {
     return {
       get: function() {
-        return $http.get('http://127.0.0.1:3000/');
+        return $http.get('http://54.187.92.64:3000/');
       },
       signIn : function(formData) {
         return $http({
-         url: 'http://127.0.0.1:3000/auth/login',
+         url: 'http://54.187.92.64:3000/auth/login',
          method: "POST",
          withCredentials: true,
          data: {username : formData.username, password :formData.password},
@@ -24,7 +24,7 @@ angular.module('fasa7ny')
       },
       signUp : function(formData) {
         return $http({
-         url: 'http://127.0.0.1:3000/auth/signup',
+         url: 'http://54.187.92.64:3000/auth/signup',
          method: "POST",
          withCredentials: true,
          data: formData,
@@ -40,18 +40,18 @@ angular.module('fasa7ny')
        })
       },
       forgotPassword : function(formData) {
-        return $http.post('http://127.0.0.1:3000/auth/forgot', formData);
+        return $http.post('http://54.187.92.64:3000/auth/forgot', formData);
       },
       search : function(formData) {
-        return $http.post('http://127.0.0.1:3000/search', formData);
+        return $http.post('http://54.187.92.64:3000/search', formData);
 
       },
       resetUnread : function() {
-        return  $http.get('http://127.0.0.1:3000/user/resetUnread');
+        return  $http.get('http://54.187.92.64:3000/user/resetUnread');
       },
       logoutLocal: function() {
         return $http({
-             url: 'http://127.0.0.1:3000/auth/logout',
+             url: 'http://54.187.92.64:3000/auth/logout',
              method: "GET",
              withCredentials: true,
              headers: {

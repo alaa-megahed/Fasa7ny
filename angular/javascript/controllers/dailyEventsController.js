@@ -130,14 +130,14 @@ var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents
                 var bookings = occs[i].bookings;
                 for(var j = 0; j < bookings.length; j++)
                 {
-                $http.post('http://127.0.0.1:3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
+                $http.post('http://54.187.92.64:3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
                         .then(function successCallback(response){
                             console.log(response.data);
                         }, function errorCallback(response){
                             console.log(response.data);
                         });
 
-                    
+
                 }
             }
 

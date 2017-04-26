@@ -58,17 +58,17 @@ app.controller('viewOccurencesController', function($scope, $http, status,viewOc
 var DeletePopUp = function ($scope, $http, $modalInstance,viewOccurences,occId,$route) {
     $scope.form = {}
     $scope.error ="";
-    $scope.submitForm = function () 
+    $scope.submitForm = function ()
     {
       console.log("occ id f delete popup "+ occId);
       console.log('Delete Occ Form');
 
-      $http.post('http://127.0.0.1:3000/event/getOccurrence', {occ_id: occId}).then(function successCallback(response)
+      $http.post('http://54.187.92.64:3000/event/getOccurrence', {occ_id: occId}).then(function successCallback(response)
       {
         var bookings = response.data.bookings;
         for(var j = 0; j < bookings.length; j++)
         {
-          $http.post('http://127.0.0.1:3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
+          $http.post('http://54.187.92.64:3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
           .then(function successCallback(response){
             console.log(response.data);
           }, function errorCallback(response){
@@ -87,8 +87,8 @@ var DeletePopUp = function ($scope, $http, $modalInstance,viewOccurences,occId,$
         });
       });
 
-       
-        
+
+
     };
 
     $scope.cancel = function () {

@@ -19,7 +19,7 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
    }
  });
 
-    
+
   $scope.eventocc = $routeParams.eventoccId;
   $scope.error_message = "";
   occurrenceBookings.get($scope.eventocc).then(function (response)
@@ -30,7 +30,7 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
   $scope.deleteBooking = function(bookingID,eventoccId)
   {
     console.log("booking id "+ bookingID +"eventocc  "+eventoccId);
-    $http.post('http://127.0.0.1:3000/bookings/cancel_booking',{booking_id:bookingID , event_id:eventoccId}).then(
+    $http.post('http://54.187.92.64:3000/bookings/cancel_booking',{booking_id:bookingID , event_id:eventoccId}).then(
       function success(response)
       {
         occurrenceBookings.get($scope.eventocc).then(function (response){
@@ -43,7 +43,7 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
       });
     });
   };
-        
+
 });
 
 
@@ -74,13 +74,13 @@ app.controller('viewEventBookings',function($scope,status,$http,$location,occurr
     occurrenceBookings.get($scope.event_occ).then(function (response){
         $scope.bookings = response.data;
      });
-   
+
 
 
    $scope.deleteBooking = function(bookingID,eventoccId)
   {
     console.log("booking id "+ bookingID +"eventocc  "+eventoccId);
-    $http.post('http://127.0.0.1:3000/bookings/cancel_booking',{booking_id:bookingID , event_id:eventoccId}).then(
+    $http.post('http://54.187.92.64:3000/bookings/cancel_booking',{booking_id:bookingID , event_id:eventoccId}).then(
       function success(response)
       {
         occurrenceBookings.get($scope.eventocc).then(function (response){
@@ -94,8 +94,3 @@ app.controller('viewEventBookings',function($scope,status,$http,$location,occurr
     });
   };
 });
-
-
-
- 
-      
