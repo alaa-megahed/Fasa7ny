@@ -1,5 +1,5 @@
 angular.module('fasa7ny')
-    .factory('Stats', function ($http) {
+    .factory('Stats',['$http', '$cookies',  function ($http, $cookies) {
         var api = 'http://localhost:3000';
         var factory = {};
         factory.year = function (params) {
@@ -57,34 +57,37 @@ angular.module('fasa7ny')
             return chart;
         }
 
-        // factory.checkCookies = function (userType, businessID) {
-        //     //if logged in user, or not logged in user, or another business, then count page views
-        //     if (userType == 1 || userType == 2 || userType == 5) {
-        //         var cookieKey = 'fasa7ny.' + businessID + '.' + userType;
-        //         var cookie = $cookies.get(cookieKey);
-        //         console.log(cookie);
+        factory.checkCookies = function (userType, businessID) {
+            console.log('be5');
+            console.log(userType); 
+            
+            //if logged in user, or not logged in user, or another business, then count page views
+            if (userType  != 4 && userType != 3) {
+                var cookieKey = 'fasa7ny.' + businessID + '.' + userType;
+                var cookie = $cookies.get(cookieKey);
+                console.log(cookie);
 
-        //         if (typeof cookie == 'undefined' || cookies == null) {
-        //             console.log('here');
+                if (typeof cookie == 'undefined' || cookies == null) {
+                    console.log('here');
 
-        //             var date = new Date();
-        //             $http.post('http://localhost:3000/stats/addStat', {
-        //                 date: date,
-        //                 businessID: businessID,
-        //                 statType: 'views',
-        //                 amount: 1
-        //             }, function (res) {
+                    var date = new Date();
+                    $http.post('http://localhost:3000/stats/addStat', {
+                        date: date,
+                        businessID: businessID,
+                        statType: 'views',
+                        amount: 1
+                    }, function (res) {
 
-        //             });
-        //             var now = new Date();
-        //             now.setDate(now.getDate() + 1);
-        //             $cookies.put(cookieKey, 'fasa7ny', {
-        //                 expires: now
-        //             });
-        //             console.log($cookies.get(cookieKey));
-        //         }
-        //     }
-        // }
+                    });
+                    var now = new Date();
+                    now.setDate(now.getDate() + 1);
+                    $cookies.put(cookieKey, 'fasa7ny', {
+                        expires: now
+                    });
+                    console.log($cookies.get(cookieKey));
+                }
+            }
+        }
 
         return factory;
-    }); 
+    }]); 

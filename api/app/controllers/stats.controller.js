@@ -219,7 +219,8 @@ var StatsController = {
 
   },
   getYearStats: function (req, res) {
-
+    console.log(req.body);
+    
     var businessID = req.body.businessID;
     var startYear = parseInt(req.body.startYear);
     var endYear = parseInt(req.body.endYear);

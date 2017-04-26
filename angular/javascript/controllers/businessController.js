@@ -1,6 +1,7 @@
 
 var app = angular.module('fasa7ny');
-app.controller('businessController', function ($scope, status, $http, Business, $location, Global, $routeParams, $modal, $log, $window, $document) {
+app.controller('businessController', function ($scope, status, $http, Business, $location, Global, $routeParams, $modal, $log, $window, $document, Stats) {
+$scope.type = 1; //must be initialized otherwise is undefined later 
 
   status.local()
     .then(function (res) {
@@ -116,6 +117,10 @@ app.controller('businessController', function ($scope, status, $http, Business, 
 
       console.log(d.data.result);
       $scope.business = d.data.result;
+
+       //check cookies for page views count 
+      Stats.checkCookies($scope.type, $scope.business._id); 
+     
 
       $scope.phones = d.data.result.phones;
       $scope.phonelength = 0; //zero means that the business has more than one phone number
