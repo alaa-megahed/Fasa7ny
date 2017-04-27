@@ -1,6 +1,6 @@
 var app = angular.module('fasa7ny');
 
-app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences)
+app.controller('bookingEventController', function($scope, $http,$routeParams,Business,$location,Global,Event,status, Offers,viewOccurences)
 {
 
     $scope.current_event = $routeParams.id;
@@ -38,12 +38,11 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
 
                      });
 
-
           });
 
-
-
-
+        Business.get($scope.business_id).then(function(response){
+              $scope.business = response.data.result;
+        }); 
 
         $scope.cash = false;
         $scope.stripe = false;

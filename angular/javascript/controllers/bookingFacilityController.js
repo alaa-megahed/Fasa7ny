@@ -1,6 +1,6 @@
 var app = angular.module('fasa7ny');
 
-app.controller('bookFacilityController', function($scope, $http, $location,$routeParams, Offers,status,Occurrences,Global,Facilities) {
+app.controller('bookFacilityController', function($scope, $http, $location,$routeParams,Business, Offers,status,Occurrences,Global,Facilities) {
     $scope.business_id = $routeParams.id;
       $scope.user = {};
       status.local().then(function(res){
@@ -36,6 +36,9 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
       Occurrences.get().then(function(response){
            $scope.timings = response.data;
       });
+      Business.get($scope.business_id).then(function(response){
+            $scope.business = response.data.result;
+      });   
       $scope.cash = false;
       $scope.stripe = false;
       for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
