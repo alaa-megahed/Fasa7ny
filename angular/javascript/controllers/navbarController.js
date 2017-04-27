@@ -232,6 +232,28 @@ angular.module('fasa7ny')
       $scope.submitForm = function (formData) {
           if ($scope.form.userForm.$valid) {
 
+            if(!$scope.form.userForm.name)
+              $scope.err = "Please enter name.";
+            else if(!$scope.form.userForm.password || $scope.form.userForm.password.length < 8)
+              $scope.err = "Please enter a vaild password.";
+            else if(!$scope.form.userForm.email)
+              $scope.err = "Please enter email.";
+            else if(!$scope.form.userForm.phone)
+              $scope.err = "Please enter phone.";
+            else if(!$scope.form.userForm.birthdate)
+              $scope.err = "Please enter a birthdate.";
+            else if($scope.form.userForm.gender != "Male" && $scope.form.userForm.gender != "Female" && $scope.form.userForm.gender != "Other" && $scope.form.userForm.gender != null)
+              $scope.err = "Please enter either Male, Female,Other or leave gender field empty."
+            else
+            {
+              for(var i = 0; i < $scope.form.userForm.phone.length; i++)
+                if(isNaN($scope.form.userForm.phone[i]))
+                  $scope.err = "Please enter a valid phone number.";
+
+            }
+
+
+
             Homepage.signUp(formData).then(function(data)
             {
 
