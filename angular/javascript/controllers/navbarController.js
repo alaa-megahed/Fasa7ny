@@ -118,7 +118,7 @@ angular.module('fasa7ny')
 
         modalInstance.result.then(function (selectedItem) {
                 $scope.err1 = selectedItem.err;
-                if($scope.err1 === "The username or email provided is already taken." )
+                if($scope.err1 === "The username or email provided is already taken."|| $scope.err1 === "Please enter all the required information in a vaild form." )
                   $scope.signUp();
                 }, function () {
                   $log.info('Modal dismissed at: ' + new Date());
@@ -153,7 +153,6 @@ angular.module('fasa7ny')
 
     }
 
-//NEED TO AZABAT THE SEARCH
     $scope.search = function(){
       console.log($scope.form.search);
       $location.url('/search/'+$scope.form.search);

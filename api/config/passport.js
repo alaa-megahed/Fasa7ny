@@ -51,8 +51,8 @@ module.exports = function(passport)
       },
       function(req, username, password, done)
       {
-          if(!req.body)
-            return res.json("Error. Please enter valid information");
+          if(!req.body.name || !req.body.birthdate || !req.body.username || !req.body.password || !req.body.email || !req.body.phone || req.body.birthdate > new Date())
+            return done(null, false, req.flash('signupMessage',  'Please enter all the required information in a vaild form.'));
           var check = 0;
           // check weather the username entered is unique
           // search the registered users collection
@@ -71,7 +71,7 @@ module.exports = function(passport)
                 if(check == 3)
                 {
                     // username and email entered is unique
-                      var newUser            = new User();
+                      var newUser          = new User();
                       newUser.local.username = username;
                       newUser.local.password = newUser.generateHash(password);
                       newUser.name           = req.body.name;
