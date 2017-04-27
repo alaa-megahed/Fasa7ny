@@ -61,7 +61,7 @@ angular.module('fasa7ny')
       },
       logout : function(){
         var deferred = $q.defer();
-        $http.get("http://localhost:3000/auth/logout").then(function(result){
+        $http.get("http://54.187.92.64:3000/auth/logout").then(function(result){
           deferred.resolve(result);
           $location.path("/");
          return deferred.promise;
@@ -71,10 +71,10 @@ angular.module('fasa7ny')
         });
       },
       getAds : function(){
-        return $http.get("http://localhost:3000/admin/viewAvailableAdvertisements");
+        return $http.get("http://54.187.92.64:3000/admin/viewAvailableAdvertisements");
       },
       updateAds : function(){
-        return $http.post("http://localhost:3000/admin/updateAdvertisements", adInfo);
+        return $http.post("http://54.187.92.64:3000/admin/updateAdvertisements", adInfo);
       }
 
 
