@@ -51,7 +51,25 @@ module.exports = function(passport)
       },
       function(req, username, password, done)
       {
-          if(!req.body.name || !req.body.birthdate || !req.body.username || !req.body.password || !req.body.email || !req.body.phone || req.body.birthdate > new Date())
+          var NaP = 0;
+          if(req.body.phone)
+          {
+            if(req.body.phone.length < 11)
+              NaP = 1;
+            else {
+                for(var i = 0; i < req.body.phone.length; i++)
+                {
+                  if(isNaN(req.body.phone[i]))
+                    NaP = 1;
+                    break;
+
+                }
+              }
+
+
+          }
+          if(!req.body.name || !req.body.birthdate || !req.body.username || !req.body.password || !req.body.email || !req.body.phone || req.body.birthdate > new Date()
+            ||req.body.password.length < 8 || NaP)
             return done(null, false, req.flash('signupMessage',  'Please enter all the required information in a vaild form.'));
           var check = 0;
           // check weather the username entered is unique
