@@ -68,7 +68,10 @@ module.exports = function(passport)
 
 
           }
-          if(!req.body.name || !req.body.birthdate || !req.body.username || !req.body.password || !req.body.email || !req.body.phone || req.body.birthdate > new Date()
+
+          var today = new Date();
+
+          if(!req.body.name || !req.body.birthdate || !req.body.username || !req.body.password || !req.body.email || !req.body.phone || req.body.birthdate > today
             ||req.body.password.length < 8 || NaP)
             return done(null, false, req.flash('signupMessage',  'Please enter all the required information in a vaild form.'));
           var check = 0;
