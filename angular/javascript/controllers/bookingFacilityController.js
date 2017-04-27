@@ -37,7 +37,7 @@ app.controller('bookFacilityController', function($scope, $http,Business, $locat
            $scope.timings = response.data;
       });
       Business.get($scope.business_id).then(function(response){
-            $scope.business = response.result;
+            $scope.business = response.data.result;
       }); 
       $scope.cash = false;
       $scope.stripe = false;
