@@ -228,6 +228,7 @@ angular.module('fasa7ny')
 
   .controller('ModalInstanceCtrl', function ($scope, $http, $window, $modalInstance, userForm, Homepage, $route) {
       $scope.form = {};
+      $scope.err = "";
 
       $scope.submitForm = function (formData) {
           if ($scope.form.userForm.$valid) {
