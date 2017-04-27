@@ -35,10 +35,10 @@ angular.module('fasa7ny')
     }
 
     // conasole.log(user);
-$scope.getAdminProfile = function()
-{
-  $location.path('/webAdminProfile');
-}
+    $scope.getAdminProfile = function()
+    {
+      $location.path('/webAdminProfile');
+    }
 
 
     $scope.updateUser = function()
@@ -97,12 +97,7 @@ $scope.getAdminProfile = function()
     $scope.getAdvertisements = function()
     {
       Homepage.getAds().then(function successfulCallback(result){
-        console.log("Ads are" + JSON.stringify(result));
-
-        console.log("A single ad is " + JSON.stringify(result.data[0]));
-
         $scope.advertisements = result.data;
-        console.log("Ads bro " +  JSON.stringify($scope.advertisements));
 
       });
     }

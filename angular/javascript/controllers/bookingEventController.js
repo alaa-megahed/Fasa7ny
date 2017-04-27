@@ -45,16 +45,16 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
 
         Business.get($scope.business_id).then(function(response){
             $scope.business = response.data.result;
-       }); 
+       });
 
         $scope.cash = false;
         $scope.stripe = false;
-        for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
-          if($scope.business.payment_methods[i] === "Cash")
+      //  for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
+        //  if($scope.business.payment_methods[i] === "Cash")
             $scope.cash = true;
-          if($scope.business.payment_methods[i] == "Stripe")
+          //if($scope.business.payment_methods[i] == "Stripe")
               $scope.stripe = true;
-        }
+      //  }
         // $scope.current_event = Global.getOnceEvent();
 
 

@@ -36,17 +36,17 @@ app.controller('bookFacilityController', function($scope, $http,Business, $locat
       Occurrences.get().then(function(response){
            $scope.timings = response.data;
       });
-      Business.get($scope.business_id).then(function(response){
-            $scope.business = response.data.result;
-      }); 
+      Business.getUnloggedBusiness($scope.business_id).then(function(response){
+            $scope.business = response.data;
+      });
       $scope.cash = false;
       $scope.stripe = false;
-      for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
-        if($scope.business.payment_methods[i] === "Cash")
+    //  for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
+      //  if($scope.business.payment_methods[i] === "Cash")
           $scope.cash = true;
-        if($scope.business.payment_methods[i] == "Stripe")
+      //  if($scope.business.payment_methods[i] == "Stripe")
             $scope.stripe = true;
-      }
+    //  }
       $scope.choose_date = function(date)
       {
         $scope.date  = date.getDate();

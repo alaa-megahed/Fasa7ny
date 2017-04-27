@@ -71,7 +71,7 @@ angular.module('fasa7ny')
         });
       },
       getAds : function(){
-        return $http.get("http://localhost:3000/admin/viewAdvertisements");
+        return $http.get("http://localhost:3000/admin/viewAvailableAdvertisements");
       },
       updateAds : function(){
         return $http.post("http://localhost:3000/admin/updateAdvertisements", adInfo);

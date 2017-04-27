@@ -138,8 +138,8 @@ exports.AddBusiness = function (req, res) {
 }
 }
  else {
-    return res.status(200).json("Unauthorized access. Please log in."); 
-    
+    return res.status(200).json("Unauthorized access. Please log in.");
+
   }
 }
 
@@ -191,7 +191,7 @@ if(req.user && req.user instanceof WebAdmin){
                         });
                     }
                 }
-            }); 
+            });
         });
 
         Business.findByIdAndRemove(req.params.id, function (err, business) {
@@ -200,13 +200,13 @@ if(req.user && req.user instanceof WebAdmin){
             res.status(200).json("Succefully deleted");
         });
 
-       
+
     });
 
 }
  else {
-    return res.status(200).json("Unauthorized access. Please log in."); 
-    
+    return res.status(200).json("Unauthorized access. Please log in.");
+
   }
 
 }
@@ -219,15 +219,15 @@ if(req.user && req.user instanceof WebAdmin)
   {
 
     Business.find({ delete: 1 }, function (err, requests) {
-     
+
         res.status(200).json(requests);
     });
   }
   else {
-    return res.status(200).json("Unauthorized access. Please log in."); 
-    
+    return res.status(200).json("Unauthorized access. Please log in.");
+
   }
-    
+
 }
 
 
@@ -244,13 +244,13 @@ if(req.user && req.user instanceof WebAdmin)
 exports.addAdvertisement = function(req,res)
 {
 
-    
+
   if(req.user && req.user instanceof WebAdmin)
   {
       if(req.file){
 
     if(!req.file.filename || !req.body.text || !req.body.sdate || !req.body.edate)
-    {    
+    {
          console.log("f 7aga fadya");
       return res.status(200).json("Please fill in all necessary components");
     }
@@ -269,7 +269,7 @@ exports.addAdvertisement = function(req,res)
       if(err)
        res.status(500).json("error");
       else{
-        
+
          res.status(200).json("successfully created advertisement");
 }
     });
@@ -318,57 +318,89 @@ exports.deleteAdvertisement = function(req,res)
 
 
 
-exports.updateAvailableAdvertisements = function(req,res)
-{
-  var rule = new schedule.RecurrenceRule();
-  rule.dayOfWeek = [new schedule.Range(0,6)];
-  rule.hour = 00;
-  rule.minute = 00;
+// exports.updateAvailableAdvertisements = function(req,res)
+// {
+//   var rule = new schedule.RecurrenceRule();
+//   rule.dayOfWeek = [new schedule.Range(0,6)];
+//   rule.hour = 00;
+//   rule.minute = 00;
+//
+//
+//   var j = schedule.scheduleJob(rule, function()
+//   {
+//     var d = new Date();
+//     Advertisement.find({}, function(err, ads)
+//     {
+//       console.log(ads);
+//       for(var i = 0; i < ads.length; i++)
+//       {
+//         if(ads[i].end_date < d || ads[i].start_date > d)
+//         {
+//           console.log("this has expired: " + ads[i]);
+//           ads[i].available = 0;
+//           ads[i].save();
+//         }
+//         else {
+//           ads[i].available = 1;
+//           ads[i].save();
+//         }
+//       }
+//
+//
+//       res.send("successful");
+//
+//     })
+//   });
+//
+//
+// }
 
-
-  var j = schedule.scheduleJob(rule, function()
-  {
-    var d = new Date();
-    Advertisement.find({}, function(err, ads)
-    {
-      console.log(ads);
-      for(var i = 0; i < ads.length; i++)
-      {
-        if(ads[i].end_date < d || ads[i].start_date > d)
-        {
-          console.log("this has expired: " + ads[i]);
-          ads[i].available = 0;
-          ads[i].save();
-        }
-        else {
-          ads[i].available = 1;
-          ads[i].save();
-        }
-      }
-
-
-      res.send("successful");
-
-    })
-  });
-
-
-}
 
 exports.viewAvailableAdvertisements = function(req,res)
 {
-  if(req.user && req.user instanceof WebAdmin)
-  {
-    Advertisement.find({available : 1}, function(err, ads)
+
+    Advertisement.find({}, function(err, ads)
     {
-      res.send(ads);
+      if(err)
+        return res.json(err);
+      else
+      {
+        var today = new Date();
+        var send = [];
+        for(var i = 0; i < ads.length; i++)
+        {
+          if( ads[i].start_date > today || ads[i].end_date < today)
+          {
+            ads[i].available = 0;
+            ads[i].save();
+          }
+          else {
+            send.push(ads[i]);
+          }
+        }
+
+        return res.json(send);
+
+      }
+
     });
-  }
-  else {
-    return res.send("Unauthorized access. Please log in.");
-  }
+
 
 }
+
+
+exports.updateAdvertisements = function(req,res)
+{
+  Advertisement.findByIdAndUpdate(req.body.ad, {available:0}, function(err, ad)
+  {
+    if(err)
+      return res.json("error");
+      else {
+        return res.json("success");
+      }
+  })
+}
+
 
 
 exports.viewAllAdvertisements = function(req,res)
@@ -378,7 +410,7 @@ exports.viewAllAdvertisements = function(req,res)
 
     Advertisement.find({},function(err, ads)
     {
-      
+
       res.status(200).json(ads);
     });
   }
