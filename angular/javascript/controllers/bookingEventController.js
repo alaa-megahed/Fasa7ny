@@ -43,9 +43,9 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
 
 
 
-        Business.get($scope.business_id).then(function(response){
-            $scope.business = response.data.result;
-       });
+      //   Business.get($scope.business_id).then(function(response){
+      //       $scope.business = response.data.result;
+      //  });
 
         $scope.cash = false;
         $scope.stripe = false;
