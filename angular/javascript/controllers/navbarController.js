@@ -248,34 +248,39 @@ angular.module('fasa7ny')
             else
             {
               for(var i = 0; i < $scope.formData.phone.length; i++)
+              {
                 if(isNaN($scope.formData.phone[i]))
                   $scope.err = "Please enter a valid phone number.";
+              }
+
 
             }
 
-
-
-            Homepage.signUp(formData).then(function(data)
+            if(!$scope.err)
             {
-
-              if(data.data === "success")
+              Homepage.signUp(formData).then(function(data)
               {
-                // $window.location.reload();
-                $route.reload();
-                $modalInstance.close("closed");
-              }
 
-              else
-              {
-                $scope.err = data.data;
-                $modalInstance.close({
-                  err : $scope.err[0]
-                });
-              //  $scope.signIn();
-              }
+                if(data.data === "success")
+                {
+                  // $window.location.reload();
+                  $route.reload();
+                  $modalInstance.close("closed");
+                }
 
-            }, function(data2){
-            });
+                else
+                {
+                  $scope.err = data.data;
+                  $modalInstance.close({
+                    err : $scope.err[0]
+                  });
+                //  $scope.signIn();
+                }
+
+              }, function(data2){
+              });
+            }
+
 
           } else {
 
