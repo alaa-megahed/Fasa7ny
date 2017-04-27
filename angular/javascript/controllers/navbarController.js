@@ -232,7 +232,7 @@ angular.module('fasa7ny')
 
       $scope.submitForm = function (formData) {
           if ($scope.form.userForm.$valid) {
-
+            var today = new Date();
             if(!$scope.formData.name)
               $scope.err = "Please enter name.";
             else if(!$scope.formData.password || $scope.formData.password.length < 8)
@@ -241,8 +241,8 @@ angular.module('fasa7ny')
               $scope.err = "Please enter email.";
             else if(!$scope.formData.phone)
               $scope.err = "Please enter phone.";
-            else if(!$scope.formData.birthdate)
-              $scope.err = "Please enter a birthdate.";
+            else if(!$scope.formData.birthdate || $scope.formData.birthdate > today)
+              $scope.err = "Please enter a valid birthdate.";
             else if($scope.formData.gender != "Male" && $scope.formData.gender != "Female" && $scope.formData.gender != "Other" && $scope.formData.gender != null)
               $scope.err = "Please enter either Male, Female,Other or leave gender field empty."
             else
