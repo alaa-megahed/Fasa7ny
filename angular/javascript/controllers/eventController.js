@@ -231,14 +231,14 @@ var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Ev
 var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event,id, $route) {
     $scope.form = {}
     $scope.formData = {}
-    $scope.error = "";
     $scope.submitForm = function () {
+			$scope.error = "";
          if(($scope.formData.starttime && !$scope.formData.endtime) || (!$scope.formData.starttime && $scope.formData.endtime)){
             $scope.error = "Must enter both a start date and end date";
-        }
+        } else
         if($scope.formData.capacity == 0){
         	$scope.error = "Enter a valid capacity";
-        }
+        } else
         if($scope.formData.price == 0){
         	$scope.error = "Enter a valid price";
         }

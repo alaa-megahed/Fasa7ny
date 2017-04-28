@@ -1,5 +1,4 @@
-
-var app = angular.module('fasa7ny',['ngRoute', 'ui.bootstrap']);
+var app = angular.module('fasa7ny',['ngRoute', 'ui.bootstrap', 'ui.calendar']);
 
 app.config(function($routeProvider){
 	$routeProvider
