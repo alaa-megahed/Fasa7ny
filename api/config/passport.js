@@ -20,13 +20,13 @@ module.exports = function(passport)
    });
 
    passport.deserializeUser(function(id, done) {
-         User.findById(id,'-password', function(err, user) {
+         User.findById(id,'-local.password', function(err, user) {
             if(!user)
             {
-              Business.findById(id, '-password',function(err, user){
+              Business.findById(id, '-local.password',function(err, user){
                 if(!user)
                 {
-                    Admin.findById(id, '-password',function(err, user){
+                    Admin.findById(id, '-local.password',function(err, user){
                     done(err, user);
                   });
                 }
