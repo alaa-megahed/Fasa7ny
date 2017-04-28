@@ -228,34 +228,36 @@ angular.module('fasa7ny')
 
   .controller('ModalInstanceCtrl', function ($scope, $http, $window, $modalInstance, userForm, Homepage, $route) {
       $scope.form = {};
-      $scope.err = "";
+      $scope.err = {};
+
+      var today = new Date();
+      if(!$scope.formData.name)
+        $scope.err.name = "Please enter name.";
+      else if(!$scope.formData.password || $scope.formData.password.length < 8)
+        $scope.err.password = "Please enter a vaild password.";
+      else if(!scope.formData.username)
+        $scope.err.username = "Please enter a username";
+      else if(!$scope.formData.email)
+        $scope.err.email = "Please enter email.";
+      else if(!$scope.formData.phone)
+        $scope.err.phone = "Please enter phone.";
+      else if(!$scope.formData.birthdate || $scope.formData.birthdate > today)
+        $scope.err.birthdate = "Please enter a valid birthdate.";
+      else if($scope.formData.gender != "Male" && $scope.formData.gender != "Female" && $scope.formData.gender != "Other" && $scope.formData.gender != null)
+        $scope.err.gender = "Please enter either Male, Female,Other or leave gender field empty."
+      else
+      {
+        for(var i = 0; i < $scope.formData.phone.length; i++)
+        {
+          if(isNaN($scope.formData.phone[i]))
+            $scope.err.phone = "Please enter a valid phone number.";
+        }
+
+
+      }
 
       $scope.submitForm = function (formData) {
           if ($scope.form.userForm.$valid) {
-            var today = new Date();
-            if(!$scope.formData.name)
-              $scope.err = "Please enter name.";
-            else if(!$scope.formData.password || $scope.formData.password.length < 8)
-              $scope.err = "Please enter a vaild password.";
-            else if(!$scope.formData.email)
-              $scope.err = "Please enter email.";
-            else if(!$scope.formData.phone)
-              $scope.err = "Please enter phone.";
-            else if(!$scope.formData.birthdate || $scope.formData.birthdate > today)
-              $scope.err = "Please enter a valid birthdate.";
-            else if($scope.formData.gender != "Male" && $scope.formData.gender != "Female" && $scope.formData.gender != "Other" && $scope.formData.gender != null)
-              $scope.err = "Please enter either Male, Female,Other or leave gender field empty."
-            else
-            {
-              for(var i = 0; i < $scope.formData.phone.length; i++)
-              {
-                if(isNaN($scope.formData.phone[i]))
-                  $scope.err = "Please enter a valid phone number.";
-              }
-
-
-            }
-
             if(!$scope.err)
             {
               Homepage.signUp(formData).then(function(data)
