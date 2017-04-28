@@ -5,7 +5,7 @@ var mongoose      = require('mongoose'),
 require('mongoose-double')(mongoose);
 var SchemaTypes = mongoose.Schema.Types;
 var RegisteredUser = require('./RegisteredUser');
-
+var Review = require('./Review').ReviewSchema; 
 
 var BusinessSchema = new Schema({
     local         :
@@ -53,7 +53,7 @@ var BusinessSchema = new Schema({
     {
         type: Number, default:0
     },
-    reviews : [{type: mongoose.Schema.Types.ObjectId, ref:'Review',default: []}],
+    reviews : [Review],
     profilePicture : String,
     facebookURL    : String,
     twitterURL     : String,

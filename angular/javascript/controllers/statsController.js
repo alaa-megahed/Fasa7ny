@@ -5,6 +5,7 @@ angular.module('fasa7ny')
         $scope.title = 'Statistics';
         $scope.maxDate = new Date() + "";
         $scope.errMsg = '';
+        $scope.type; 
         status.local()
             .then(function (res) {
 

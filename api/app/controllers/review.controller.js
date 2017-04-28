@@ -7,47 +7,43 @@ var WebAdmin = mongoose.model('WebAdmin');
 
 /* a user can write a review about a certain business by creating the review
  then pushing this review to the array of reviews of the business*/
-exports.writeReview = function(req, res) {
+exports.writeReview = function (req, res) {
 
-  if(req.user && req.user instanceof RegisteredUser && typeof req.body.review != "undefined"
-  && req.body.review.length > 0 && typeof req.query.id != "undefined") {
-    var businessId = req.query.id;
-    var id = req.user.id;
-
-    Business.findOne({_id:businessId}, function(err, business) {
-      if(err) console.log("error in adding review to business");
-      else if(business) {
-
-        var newReview = new Review({
-          review : req.body.review,
-          upvote : 0,
-          downvote : 0
-        });
-        newReview.business = businessId;
-        newReview.user = id;
-
-        newReview.save(function(err, review) {
-          if(err) {
-            console.log("cannot save review");
-          } else {
-            console.log(review);
+  if (req.user && req.user.user_type == 1 && typeof req.body.review != "undefined"
+    && req.body.review.length > 0 && typeof req.body.businessID != "undefined") {
 
 
-            business.reviews.push(review);
+    var businessID = req.body.businessID;
+    var id = req.user._id;
 
-            business.save(function(err, updatedbusiness) {
-              if(err) {
-                console.log("could not update the business's review");
+    Business.findOne({ _id: businessID }, function (err, business) {
+      if (err) console.log(err);
+      else if (business) {
+        RegisteredUser.findById(id, function (err, user) {
+          if (err)
+            console.log(err);
+          else {
+            var newReview = new Review({
+              review: req.body.review,
+              votes: 0
+            });
+            newReview.business = businessID;
+            newReview.user.id = user._id;
+            newReview.user.id = user.name;
+            business.reviews.push(newReview);
+            business.save(function (err, updatedBusiness) {
+              if (err) {
+                res.status(500).json('Oops.. something went wrong.');
               } else {
-                console.log(updatedbusiness);
-                res.send(updatedbusiness);
-                //redirect to the review page and his review should be displayed
+                res.json(updatedBusiness);
               }
             });
           }
         });
       }
     });
+  } else {
+    res.status(401).json('You are not authorized to perform this action.');
   }
 }
 
@@ -57,80 +53,53 @@ and the upvotes will be incremented.
 and also can change a downvote to upvote by removing the user from the downvotes
 array and decrementing the array then add such user to the upvotes array and
 the upvotes will be incremented*/
-exports.upvoteReview = function(req, res) {
+exports.upvoteReview = function (req, res) {
 
-  if(req.user && req.user instanceof RegisteredUser && typeof req.query.review != "undefined") {
-    var rev = req.query.review;
-    var id = req.user.id;
-    // var id = req.body.id;
-    // var rev = req.body.review;
+  //only a signed in user can upvote a review 
+  if (req.user && req.user.user_type == 1 && typeof req.body.review != "undefined"
+    && typeof req.body.businessID != "undefined") {
+    var businessID = req.body.businessID;
+    var reviewID = req.body.review._id;
+    var userID = req.user._id;
 
-    Review.findOne({_id: rev}, function(err, review) {
-      if(err) {
-        console.log("cannot find review to be upvoted");
+    Business.findById(businessID, function (err, business) {
+      var review = business.reviews.id(reviewID); //if this review  belongs to this business 
+      if (review != null) {
+        var upIndex = business.reviews.id(reviewID).upvotes.indexOf(userID);
+        if (upIndex > -1) { //user has upvoted before
+
+          business.reviews.id(reviewID).upvotes.splice(upIndex, 1); //undo upvote
+          business.reviews.id(reviewID).votes--;
+
+        } else { //user has downvoted before 
+          var downIndex = business.reviews.id(reviewID).downvotes.indexOf(userID);
+          if (downIndex > -1) { //if user has downvoted before 
+            business.reviews.id(reviewID).downvotes.splice(downIndex, 1); //remove downvote
+            business.reviews.id(reviewID).votes++;
+
+          }
+          business.reviews.id(reviewID).upvotes.push(userID); //add upvote
+          business.reviews.id(reviewID).votes++;
+        }
+        business.save(function (err, updatedBusiness) {
+          if (err) {
+            res.status(500).json('Oops.. something went wrong.');
+          } else {
+            res.json(updatedBusiness);
+          }
+        });
+
       } else {
-        var flag = true;
-        for(var i = 0; i < review.upvotes.length; i++) {
-          if(review.upvotes[i] == id) flag = false;
-        }
-
-        if(flag == true) {
-          // review.upvotes.push(id);
-
-          Review.findByIdAndUpdate(rev, {$push: {"upvotes" : id}},{safe:true, upsert: true, new:true},
-          function(err, newrev) {
-            if(err) {
-              console.log("error in upvoting the review");
-            } else {
-              console.log("upvoted1");
-            }
-          });
-
-          Review.findByIdAndUpdate(rev, {$set: {upvote: review.upvote+1}},
-            function(err, updatedReview) {
-              if(err) {
-                console.log("error in upvoting");
-              } else {
-                console.log("upvoted2");
-                console.log(updatedReview);
-
-                for(var i = 0; i < review.downvotes.length; i++) {
-                  if(review.downvotes[i] == id){
-                    flag = false;
-                  }
-                }
-
-                if(flag == false) {
-                  // review.downvotes.pull(id);
-
-                  Review.findByIdAndUpdate(rev, {$pull: {"downvotes" : id}},{safe:true, upsert: true, new:true},
-                  function(err, newreview) {
-                    if(err) {
-                      console.log("error in updating downvotes array");
-                    } else {
-                      console.log("upvotes array updated");
-                    }
-                  });
-
-                  Review.findByIdAndUpdate(rev, {$set: {downvote: review.downvote-1}},
-                    function(err, updatedReview) {
-                      if(err) {
-                        console.log("error in decrementing downvotes");
-                      } else {
-                        console.log("downvotes decremented");
-                        console.log(updatedReview);
-                      }
-                  });
-                }
-              }
-          });
-
-        } else {
-          console.log("cannot vote more than once");
-        }
+        res.status(500);
+        res.send('Error');
       }
-    })
+    });
+  } else {
+    res.status(500).json('You are not authorized to perform this action.');
   }
+
+
+
 }
 
 /*A user can downvote a review about a business. Any user can downvote only once,
@@ -139,211 +108,197 @@ review and the downvote will be incremented.
 and also can change the upvote to downvote by removing the user from the
 upvotes array and decrementing the array then add such user to the downvote
 array and the downvotes will be incremented*/
-exports.downvoteReview = function(req, res) {
+exports.downvoteReview = function (req, res) {
 
-  if(req.user && req.user instanceof RegisteredUser && typeof req.query.review != "undefined") {
-    var rev = req.query.review;
-    var id = req.user.id;
-    // var rev = req.body.review;
-    // var id = req.body.id;
+  //only a signed in user can downvote a review
+  if (req.user && req.user.user_type == 1 && typeof req.body.review != "undefined"
+    && typeof req.body.businessID != "undefined") {
+    var businessID = req.body.businessID;
+    var reviewID = req.body.review._id;
+    var userID = req.user._id;
 
-    Review.findOne({_id: rev}, function(err, review) {
-      if(err) {
-        console.log("cannot find review to be downvoted");
-      } else {
-        var flag = true;
-        for(var i = 0; i < review.downvotes.length; i++) {
-          if(review.downvotes[i] == id) flag = false;
-        }
-
-        if(flag == true) {
-          // review.downvotes.push(id);
-
-          Review.findByIdAndUpdate(rev, {$push: {"downvotes" : id}},{safe:true, upsert: true, new:true},
-          function(err, newrev) {
-            if(err) {
-              console.log("error in downvoting the review");
-            } else {
-              console.log("downvoted1");
-            }
-          });
-
-          Review.findByIdAndUpdate(rev, {$set: {downvote: review.downvote+1}},
-            function(err, updatedReview) {
-              if(err) {
-                console.log("error in downvoting");
-              } else {
-                console.log("downvoted");
-                console.log(updatedReview);
-
-                for(var i = 0; i < review.upvotes.length; i++) {
-                  if(review.upvotes[i] == id){
-                    flag = false;
-                  }
-                }
-
-                if(flag == false) {
-                  // review.upvotes.pull(id);
-
-                  Review.findByIdAndUpdate(rev, {$pull: {"upvotes" : id}},{safe:true, upsert: true, new:true},
-                  function(err, newreview) {
-                    if(err) {
-                      console.log("error in updating upvotes in the review");
-                    } else {
-                      console.log("upvotes array updated");
-                    }
-                  });
-
-                  Review.findByIdAndUpdate(rev, {$set: {upvote: review.upvote-1}},
-                    function(err, updatedReview) {
-                      if(err) {
-                        console.log("error in decrementing upvotes");
-                      } else {
-                        console.log("upvotes decremented");
-                        console.log(updatedReview);
-                      }
-                  });
-                }
-              }
-          });
+    Business.findById(businessID, function (err, business) {
+      var review = business.reviews.id(reviewID);
+      if (review != null) { //if review belongs to this business 
+        var downIndex = business.reviews.id(reviewID).downvotes.indexOf(userID);
+        if (downIndex > -1) { //if user has downvoted before 
+          console.log('undo downvote');
+          business.reviews.id(reviewID).downvotes.splice(downIndex, 1); //undo downvote
+          business.reviews.id(reviewID).votes++;
         } else {
-          console.log("cannot vote more than once");
+          var upIndex = business.reviews.id(reviewID).upvotes.indexOf(userID);
+          if (upIndex > -1) { //if user has upvoted before
+            business.reviews.id(reviewID).upvotes.splice(upIndex, 1); // remove upvote
+            business.reviews.id(reviewID).votes--;
+          }
+          //add downvote
+          business.reviews.id(reviewID).downvotes.push(userID);
+          business.reviews.id(reviewID).votes--;
         }
-      }
-    })
-  }
-}
-/*view reviews of a certain business*/
-exports.viewReviews = function(req, res) {
-  if(req.query.id != "undefined") {
-    var businessId = req.query.id;
-
-    Review.find({business:businessId}, function(err, reviews) {
-      if(err) {
-        console.log("error in viewing the reviews");
+        business.save(function (err, updatedBusiness) {
+          if (err) {
+            res.status(500).json('Oops.. something went wrong.');
+          } else {
+            res.json(updatedBusiness);
+          }
+        });
       } else {
-        console.log(reviews);
+        res.status(500).json('You are not authorized to perform this action.');
       }
-    })
+    });
+
+
+  } else {
+    res.status(500).json('You are not authorized to perform this action.');
   }
+
+
+
 }
 /* A business or a RegisteredUser can reply to a review.
 First, we must check if the user who is replying a business or a RegisteredUser
 then add the reply to the replies array in the review */
-exports.replyReview = function(req, res) {
+exports.replyReview = function (req, res) {
+  //only a signed in user or a business replying to its own reviews can reply to reviews 
 
-  if(req.user && typeof req.body.reply != "undefined" && typeof req.query.id != "undefined") {
-    var id = req.user.id;
-    var r = req.body.reply;
-    var reviewId = req.query.id;  //req.params.
-    // var id = req.body.id;
-    // var r = req.body.reply;
-    // var reviewId = req.body.review;
+  if (req.user && typeof req.body.reviewID != "undefined"
+    && typeof req.body.businessID != "undefined" && typeof req.body.reply != 'undefined' && 
+    ((req.use.user_type == 1) || (req.user.user_type == 2 && req.body.businessID) )
+  ) {
 
-    if(req.user instanceof Business) {
-      var newReply = new Reply({
-        reply:req.body.reply
-      });
-      newReply.business = business;
-      newReply.review = reviewId;
 
-      newReply.save(function(err, reply) {
-        if(err) {
-          console.log("cannot save reply");
+    var businessID = req.body.businessID;
+    var reviewID = req.body.reviewID;
+    var userID = req.user._id;
+    var reply = req.body.reply;
+
+    Business.findById(businessID, function (err, business) {
+      if (err)
+        console.log(err);
+      else {
+        if (business.reviews.id(reviewID) != null) {
+          //if review belongs to this business 
+          if (userID != businessID) { //if user is replying to user review
+            RegisteredUser.findById(userID, function (err, user) {
+              if (err)
+                console.log(err);
+              else {
+                var newReply = new Reply();
+                newReply.user.id = user._id;
+                newReply.user.name = user.name;
+                newReply.authorType = 'user';
+                newReply.reply = reply;
+                business.reviews.id(reviewID).replies.push(newReply);
+                business.save(function (err, updatedBusiness) {
+                  if (err) {
+                    res.status(500).json('Oops.. something went wrong');
+                  }
+                  else {
+                    res.json(updatedBusiness);
+                  }
+                })
+              }
+            });
+          } else if (req.user._id == businessID) { //if business if replying to review about itself 
+            var newReply = new Reply();
+            newReply.authorType = 'business';
+            newReply.reply = reply;
+            business.reviews.id(reviewID).replies.push(newReply);
+            business.save(function (err, updatedBusiness) {
+              if (err) {
+                res.status(500).json('Oops.. something went wrong');
+
+              } else {
+                res.json(updatedBusiness);
+              }
+            });
+
+          } else {
+            res.status(500).json('You are not allowed to perform this action.');
+          }
         } else {
-          Review.findByIdAndUpdate(reviewId, {$push: {"replies" : reply}},{safe:true, upsert: true, new:true},
-          function(err, review) {
-            if(err) {
-              console.log("error in updating replies in the review");
-            } else {
-              console.log("reply by business added to the review");
-            }
-          });
+          res.status(500).json('You are not allowed to perform this action.');
         }
-      });
-    } else if(req.user instanceof RegisteredUser) {
-      var newReply = new Reply({
-        reply:req.body.reply
-      });
-      newReply.user = user;
-      newReply.review = reviewId;
+      }
+    })
 
-      newReply.save(function(err, reply) {
-        if(err) {
-          console.log("cannot save reply");
-        } else {
-          Review.findByIdAndUpdate(reviewId, {$push: {"replies" : reply}},{safe:true, upsert: true, new:true},
-          function(err, review) {
-            if(err) {
-              console.log("error in updating replies in the review");
-            } else {
-              console.log("reply by user added to the review");
-            }
-          });
-        }
-      });
-    }
+  } else {
+    res.status(500).json('You are not allowed to perform this action.');
   }
 }
+/**
+ * A review can be deleted either by the user or business who posted it or by the web admin
+ */
+exports.deleteReply = function (req, res) {
 
+  if (req.user && typeof req.body.review != "undefined"
+    && typeof req.body.businessID != "undefined"
+    && typeof req.body.reply != 'undefined'
+    && ((req.user.user_type == 1
+      && req.body.reply.authorType == 'user' &&
+      req.user._id == req.body.reply.user._id)
+      || (req.user.user_type == 3))
+    || (req.user._id == req.body.businessID && req.body.reply.authorType == 'business')) {
+
+    var userID = req.user._id;
+    var businessID = req.body.businessID;
+    var reviewID = req.body.review._id;
+    var replyID = req.body.reply._id;
+    Business.findById(businessID, function (err, business) {
+      if (err)
+        res.status(500).json('Oops.. something went wrong');
+      //if business both the review and the reply exist within this business object
+      else if (business.reviews.id(reviewID) != null && business.reviews.id(reviewID).replies.id(replyID) != null) {
+        business.reviews.id(reviewID).replies.id(replyID).remove();
+        business.save(function (err, updatedBusiness) {
+          if (err)
+            res.status(500).json('Oops.. something went wrong');
+          else {
+            res.json(updatedBusiness);
+          }
+        });
+      } else {
+        res.status(500).json('Oops.. something went wrong');
+      }
+    });
+  } else {
+    res.status(500).json('Oops.. something went wrong');
+  }
+
+}
 /* A webadmin can delete a review if it is inappropriate. So first we must
 if he is a webadmin because otherwise the review cannot be deleted.
 When the review is deleted, all the replies must be deleted as well as the
 review will be removed from the reviews array at the business */
-exports.deleteInappropriateReview = function(req, res) {
+exports.deleteReview = function (req, res) {
+  if (req.user && typeof req.body.review != "undefined"
+    && typeof req.body.businessID != "undefined"
+    && ((req.user.user_type == 1 && req.user._id == req.body.review.user.id)
+      || (req.user.user_type == 3))) {
+    var userID = req.user._id;
+    var reviewUser = req.body.review.user.id;
+    var businessID = req.body.businessID;
+    var reviewID = req.body.review._id;
+    var businessID = req.body.businessID;
 
-  if(req.user && req.user instanceof WebAdmin && req.query.review != "undefined") {
-    var id = req.user.id; //WebAdmin's ID
-    var r = req.query.review;
-    // var id = req.body.id;
-    // var r = req.body.review;
-
-    Review.remove({_id:r}, function(err) {
-      if(err) console.log("error in deleting the review");
-      else {
-        console.log("review deleted");
-        Reply.remove({review:r}, function(err) {
-          if(err) console.log("error in deleting the replies of the review");
-          else {
-            console.log("reply deleted");
-
-            Business.findByIdAndUpdate({_id:reviews.business}, {$pull:{reviews:r}},
-            function(err,updatedBusiness) {
-              if(err) console.log("error in removing the review from the business' reviews array");
-              else {
-                console.log("business updated");
-                console.log(updatedBusiness);
-              }
-            });
-          }
+    Business.findById(businessID, function (err, business) {
+      if (err)
+        console.log(err);
+      else if (business.reviews.id(reviewID) != null) { //check if review exists within given business object
+        business.reviews.id(reviewID).remove();
+        business.save(function (err, updatedBusiness) {
+          if (err)
+            console.log(err);
+          else
+            res.json(updatedBusiness);
         });
+      } else {
+        res.status(500).json('Oops.. something went wrong');
       }
+
     });
+  } else {
+    res.status(500).json('Oops.. something went wrong');
   }
+
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
