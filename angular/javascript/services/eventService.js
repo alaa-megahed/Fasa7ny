@@ -1,14 +1,14 @@
-app.factory('Event', ['$http', function($http) {
+app.factory('Event', ['$http', 'IP', function($http, IP) {
     return {
         get : function(eventId) {
           console.log(eventId);
           console.log("!!");
-            return $http.get('http://127.0.0.1:3000/event/getOnceEventDetails/' + eventId);
+            return $http.get('http://'+ IP.address + ':3000/event/getOnceEventDetails/' + eventId);
         },
 
         delete : function(id){
         	console.log("delete service");
-        	return $http.get('http://127.0.0.1:3000/event/cancel/'+ id);
+        	return $http.get('http://'+ IP.address + ':3000/event/cancel/'+ id);
 
         },
 
@@ -31,14 +31,14 @@ app.factory('Event', ['$http', function($http) {
             formData.timing = starthour+":"+startminute+"-"+endhour+":"+endminute;
           }
 
-        	return $http.post('http://127.0.0.1:3000/event/edit/'+id, formData);
+        	return $http.post('http://'+ IP.address + ':3000/event/edit/'+id, formData);
         },
 
         deleteImage : function(eventId, image) {
           console.log('delete image event service');
           console.log(eventId);
           console.log(image);
-          return $http.get('http://127.0.0.1:3000/event/deleteImage/' + eventId + "/" + image);
+          return $http.get('http://'+ IP.address + ':3000/event/deleteImage/' + eventId + "/" + image);
         },
 
         addImage : function(eventId, formData) {
@@ -47,7 +47,7 @@ app.factory('Event', ['$http', function($http) {
             fd.append(key, formData[key]);
 
           console.log(fd);
-          return $http.post('http://127.0.0.1:3000/event/addImage/' + eventId, fd, {
+          return $http.post('http://'+ IP.address + ':3000/event/addImage/' + eventId, fd, {
             transformRequest: angular.identity,
             headers: { 'Content-Type': undefined }
           });

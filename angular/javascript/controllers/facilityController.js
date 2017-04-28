@@ -1,4 +1,4 @@
-app.controller('facilityController', function($scope, $http, status, Facility, $location, $routeParams, $modal, $log) {
+app.controller('facilityController', function($scope, $http, status, Facility, $location, $routeParams, $modal, $log, IP) {
 
 $scope.user = {};
 	status.local()
@@ -162,7 +162,7 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 										var cur_booking = response.data;
 										console.log("cur booking zat nafso :"+cur_booking);
 			
-										$http.post('http://127.0.0.1:3000/bookings/cancel_booking_after_delete', {booking_id: cur_booking._id})
+										$http.post('http://'+ IP.address + ':3000/bookings/cancel_booking_after_delete', {booking_id: cur_booking._id})
 												.then(function successCallback(response){
 											            console.log(response.data);
 											     }, function errorCallback(response){

@@ -1,18 +1,18 @@
 angular.module('fasa7ny')
-    .factory('Stats',['$http', '$cookies',  function ($http, $cookies) {
-        var api = 'http://localhost:3000';
+    .factory('Stats', ['$http', '$cookies', 'IP', function ($http, $cookies, IP) {
+        var api = 'http://' + IP.address + ':3000';
         var factory = {};
         factory.year = function (params) {
-            return $http.post('http://127.0.0.1:3000/stats/year', params);
+            return $http.post('http://' + IP.address + ':3000/stats/year', params);
         }
         factory.month = function (params) {
-            return $http.post('http://127.0.0.1:3000/stats/month', params);
+            return $http.post('http://' + IP.address + ':3000/stats/month', params);
         }
         factory.week = function (params) {
-            return $http.post('http://127.0.0.1:3000/stats/week', params);
+            return $http.post('http://' + IP.address + ':3000/stats/week', params);
         }
         factory.getAllStats = function (params) {
-            return $http.post('http://127.0.0.1:3000/stats/all', params);
+            return $http.post('http://' + IP.address + ':3000/stats/all', params);
         }
 
         var formatDate = function (date) {
@@ -59,10 +59,10 @@ angular.module('fasa7ny')
 
         factory.checkCookies = function (userType, businessID) {
             console.log('be5');
-            console.log(userType); 
-            
+            console.log(userType);
+
             //if logged in user, or not logged in user, or another business, then count page views
-            if (userType  != 4 && userType != 3) {
+            if (userType != 4 && userType != 3) {
                 var cookieKey = 'fasa7ny.' + businessID + '.' + userType;
                 var cookie = $cookies.get(cookieKey);
                 console.log(cookie);
@@ -71,7 +71,7 @@ angular.module('fasa7ny')
                     console.log('here');
 
                     var date = new Date();
-                    $http.post('http://localhost:3000/stats/addStat', {
+                    $http.post('http://' + IP.address + ':3000/stats/addStat', {
                         date: date,
                         businessID: businessID,
                         statType: 'views',

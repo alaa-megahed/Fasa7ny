@@ -1,6 +1,6 @@
 var app = angular.module('fasa7ny');
 
-app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences)
+app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences, IP)
 {
 
     $scope.current_event = $routeParams.id;
@@ -77,7 +77,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
           console.log("event occurrence befor http "+ $scope.event_occ._id);
           if($scope.type == 1)
           {
-             $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge,business_id:$scope.business_id})
+             $http.post('http://'+ IP.address + ':3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge,business_id:$scope.business_id})
                     .then(function successCallback(responce){
                       console.log(responce.data);
                      $location.path('/success/'+responce.data._id);
@@ -88,7 +88,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
            }
           else if($scope.type == 4)
           {
-             $http.post('http://127.0.0.1:3000/bookings/book_event', {count: $scope.formData.count ,event_id: $scope.event_occ._id, charge: $scope.charge, user_id: $scope.user._id})
+             $http.post('http://'+ IP.address + ':3000/bookings/book_event', {count: $scope.formData.count ,event_id: $scope.event_occ._id, charge: $scope.charge, user_id: $scope.user._id})
                     .then(function successCallback(responce){
                       console.log(responce.data);
                       $location.path('/success/'+responce.data._id);
@@ -108,10 +108,10 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
           {
             console.log("token   "+ token);
             console.log("token.id   "+ token.id);
-            $http.post('http://127.0.0.1:3000/bookings/charge', {stripeToken: token.id, amount: $scope.stripe_charge})
+            $http.post('http://'+ IP.address + ':3000/bookings/charge', {stripeToken: token.id, amount: $scope.stripe_charge})
                     .then(function successCallback(responce){
                       console.log("success  charge in responce  "+ responce.data);
-                      $http.post('http://127.0.0.1:3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, stripe_charge: responce.data.id, user_id: $scope.user._id, business_id: $scope.business_id})
+                      $http.post('http://'+ IP.address + ':3000/bookings/createRegUserBookings/', {count: $scope.formData.count ,event: $scope.event_occ._id, charge: $scope.charge, stripe_charge: responce.data.id, user_id: $scope.user._id, business_id: $scope.business_id})
                             .then(function successCallback(responce){
                               console.log(responce.data);
                               $location.path('/success/'+responce.data._id);

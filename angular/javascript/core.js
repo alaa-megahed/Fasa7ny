@@ -136,6 +136,9 @@ app.config(function ($routeProvider) {
 			templateUrl: "views/successful_booking.html",
 			controller: "successfulBookingController"
 		})
+		.when('/not-authorized', {
+			templateUrl: 'views/not-authorized.html'
+		})
 
 
 

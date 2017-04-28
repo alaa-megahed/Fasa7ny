@@ -1,9 +1,9 @@
 angular.module('fasa7ny')
-.factory('status', function($http) {
+.factory('status', function($http, IP) {
   return {
     local: function() {
     return $http({
-       url: 'http://127.0.0.1:3000/loggedin',
+       url: 'http://'+ IP.address + ':3000/loggedin',
        method: "GET",
        withCredentials: true,
        headers: {
@@ -12,7 +12,7 @@ angular.module('fasa7ny')
      });
    },
    foreign: function() {
-     return $http.get('http://localhost:3000/loggedin');
+     return $http.get('http://'+ IP.address + ':3000/loggedin');
    }
 
   }

@@ -145,8 +145,11 @@ var StatsController = {
     endDate.setHours(0, 0, 0, 0);
     thisWeekEnd.setHours(0, 0, 0, 0);
     if (startDate > endDate || startDate > thisWeekEnd || endDate > thisWeekEnd) {
-      res.status(500).json('The dates you entered are invalid.');
-    } else {
+      return res.status(500).json('The dates you entered are invalid.');
+    } else if (!req.user || businessID != req.user._id) {
+      return res.status(401).json('You are not authorized to view this page.');
+    }
+    else {
       WeekStat.find({
         $and: [
           { startDate: { $gte: startDate } },
@@ -155,7 +158,7 @@ var StatsController = {
         business: businessID
       }, function (err, result) {
         if (err) {
-          res.status(500).json('Oops.. something went wrong.');
+          return res.status(500).json('Oops.. something went wrong.');
         }
         else {
 
@@ -177,7 +180,9 @@ var StatsController = {
     var endYear = parseInt(req.body.endYear);
 
     if (startYear > endYear || (startYear == endYear && startMonth > endMonth)) {
-      res.status(500).json('The dates you entered are invalid.');
+      return res.status(500).json('The dates you entered are invalid.');
+    } else if (!req.user || businessID != req.user._id) {
+      return res.status(401).json('You are not authorized to view this page.')
     } else {
       var query = MonthStat.find({
         $or: [
@@ -205,7 +210,7 @@ var StatsController = {
       }).sort({ year: 1, month: 1 });
       query.exec(function (err, result) {
         if (err)
-          res.status(500).json('Oops.. something went wrong.');
+          return res.status(500).json('Oops.. something went wrong.');
 
         else {
           console.log(result);
@@ -226,7 +231,9 @@ var StatsController = {
     var endYear = parseInt(req.body.endYear);
 
     if (startYear > endYear) {
-      res.status(500).json('The dates you entered are invalid.');
+      return res.status(500).json('The dates you entered are invalid.');
+    } else if (!req.user || businessID != req.user._id) {
+      return res.status(401).json('You are not authorized to view this page.')
     } else {
       var query = YearStat.find({
         year: { $gte: startYear, $lte: endYear },
@@ -246,17 +253,24 @@ var StatsController = {
 
   },
   getAllStats: function (req, res) {
-    console.log("all stats " + req.user);
+    console.log("all stats " + !req.user);
     var businessID = req.body.businessID;
-    AllStat.findOne({ business: businessID }, function (err, result) {
-      if (err) {
-        res.status(500);
-        res.send(err);
-      } else {
-        console.log('yalahwy');
-        res.json(result);
-      }
-    })
+    
+    if (!req.user) {    
+      return res.status(401).json('You are not authorized to view this page.')
+    } else {
+    
+      AllStat.findOne({ business: businessID }, function (err, result) {
+        if (err) {
+          res.status(500);
+          res.json('Oops..something went wrong.');
+        } else {
+          
+          res.json(result);
+        }
+      });
+    }
+
   },
 
 

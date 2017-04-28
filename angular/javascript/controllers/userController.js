@@ -1,7 +1,7 @@
 
 var app = angular.module('fasa7ny');
 
-app.controller('userController', function($scope, status,$http, User, $location, $routeParams, $modal, $window, $route) {
+app.controller('userController', function($scope, status,$http, User, $location, $routeParams, $modal, $window, $route, IP) {
 
 	$scope.user = {};
 	$scope.error = "";
@@ -57,7 +57,7 @@ app.controller('userController', function($scope, status,$http, User, $location,
 
 	$scope.cancelBooking =function(bookingId)
 	{
-		$http.post('http://127.0.0.1:3000/bookings/deleteRegUserBookings',{bookingD:bookingId}).then(
+		$http.post('http://'+ IP.address + ':3000/bookings/deleteRegUserBookings',{bookingD:bookingId}).then(
 			function success(response)
 			{
 				$route.reload();

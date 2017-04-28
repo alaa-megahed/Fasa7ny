@@ -1,5 +1,5 @@
 angular.module('fasa7ny')
-    .controller('StatsController', function ($scope, Stats, $routeParams, status) {
+    .controller('StatsController', function ($scope, Stats, $routeParams, status, $location) {
         // $scope.type = 1;
         $scope.businessID = $routeParams.id;
         $scope.title = 'Statistics';
@@ -7,6 +7,7 @@ angular.module('fasa7ny')
         $scope.errMsg = '';
         status.local()
             .then(function (res) {
+
                 if (res.data) {
                     console.log(res.data);
 
@@ -23,6 +24,14 @@ angular.module('fasa7ny')
                                 $scope.type = 1;
                             else $scope.type = 2;
                         });
+                }
+            }, function (res) {
+                console.log(res.status);
+
+                if (res.status == 401) {
+                    $location.path('/not-authorized');
+                } else {
+                    alert(res.data);
                 }
             });
         console.log('stats type ' + $scope.type);
@@ -44,7 +53,11 @@ angular.module('fasa7ny')
             .then(function (res) {
                 $scope.allStats = res.data;
             }, function (res) {
-
+                if (res.status == 401) {
+                    $location.path('/not-authorized');
+                } else {
+                    $scope.errMsg = res.data;
+                }
             });
         //get stats on demand when button is clicked
         $scope.getStats = function () {
@@ -63,7 +76,11 @@ angular.module('fasa7ny')
                         $scope.data = chart.data;
                         $scope.labels = chart.labels;
                     }, function (res) {
-                        $scope.errMsg = res.data;
+                        if (res.status == 401) {
+                            $location.path('/not-authorized');
+                        } else {
+                            $scope.errMsg = res.data;
+                        }
                     });
             } else if ($scope.type == 'month') {
                 Stats.month({
@@ -85,7 +102,11 @@ angular.module('fasa7ny')
                         $scope.data = chart.data;
                         $scope.labels = chart.labels;
                     }, function (res) {
-                        $scope.errMsg = res.data;
+                        if (res.status == 401) {
+                            $location.path('/not-authorized');
+                        } else {
+                            $scope.errMsg = res.data;
+                        }
                     })
             } else if ($scope.type == 'week') {
                 Stats.week({
@@ -105,7 +126,11 @@ angular.module('fasa7ny')
                     $scope.labels = chart.labels;
                 }, function (res) {
 
-                    $scope.errMsg = res.data;
+                    if (res.status == 401) {
+                        $location.path('/not-authorized');
+                    } else {
+                        $scope.errMsg = res.data;
+                    }
                 });
             }
         }

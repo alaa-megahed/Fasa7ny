@@ -1,6 +1,6 @@
 angular.module('fasa7ny')
 
-  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global, $route) {
+  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global, $route, IP) {
 
     $scope.user = {};
     $scope.err = "";
@@ -168,12 +168,12 @@ $scope.getAdminProfile = function()
     }
 
     $scope.facebook = function(){
-     $window.location = $window.location.protocol + "//" + "localhost:3000/auth/facebook";
+     $window.location = $window.location.protocol + "//" +  IP.address + ":3000/auth/facebook";
 
     }
 
     $scope.google = function(){
-       $window.location = $window.location.protocol + "//" + "localhost:3000/auth/google";
+       $window.location = $window.location.protocol + "//" + IP.address + ":3000/auth/google";
     }
 
     $scope.logout = function(){

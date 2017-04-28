@@ -1,13 +1,13 @@
 angular.module('fasa7ny')
 
-  .factory('Homepage', function($http, $q, $location) {
+  .factory('Homepage', function($http, $q, $location, IP) {
     return {
       get: function() {
-        return $http.get('http://127.0.0.1:3000/');
+        return $http.get('http://'+ IP.address + ':3000/');
       },
       signIn : function(formData) {
         return $http({
-         url: 'http://127.0.0.1:3000/auth/login',
+         url: 'http://'+ IP.address + ':3000/auth/login',
          method: "POST",
          withCredentials: true,
          data: {username : formData.username, password :formData.password},
@@ -24,7 +24,7 @@ angular.module('fasa7ny')
       },
       signUp : function(formData) {
         return $http({
-         url: 'http://127.0.0.1:3000/auth/signup',
+         url: 'http://'+ IP.address + ':3000/auth/signup',
          method: "POST",
          withCredentials: true,
          data: formData,
@@ -40,18 +40,18 @@ angular.module('fasa7ny')
        })
       },
       forgotPassword : function(formData) {
-        return $http.post('http://127.0.0.1:3000/auth/forgot', formData);
+        return $http.post('http://'+ IP.address + ':3000/auth/forgot', formData);
       },
       search : function(formData) {
-        return $http.post('http://127.0.0.1:3000/search', formData);
+        return $http.post('http://'+ IP.address + ':3000/search', formData);
 
       },
       resetUnread : function() {
-        return  $http.get('http://127.0.0.1:3000/user/resetUnread');
+        return  $http.get('http://'+ IP.address + ':3000/user/resetUnread');
       },
       logoutLocal: function() {
         return $http({
-             url: 'http://127.0.0.1:3000/auth/logout',
+             url: 'http://'+ IP.address + ':3000/auth/logout',
              method: "GET",
              withCredentials: true,
              headers: {
@@ -61,7 +61,7 @@ angular.module('fasa7ny')
       },
       logout : function(){
         var deferred = $q.defer();
-        $http.get("http://localhost:3000/auth/logout").then(function(result){
+        $http.get("http://'+ IP.address + ':3000/auth/logout").then(function(result){
           deferred.resolve(result);
           $location.path("/");
          return deferred.promise;
@@ -71,10 +71,10 @@ angular.module('fasa7ny')
         });
       },
       getAds : function(){
-        return $http.get("http://localhost:3000/admin/viewAdvertisements");
+        return $http.get('http://'+ IP.address + ':3000/admin/viewAdvertisements');
       },
       updateAds : function(){
-        return $http.post("http://localhost:3000/admin/updateAdvertisements", adInfo);
+        return $http.post('http://'+ IP.address + ':3000/admin/updateAdvertisements', adInfo);
       }
 
 

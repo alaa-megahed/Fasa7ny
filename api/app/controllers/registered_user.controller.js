@@ -1,3 +1,4 @@
+
 var mongoose = require('mongoose');
 var User = mongoose.model('RegisteredUser');
 var Booking = mongoose.model('Booking');
@@ -206,9 +207,11 @@ exports.unsubscribe = function (req, res) {
 }
 
 
-exports.addRating = function (req, res) {
+
+exports.addRating = function(req, res)
+{
 	console.log(req.user);
-	if (req.user && req.user instanceof User) {
+	 if(req.user && req.user instanceof User) {
 
 		var userID = req.user.id;              // from passport session; changed to body temporarily for testing
 		var businessID = req.params.bid;        // from url parameters; changed from param to body

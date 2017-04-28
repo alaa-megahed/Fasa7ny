@@ -1,6 +1,6 @@
 
 var app = angular.module('fasa7ny');
-app.controller('businessController', function ($scope, status, $http, Business, $location, Global, $routeParams, $modal, $log, $window, $document, Stats) {
+app.controller('businessController', function ($scope, status, $http, Business, $location, Global, $routeParams, $modal, $log, $window, $document, Stats, IP) {
   // $scope.type = {}; //must be initialized otherwise is undefined later 
 
   status.local()
@@ -338,15 +338,17 @@ app.controller('businessController', function ($scope, status, $http, Business, 
   $scope.bookFacility = function () {
     $scope.name = $routeParams.name;
     console.log("BOOK!!");
-    $http.post('http://127.0.0.1:3000/business/getBusinessId', { name: $scope.name }).then(
-      function (response) {
-        console.log($scope.business_id);
-        $scope.business_id = response.data._id;
-        $location.path('/book_facility/' + $scope.business_id);
-      });
-  };
+    $http.post('http://'+ IP.address + ':3000/business/getBusinessId',{name:$scope.name}).then(
+  function(response)
+  {
+    console.log($scope.business_id);
+    $scope.business_id = response.data._id;
+    $location.path('/book_facility/'+$scope.business_id);
+  });
+    };
 
-  $scope.getEvent = function (eventId) {
+   $scope.getEvent = function(eventId) {
+
     console.log("get Event ctrl");
     $location.path('/eventPage/' + eventId);
   };
