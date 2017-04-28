@@ -6,7 +6,9 @@ var app = angular.module('fasa7ny');
               console.log("service");
                 return $http.get('http://'+ IP.address + ':3000/business/b/' + id);
             },
-
+            getUnloggedBusiness : function(id) {
+                return $http.get('http://54.187.92.64:3000/business/getUnloggedBusiness/' + id);
+            },
             edit : function(data) {
 
               var fd = new FormData();

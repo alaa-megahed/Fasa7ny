@@ -20,13 +20,13 @@ module.exports = function(passport)
    });
 
    passport.deserializeUser(function(id, done) {
-         User.findById(id, function(err, user) {
+         User.findById(id,'-local.password', function(err, user) {
             if(!user)
             {
-              Business.findById(id, function(err, user){
+              Business.findById(id, '-local.password',function(err, user){
                 if(!user)
                 {
-                    Admin.findById(id, function(err, user){
+                    Admin.findById(id, '-local.password',function(err, user){
                     done(err, user);
                   });
                 }
@@ -51,8 +51,29 @@ module.exports = function(passport)
       },
       function(req, username, password, done)
       {
-          if(!req.body)
-            return res.json("Error. Please enter valid information");
+          var NaP = 0;
+          if(req.body.phone)
+          {
+            if(req.body.phone.length < 11)
+              NaP = 1;
+            else {
+                for(var i = 0; i < req.body.phone.length; i++)
+                {
+                  if(isNaN(req.body.phone[i]))
+                    NaP = 1;
+                    break;
+
+                }
+              }
+
+
+          }
+
+          var today = new Date();
+
+          if(!req.body.name || !req.body.birthdate || !req.body.username || !req.body.password || !req.body.email || !req.body.phone || req.body.birthdate > today
+            ||req.body.password.length < 8 || NaP)
+            return done(null, false, req.flash('signupMessage',  'Please enter all the required information in a vaild form.'));
           var check = 0;
           // check weather the username entered is unique
           // search the registered users collection
@@ -71,7 +92,7 @@ module.exports = function(passport)
                 if(check == 3)
                 {
                     // username and email entered is unique
-                      var newUser            = new User();
+                      var newUser          = new User();
                       newUser.local.username = username;
                       newUser.local.password = newUser.generateHash(password);
                       newUser.name           = req.body.name;
@@ -182,6 +203,9 @@ module.exports = function(passport)
     },
     function(req, username, password, done)
     {
+      if(!req.body.username || !req.body.password)
+          return done(null, false, req.flash('loginMessage', 'No user found.'));
+          
       var check = 0;
 
       console.log("username: " + username + "password: " + password);

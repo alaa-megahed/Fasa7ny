@@ -1,7 +1,7 @@
 angular.module('fasa7ny')
 
-  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global, $route, IP) {
 
+  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global, $route, IP) {
     $scope.user = {};
     $scope.err = "";
     $scope.form = {};
@@ -15,6 +15,15 @@ angular.module('fasa7ny')
     // var user = Global.getUser();
 
     // console.log(user);
+    $scope.getHome = function() {
+      $window.location = "/";
+      // $location.path("/");// get back to this after ads
+    }
+
+    $scope.viewAll = function() {
+      console.log("VIEW ALL");
+      $location.path('/view-all');
+    }
 
 
     $scope.viewAll = function() {
@@ -31,10 +40,10 @@ angular.module('fasa7ny')
     }
 
     // conasole.log(user);
-$scope.getAdminProfile = function()
-{
-  $location.path('/webAdminProfile');
-}
+    $scope.getAdminProfile = function()
+    {
+      $location.path('/webAdminProfile');
+    }
 
 
     $scope.updateUser = function()
@@ -92,7 +101,6 @@ $scope.getAdminProfile = function()
     {
       Homepage.getAds().then(function successfulCallback(result){
 
-
         $scope.advertisements = result.data;
 
       });
@@ -114,7 +122,7 @@ $scope.getAdminProfile = function()
 
         modalInstance.result.then(function (selectedItem) {
                 $scope.err1 = selectedItem.err;
-                if($scope.err1 === "The username or email provided is already taken." )
+                if($scope.err1 === "The username or email provided is already taken."|| $scope.err1 === "Please enter all the required information in a vaild form." )
                   $scope.signUp();
                 }, function () {
                   $log.info('Modal dismissed at: ' + new Date());
@@ -149,12 +157,9 @@ $scope.getAdminProfile = function()
 
     }
 
-//NEED TO AZABAT THE SEARCH
     $scope.search = function(){
 
       $location.url('/search/'+$scope.form.search);
-
-
     }
 
     $scope.decreaseCount = function(){
@@ -172,18 +177,18 @@ $scope.getAdminProfile = function()
 
     }
 
-    $scope.google = function(){
-       $window.location = $window.location.protocol + "//" + IP.address + ":3000/auth/google";
+    $scope.google = function() {
+       $window.location = $window.location.protocol + "//" + "54.187.92.64:3000/auth/google";
+
     }
 
-    $scope.logout = function(){
+    $scope.logout = function() {
 
       if(!$scope.type)
       {
         Homepage.logoutLocal().then(function(result){
           $location.url('/');
           $scope.updateUser();
-
         })
       }
       else {
@@ -195,14 +200,13 @@ $scope.getAdminProfile = function()
       }
     }
 
-      $scope.getHome = function()
-      {
 
+      $scope.getHome = function() {
         $location.path("/");// get back to this after ads
       }
 
-      $scope.getSearch = function()
-      {
+      $scope.getSearch = function() {
+        console.log("hiii");
         $scope.searchAppear = 1;
       }
 
@@ -224,31 +228,97 @@ $scope.getAdminProfile = function()
 
   .controller('ModalInstanceCtrl', function ($scope, $http, $window, $modalInstance, userForm, Homepage, $route) {
       $scope.form = {};
+      $scope.check = 0;
+
+
 
       $scope.submitForm = function (formData) {
           if ($scope.form.userForm.$valid) {
+            $scope.err = {};
+            $scope.check = 0;
 
-            Homepage.signUp(formData).then(function(data)
+            var today = new Date();
+            if(!$scope.formData.name)
             {
+              $scope.err.name = "Please enter name.";
+              $scope.check = 1;
+            }
 
-              if(data.data === "success")
+            if(!$scope.formData.password || $scope.formData.password.length < 8)
+            {
+                $scope.err.password = "Please enter a vaild password.";
+                  $scope.check = 1;
+            }
+
+            if(!$scope.formData.username)
+            {
+                $scope.err.username = "Please enter a username";
+                  $scope.check = 1;
+            }
+
+            if(!$scope.formData.email)
+            {
+              $scope.err.email = "Please enter email.";
+              $scope.check = 1;
+            }
+
+            if(!$scope.formData.phone)
+            {
+                $scope.err.phone = "Please enter phone.";
+                $scope.check = 1;
+            }
+
+            if(!$scope.formData.birthdate || $scope.formData.birthdate > today)
+            {
+              $scope.err.birthdate = "Please enter a valid birthdate.";
+              $scope.check = 1;
+            }
+
+            if($scope.formData.gender != "Male" && $scope.formData.gender != "Female" && $scope.formData.gender != "Other" && $scope.formData.gender != null)
+            {
+              $scope.err.gender = "Please enter either Male, Female, Other or leave gender field empty.";
+              $scope.check = 1;
+            }
+
+            for(var i = 0; i < $scope.formData.phone.length; i++)
               {
-                // $window.location.reload();
-                $route.reload();
-                $modalInstance.close("closed");
+                if(isNaN($scope.formData.phone[i]))
+                {
+                  $scope.err.phone = "Please enter a valid phone number.";
+                  $scope.check = 1;
+                }
+
               }
 
-              else
-              {
-                $scope.err = data.data;
-                $modalInstance.close({
-                  err : $scope.err[0]
-                });
-              //  $scope.signIn();
-              }
 
-            }, function(data2){
-            });
+
+
+
+            if(!$scope.check)
+            {
+              Homepage.signUp(formData).then(function(data)
+              {
+
+                if(data.data === "success")
+                {
+                  // $window.location.reload();
+                  $route.reload();
+                  $modalInstance.close("closed");
+                }
+
+                else
+                {
+                  $scope.err = data.data;
+                  $modalInstance.close({
+                    err : $scope.err[0]
+                  });
+                //  $scope.signIn();
+                }
+
+              }, function(data2){
+              });
+            }
+
 
           } else {
 

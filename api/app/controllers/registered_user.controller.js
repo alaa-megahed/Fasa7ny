@@ -1,4 +1,3 @@
-
 var mongoose = require('mongoose');
 var User = mongoose.model('RegisteredUser');
 var Booking = mongoose.model('Booking');

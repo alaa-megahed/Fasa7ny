@@ -2,26 +2,24 @@ var mongoose = require('mongoose');
 var Business = mongoose.model('Business');
 
 SearchController = {
+  showAll: function (req, res) {
+     Business.find({ public: 1 }).
+         exec(function (err, result) {
+             if (err) {
+                 res.status(500).json('Oops..something went wrong.'); 
+             }
+             else {
+                 res.status(200).json(result);
+             }
 
-    showAll: function (req, res) {
+        });
+ },
+    search: function (req, res) {
+        var formData = req.body;
+        var sortBy = formData.sortBy;
+        console.log(formData);
+        var queryBody = helper.makeQuery(formData); // retrieve query body
 
-        Business.find({ public: 1 }).
-            exec(function (err, result) {
-                if (err) {
-                    res.status(500);
-                    res.send(err);
-                }
-                else {
-                    res.json(result);
-                }
-
-            });
-    }
-    // search: function (req, res) {
-    //     var formData = req.body;
-    //     var sortBy = formData.sortBy;
-    //     console.log(formData);
-    //     var queryBody = helper.makeQuery(formData); // retrieve query body
 
     //     var query = Business.find(queryBody);
 

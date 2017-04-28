@@ -13,8 +13,8 @@
                 <!-- /section title -->
 
                 <form name="form.userForm" ng-submit="submitForm()">
-                    <div class="alert alert-danger" ng-if = "err">{{err}}</div>
-                
+                    <div class="alert alert-danger" ng-if = "error">{{error}}</div>
+
                     <div class="form-group">
                         <input type="text" placeholder="Name" class="form-control" name="name" id="name" ng-model="formData.name">
                     </div>
@@ -27,7 +27,7 @@
                     <div class="form-group">
                         <input type="date" placeholder="Birthdate" class="form-control" name="birthdate" id="birthdate" ng-model="formData.birthdate">
                     </div>
-                    
+
                     <div class="form-group">
                         <input type="text" placeholder="Phone" class="form-control" name="phone" id="email" ng-model="formData.phone">
                     </div>
@@ -40,6 +40,11 @@
                         <input type="text" placeholder="Address" class="form-control" name="address" id="address" ng-model="formData.address">
                     </div>
 
+                    <label>Change Profile Picture</label>
+                    <div class="form-group">
+                        <input type="file" placeholder="img" class="form-control" name="img" id="img" file-model="formData.img">
+                    </div>
+
                     <div ng-show = "user.gender == Female ">
                         <select ng-model="formData.gender">
                               <option value="" disabled selected> -- Choose Gender --</option>
@@ -49,7 +54,7 @@
                         </select>
                     </div>
 
-                    <div ng-show = "user.gender == Male "> 
+                    <div ng-show = "user.gender == Male ">
                         <select ng-model="formData.gender">
                               <option value="" disabled selected> -- Choose Gender --</option>
                               <option value="Male" selected="selected">Male</option>
@@ -75,16 +80,16 @@
                     </select>
 
                     <br><br>
-                    
+
 
 
                     <div style = "float: right">
                         <button class="btn btn-booking" type="submit" style = "width:100px"> OK </button>
                         <button class="btn btn-booking" type="submit" ng-click="cancel()" style = "width:100px"> Cancel </button>
-                      
+
                     </div>
-                                        
-                    
+
+
                 </form>
             </div>
             <!-- / End Add Business Area -->

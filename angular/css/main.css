@@ -1778,7 +1778,6 @@ margin: 0;
 }
 
 
-
 /* ============================================
 	Nourhan css for radio button
 	===========================================*/
@@ -1805,6 +1804,11 @@ input[type=radio]:checked ~ label{
 }
 
 
+.rating {
+color: #a9a9a9;
+margin: 0;
+padding: 0;
+}
 
 ul.rating {
 display: inline-block;
@@ -1859,31 +1863,12 @@ font-size: 18px;
 font-weight: bold;
 }
 
-  /*.carousel-inner > .item > img,
-  .carousel-inner > .item > a > img {
-      width: 70%;
-      margin: auto;
-  },
-  .carousel-inner>.item{
-     -webkit-transition: -webkit-transform .5s ease-in-out;
-     -o-transition: -o-transform .5s ease-in-out;
-     transition: transform .5s ease-in-out;
-  },
-  .carousel-inner {
-     background: #000;
-  },
-  .carousel {
-    overflow: hidden;
-  }
-  .item {
-    overflow: hidden;
-  }*/
-#slide_control > div {
-	height:200px;
+#slides_control > div{
+height: 400px;
 }
 
 .crop {
-  height: 300px;
+  height: 400px;
   /*width: 400px;*/
   overflow: hidden;
 }
@@ -1899,7 +1884,6 @@ input[type=radio]:checked ~ label{
  It will not work without the style tag, so don't remove it. (I know it doesn't make sense)
  ===================================================================================*/
 <style>
-
 ul {
     list-style-type: none;
     margin: 0;
@@ -2020,6 +2004,7 @@ li.dropdown {
 	padding: 10px 17px;
 	font-size: 27px;
 }
+
 
 </style>
 

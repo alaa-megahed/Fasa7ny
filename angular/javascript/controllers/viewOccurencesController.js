@@ -58,7 +58,7 @@ app.controller('viewOccurencesController', function($scope, $http, status,viewOc
 var DeletePopUp = function ($scope, $http, $modalInstance,viewOccurences,occId,$route) {
     $scope.form = {}
     $scope.error ="";
-    $scope.submitForm = function () 
+    $scope.submitForm = function ()
     {
       console.log("occ id f delete popup "+ occId);
       console.log('Delete Occ Form');
@@ -87,8 +87,8 @@ var DeletePopUp = function ($scope, $http, $modalInstance,viewOccurences,occId,$
         });
       });
 
-       
-        
+
+
     };
 
     $scope.cancel = function () {
