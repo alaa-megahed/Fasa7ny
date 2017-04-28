@@ -27,7 +27,7 @@ let AuthController =
 
 
   getLoginSuccess: function(req, res) {
-    res.json("success");
+    res.status(200).json("success");
   },
 
 	postLogin: function(req, res){

@@ -203,6 +203,9 @@ module.exports = function(passport)
     },
     function(req, username, password, done)
     {
+      if(!req.body.username || !req.body.password)
+          return done(null, false, req.flash('loginMessage', 'No user found.'));
+          
       var check = 0;
 
       console.log("username: " + username + "password: " + password);
