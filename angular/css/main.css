@@ -2022,6 +2022,14 @@ li.dropdown {
    -webkit-appearance: none;
    }
 
+
+
+hr { 
+  border : 0;
+  height: 1px; 
+  background-image: linear-gradient(to right, rgba(78,89,95,0), rgba(78,89,95,0.75), rgba(78,89,95,0)); 
+}
+
 /* ============================*/
 /*
 .option {
