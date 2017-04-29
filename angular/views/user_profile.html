@@ -10,9 +10,7 @@
 
 <!-- Start Top Section (image + name + email)
 ============================================= -->
-<div ng-if="type!=1">
-  <center>  You are not authorized to view this page. </center>
-</div>
+
 
 <div ng-if="type==1">
 <!-- <script>
@@ -38,7 +36,8 @@
                     <div class="image-upload" style="float: left: 0; right: 0; margin: 0 auto;" >
                         <label for="file-input">
                             <div class="image-cropper" >
-                              <img ng-src='http://localhost:3000/photo/{{user.profilePic}}' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
+                              <img ng-if = "user.profilePic" ng-src='http://{{ip}}:3000/photo/{{user.profilePic}}' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
+                              <img ng-if = "!user.profilePic" ng-src='../img/avatar.png' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
                               <div class="middle">
                                 <div style="font-size: 20px; color:lightgrey;"> Change profile picture</div>
                               </div>
@@ -256,7 +255,9 @@
     </div>       <!-- End container -->
 </section>    <!-- End Section -->
 
-
+<div ng-if="type!=1">
+  <center>  You are not authorized to view this page. </center>
+</div>
 
 <a href="#" id="scrollUp"><i class="fa fa-angle-up fa-2x"></i></a>
 </div>

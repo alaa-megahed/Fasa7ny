@@ -34,7 +34,7 @@
                       <h3>Booking for 
                            <input type="number" style="width: 70px; color:#000;" required  min="1" max={{max_count}} ng-model="formData.count"> person(s).</h3>
 
-<!--                      <h3> Special Offers:</h3> <br>
+                     <h3> Special Offers:</h3> <br>
                      <div style = "margin: auto; max-width: 100%; ">
                         <div style="text-align: left width: 800px; margin:0 auto;" ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
                           <input type="radio"  ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer._id}}">
@@ -42,8 +42,8 @@
                           <br>
                         </div> <br><br>
                         </div>
- -->
-                        <div>
+
+                        <!-- <div>
                           <div class="container2">
                             <ul>
                              <h3 style="padding-bottom: 0px"> Special Offers: </h3><hr>
@@ -55,7 +55,7 @@
                             </ul>
                          
                         </div>
-                        </div>
+                        </div> -->
                         <!-- </div> -->
 
                         {{error_message}}
@@ -63,7 +63,9 @@
                     <div ng-show="cash">
                         <button type="submit"  class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="book_cash()"> BOOK NOW AND PAY CASH</button> <!-- ng-if="type == 1|| type == 4" -->
                     </div>
+                    <div ng-show="stripe">
                         <button type="submit"  ng-show="type != 4"class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count || minDate > formData.day " ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button> <!-- ng-if="type == 1" -->
+                        </div>
                 </form>
 
                  
