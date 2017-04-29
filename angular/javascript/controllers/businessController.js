@@ -2,7 +2,7 @@
 var app = angular.module('fasa7ny');
 app.controller('businessController', function ($scope, status, $http, Business, $location, Global, $routeParams, $modal, $log, $window, $document, Stats, IP) {
   // $scope.type = {}; //must be initialized otherwise is undefined later 
-
+  $scope.ip = IP.address; 
   status.local()
     .then(function (res) {
       if (res.data) {

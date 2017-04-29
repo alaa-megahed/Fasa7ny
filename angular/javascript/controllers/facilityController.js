@@ -151,10 +151,10 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 						{
 							var occs = response.data;
 							console.log(occs);
-							for (var i = 0; i < occs.length; i++) 
+							for (var i = 0; i < occs.length; i++)
 							{
 								var bookings = occs[i].bookings;
-								for (var j = 0; j < bookings.length; j++) 
+								for (var j = 0; j < bookings.length; j++)
 								{
 									console.log("booking[j] :"+bookings[j]);
 									Business.getBooking(bookings[j]).then(function succcessCallback(response)
@@ -163,6 +163,7 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 										console.log("cur booking zat nafso :"+cur_booking);
 			
 										$http.post('http://'+ IP.address + ':3000/bookings/cancel_booking_after_delete', {booking_id: cur_booking._id})
+
 												.then(function successCallback(response){
 											            console.log(response.data);
 											     }, function errorCallback(response){

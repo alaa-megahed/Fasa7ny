@@ -36,10 +36,9 @@ app.factory('Facilities',['$http',function($http)
             get : function() {
                 return $http.get('http://'+ IP.address + ':3000/event/facilities');
             },
-            
+
             getEvent : function(event_id){
             return $http.get('http://'+ IP.address + ':3000/event/getEvent/'+event_id);
              }
            }
 }]);
-

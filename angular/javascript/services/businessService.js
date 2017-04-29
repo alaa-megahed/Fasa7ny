@@ -108,23 +108,23 @@ app.factory('Business', ['$http', 'IP', function ($http, IP) {
 
     // start reviews services
     addReview: function (params) {
-      return $http.post('http://127.0.0.1:3000/reviews/writeReview', params);
+      return $http.post('http://' + IP.address + ':3000/reviews/writeReview', params);
     },
     deleteReview: function (params) {
-      return $http.post('http://127.0.0.1:3000/reviews/deleteReview', params);
+      return $http.post('http://' + IP.address + ':3000/reviews/deleteReview', params);
     },
     addReply: function (params) {
-      return $http.post('http://127.0.0.1:3000/reviews/replyReview', params);
+      return $http.post('http://' + IP.address + ':3000/reviews/replyReview', params);
     },
     deleteReply: function (params) {
-      return $http.post('http://127.0.0.1:3000/reviews/deleteReply', params);
+      return $http.post('http://' + IP.address + ':3000/reviews/deleteReply', params);
     },
     upvote: function (params) {
-      return $http.post('http://127.0.0.1:3000/reviews/upvoteReview', params);
+      return $http.post('http://' + IP.address + ':3000/reviews/upvoteReview', params);
 
     },
     downvote: function (params) {
-      return $http.post('http://127.0.0.1:3000/reviews/downvoteReview', params);
+      return $http.post('http://' + IP.address + ':3000/reviews/downvoteReview', params);
     }
   }
 }]);
@@ -133,3 +133,4 @@ app.factory('Business', ['$http', 'IP', function ($http, IP) {
 app.factory('business', function () {
   return {};
 });
+

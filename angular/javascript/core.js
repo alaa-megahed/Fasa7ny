@@ -1,5 +1,4 @@
-
-var app = angular.module('fasa7ny', ['ngRoute', 'ui.bootstrap', 'ngCookies', 'chart.js']);
+var app = angular.module('fasa7ny', ['ngRoute', 'ui.bootstrap', 'ui.calendar', 'ngCookies', 'chart.js']);
 
 app.config(function ($routeProvider) {
 	$routeProvider
@@ -7,10 +6,6 @@ app.config(function ($routeProvider) {
 		.when("/", {
 			templateUrl: "views/landingpage.html",
 			controller: "navbarController"
-		})
-		.when('/statistics/:id', {
-			templateUrl: 'views/statistics.html',
-			controller: 'StatsController'
 		})
 
 		.when("/profile", {							//NAVE
@@ -22,10 +17,6 @@ app.config(function ($routeProvider) {
 			templateUrl: "views/web_admin.html",
 			controller: "webAdminController"
 		})
-		// .when("/",{
-		// 	templateUrl : "views/slider.html",
-		// 	controller  : "CarouselDemoCtrl"
-		// })
 
 		.when("/search/:keyword", {
 			templateUrl: "views/search.html",
@@ -139,12 +130,15 @@ app.config(function ($routeProvider) {
 		.when('/not-authorized', {
 			templateUrl: 'views/not-authorized.html'
 		})
-
-
-
+		.when('/statistics/:id', {
+			templateUrl: 'views/statistics.html',
+			controller: 'StatsController'
+		})
 });
-
 
 app.config(['$httpProvider', function ($httpProvider) {
 	$httpProvider.defaults.withCredentials = true;
 }]);
+
+
+

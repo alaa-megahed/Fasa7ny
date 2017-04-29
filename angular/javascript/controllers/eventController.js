@@ -1,6 +1,6 @@
 
 app.controller('eventController', function($scope, $http, status, Event, $location, $routeParams, $modal, $log, Global,viewOccurences,$window, IP) {
-
+	$scope.ip = IP.address; 	
 	$scope.imageEventlength = 0;
 	$scope.slides = [];
 	$scope.event = {};
@@ -29,7 +29,7 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 		 });
           Global.setBusiness(Global.getBusiness());
           console.log("business in event "+Global.getBusiness());
-          Global.setOnceEvent($routeParams.eventId); 
+          Global.setOnceEvent($routeParams.eventId);
 
 		console.log("event eventController");
 		$scope.error = "";
@@ -197,7 +197,7 @@ var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Ev
                             console.log(response.data);
                         });
 
-                    
+
                 }
             }
 
@@ -217,7 +217,7 @@ var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Ev
         {
             console.log(response.data);
         });
-      
+
     };
 
     $scope.cancel = function () {
@@ -231,14 +231,14 @@ var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Ev
 var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event,id, $route) {
     $scope.form = {}
     $scope.formData = {}
-    $scope.error = "";
     $scope.submitForm = function () {
+			$scope.error = "";
          if(($scope.formData.starttime && !$scope.formData.endtime) || (!$scope.formData.starttime && $scope.formData.endtime)){
             $scope.error = "Must enter both a start date and end date";
-        }
+        } else
         if($scope.formData.capacity == 0){
         	$scope.error = "Enter a valid capacity";
-        }
+        } else
         if($scope.formData.price == 0){
         	$scope.error = "Enter a valid price";
         }

@@ -10,12 +10,10 @@
 
 <!-- Start Top Section (image + name + email)
 ============================================= -->
-<div ng-if="type!=1">
-  <center>  You are not authorized to view this page. </center>
-</div>
+
 
 <div ng-if="type==1">
-<script>
+<!-- <script>
     var image2 = document.getElementById('profilepic');
     var buttonUpload = document.getElementById('uploadButton');
 
@@ -26,19 +24,20 @@
     buttonUpload.addEventListener('click', function() {
         buttonUpload.style.display = "none";
     });
-</script>
+</script> -->
 
 
 <section id="blog-banner">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center uploadPic">
-               <form id="hiddenForm" onsubmit="javascript: return false;">
+               <form id="hiddenForm" ng-model="formData" onsubmit="javascript: return false;">
                     <!-- edit profile pic !-->
                     <div class="image-upload" style="float: left: 0; right: 0; margin: 0 auto;" >
                         <label for="file-input">
-                            <div class="container2 image-cropper" >
-                              <img ng-src='http://localhost:3000/photo/{{user.profilePic}}' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
+                            <div class="image-cropper" >
+                              <img ng-if = "user.profilePic" ng-src='http://{{ip}}:3000/photo/{{user.profilePic}}' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
+                              <img ng-if = "!user.profilePic" ng-src='../img/avatar.png' alt="Avatar" id = "profilepic" class="image" style="width:100%;">
                               <div class="middle">
                                 <div style="font-size: 20px; color:lightgrey;"> Change profile picture</div>
                               </div>
@@ -256,7 +255,9 @@
     </div>       <!-- End container -->
 </section>    <!-- End Section -->
 
-
+<div ng-if="type!=1">
+  <center>  You are not authorized to view this page. </center>
+</div>
 
 <a href="#" id="scrollUp"><i class="fa fa-angle-up fa-2x"></i></a>
 </div>

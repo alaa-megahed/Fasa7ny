@@ -437,7 +437,21 @@ getBusinessId : function(req,res)
         else
             res.status(200).json(business);
     });
+},
+getUnloggedBusiness : function(req,res)
+{
+  var id = req.params.id;
+  Business.findById(id, function(err, business)
+  {
+    if(err)
+      res.status(500).json(err);
+      else {
+        res.status(200).json(business);
+      }
+  });
+
 }
+
 
 }
 

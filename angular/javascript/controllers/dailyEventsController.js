@@ -137,7 +137,7 @@ var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents
                             console.log(response.data);
                         });
 
-                    
+
                 }
             }
 

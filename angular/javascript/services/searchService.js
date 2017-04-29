@@ -4,7 +4,9 @@ angular.module('fasa7ny')
         factory.get = function () {
             return $http.get('http://' + IP.address + ':3000/search');
 
+
         }
 
         return factory;
-    }]); 
+    }]);
+

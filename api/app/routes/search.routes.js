@@ -5,3 +5,4 @@ var searchController = require('../controllers/search.controller');
 router.get('/', searchController.showAll); 
 
 module.exports = router; 
+

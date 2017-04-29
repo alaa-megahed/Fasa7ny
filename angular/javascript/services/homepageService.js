@@ -72,6 +72,7 @@ angular.module('fasa7ny')
       },
       getAds : function(){
         return $http.get('http://'+ IP.address + ':3000/admin/viewAdvertisements');
+
       },
       updateAds : function(){
         return $http.post('http://'+ IP.address + ':3000/admin/updateAdvertisements', adInfo);

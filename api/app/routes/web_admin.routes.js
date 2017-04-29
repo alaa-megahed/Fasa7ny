@@ -15,13 +15,13 @@ var upload = multer({dest: 'public/uploads/'});
 
      router.post('/createAdvertisement', upload.single('image'), webAdmin.addAdvertisement);
      router.get('/deleteAdvertisement/:id', webAdmin.deleteAdvertisement);
-     router.post('/updateAdvertisements', webAdmin.updateAvailableAdvertisements);
-	 router.get('/viewAdvertisements', webAdmin.viewAllAdvertisements);
+     router.post('/updateAdvertisements', webAdmin.updateAdvertisements);
+	   router.get('/viewAdvertisements', webAdmin.viewAllAdvertisements);
+     router.get('/viewAvailableAdvertisements', webAdmin.viewAvailableAdvertisements);
 
- 
+
 
 
 
 
 module.exports = router;
-

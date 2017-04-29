@@ -19,7 +19,7 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
    }
  });
 
-    
+
   $scope.eventocc = $routeParams.eventoccId;
   $scope.error_message = "";
   occurrenceBookings.get($scope.eventocc).then(function (response)
@@ -43,7 +43,7 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
       });
     });
   };
-        
+
 });
 
 
@@ -74,7 +74,7 @@ app.controller('viewEventBookings',function($scope,status,$http,$location,occurr
     occurrenceBookings.get($scope.event_occ).then(function (response){
         $scope.bookings = response.data;
      });
-   
+
 
 
    $scope.deleteBooking = function(bookingID,eventoccId)
@@ -94,8 +94,3 @@ app.controller('viewEventBookings',function($scope,status,$http,$location,occurr
     });
   };
 });
-
-
-
- 
-      

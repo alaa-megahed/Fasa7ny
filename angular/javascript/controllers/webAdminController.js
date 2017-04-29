@@ -1,5 +1,7 @@
+
 angular.module('fasa7ny').controller('webAdminController', function($scope,$http,$modal,$route ,status, IP)
 	{  
+    $scope.ip = IP.address; 
      status.local()
      .then(function(res){
        if(res.data){
@@ -10,10 +12,11 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
     $scope.ads = [];
     $scope.requests = [];
     $scope.msg = "";
-   
+
 
     $http.get('http://'+ IP.address + ':3000/admin/viewRequestedDelete').then(function successCallback(response){
    
+
             $scope.requests = response.data;
             });
 
@@ -32,13 +35,14 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
          {
        
              $http.post('http://'+ IP.address + ':3000/admin/add_business', $scope.business)
+
              .then(function(response)
              {
                 $scope.msg = response.data;
                 $scope.business = {};
              });
-        
-          
+
+
          };
 
 
@@ -49,6 +53,7 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
         fd.append(key, $scope.advertisement[key]);
       
               $http.post('http://'+ IP.address + ':3000/admin/createAdvertisement',fd, {
+
                 transformRequest: angular.identity,
                 headers: {'Content-Type':undefined }
               }).then(function(response)
@@ -57,12 +62,12 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
            $scope.advertisement = {};
 
       })
-       
+
   };
 
 
 
- 
+
 
 
 
@@ -73,14 +78,14 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
      {
     $http.get("http://"+ IP.address + ":3000/admin/deleteBusiness/"+ request._id).then(function(response){
        $route.reload();
-    }, 
+    },
      function(response){
       $scope.msg = response.data;
      }
     );
-      
+
     }
-     
+
   }
 
 
@@ -89,7 +94,7 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
     if (confirm('Are you sure you want to delete this?')) {
     $http.get("http://"+ IP.address + ":3000/admin/deleteAdvertisement/"+ ad._id).then(function(response){
        $route.reload();
-    }, 
+    },
      function(response){
       $scope.msg = response.data;
      }
@@ -97,8 +102,8 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
   }
 
   }
- 
 
- 
+
+
 
     });
