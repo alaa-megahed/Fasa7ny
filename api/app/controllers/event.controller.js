@@ -7,8 +7,7 @@ var Facility = require('mongoose').model('Facility');
 var User = require('mongoose').model('RegisteredUser');
 var async = require("async");
 var schedule = require('node-schedule');
-var fs = require('fs');
-var path = require('path');
+
 
 exports.getEvent = function (req, res) {
 	if (req.params.id != "undefined") {
@@ -29,8 +28,7 @@ exports.createFacility = function (req, res) {
 	if (req.user && req.user instanceof Business) {
 		var id = req.user.id;
 		console.log(req.body);
-		console.log(req.file.filename);
-		if (!req.body.name || !req.body.description || !req.body.capacity) {
+		if (!req.body.name || !req.body.description || !req.body.capacity || !req.file) {
 			console.log("!");
 			res.status(400).json("Incomplete form");
 		}
@@ -49,10 +47,8 @@ exports.createFacility = function (req, res) {
 			if (typeof req.file != "undefined") {
 				console.log("msh undefined");
 				facility.image = req.file.filename;
-			} else {
-				console.log("tle3 undefined");
-				facility.image = 'default';
 			}
+
 			facility.save(function (err) {
 				if (err)
 					res.status(500).json("Oops Something went wrong");
@@ -109,27 +105,41 @@ exports.editFacility = function (req, res) {
 						//update capacity in event and available in event occurrences
 						if (req.body.capacity) {
 							facility.capacity = req.body.capacity;
-							Events.update({ facility_id: facility_id }, { $set: { capacity: Number(req.body.capacity) } }, function (err, event) {
+							Events.update({ facility_id: facility_id }, { $set: { capacity: Number(req.body.capacity) } }, { multi: true }, function (err, event) {
 								console.log(req.body.capacity);
 								if (err)
 									return res.json({ err: "error updating event" });
 							});
 
-							EventOccurrences.update({ facility_id: facility_id }, { $set: { available: Number(req.body.capacity) } }, function (err, eventocc) {
+							EventOccurrences.update({ facility_id: facility_id }, { $set: { available: Number(req.body.capacity) } }, { multi: true }, function (err, eventocc) {
 								if (err)
 									return res.status(500).json({ err: "error updating eventocc" });
+
+								//To check if old occurrences have bookings>new capacity. I think it should
+								// be applicable on the new occurrences and those that have not been exceeded.
+								// or tell the business in the popup changes in capacity won't change past ones.
+								// Bookings.find({event_id: eventocc.id},function(err,bookings)
+								// {
+								// 	if(err)
+								// 		res.send("error");
+								// 	else
+								// 	{
+								// 		if(bookings.length > req.body.capacity)
+								// 			return res.status(500).json("You already have bookings more than new capacity");
+								// 	}
+								// });
 
 							});
 
 						}
 						if (req.body.name) {
-							Events.update({ facility_id: facility_id }, { $set: { name: req.body.name } }, function (err) {
+							Events.update({ facility_id: facility_id }, { $set: { name: req.body.name } }, { multi: true }, function (err) {
 								if (err)
 									return res.json({ err: "error updating event" });
 							});
 						}
 						if (req.body.description) {
-							Events.update({ facility_id: facility_id }, { $set: { description: req.body.description } }, function (err) {
+							Events.update({ facility_id: facility_id }, { $set: { description: req.body.description } }, { multi: true }, function (err) {
 								if (err)
 									return res.json({ err: "error updating event" });
 							});
@@ -215,7 +225,9 @@ exports.createEvent = function (req, res) {
 		console.log(req.body);
 		//if event belongs to facility, fields will be passed from facility to event in hidden fields
 		if (!req.body.name || !req.body.description || !req.body.date || !req.body.price || !req.body.capacity || !req.body.repeat) {
+
 			res.status(500).json("Please add all information");
+
 		}
 		else if (req.body.repeat != "Once" && req.body.repeat != "Daily") {
 			res.status(500).json("Repitition type can either be Daily or Once");
@@ -224,218 +236,177 @@ exports.createEvent = function (req, res) {
 			console.log("enter a valid start date");
 			res.status(500).json("Enter a valid start date");
 		}
-		else if (req.body.capacity <= 0) res.status(500).json("Enter a valid capacity");
-		else if (req.body.price < 0) res.status(500).json("Enter a valid price");
 		else {
-			var start = req.body.startdate;
-			var end = req.body.enddate;
 
-			EventOccurrences.find({ facility_id: req.body.facility_id }, function (err, eventoccs1) {
-				if (err) res.status(500).json("Something went wrong");
-				else {
-					var flagerror = false;
-					var starttime = new Date(req.body.starttime);
-					var endtime = new Date(req.body.endtime);
-					var day = new Date(req.body.date);
-					console.log("DAY ADDED");
-					console.log(req.body.facility_id);
-					console.log(day);
-					console.log("DAY OF EVENTOCCS");
-					console.log("EVENTOCCS", eventoccs1);
-					async.each(eventoccs1, function (event2, callback) {
-						console.log(event2.day);
+			if (req.body.capacity > 0 && req.body.price > 0) {
+				let event = new Events({
+					name: req.body.name,
+					description: req.body.description,
+					price: req.body.price,
+					capacity: req.body.capacity,
+					repeated: req.body.repeat,
+					daysOff: req.body.day,
+					business_id: id
 
-						// if((event2.day - day) == 0) {
-						console.log(starttime);
-						// console.log(Number(starttime.substring(0,2)));
-						// console.log(Number(starttime.substring(3,5)));
-						// var datestarttime = (new Date()).setHours(Number(starttime.substring(0,2)),Number(starttime.substring(3,5)), 0); //starttime of req.body.starttime
-						// var dateendtime = (new Date()).setHours(Number(endtime.substring(0,2)),Number(endtime.substring(3,5)), 0); //endtime of req.body.eventtime
+				});
 
-						//timing: HH:MM-HH-MM
-						var eventstart = (new Date('1970-01-01')).setHours(Number(event2.time.substring(0, 2)), Number(event2.time.substring(3, 5)), 0); //starttime of the event in the same facility on the same day
-						var eventend = (new Date('1970-01-01')).setHours(Number(event2.time.substring(6, 8)), Number(event2.time.substring(9, 11)), 0); //endtime of the event in the same facility on the same day
-						// console.log(starttime + "-----" + endtime +"------------------" + new Date(eventstart) + "-----" + new Date(eventend));
-						if ((eventstart > starttime && eventstart < endtime) || (eventend > starttime && eventend < endtime)
-							|| (eventstart <= starttime && eventend >= endtime)) flagerror = true;
-						// }
+				//loaction not required (event can take place in many places or in business venue)
+				if (req.body.location) {
+					event.location = req.body.location;
+				}
+
+				//facility not required in case of just once events
+				if (req.body.facility_id) {
+					event.facility_id = req.body.facility_id;
+				}
+
+				if (typeof req.file != "undefined") {
+					event.image = req.file.filename;
+				}
+
+
+				event.save(function (err, event) {
+					if (err) res.send(err.message);
+
+				});
+
+				if (req.body.repeat == "Daily") {
+
+					var now = new Date();
+					if (req.body.date) {
+						now = new Date(req.body.date);
+					}
+					var arr = [];
+
+					for (var i = 0; i < 30;) {
+						var tflag = true;
+
+						for (l = 0; req.body.day && l < req.body.day.length; l++) {
+							var y = Number(req.body.day[l]);
+
+							if (y == now.getDay()) {
+								// console.log(y);
+								tflag = false;
+							}
+						}
+						if (tflag) {
+							arr[i] = new Date(now);
+							console.log(arr[i] + "------" + arr[i].getDay());
+							i++;
+						}
+						now.setDate(now.getDate() + 1);
+					}
+
+
+
+					async.each(arr, function (date, callback) {
+
+
+						let occurrence = new EventOccurrences({
+							day: date,
+							time: req.body.timing,
+							available: req.body.capacity,
+							event: event._id,
+							business_id: id
+						});
+
+						if (req.body.facility_id) {
+							occurrence.facility_id = req.body.facility_id;
+						}
+
+						occurrence.save(function (err, occurrence) {
+							if (err) res.status(500).json(err.message);
+
+						});
 					}, function (error) {
-						if (error) res.status(500).json(error);
+						if (error) res.json(500, { error: error });
 					});
 
-					if (flagerror) {
-						res.status(500).json("You have an event in this facility that clashes with the starttime/endtime, please choose a valid starttime/endtime");
-					} else {
+					var rule = new schedule.RecurrenceRule();
+					rule.dayOfWeek = [new schedule.Range(0, 6)];
+					rule.hour = 0;
+					rule.minute = 0;
 
-						let event = new Events({
-							name: req.body.name,
-							description: req.body.description,
-							price: req.body.price,
-							capacity: req.body.capacity,
-							repeated: req.body.repeat,
-							daysOff: req.body.day,
+
+					var j = schedule.scheduleJob(rule, function () {
+						var d = new Date();
+						var n = d.getMonth();
+
+
+						d.setMonth((n + 1) % 12);
+						var day = d.getDay();
+
+						let occurrence = new EventOccurrences({
+							day: d,
+							time: req.body.timing,
+							available: req.body.capacity,
+							event: event._id,
 							business_id: id
-
 						});
 
-						//loaction not required (event can take place in many places or in business venue)
-						if (req.body.location) {
-							event.location = req.body.location;
-						}
-
-						//facility not required in case of just once events
 						if (req.body.facility_id) {
-							event.facility_id = req.body.facility_id;
+							occurrence.facility_id = req.body.facility_id;
 						}
 
-						if (typeof req.file != "undefined") {
-							event.image = req.file.filename;
+						var flag = true;
+
+						for (i = 0; req.body.day && i < req.body.day.length; i++) {
+							var x = Number(req.body.day[i]);
+
+							if (x == day) {
+								flag = false;
+							}
 						}
 
+						if (flag) {
+							occurrence.save(function (err, occurrence) {
+								if (err) res.status(500).json(err.message);
 
-						event.save(function (err, event) {
-							if (err) res.send(err.message);
+							});
+						}
 
+					});
+
+				}
+
+				else
+					if (req.body.repeat == "Once") {
+
+
+						let occurrence = new EventOccurrences({
+							day: req.body.date,
+							time: req.body.timing,
+							available: req.body.capacity,
+							event: event._id,
+							business_id: id
 						});
 
-						if (req.body.repeat == "Daily") {
+						occurrence.save(function (err, occurrence) {
+							if (err)
+								res.status(500).json(err.message);
+							else {
+								var notification = { content: req.user.name + " added " + req.body.name, date: Date.now() };
 
-							var now = new Date();
-							if (req.body.date) {
-								now = new Date(req.body.date);
-							}
-							var arr = [];
-
-							for (var i = 0; i < 30;) {
-								var tflag = true;
-
-								for (l = 0; req.body.day && l < req.body.day.length; l++) {
-									var y = Number(req.body.day[l]);
-
-									if (y == now.getDay()) {
-										// console.log(y);
-										tflag = false;
-									}
-								}
-								if (tflag) {
-									arr[i] = new Date(now);
-									// console.log(arr[i] + "------" + arr[i].getDay());
-									i++;
-								}
-								now.setDate(now.getDate() + 1);
-							}
-
-
-
-							async.each(arr, function (date, callback) {
-
-
-								let occurrence = new EventOccurrences({
-									day: date,
-									time: req.body.timing,
-									available: req.body.capacity,
-									event: event._id,
-									business_id: id
-								});
-
-								if (req.body.facility_id) {
-									occurrence.facility_id = req.body.facility_id;
-								}
-
-								occurrence.save(function (err, occurrence) {
-									if (err) res.status(500).json(err.message);
-
-								});
-							}, function (error) {
-								if (error) res.json(500, { error: error });
-							});
-
-							var rule = new schedule.RecurrenceRule();
-							rule.dayOfWeek = [new schedule.Range(0, 6)];
-							rule.hour = 0;
-							rule.minute = 0;
-
-
-							var j = schedule.scheduleJob(rule, function () {
-								var d = new Date();
-								var n = d.getMonth();
-
-
-								d.setMonth((n + 1) % 12);
-								var day = d.getDay();
-
-								let occurrence = new EventOccurrences({
-									day: d,
-									time: req.body.timing,
-									available: req.body.capacity,
-									event: event._id,
-									business_id: id
-								});
-
-								if (req.body.facility_id) {
-									occurrence.facility_id = req.body.facility_id;
-								}
-
-								var flag = true;
-
-								for (i = 0; req.body.day && i < req.body.day.length; i++) {
-									var x = Number(req.body.day[i]);
-
-									if (x == day) {
-										flag = false;
-									}
-								}
-
-								if (flag) {
-									occurrence.save(function (err, occurrence) {
-										if (err) res.status(500).json(err.message);
-
+								async.each(req.user.subscribers, function (subscriber, callback) {
+									User.findByIdAndUpdate({ _id: subscriber }, { $push: { "notifications": notification } }, function (err, user) {
+										if (err)
+											console.log("error updating user notifications");
+										else {
+											user.unread_notifications = user.unread_notifications + 1;
+											user.save();
+											console.log(user);
+										}
 									});
-								}
-
-							});
-
-						}
-
-						else
-							if (req.body.repeat == "Once") {
-
-
-								let occurrence = new EventOccurrences({
-									day: req.body.date,
-									time: req.body.timing,
-									available: req.body.capacity,
-									event: event._id,
-									business_id: id
-								});
-
-								occurrence.save(function (err, occurrence) {
-									if (err)
-										res.status(500).json(err.message);
-									else {
-										var notification = { content: req.user.name + " added " + req.body.name, date: Date.now() };
-
-										async.each(req.user.subscribers, function (subscriber, callback) {
-											User.findByIdAndUpdate({ _id: subscriber }, { $push: { "notifications": notification } }, function (err, user) {
-												if (err)
-													console.log("error updating user notifications");
-												else {
-													user.unread_notifications = user.unread_notifications + 1;
-													user.save();
-													console.log(user);
-												}
-											});
-										});
-									}
 								});
 							}
-						Business.find({ _id: id }, function (err, business) {
-							if (err) res.send(err.message);
-							else res.status(200).json(business);
 						});
 					}
-				}
-			});
+				Business.find({ _id: id }, function (err, business) {
+					if (err) res.send(err.message);
+					else res.status(200).json(business);
+				});
+			}
+			else res.status(500).json('Incorrect input');
 		}
 	}
 	else {
@@ -658,7 +629,7 @@ exports.editEvent = function (req, res) {
 								return res.status(500).json("Enter a valid date");
 							}
 							else {
-								EventOccurrences.findOneAndUpdate({ event: id }, { $set: { day: req.body.date } }, function (err, occurrence) {
+								EventOccurrences.update({ event: id }, { $set: { day: req.body.date } }, { "multi": true }, function (err, occurrence) {
 									if (err) res.status(500).json("Something went wrong");
 									else if (!occurrence) res.status(500).json("Something went wrong");
 
@@ -727,8 +698,8 @@ exports.deleteImage = function (req, res) {
 									}
 								});
 							}
-							res.status(200).json({ event: updatedEvent });
 						}
+						res.status(200).json({ event: updatedEvent });
 					});
 				} else {
 					res.status(500).json("You are not authorized to view this page");
