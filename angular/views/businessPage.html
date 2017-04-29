@@ -111,7 +111,7 @@
         <div id="right-sidebar" class="col-md-4 col-sm-4">
 
           <div style="background-color:#2B2C30;">
-            <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()" ng-if = "type == 4">&#9776;</button>
+            <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()" ng-if = "type == 4">Options &#9776;</button>
             <div class="w3-container">
             </div>
            <!-- Single Widget -->
@@ -180,7 +180,7 @@
 
                               	<!-- <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon_profile" class="image2" align="left" style = "padding-top: 6px"> -->
                   	<div style="padding-left: 25px;">
-                      <div ng-if = "phones.length>0">
+                      <div ng-if = "phones && phones.length>0">
                         <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
                           <i class = "fa fa-phone" aria-hidder="true" style="color: #6cb670"></i>
                         </a>
@@ -205,7 +205,7 @@
                   	</div>
 
                   	<div style="padding-left: 25px;">
-                      <div ng-if = "methods">
+                      <div ng-if = "methods && methods.length>0">
                         <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
                           <i class = "fa fa-money" aria-hidder="true" style="color: #6cb670"></i>
                         </a>
@@ -311,7 +311,7 @@
                                   <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "goToEditFacility(facility._id)"> Edit Facility </button>
                                  <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "deleteFacility(facility._id)"> Delete Facility </button>
                                  <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "addDaily(facility._id,facility.description,facility.capacity, facility.name)">&nbsp;&nbsp; Add Event </button>
-                                 <button ng-if = "type == 4 || type == 1" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "viewEvents(facility._id)">&nbsp;&nbsp;View Events &nbsp;</button>
+                                 <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "viewEvents(facility._id)">&nbsp;&nbsp;View Events &nbsp;</button>
                                  <hr style="border: 0.5px solid #90EE90">
                                </center>
                             </div>
@@ -485,7 +485,7 @@
                                 <div class="comment-head">
                                     <h6 class="comment-name">{{review.user.name}}</h6>
 
-                                    <span style="margin-top: 10px">{{review.timestamp | date: 'd MMM, yy h:mm a '}} 
+                                    <span style="margin-top: 10px">{{review.timestamp | date: 'd MMM, yy h:mm a '}}
 
                                         <i ng-if="type == 3 || (type == 1 && review.user.id == user._id)" ng-click="deleteReview(review)" class="delete glyphicon glyphicon-trash"></i></span>
 
@@ -499,10 +499,10 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <ul class="comments-list reply-list">
                             <li ng-repeat="reply in review.replies">
-                              
+
                                 <div ng-if="reply.authorType == 'user' " class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{reply.user.image}}" alt=""></div>
                                 <div ng-if="reply.authorType == 'business'" class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{business.profilePicture}}" alt=""></div>
 
@@ -510,7 +510,7 @@
                                     <div class="comment-head">
                                         <h6 ng-if="reply.authorType == 'user'" class="comment-name">{{reply.user.name}}</h6>
                                         <h6 ng-if="reply.authorType == 'business'" class="comment-name by-author"> {{business.name}}</h6>
-                                        <span style="margin-top: 10px">{{reply.timestamp | date: 'd MMM, yy h:mm a ' }} 
+                                        <span style="margin-top: 10px">{{reply.timestamp | date: 'd MMM, yy h:mm a ' }}
                                             <i ng-if="type == 3 || (type == 1 && reply.user.id == user._id) || (type == 4 && reply.authorType == 'business') " ng-click="deleteReply(review, reply)" class="delete glyphicon glyphicon-trash"></i></span>
 
 
@@ -551,13 +551,13 @@
                     <li ng-show="type == 1">
                         <div class="comment-main-level">
                             <!-- Avatar -->
-                           
+
                             <div class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{user.profilePic}}" alt=""></div>
                             <!-- Contenedor del Comentario -->
                             <div class="comment-box">
                                 <div class="comment-head">
                                     <h6 ng-if="type == 1" class="comment-name"> {{user.name}}: </h6>
-                                    <h6 ng-if="type == 4" class="comment-name"> {{business.name}}: </h6> 
+                                    <h6 ng-if="type == 4" class="comment-name"> {{business.name}}: </h6>
 
                                 </div>
                                 <div class="comment-content">

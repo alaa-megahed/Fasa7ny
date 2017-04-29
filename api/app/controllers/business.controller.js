@@ -136,9 +136,6 @@ requestRemoval: function(req,res) {
                         console.log("ahlan we sahlan");
                         console.log(JSON.stringify(req.body.location));
                     }
-                    if (typeof req.body.email != "undefined" && req.body.email.length > 0) {
-                        business.email = req.body.email;
-                    }
 
                     if (typeof req.body.address != "undefined" && req.body.address.length > 0) {
                         business.address = req.body.address;
