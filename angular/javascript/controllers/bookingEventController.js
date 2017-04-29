@@ -32,7 +32,9 @@ app.controller('bookingEventController', function($scope, $http,$routeParams,Bus
                   .then(function(response) {
                          $scope.offers = response.data;
 
-                     });
+                     },function errorCallback(response){
+                    $location.path("/error/"+response.status);
+                  });
 
                    Business.getById($scope.business_id).then(function(response){
                   $scope.business = response.data;
@@ -56,7 +58,9 @@ app.controller('bookingEventController', function($scope, $http,$routeParams,Bus
         viewOccurences.get($scope.current_event).then(function (response) {
           $scope.event_occ = response.data.eventocc[0];
           $scope.max = $scope.event_occ.available;
-        });
+        }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
         $scope.min = 1;
         $scope.error_message="";
@@ -121,7 +125,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams,Bus
           $scope.charge  = $scope.stripe_charge / 100;
           $scope.stripe_handler.open({
             name: $scope.event.name,
-            description: $scope.formData.count + " places",       // TODO add offer
+            description: "Booking for "+$scope.formData.count,       // TODO add offer
             amount: $scope.stripe_charge
           });
         }

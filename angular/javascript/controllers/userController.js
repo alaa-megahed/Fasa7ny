@@ -60,9 +60,9 @@ app.controller('userController', function($scope, status,$http, User, $location,
 			function success(response)
 			{
 				$route.reload();
-			},function error(response)
-			{
-			});
+			}, function errorCallback(response){
+	            $location.path("/error/"+response.status);
+	          });
 	};
 
 

@@ -12,7 +12,9 @@ app.controller('ViewOffersController', function($scope, $http, $location, Offers
       		Offers.get($scope.business_id).then(function(response) {
               $scope.offers = response.data;
         });
-      	});
+      	}, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
 });
 
@@ -50,10 +52,14 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
 
       Facilities.get($scope.business_id).then(function(response) {
               $scope.facilities = response.data;
-        });
+        }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
       OneTimeEvent.getOnceEvents($scope.business_id).then(function(response) {
               $scope.events = response.data;
-        });
+        }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
       $scope.today = new Date();
       $scope.error_message = "";
@@ -92,10 +98,14 @@ app.controller('EditOffersController', function($scope, $http, $route,$location,
       	function(response)
       	{
       		$scope.business_id = response.data._id;
-      	});
+      	}, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
       Offers.get($scope.business_id).then(function(response) {
               $scope.offers = response.data;
-        });
+        },function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
 	  $scope.editOffer = function (offerId,offerType) {
 			$scope.message = "Show edit Form Button Clicked";

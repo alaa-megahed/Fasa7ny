@@ -90,10 +90,10 @@ angular.module('fasa7ny')
     $scope.getAdvertisements = function()
     {
       Homepage.getAds().then(function successfulCallback(result){
-
         $scope.advertisements = result.data;
-
-      });
+      }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
     }
 
     $scope.getAdvertisements();

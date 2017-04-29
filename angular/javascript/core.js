@@ -107,10 +107,9 @@ app.config(function ($routeProvider) {
 			controller: "editLocationController"
 
 		})
-		.when("/error", {
+		.when("/error/:status", {
 			templateUrl: "views/error.html",
-			controller: "navbarController"
-
+			controller :"errorController"
 		})
 
 		.when('/bookings/:eventoccId', {

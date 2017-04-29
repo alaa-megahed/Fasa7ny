@@ -25,7 +25,9 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
   occurrenceBookings.get($scope.eventocc).then(function (response)
   {
       $scope.bookings = response.data;
-  });
+  }, function errorCallback(response){
+       $location.path("/error/"+response.status);
+      });
 
   $scope.deleteBooking = function(bookingID,eventoccId)
   {
@@ -71,7 +73,9 @@ app.controller('viewEventBookings',function($scope,status,$http,$location,occurr
 
     occurrenceBookings.get($scope.event_occ).then(function (response){
         $scope.bookings = response.data;
-     });
+     }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
 
 

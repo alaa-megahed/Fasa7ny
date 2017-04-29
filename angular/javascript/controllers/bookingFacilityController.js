@@ -28,24 +28,32 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
       $scope.business_id = $routeParams.id;
       Facilities.get().then(function(response){
            $scope.facilities = response.data;
-      });
+      }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
       Offers.get($scope.business_id).then(function(response) {
               $scope.offers = response.data;              
-        });
+        }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
       Occurrences.get().then(function(response){
            $scope.timings = response.data;
-      });
+      }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
       Business.getById($scope.business_id).then(function(response){
             $scope.business = response.data;
             $scope.cash = false;
-      $scope.stripe = false;
+            $scope.stripe = false;
      for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
          if($scope.business.payment_methods[i] === "Cash")
             $scope.cash = true;
          if($scope.business.payment_methods[i] == "Stripe")
               $scope.stripe = true;
        }
-      });
+      }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
       
       $scope.choose_date = function(date)
       {
@@ -74,7 +82,9 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
         Facilities.getEvent($scope.event).then(function(response)
         {
             $scope.chosen_event = response.data;
-        });
+        }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
       }
 
@@ -96,7 +106,6 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
                     .then(function successCallback(response){
                       $location.path('/success/'+response.data._id);
                     }, function errorCallback(response){
-                      //redirect to not authorized page
                        $scope.error_message = response.data;
                     });
          }
@@ -146,7 +155,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
           $scope.charge  = $scope.stripe_charge / 100;
           $scope.stripe_handler.open({
             name: $scope.event.name,
-            description: $scope.formData.count + " places",       // TODO add offer
+            description: "Booking for "+$scope.formData.count,       // TODO add offer
             amount: $scope.stripe_charge
           });
         }
@@ -160,7 +169,9 @@ app.controller('successfulBookingController', function($scope, $http, $location,
   $http.post('http://'+ IP.address + ':3000/bookings/get_booking', {bookingId: $scope.booking_id}).then(
     function(response){
       $scope.booking = response.data;
-    });
+    }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 });
 
 var apply_best_offer_facility = function(facility, event_occ, price, capacity, count, chosen_offer, offers)

@@ -153,7 +153,9 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
         $scope.event_occ = response.data.eventocc[0]._id;
         $location.path('/bookings/'+$scope.event_occ); // /bookings/:onceEventOcc
 
-         });
+         }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
      };
 
 });
@@ -174,7 +176,8 @@ var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Ev
                 $http.post('http://'+ IP.address + ':3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
                         .then(function successCallback(response){
                         }, function errorCallback(response){
-                        });
+				            $location.path("/error/"+response.status);
+				          });
 
 
                 }
@@ -190,9 +193,9 @@ var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Ev
             function errorCallback(d){
                         $scope.error = d.data;
             });
-        }, function errorCallback(response)
-        {
-        });
+        }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
     };
 

@@ -668,18 +668,22 @@ exports.editEvent = function (req, res) {
 								else 
 								{
 									// send notifications for bookers
-									var content = req.user.name + " edited " + event.name ;
-									var now = Date.now();
-									async.each(occs, function(occ, callback)
-									{
-										async.each(occ.bookings, function(booker_id, cb)
-										{
-											User.findByIdAndUpdate({ _id: booker_id }, { $push: { "notifications": { content: content, date: now } } }, function(err, user){
-												if (err)
-                      							    return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
-											});
-										});
-									});
+									// var content = req.user.name + " edited " + event.name ;
+									// var now = Date.now();
+									// async.each(occs, function(occ, callback)
+									// {
+									// 	async.each(occ.bookings, function(booker_id, cb)
+									// 	{
+									// 		User.findByIdAndUpdate({ _id: booker_id }, { $push: { "notifications": { content: content, date: now } } }, function(err, user){
+									// 			if (err)
+         //              							    return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
+									// 		});
+									// 	});
+
+									// });
+									res.status(200).json("edited successfully");
+
+
 								}
 							})
 						}

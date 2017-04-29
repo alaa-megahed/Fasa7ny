@@ -48,13 +48,9 @@ angular.module('fasa7ny')
         Stats.getAllStats({ businessID: $scope.businessID })
             .then(function (res) {
                 $scope.allStats = res.data;
-            }, function (res) {
-                if (res.status == 401) {
-                    $location.path('/not-authorized');
-                } else {
-                    $scope.errMsg = res.data;
-                }
-            });
+            }, function errorCallback(response){
+                $location.path("/error/"+response.status);
+              });
         //get stats on demand when button is clicked
         $scope.getStats = function () {
             if ($scope.type == 'year') {
