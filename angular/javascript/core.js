@@ -19,12 +19,12 @@ app.config(function ($routeProvider) {
 		})
 
 		.when("/search/:keyword", {
-			templateUrl: "views/search.html",
+			templateUrl: "views/search-new.html",
 			controller: "SearchController"
 		})
 
 		.when('/view-all', {
-			templateUrl: 'views/search.html',
+			templateUrl: 'views/search-new.html',
 			controller: 'SearchController'
 		})
 

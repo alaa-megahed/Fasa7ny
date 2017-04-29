@@ -1,4 +1,4 @@
-app.factory('viewOccurences', ['$http', function($http, IP) {
+app.factory('viewOccurences', ['$http', 'IP', function($http, IP) {
   return {
     get : function(eventId) {
       console.log(eventId+" service");
