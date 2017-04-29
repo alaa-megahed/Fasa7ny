@@ -49,7 +49,6 @@ app.controller('bookingEventController', function($scope, $http,$routeParams,Bus
 
 
           }, function errorCallback(response){
-            console.log("status  "+response.status);
             $location.path("/error/"+response.status);
           });
 
