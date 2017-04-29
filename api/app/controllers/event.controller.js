@@ -14,14 +14,14 @@ exports.getEvent = function(req, res)
 	if(req.params.id != "undefined")
 	{
 		Events.findById(req.params.id, function(err,event){
-			if(err) return res.status(500).json("BAD REQUEST! NO SUCH EVENT EXISTS");
+			if(err) return res.status(500).json("Oops!! Something went wrong.");
 			else
 				return res.status(200).json(event);
 		});
 	}
 	else
 	{
-		return res.status(500).json("BAD REQUEST");
+		return res.status(500).json("Oops!! Something went wrong.");
 	}
 }
 
@@ -32,15 +32,12 @@ exports.createFacility = function(req,res)
 	if (req.user && req.user instanceof Business)
 	{
 		var id = req.user.id;
-		console.log(req.body);
 		if(!req.body.name || !req.body.description || !req.body.capacity)
 		{
-			console.log("!");
 			res.status(400).json("Incomplete form");
 		}
 		else
 		{
-			console.log("!!!");
 			var facility = new Facility(
 			{
 				name : req.body.name,
@@ -48,14 +45,10 @@ exports.createFacility = function(req,res)
 				capacity:req.body.capacity,
 				business_id: id
 			});
-			console.log("!!!!!!!");
-			console.log(facility.image);
-			console.log(facility);
+			
 			if(typeof req.file != "undefined") {
-				console.log("msh undefined");
 				facility.image = req.file.filename;
 			} else {
-				console.log("tle3 undefined");
 				facility.image = 'default';
 			}
 			facility.save(function(err)
@@ -63,14 +56,13 @@ exports.createFacility = function(req,res)
 				if(err)
 					res.status(500).json("Oops Something went wrong");
 				else{
-					console.log(facility);
 					res.status(200).json(id);
 				}
 			});
 		}
 	}
 	else
-		res.status(401).json("Not logged in Business");
+		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 }
 
 //don't need to edit fields in repeated events because we will always get them from facility
@@ -79,10 +71,8 @@ exports.editFacility = function(req,res)
 	if (req.user && req.user instanceof Business)
 	{
 		var id = req.user.id;
-
 		var facility_id = req.params.facilityId;
-		console.log(req.body);
-		console.log();
+		
 		Business.findById(id,function(err,business)
 		{
 			if(err || !business)
@@ -110,38 +100,22 @@ exports.editFacility = function(req,res)
 						if(req.body.capacity)
 						{
 							facility.capacity = req.body.capacity;
-							Events.update({facility_id:facility_id},{ $set: { capacity: Number(req.body.capacity) }},function(err,event)
+							Events.update({facility_id:facility_id},{ $set: { capacity: Number(req.body.capacity) }},{multi: true},function(err,event)
 							{
-								console.log(req.body.capacity);
 								if(err)
-									return res.json({err:"error updating event"});
+									return res.status(500).json({err:"error updating event"});
 							});
 
-							EventOccurrences.update({facility_id:facility_id},{ $set: { available: Number(req.body.capacity) }},function(err,eventocc)
+							EventOccurrences.update({facility_id:facility_id},{ $set: { available: Number(req.body.capacity) }},{multi: true},function(err,eventocc)
 							{
 								if(err)
 									return res.status(500).json({err:"error updating eventocc"});
-
-								//To check if old occurrences have bookings>new capacity. I think it should
-								// be applicable on the new occurrences and those that have not been exceeded.
-								// or tell the business in the popup changes in capacity won't change past ones.
-								// Bookings.find({event_id: eventocc.id},function(err,bookings)
-								// {
-								// 	if(err)
-								// 		res.send("error");
-								// 	else
-								// 	{
-								// 		if(bookings.length > req.body.capacity)
-								// 			return res.status(500).json("You already have bookings more than new capacity");
-								// 	}
-								// });
-
 							});
 
 						}
 						if(req.body.name)
 						{
-							Events.update({facility_id:facility_id},{ $set: { name: req.body.name }},function(err)
+							Events.update({facility_id:facility_id},{ $set: { name: req.body.name }},{multi: true},function(err)
 							{
 								if(err)
 									return res.json({err:"error updating event"});
@@ -149,7 +123,7 @@ exports.editFacility = function(req,res)
 						}
 						if(req.body.description)
 						{
-							Events.update({facility_id:facility_id},{ $set: { description: req.body.description }},function(err)
+							Events.update({facility_id:facility_id},{ $set: { description: req.body.description }},{multi: true},function(err)
 							{
 								if(err)
 									return res.json({err:"error updating event"});
@@ -169,7 +143,7 @@ exports.editFacility = function(req,res)
 		});
 	}
 	else
-		res.status(500).json("Not logged in Business");
+		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 }
 
 
@@ -179,7 +153,6 @@ exports.deleteFacility = function(req,res)
 	{
 		var id = req.user.id;
 		var facility_id = req.params.facilityId;
-		console.log("delete facility backend");
 		Business.findById(id,function(err,business)
 		{
 			if(err || !business)
@@ -188,14 +161,12 @@ exports.deleteFacility = function(req,res)
 			{
 				if(err || !facility)
 					return res.status(500).json({err:"Oops!! Something went wrong"});
-
 				else
 				{
 					if(facility.business_id == id)
 					{
 						Facility.remove({_id:facility_id}, function(err) {
 							if(err) return res.status(500).json({err:"error removing facility"});
-							console.log("et");
 						});
 
 						Events.remove({facility_id:facility_id},function(err)
@@ -213,7 +184,7 @@ exports.deleteFacility = function(req,res)
 						});
 					}
 					else
-						return res.status(500).json({err:"You are not authorized to perform this action"});
+						return res.status(401).json({err:"You are not authorized to perform this action"});
 				}
 			});
 			Facility.findByIdAndRemove(facility_id,function(err)
@@ -226,7 +197,7 @@ exports.deleteFacility = function(req,res)
 		});
 	}
 	else
-		res.status(500).json("Not logged in business");
+		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 }
 
 
@@ -242,7 +213,6 @@ exports.createEvent = function (req, res) {
 	if (req.user && req.user instanceof Business) {
 		var id = req.user.id;
 		var now = new Date();
-		console.log(req.body);
     	//if event belongs to facility, fields will be passed from facility to event in hidden fields
     	if(!req.body.name || !req.body.description || !req.body.date || !req.body.price || !req.body.capacity || !req.body.repeat) {
         res.status(500).json("Please add all information");
@@ -251,7 +221,6 @@ exports.createEvent = function (req, res) {
         res.status(500).json("Repitition type can either be Daily or Once");
     	}
 			else if(now - (new Date(req.body.date)) >= 0) {
-				console.log("enter a valid start date");
 				res.status(500).json("Enter a valid start date");
 			}
       else if(req.body.capacity <= 0) res.status(500).json("Enter a valid capacity");
@@ -267,25 +236,12 @@ exports.createEvent = function (req, res) {
 						var starttime = new Date(req.body.starttime);
 						var endtime = new Date(req.body.endtime);
 						var day = new Date(req.body.date);
-						console.log("DAY ADDED");
-						console.log(req.body.facility_id);
-						console.log(day);
-						console.log("DAY OF EVENTOCCS");
-						console.log("EVENTOCCS",eventoccs1);
+						
 						async.each(eventoccs1, function(event2, callback) {
-							console.log(event2.day);
 
-							// if((event2.day - day) == 0) {
-							console.log(starttime);
-								// console.log(Number(starttime.substring(0,2)));
-								// console.log(Number(starttime.substring(3,5)));
-								// var datestarttime = (new Date()).setHours(Number(starttime.substring(0,2)),Number(starttime.substring(3,5)), 0); //starttime of req.body.starttime
-								// var dateendtime = (new Date()).setHours(Number(endtime.substring(0,2)),Number(endtime.substring(3,5)), 0); //endtime of req.body.eventtime
-
-								//timing: HH:MM-HH-MM
+							
 							var eventstart = (new Date('1970-01-01')).setHours(Number(event2.time.substring(0,2)), Number(event2.time.substring(3,5)),0); //starttime of the event in the same facility on the same day
 							var eventend = (new Date('1970-01-01')).setHours(Number(event2.time.substring(6,8)), Number(event2.time.substring(9,11)),0); //endtime of the event in the same facility on the same day
-								// console.log(starttime + "-----" + endtime +"------------------" + new Date(eventstart) + "-----" + new Date(eventend));
 							if((eventstart > starttime && eventstart < endtime) || (eventend > starttime && eventend < endtime)
 								|| (eventstart <= starttime && eventend >= endtime)) flagerror = true;
 							// }
@@ -345,13 +301,11 @@ exports.createEvent = function (req, res) {
 										var y = Number(req.body.day[l]);
 
 										if (y == now.getDay()) {
-											// console.log(y);
 											tflag = false;
 										}
 									}
 									if (tflag) {
 										arr[i] = new Date(now);
-										// console.log(arr[i] + "------" + arr[i].getDay());
 										i++;
 									}
 									now.setDate(now.getDate() + 1);
@@ -434,7 +388,6 @@ exports.createEvent = function (req, res) {
 							else
 								if (req.body.repeat == "Once") {
 
-
 									let occurrence = new EventOccurrences({
 										day: req.body.date,
 										time: req.body.timing,
@@ -454,12 +407,11 @@ exports.createEvent = function (req, res) {
 													User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": notification}},function(err,user)
 													{
 														if(err)
-															console.log("error updating user notifications");
+															return res.status(500).json("Oops!! Something went wrong");
 														else
 														{
 															user.unread_notifications = user.unread_notifications + 1;
 															user.save();
-															console.log(user);
 														}
 													});
 												});
@@ -467,7 +419,8 @@ exports.createEvent = function (req, res) {
 									});
 								}
 							Business.find({_id:id},function(err,business){
-								if(err) res.send(err.message);
+								if(err) res.status(500).json("Oops!! Something went wrong.");
+
 								else res.status(200).json(business);
 							});
 						}
@@ -476,7 +429,7 @@ exports.createEvent = function (req, res) {
 			}
 		}
 		else {
-			res.status(500).json('You are not a logged in business');
+			res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 		}
 }
 
@@ -484,19 +437,18 @@ exports.getOnceEvents = function(req,res)
 {
 	//whoever views business page can see all "once" events, no restrictions
 	var business_id = req.params.id;
-	console.log(business_id);
 
 	Business.findById(business_id,function(err,business)
 	{
 		if(err || !business)
-			res.status(500).json("Oops!! Something went wrong");
+			res.status(500).json("Oops!! Something went wrong.");
 
 		else
 		{
 			Events.find({business_id: business.id,repeated:"Once"},function(err,events)
 			{
 				if(err)
-					res.status(500).json("Oops!! Something went wrong");
+					res.status(500).json("Oops!! Something went wrong.");
 				else
 					res.status(200).json(events);
 			});
@@ -511,10 +463,9 @@ exports.getOnceEventDetails = function(req, res)
 	Events.findOne({_id:event_id}, function(err, event) {
 		if(err || !event) res.status(500).json("error in findng the event");
 		else {
-			console.log("hi2");
 			EventOccurrences.findOne({event:event_id}, function(err, eventocc) {
-				if(err) console.log("error in finding the eventocc");
-				if(!eventocc) res.status(500).json("error in findng the event");
+				if(err || !eventocc) 
+					res.status(500).json("error in findng the event");
 				else{
 					res.status(200).json({business: event.business_id, event:event, eventocc:eventocc});
 				}
@@ -552,7 +503,7 @@ exports.getEvents = function (req, res) {
 		var id = req.user.id;
 		Events.find({ business_id: id }, function (err, events) {
 			if (err) res.status(500).json(err.message);
-			else if (!events) res.status(500).json("Something went wrong");
+			else if (!events) res.status(500).json("Oops!! Something went wrong.");
 			else {
 
 		var name = req.params.name;
@@ -562,15 +513,14 @@ exports.getEvents = function (req, res) {
 			else if(!business) res.status(500).json("Business not found");
 			else {
 				var id = business._id;
-				console.log(id);
 				Events.find({ business_id: id }, function (err, events) {
 					if (err) res.status(500).json(err.message);
-					else if (!events) res.status(500).json("Something went wrong");
+					else if (!events) res.status(500).json("Oops!! Something went wrong.");
 					else {
 
 						EventOccurrences.find({business_id:id}, function(err, eventocc) {
 							if(err) res.status(500).json(err.message);
-							else if(!eventocc) res.status(500).json("Something went wrong");
+							else if(!eventocc) res.status(500).json("Oops!! Something went wrong.");
 							else {
 								res.status(200).json({events:events, eventocc:eventocc});
 							}
@@ -583,7 +533,7 @@ exports.getEvents = function (req, res) {
 	}
 });
 	}else {
-		res.status(401).json('You are not a logged in business');
+		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 	}
 }
 
@@ -592,19 +542,16 @@ exports.getDailyEvents = function (req, res) {
 
 		var facilityId = req.params.facilityId;
 		Events.find({ facility_id: facilityId}, function (err, events) {
-			if (err) res.status(500).json("Something went wrong");
-			else if (!events) res.status(500).json("Something went wrong");
+			if (err) res.status(500).json("Oops!! Something went wrong.");
+			else if (!events) res.status(500).json("Oops!! Something went wrong.");
 			else {
-				console.log(events+"eventsss");
 				EventOccurrences.find({facility_id: facilityId}, function(err, eventocc) {
 					if(err) res.status(500).json("Something went wrong");
-					else if(!eventocc) res.status(500).json("Something went wrong");
+					else if(!eventocc) res.status(500).json("Oops!! Something went wrong.");
 					else {
-						console.log('events/eventocc retrieved for facility');
 						Facility.findOne({_id:facilityId}, function(err,facility){
-							if(err) res.status(500).json("Something went wrong");
+							if(err) res.status(500).json("Oops!! Something went wrong.");
 							else {
-								console.log(facility.name);
 								res.status(200).json({events:events, eventocc:eventocc,name:facility.name});
 						}
 						});
@@ -622,12 +569,6 @@ exports.getOccurrences = function (req, res) {
 			if (err || !events) res.status(500).json("Something went wrong");
 			else
 				{
-					console.log(events);
-					console.log(events);
-					console.log(events);
-					console.log(events);
-					console.log(events);
-
 					res.status(200).json({eventocc:events});
 				}
 		});
@@ -645,7 +586,7 @@ exports.getAllTimings = function (req, res) {
 		});
 	}
 	else {
-		res.status(401).json('You are not a logged in business');
+		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 	}
 }
 
@@ -670,14 +611,12 @@ exports.editEvent = function (req, res) {
 		var business_id = req.user.id;
 		var check = 1;
 		Events.findById(id, function (err, event) {
-			console.log("ana fl event");
 			if (err) res.status(500).json("Something went wrong");
 			else if (!event) res.status(500).json("Something went wrong");
 			else {
 				if (event.business_id == business_id) {
 					if (typeof req.body.name != "undefined" && req.body.name.length > 0) {
 						event.name = req.body.name;
-						console.log('Namee'+event.name);
 					}
 
 					if (typeof req.body.location != "undefined" && req.body.location.length > 0) {
@@ -688,7 +627,6 @@ exports.editEvent = function (req, res) {
 							return res.status(500).json("Enter a valid price");
 						}
 						else {
-							console.log("Price"+req.body.price);
 							event.price = req.body.price;
 						}
 
@@ -721,16 +659,32 @@ exports.editEvent = function (req, res) {
 						});
 
 					}
-					console.log("CHECK:" + check);
 					if(check){
 					event.save(function(err, newevent) {
 						if(err) return res.status(500).json("Something went wrong");
 						else {
 							EventOccurrences.find({event: id}, function(err,occs){
-								console.log("BATAAALLLL");
 								if(err) res.status(500).json("Something went wrong");
 								else if(!occs) res.status(500).json("Something went wrong");
-								else return res.status(200).json({event:newevent, eventocc:occs});
+								else 
+								{
+										// var bookings = one_occ.bookings;
+										// var content = req.user.name + " cancelled " + event.name + "     " + Date.now();
+
+										// async.each(bookings, function(one_booking, cb){
+										// Bookings.findById({_id:one_booking},function(err,booking)
+										// {
+										// 	User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
+										// 	{
+										// 		if(err)
+										// 			console.log("error updating user notifications");
+										// 		else
+										// 			console.log(user);
+										// 	});
+										// });
+													
+									return res.status(200).json({event:newevent, eventocc:occs});
+								}
 							})
 
 						}
@@ -743,7 +697,7 @@ exports.editEvent = function (req, res) {
 		});
 	}
 	else {
-		res.status(500).json('You are not a logged in business');
+		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 	}
 
 }
@@ -752,58 +706,44 @@ exports.deleteImage = function(req, res) {
 	if(req.user && req.user instanceof Business && typeof req.params.eventId != "undefined" && typeof req.params.image != "undefined") {
 		var eventId = req.params.eventId;
 		var image = req.params.image;
-console.log("ANA FE DELETEIMAGEEVENTT");
 		Events.findById(eventId, function(err, event) {
 			if(err || !event) res.status(500).json("something went wrong");
 			else {
 				if(event.business_id == req.user.id) {
-					// event.image.pull({image:image});
-					// event.save(function(err, updatedEvent) {
-					// 	if(err) res.status(500).json("something went wrong");
-					// 	console.log("UPDATED EVEENNTTTT:"+updatedEvent);
-					// 	res.status(200).json({event:updatedEvent});
-					// });
+					
 					Events.findByIdAndUpdate(eventId, {$pull:{image:image}}, {safe:true, upsert: true, new:true}, function(err, updatedEvent) {
 						if(err) res.status(500).json("something went wrong");
-						console.log("UPDATED EVEENNTTTT:"+updatedEvent);
 						res.status(200).json({event:updatedEvent});
 					});
 				} else {
-					res.status(500).json("You are not authorized to view this page");
+					res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 				}
 			}
 		});
 	} else {
-		res.status(500).json('You are not authorized to view this page');
+		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 	}
 }
 
 exports.addImage = function(req, res) {
 	if(req.user && req.user instanceof Business && typeof req.params.eventId != "undefined") {
-		console.log("hi????????????????");
 		var eventId = req.params.eventId;
-		console.log(eventId);
-		console.log("THIS IS A FILEEEE:"+req.file.filename);
 		Events.findById(eventId, function(err, event) {
 			if(err || !event){ res.status(500).json("something went wrong"); }
 			else {
 				if(event.business_id == req.user.id) {
-					console.log("??");
-					console.log("Fileeee::::::::::::"+req.file);
+					
 					Events.findByIdAndUpdate(eventId, {$push: {image: req.file.filename}}, {safe:true, upsert: true, new:true}, function(err, updatedEvent) {
 						if(err) res.status(500).json("something went wrong");
-						console.log(updatedEvent);
 						res.status(200).json({event:updatedEvent});
 					});
 				} else {
-					console.log("lolo");
-					res.status(500).json("You are not authorized to view this page");
+					res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 				}
 			}
 		});
 	} else {
-		console.log("koko");
-		res.status(500).json('You are not authorized to view this page');
+		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 	}
 }
 
@@ -814,7 +754,6 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 	if (req.user && req.user instanceof Business && typeof req.params.id != "undefined") {
 		var id = req.params.id;
 		var business_id = req.user.id;
-		console.log("backend cancel event");
 		Events.findById(id, function (err, event) {
 			if (!event) res.status(500).json("Something went wrong");
 			else
@@ -823,7 +762,6 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 					Events.remove({ _id: id }, function (err) {
 						if (err) res.status(500).json("Something went wrong");
 						else {
-							console.log("event removed");
 							EventOccurrences.find({event:id},function (err,all_occ) {
 								if (err) res.status(500).json("Something went wrong");
 								else
@@ -869,12 +807,12 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 					});
 				}
 				else {
-					res.status(500).json("CAN NOT CANCEL THIS EVENT");
+					res.status(500).json("CANNOT CANCEL THIS EVENT");
 				}
 		});
 	}
 	else {
-		res.status(500).json('You are not a logged in business');
+		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 	}
 
 }
@@ -937,29 +875,25 @@ exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
 		});
 	}
 	else {
-		res.status(500).json('You are not a logged in business');
+		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 	}
 
 }
 
 exports.getOccurrence = function(req, res)
 {
-	console.log("in node .. occ id is "+req.body.occ_id);
-	console.log("req.user is "+req.user);
+	
 	if(req.user && req.user instanceof Business)
 	{
 		EventOccurrences.findById(req.body.occ_id, function(err, occ)
 		{
-			if(err) return res.status(500).json("ERROR IN FINDING OCC");
-			console.log("occ nafsha "+occ);
-			console.log("occ.business_id "+occ.business_id );
-			console.log(" req.user._id "+ req.user._id);
-			if(occ.business_id != req.user.id) return res.status(401).json("YOU ARE NOT AUTORIZED 1");
+			if(err) return res.status(500).json("Oops!! Something went wrong.");
+			if(occ.business_id != req.user.id) return res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 			return res.status(200).json(occ);
 		});
 	}
 	else
-		return res.status(401).json("YOU ARE NOT AUTORIZED 2");
+		return res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 }
 
 
@@ -986,8 +920,7 @@ function notify_on_create(event_name,subscribers,business)
 
 
 function notify_on_cancel_occ(event_name,eventocc_id,business)			    //would be exactly the same for edit event but
-{													//different  notification content, how to check
-													// which function am I currently executing
+{																			//different  notification content	
 	EventOccurrences.findOne({_id:eventocc_id},function(err,eventocc)
 	{
 		if(err)
