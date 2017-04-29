@@ -55,7 +55,7 @@ app.controller('viewOccurencesController', function($scope, $http, status,viewOc
     };
 });
 
-var DeletePopUp = function ($scope, $http, $modalInstance,viewOccurences,occId,$route) {
+var DeletePopUp = function ($scope, $http, $modalInstance,viewOccurences,occId,$route, IP) {
     $scope.form = {}
     $scope.error ="";
     $scope.submitForm = function ()

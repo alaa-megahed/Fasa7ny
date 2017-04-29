@@ -1,6 +1,6 @@
 
 app.controller('eventController', function($scope, $http, status, Event, $location, $routeParams, $modal, $log, Global,viewOccurences,$window, IP) {
-	$scope.ip = IP.address; 	
+	$scope.ip = IP.address;
 	$scope.imageEventlength = 0;
 	$scope.slides = [];
 	$scope.event = {};
@@ -177,7 +177,7 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 
 });
 
-var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Event, Business, id,bid, $route,$window) {
+var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Event, Business, id,bid, $route,$window, IP) {
     $scope.form = {};
     $scope.error = "";
     $scope.submitForm = function ()

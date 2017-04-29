@@ -177,7 +177,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
 });
 
 
-app.controller('successfulBookingController', function($scope, $http, $location,$routeParams, status)
+app.controller('successfulBookingController', function($scope, $http, $location,$routeParams, status, IP)
 {
   $scope.booking_id = $routeParams.bookingId;
   console.log("booking id in controller "+ $scope.booking_id);

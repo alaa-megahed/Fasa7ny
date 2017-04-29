@@ -1,7 +1,7 @@
 
 var app = angular.module('fasa7ny');
 app.controller('businessController', function ($scope, status, $http, Business, $location, Global, $routeParams, $modal, $log, $window, $document, Stats, IP) {
-  // $scope.type = {}; //must be initialized otherwise is undefined later 
+  // $scope.type = {}; //must be initialized otherwise is undefined later
   $scope.ip = IP.address;
   status.local()
     .then(function (res) {
@@ -52,7 +52,7 @@ app.controller('businessController', function ($scope, status, $http, Business, 
       status.local()
         .then(function (res) {
           if (res.data) {
-            //storing user 
+            //storing user
             $scope.user = res.data;
             if (res.data.user_type == 1) {
               $scope.type = 1;
@@ -86,7 +86,7 @@ app.controller('businessController', function ($scope, status, $http, Business, 
             status.foreign()
               .then(function (res) {
                 if (res.data) {
-                  //storing user object 
+                  //storing user object
                   $scope.user = res.data;
                   if (res.data.user_type == 1) {
                     $scope.type = 1;
@@ -122,7 +122,7 @@ app.controller('businessController', function ($scope, status, $http, Business, 
       console.log(d.data.result);
       $scope.business = d.data.result;
 
-      //check cookies for page views count 
+      //check cookies for page views count
       Stats.checkCookies($scope.type, $scope.business._id);
 
 
@@ -476,7 +476,7 @@ app.controller('businessController', function ($scope, status, $http, Business, 
   // ============================================
   //            REVIEWS FUNCTIONS
   // ============================================
-  // $scope.desc = false; //sort reviews by votes descendingly 
+  // $scope.desc = false; //sort reviews by votes descendingly
   $scope.addReview = function () {
     Business.addReview({
       review: $scope.reviewBody,
