@@ -1878,10 +1878,10 @@ height: 400px;
 }
 
 input[type=radio]:checked ~ label{
-  color: #0DFF92;
+  color: #6CB670;
 }
 /*==========================================Farida==================================
- It will not work without the style tag, so don't remove it. (I know it doesn't make sense)
+ It will not work without the style tag, so don't remove it. (I know it doesn't make sense)	
  ===================================================================================*/
 <style>
 ul {
@@ -2018,7 +2018,6 @@ li.dropdown {
    border: 0;
    color: #555;
    border-radius: 0;
-   height: 34px;
    -webkit-appearance: none;
    }
 

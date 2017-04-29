@@ -30,8 +30,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
            $scope.facilities = response.data;
       });
       Offers.get($scope.business_id).then(function(response) {
-              $scope.offers = response.data;
-              $scope.betengan = "Facility Booking";
+              $scope.offers = response.data;              
         });
       Occurrences.get().then(function(response){
            $scope.timings = response.data;
