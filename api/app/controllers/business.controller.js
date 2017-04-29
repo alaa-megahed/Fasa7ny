@@ -180,7 +180,22 @@ var BusinessController = {
                     }
 
                     if (typeof req.file != "undefined") {
+                        var image = business.profilePicture;
+                        //remove existing profile picture before adding new one 
+                        if (typeof business.profilePicture != 'undefined' && business.profilePicture != '') {
+                            fs.stat(path.resolve('public/uploads/' + image), function (err, stat) {
+                                if (err) {
+                                    return res.status(400).json('Could not find image');
+                                } else {
+                                    fs.unlink(path.resolve('public/uploads/' + image), function (err) {
+                                        if (err)
+                                           return  res.status(400).json('Could not find image');
+                                    });
+                                }
+                            });
+                        }
                         business.profilePicture = req.file.filename;
+
                     }
 
                     if (req.body.password) {
