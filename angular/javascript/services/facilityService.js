@@ -5,7 +5,6 @@ app.factory('Facility', ['$http', 'IP', function($http, IP) {
       for(var key in data)
         fd.append(key, data[key]);
 
-      console.log(fd);
       return $http.post('http://'+ IP.address + ':3000/event/createFacility', fd, {
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
@@ -13,14 +12,11 @@ app.factory('Facility', ['$http', 'IP', function($http, IP) {
     },
 
     editFacility : function(facilityId, data) {
-      console.log("edit facility service");
       var fd = new FormData();
       for(var key in data)
       {
-        console.log(data[key]);
         fd.append(key, data[key]);
       }
-      console.log(fd);
       return $http.post('http://'+ IP.address + ':3000/event/editFacility/' + facilityId, fd, {
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
@@ -28,13 +24,11 @@ app.factory('Facility', ['$http', 'IP', function($http, IP) {
     },
 
     deleteFacility : function(facilityId) {
-      console.log("delete facility service");
 
       return $http.get('http://'+ IP.address + ':3000/event/deleteFacility/' + facilityId);
     },
 
      addDaily : function(fid,description,capacity,name,formData){
-          console.log("add daily service"+formData);
           formData.repeat = "Daily";
           formData.description = description;
           formData.capacity = capacity;
@@ -55,8 +49,6 @@ app.factory('Facility', ['$http', 'IP', function($http, IP) {
 
           formData.timing = starthour+":"+startminute+"-"+endhour+":"+endminute;
 
-          console.log("day:" + formData.day);
-          console.log("Name:"+formData.name);
           return $http.post('http://'+ IP.address + ':3000/event/create', formData);
         }
   }

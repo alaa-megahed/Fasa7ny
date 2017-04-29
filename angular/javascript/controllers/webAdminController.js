@@ -24,10 +24,7 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
 
 
     $http.get('http://'+ IP.address + ':3000/admin/viewAdvertisements').then(function successCallback(response){
-             console.log(response.data);
             $scope.ads = response.data;
-
-          console.log($scope.ads);
       });
 
 

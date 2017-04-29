@@ -29,7 +29,6 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
 
   $scope.deleteBooking = function(bookingID,eventoccId)
   {
-    console.log("booking id "+ bookingID +"eventocc  "+eventoccId);
     $http.post('http://'+ IP.address + ':3000/bookings/cancel_booking',{booking_id:bookingID , event_id:eventoccId}).then(
       function success(response)
       {
@@ -39,7 +38,6 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
       function error(response)
       {
           $scope.error_message = response.data;
-          console.log($scope.error_message);
       });
     });
   };
@@ -79,7 +77,6 @@ app.controller('viewEventBookings',function($scope,status,$http,$location,occurr
 
    $scope.deleteBooking = function(bookingID,eventoccId)
   {
-    console.log("booking id "+ bookingID +"eventocc  "+eventoccId);
     $http.post('http://'+ IP.address + ':3000/bookings/cancel_booking',{booking_id:bookingID , event_id:eventoccId}).then(
       function success(response)
       {
@@ -89,7 +86,6 @@ app.controller('viewEventBookings',function($scope,status,$http,$location,occurr
       function error(response)
       {
           $scope.error_message = response.data;
-          console.log($scope.error_message);
       });
     });
   };

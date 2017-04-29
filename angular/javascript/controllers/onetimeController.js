@@ -1,5 +1,4 @@
 app.controller('onetimeController', function($scope, $http, status, $location, $routeParams, OneTimeEvent) {
-console.log("one time");
 	$scope.user = {};
 		status.local()
 		 .then(function(res){
@@ -23,14 +22,11 @@ console.log("one time");
 		 });
 
 	$scope.businessId = $routeParams.businessId;
-	console.log($scope.businessId);
 
 	$scope.goToCreateEvent = function(){
 		$scope.error = "";
-		console.log("Create event 1");
 		OneTimeEvent.create($scope.formData)
 		.then(function successCallback(d) {
-			console.log($scope.user.name);
 			$location.path('/business/'+$scope.user.name);
 		},
 		function errorCallback(d){

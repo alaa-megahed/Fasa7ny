@@ -1,6 +1,6 @@
 angular.module('fasa7ny')
 
-  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global, $route, IP) {
+  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status, $route, IP) {
 
     $scope.user = {};
     $scope.err = "";
@@ -12,16 +12,12 @@ angular.module('fasa7ny')
     $scope.category2 = "outlet";
     $scope.category3 = "escape";
 
-    // var user = Global.getUser();
-
-    // console.log(user);
     $scope.getHome = function() {
       $window.location = "/";
       // $location.path("/");// get back to this after ads
     }
 
     $scope.viewAll = function() {
-      console.log("VIEW ALL");
       $location.path('/view-all');
     }
 
@@ -34,7 +30,6 @@ angular.module('fasa7ny')
       $location.path('/profile');
     }
 
-    // conasole.log(user);
     $scope.getAdminProfile = function()
     {
       $location.path('/webAdminProfile');
@@ -340,7 +335,6 @@ angular.module('fasa7ny')
       $scope.submitForm = function () {
           if ($scope.form.userForm.$valid) {
               Homepage.signIn($scope.formData).then(function(data){
-                // console.log("Return data "  + JSON.stringify(data));
                 if(data.data === "success")
                 {
                   $modalInstance.close("closed");
@@ -395,7 +389,6 @@ angular.module('fasa7ny')
 
                     if(data.data.startsWith("An e-mail has been sent to "))
                     {
-                        console.log("hello");
                         $scope.success = data.data;
                         $timeout(function() {
                             $modalStack.dismissAll();

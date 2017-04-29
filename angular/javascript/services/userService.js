@@ -18,9 +18,6 @@ app.factory('User', ['$http', 'IP', function($http, IP) {
               for(var key in formData)
                 fd.append(key, formData[key]);
 
-              console.log(fd);
-
-
 	    	return $http.post('http://'+ IP.address + ':3000/user/editInfo/' + userID, fd, {
                 transformRequest: angular.identity,
                 headers: { 'Content-Type': undefined }
@@ -31,9 +28,6 @@ app.factory('User', ['$http', 'IP', function($http, IP) {
 	    	var fd = new FormData();
               for(var key in formData)
                 fd.append(key, formData[key]);
-
-            console.log("change image service");
-            console.log(fd);
 
 	    	return $http.post('http://'+ IP.address + ':3000/user/editInfo/' + userID, fd, {
                 transformRequest: angular.identity,

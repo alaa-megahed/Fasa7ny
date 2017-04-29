@@ -1,9 +1,5 @@
 app.controller('dailyEventsController', function($scope, status,$http, dailyEvents, $location, $routeParams, $modal, IP) {
 
-console.log("dailyevent eventController");
-console.log($routeParams.facilityId);
-
-
 status.local()
  .then(function(res){
    if(res.data){
@@ -29,7 +25,6 @@ status.local()
 		$scope.eventslength = d.data.events.length;
     $scope.eventocc = d.data.eventocc;
 		$scope.name = d.data.name;
-		console.log(d.data.name);
     $scope.name1 = $scope.name.substring(0, $scope.name.length/2);
     $scope.name2 = $scope.name.substring($scope.name.length/2);
 
@@ -43,7 +38,6 @@ status.local()
 
     for(var x = 0; x < $scope.events.length; x++) {
       var days = "";
-      // console.log("daysoff: " + $scope.events[x]);
       for(var y = 0; $scope.events[x].daysOff && y < $scope.events[x].daysOff.length ; y++){
         if($scope.events[x].daysOff[y]==0){ days = days + "Sunday, ";}
         else if($scope.events[x].daysOff[y]==1){ days = days + "Monday, ";}
@@ -62,15 +56,10 @@ status.local()
 		}
     }
 
-    console.log($scope.events);
-
 	});
 
   	$scope.deleteEvent = function (eventId) {
           $scope.message = "Show Daily Delete Button Clicked";
-          console.log($scope.message);
-          console.log("Delete");
-					console.log(eventId);
           var modalInstance = $modal.open({
               templateUrl: 'views/deleteDailyPopUp.html',
               controller: DeletePopUp1,
@@ -88,8 +77,6 @@ status.local()
 
       $scope.editDailyEvent = function (eventId) {
         $scope.message = "Show Form Button Clicked";
-        console.log($scope.message);
-        // console.log("1"+$scope.formData);
         var modalInstance = $modal.open({
             templateUrl: 'views/editDailyEvent.html',
             controller: editDailyEvent,
@@ -108,7 +95,6 @@ status.local()
     };
 
 		$scope.viewOccurences = function(eventId) {
-			console.log("view occurences daily event controller");
 			$location.path('/viewOccurences/' + eventId);
 
 		}
@@ -132,9 +118,7 @@ var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents
                 {
                 $http.post('http://'+ IP.address + ':3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
                         .then(function successCallback(response){
-                            console.log(response.data);
                         }, function errorCallback(response){
-                            console.log(response.data);
                         });
 
 
@@ -143,7 +127,6 @@ var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents
 
             dailyEvents.delete(eventId)
             .then(function successCallback(d){
-              console.log('del');
               $route.reload();
               $modalInstance.close('closed');
             }, function errorCallback(d) {
@@ -152,7 +135,6 @@ var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents
             // $route.reload();
         }, function errorCallback(response)
         {
-            console.log(response.data);
         });
 
     };
@@ -167,7 +149,6 @@ var editDailyEvent = function ($scope, $modalInstance,dailyEvents,eventId,$route
     $scope.form = {}
     $scope.formData = {}
     $scope.submitForm = function () {
-      console.log('Submit Form'+$scope.formData);
 
       var daysOff = [];
       var day = 0;
@@ -215,7 +196,6 @@ var editDailyEvent = function ($scope, $modalInstance,dailyEvents,eventId,$route
       $scope.formData.day = daysOff;
         dailyEvents.edit($scope.formData,eventId)
         .then(function successCallback(d){
-          console.log('yas');
            $route.reload();
         $modalInstance.close('closed');
         },
