@@ -22,11 +22,10 @@
 		display: flex;
 		flex-wrap: wrap;
 	}
-	
-	.equal>div[class*='col-'] {
-		display: flex;
-		flex-direction: column;
-	}
+	.equal > div[class*='col-'] {  
+  display: flex;
+  flex-direction: column;
+}
 </style>
 
 <section id="twitter-feed">
@@ -95,7 +94,9 @@
 			</div>
 			<!-- /section title -->
 		</div>
-		<div class="row equal" ng-repeat="row in chunkedBusinesses">
+		<div class="row" ng-repeat="row in chunkedBusinesses">
+
+			<div style="display: inline;">
 
 				<!-- business -->
 				<div ng-repeat="business in row | searchFilter: cat:minRating:area | filter: keyword | orderBy: sortBy : direction" class="col-md-3 col-sm-6 wow fadeInDown"
@@ -109,7 +110,7 @@
 							<!-- business profile -->
 							<div class="mask" style="padding-top: 20px; padding-left: 20px; padding-right: 20px; padding-bottom: 20px">
 								<p> <span class="color">Description:</span></p>
-								<p style="font-size: 12px"> {{business.description}} </p>
+								<span style="font-size: 12px"> {{business.description.substring(0, 150)}}</span><span style="display: inline" ng-if="business.description">...</span>
 								<br>
 								<div>
 									<i class="fa fa-map-marker" aria-hidden="true" style="color: #6cb670"></i>
@@ -136,7 +137,7 @@
 				</div>
 				<!-- end business -->
 
-			
+			</div>
 
 		</div>
 	</div>
