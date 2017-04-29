@@ -1,98 +1,107 @@
 var Business = require('../models/Business');
 var Events = require('mongoose').model('Events');
-var EventOccurrences   = require('mongoose').model('EventOccurrences');
+var EventOccurrences = require('mongoose').model('EventOccurrences');
 var Booking = require('mongoose').model('Booking');
 var Rating = require('mongoose').model('Rating');
 var Facility = require('mongoose').model('Facility');
 var User = require('mongoose').model('RegisteredUser');
 var async = require('async');
-
+var fs = require('fs');
+var path = require('path');
 
 var BusinessController = {
 
-  getBusiness: function (req, res) {
-   console.log("get business " + req.user );
-   if(req.params.name && req.user && req.user instanceof User) {
-      var name = req.params.name;
-       Business.findOne({name: name }).
-           exec(function (err, result) {
-               if (err)
-                   return res.status(500).json("Something went wrong");
-               else {
-                 console.log("result");
-                 if(!result) return res.status(500).json("Business does not exist");
-                   Rating.findOne({user_ID: req.user.id , business_ID: result._id}, function(err, rate) {
-                     if(err) res.status(500).json("Something went wrong");
-                     else {
-                       var r = 0;
-                       if(rate) r = rate.rating;
-                       Facility.find({business_id:result._id}, function(err, facilities) {
-                           if(err) res.status(500).json("Something went wrong");
-                           else {
-                             Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
-                                   if(err) res.status(500).json("Something went wrong");
-                                   if(!onceevents) res.status(200).json({result:result,
-                                           rate:r, facilities:facilities, events:[]});
-                                   else {
-                                     console.log("done!!");
-                                       res.status(200).json({result:result,
-                                           rate:r, facilities:facilities, events:onceevents});
-                                   }
-                               });
-                           }
-                       });
-                     }
-                   })
-                 }
-           });
-   } else if(req.params.name) {
-     var name = req.params.name;
-     Business.findOne({name: name }).
-         exec(function (err, result) {
-             if (err)
-                 return res.status(500).json("Something went wrong");
-             else {
-               console.log("??");
-               if(!result) return res.status(500).json("Business does not exist");
-                     Facility.find({business_id:result._id}, function(err, facilities) {
-                         if(err) res.status(500).json("Something went wrong");
-                         else {
-                           Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
-                                 if(err) res.status(500).json("Something went wrong");
-                                 if(!onceevents) res.status(200).json({result:result,
-                                         facilities:facilities, events:[]});
-                                 else {
-                                     res.status(200).json({result:result,
-                                         facilities:facilities, events:onceevents});
-                                 }
-                             });
-                         }
-                     });
-                   }
-                 })
-               } else res.status(500).json("Error");
-             },
+    getBusiness: function (req, res) {
+
+        if (req.params.name && req.user && req.user instanceof User) {
+            var name = req.params.name;
+            Business.findOne({ name: name }).
+                exec(function (err, result) {
+                    if (err)
+                        return res.status(500).json("Something went wrong");
+                    else {
+                        console.log("result");
+                        if (!result) return res.status(500).json("Business does not exist");
+                        Rating.findOne({ user_ID: req.user.id, business_ID: result._id }, function (err, rate) {
+                            if (err) res.status(500).json("Something went wrong");
+                            else {
+                                var r = 0;
+                                if (rate) r = rate.rating;
+                                Facility.find({ business_id: result._id }, function (err, facilities) {
+                                    if (err) res.status(500).json("Something went wrong");
+                                    else {
+                                        Events.find({ business_id: result._id, repeated: "Once" }, function (err, onceevents) {
+                                            if (err) res.status(500).json("Something went wrong");
+                                            if (!onceevents) res.status(200).json({
+                                                result: result,
+                                                rate: r, facilities: facilities, events: []
+                                            });
+                                            else {
+                                                console.log("done!!");
+                                                res.status(200).json({
+                                                    result: result,
+                                                    rate: r, facilities: facilities, events: onceevents
+                                                });
+                                            }
+                                        });
+                                    }
+                                });
+                            }
+                        })
+                    }
+                });
+        } else if (req.params.name) {
+            var name = req.params.name;
+            Business.findOne({ name: name }).
+                exec(function (err, result) {
+                    if (err)
+                        return res.status(500).json("Something went wrong");
+                    else {
+                        console.log("??");
+                        if (!result) return res.status(500).json("Business does not exist");
+                        Facility.find({ business_id: result._id }, function (err, facilities) {
+                            if (err) res.status(500).json("Something went wrong");
+                            else {
+                                Events.find({ business_id: result._id, repeated: "Once" }, function (err, onceevents) {
+                                    if (err) res.status(500).json("Something went wrong");
+                                    if (!onceevents) res.status(200).json({
+                                        result: result,
+                                        facilities: facilities, events: []
+                                    });
+                                    else {
+                                        res.status(200).json({
+                                            result: result,
+                                            facilities: facilities, events: onceevents
+                                        });
+                                    }
+                                });
+                            }
+                        });
+                    }
+                })
+        } else res.status(500).json("Error");
+    },
 
     /* A business can request to be removed from the website.
     If the business has any bookings the request is rejected and a message is sent to the business specifying
     that the request was cancelled and that the business should cancel its bookings first.*/
 
 
-requestRemoval: function(req,res) {
-        if(req.user && req.user instanceof Business){
-        var id = req.user.id;
-        console.log('removal');
+    requestRemoval: function (req, res) {
+        if (req.user && req.user instanceof Business) {
+            var id = req.user.id;
+            console.log('removal');
 
-        Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
-            if(err) res.status(500).json("error in request removal");
-            else res.status(200).json("Requested!");
-        });
+            Business.findByIdAndUpdate(id, { $set: { delete: 1 } }, function (err, business) {
+                if (err) res.status(500).json("error in request removal");
+                else res.status(200).json("Requested!");
+            });
 
         }
 
-        else{
-         res.status(500).json('You are not a logged in busiess');
-     }
+        else {
+            res.status(500).json('You are not a logged in busiess');
+        }
 
     },
 
@@ -118,7 +127,7 @@ requestRemoval: function(req,res) {
 
 
     editInformation: function (req, res) {
-      console.log(req.body);
+        console.log(req.body);
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             console.log("ana fl backend");
@@ -159,42 +168,57 @@ requestRemoval: function(req,res) {
                         }
                     }
 
-                    if(req.body.pay0) {
-                      business.payment_methods.push("Cash");
+                    if (req.body.pay0) {
+                        business.payment_methods.push("Cash");
                     }
 
-                    if(req.body.pay1) {
-                      business.payment_methods.push("Stripe");
+                    if (req.body.pay1) {
+                        business.payment_methods.push("Stripe");
                     }
 
-                    if(typeof req.file != "undefined") {
+                    if (typeof req.file != "undefined") {
+                        var image = business.profilePicture;
+                        //remove existing profile picture before adding new one 
+                        if (typeof business.profilePicture != 'undefined' && business.profilePicture != '') {
+                            fs.stat(path.resolve('public/uploads/' + image), function (err, stat) {
+                                if (err) {
+                                    return res.status(400).json('Could not find image');
+                                } else {
+                                    fs.unlink(path.resolve('public/uploads/' + image), function (err) {
+                                        if (err)
+                                           return  res.status(400).json('Could not find image');
+                                    });
+                                }
+                            });
+                        }
                         business.profilePicture = req.file.filename;
+
                     }
 
-                    if(req.body.password) {
-                      business.local.password = business.generateHash(req.body.password);
+                    if (req.body.password) {
+                        business.local.password = business.generateHash(req.body.password);
                     }
 
-                    if(req.body.facebookURL) {
-                      console.log(req.body.facebookURL);
-                      business.facebookURL = req.body.facebookURL;
+                    if (req.body.facebookURL) {
+                        console.log(req.body.facebookURL);
+                        business.facebookURL = req.body.facebookURL;
                     }
 
-                    if(req.body.twitterURL) {
-                      business.twitterURL = req.body.twitterURL;
+                    if (req.body.twitterURL) {
+                        business.twitterURL = req.body.twitterURL;
                     }
 
-                    if(req.body.youtubeURL) {
-                      business.youtubeURL = req.body.youtubeURL;
+                    if (req.body.youtubeURL) {
+                        business.youtubeURL = req.body.youtubeURL;
                     }
                     console.log("BUSINESSSS");
                     console.log(business);
-                    business.save(function(err, newbusiness) {
-                      if(err) res.status(500).json("something went wrong");
-                      else {
-                        console.log("SAVE");
-                        res.status(200).json({business:newbusiness});
-                      }
+                    business.save(function (err, newbusiness) {
+                        if (err) res.status(500).json("something went wrong");
+                        else {
+                            console.log("SAVE");
+                            res.status(200).json({ business: newbusiness });
+                        }
                     });
                     // res.sendFile('/business/b');
 
@@ -234,10 +258,10 @@ requestRemoval: function(req,res) {
                                 }
                             }
                             if (check) {
-                                Business.findByIdAndUpdate(id, {$pull:{ phones: phone }}, {safe:true, upsert: true, new:true},function (err, updatedbusiness) {
+                                Business.findByIdAndUpdate(id, { $pull: { phones: phone } }, { safe: true, upsert: true, new: true }, function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
                                     if (!business) res.status(500).json("Something went wrong");
-                                    else{ res.status(200).json({business:updatedbusiness}); console.log("2222222!!!!"+updatedbusiness);}
+                                    else { res.status(200).json({ business: updatedbusiness }); console.log("2222222!!!!" + updatedbusiness); }
                                 });
                             }
                             else {
@@ -254,7 +278,7 @@ requestRemoval: function(req,res) {
         }
 
         else {
-          res.status(500).json('You are not a logged in business');
+            res.status(500).json('You are not a logged in business');
         }
 
     },
@@ -286,10 +310,10 @@ requestRemoval: function(req,res) {
                             }
 
                             if (check) {
-                                Business.findByIdAndUpdate(id, { $pull: {payment_methods: payment }}, {safe:true, upsert: true, new:true},function (err, updatedbusiness) {
+                                Business.findByIdAndUpdate(id, { $pull: { payment_methods: payment } }, { safe: true, upsert: true, new: true }, function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
                                     if (!business) res.status(500).json("Something went wrong");
-                                    else {res.status(200).json({business:updatedbusiness}); console.log("payment method deleted");}
+                                    else { res.status(200).json({ business: updatedbusiness }); console.log("payment method deleted"); }
                                 });
 
                             }
@@ -307,147 +331,140 @@ requestRemoval: function(req,res) {
             }
         }
         else {
-          res.status(500).json('You are not a logged in business');
+            res.status(500).json('You are not a logged in business');
         }
 
     },
 
-    deleteImage: function(req, res) {
-      if(req.user && req.user instanceof Business) {
-        var id = req.user.id;
-        // var id = "58f8b9fdf3e7ca15c2ca2c1f";
-        // var id = "58f879e533a8465ada041bd1";
-        console.log("ana fl backend delete image");
-        var image = req.params.image;
+    deleteImage: function (req, res) {
+        if (req.user && req.user instanceof Business) {
+            var id = req.user.id;
+            // var id = "58f8b9fdf3e7ca15c2ca2c1f";
+            // var id = "58f879e533a8465ada041bd1";
+            console.log("ana fl backend delete image");
+            var image = req.params.image;
 
-        Business.findByIdAndUpdate(id, {$pull: {"images" : image}},{safe:true, upsert: true, new:true},
-        function(err, newBusiness) {
-          if(err) {
-            console.log("error in deleting image");
-            res.status(500).json("Something went wrong");
-          } else {
-            console.log("image deleted");
-            console.log(newBusiness);
-            res.status(200).json({business:newBusiness});
-          }
-        });
-      } else res.status(500).json("You are not a logged in business");
+            Business.findByIdAndUpdate(id, { $pull: { "images": image } }, { safe: true, upsert: true, new: true },
+                function (err, newBusiness) {
+                    if (err) {
+                        console.log("error in deleting image");
+                        res.status(500).json("Something went wrong");
+                    } else {
+                        console.log("image deleted");
+                        fs.stat(path.resolve('public/uploads/' + image), function (err, stat) {
+                            if (err) {
+                                res.status(400).json('Could not find image');
+                            } else {
+                                fs.unlink(path.resolve('public/uploads/' + image), function (err) {
+                                    if (err)
+                                        res.status(400).json('Could not find image');
+                                });
+                            }
+                        });
+                        console.log(newBusiness);
+                        res.status(200).json({ business: newBusiness });
+                    }
+                });
+        } else res.status(500).json("You are not a logged in business");
     },
 
 
-    changeImage: function(req, res) {
+    changeImage: function (req, res) {
 
-      if(req.user && req.user instanceof Business) {
-        var id = req.user.id;
+        if (req.user && req.user instanceof Business) {
+            var id = req.user.id;
 
-        console.log("ana fl backend changeProfilePicture");
-        var file = req.file;
-        Business.findByIdAndUpdate(id, {$push:{images:file.filename}}, {safe:true, upsert: true, new:true}, function(err, updatedBusiness) {
-            if(err) res.status(500).json("error in changing the profile picture");
-            else res.status(200).json({business:updatedBusiness});
-        });
-    }
-    else
-        res.status(401).json("YOU ARE NOT AUTHORIZED");
-  },
-
-
-
-    hasBookings: function(req, res)
-    {
-        if(req.user && req.user instanceof Business)
-        {
-            var id = req.user._id;
-            Booking.find({}, function(err, bookings)
-            {
-             if(err) res.status(500).json(err.message);
-             if(!bookings || bookings == undefined || bookings.length == 0)
-                res.status(200).json(0);
-             else
-                res.status(200).json(1);
+            console.log("ana fl backend changeProfilePicture");
+            var file = req.file;
+            Business.findByIdAndUpdate(id, { $push: { images: file.filename } }, { safe: true, upsert: true, new: true }, function (err, updatedBusiness) {
+                if (err) res.status(500).json("error in changing the profile picture");
+                else res.status(200).json({ business: updatedBusiness });
             });
         }
         else
-        {
+            res.status(401).json("YOU ARE NOT AUTHORIZED");
+    },
+
+
+
+    hasBookings: function (req, res) {
+        if (req.user && req.user instanceof Business) {
+            var id = req.user._id;
+            Booking.find({}, function (err, bookings) {
+                if (err) res.status(500).json(err.message);
+                if (!bookings || bookings == undefined || bookings.length == 0)
+                    res.status(200).json(0);
+                else
+                    res.status(200).json(1);
+            });
+        }
+        else {
             res.status(401).json("YOU ARE NOT AUTHORIZED");
         }
     },
 
-getFacilityOccs: function(req, res)
-{
-    if(req.user && req.user instanceof Business)
-    {
+    getFacilityOccs: function (req, res) {
+        if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             var facility_id = req.params.facility;
-            EventOccurrences.find({"facility_id": facility_id}, function(err, occs)
-            {
+            EventOccurrences.find({ "facility_id": facility_id }, function (err, occs) {
                 console.log(occs);
-                if(err) return res.status(500).json(err.message);
+                if (err) return res.status(500).json(err.message);
                 return res.status(200).json(occs);
             });
-     }
-    else res.status(401).json("YOU ARE NOT AUTHORIZED");
+        }
+        else res.status(401).json("YOU ARE NOT AUTHORIZED");
 
-},
+    },
 
-getEventOccs: function(req, res)
-{
-     if(req.user && req.user instanceof Business)
-    {
+    getEventOccs: function (req, res) {
+        if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             var event_id = req.params.event;
-            EventOccurrences.find({"event": event_id}, function(err, occs)
-            {
-                if(err) return res.status(500).json(err.message);
+            EventOccurrences.find({ "event": event_id }, function (err, occs) {
+                if (err) return res.status(500).json(err.message);
                 console.log("event occs in node");
                 return res.status(200).json(occs);
             });
 
-     }
-    else res.status(401).json("YOU ARE NOT AUTHORIZED");
-},
+        }
+        else res.status(401).json("YOU ARE NOT AUTHORIZED");
+    },
 
-getBooking: function(req, res)
-{
-    if(req.user && req.user instanceof Business)
-    {
+    getBooking: function (req, res) {
+        if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             var booking_id = req.params.booking;
-            Booking.findOne({"_id": booking_id}, function(err, booking)
-            {
+            Booking.findOne({ "_id": booking_id }, function (err, booking) {
                 console.log(booking);
-                if(err) return res.status(500).json(err.message);
+                if (err) return res.status(500).json(err.message);
                 return res.status(200).json(booking);
             });
 
-     }
-    else res.status(401).json("YOU ARE NOT AUTHORIZED");
-},
+        }
+        else res.status(401).json("YOU ARE NOT AUTHORIZED");
+    },
 
-getBusinessId : function(req,res)
-{
-    var name = req.body.name;
-    Business.findOne({name:name},function(err,business)
-    {
-        if(err || !business)
-            res.status(500).json("error");
-        else
-            res.status(200).json(business);
-    });
-},
-getUnloggedBusiness : function(req,res)
-{
-  var id = req.params.id;
-  Business.findById(id, function(err, business)
-  {
-    if(err)
-      res.status(500).json(err);
-      else {
-        res.status(200).json(business);
-      }
-  });
+    getBusinessId: function (req, res) {
+        var name = req.body.name;
+        Business.findOne({ name: name }, function (err, business) {
+            if (err || !business)
+                res.status(500).json("error");
+            else
+                res.status(200).json(business);
+        });
+    },
+    getUnloggedBusiness: function (req, res) {
+        var id = req.params.id;
+        Business.findById(id, function (err, business) {
+            if (err)
+                res.status(500).json(err);
+            else {
+                res.status(200).json(business);
+            }
+        });
 
-}
+    }
 
 
 }
