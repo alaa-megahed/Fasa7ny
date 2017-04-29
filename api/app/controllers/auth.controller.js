@@ -5,7 +5,7 @@ var passport = require('passport'),
     Business   = require('../models/Business'),
     nodemailer = require("nodemailer"),
     configAuth = require('../../config/auth'),
-
+    IP = require('../../config/address')
     xoauth2 = require('xoauth2');
 
 
@@ -115,11 +115,11 @@ let AuthController =
 	facebookCallback: function(req, res,next){
     passport.authenticate('facebook', function(err, user, info) {
           if (err) { return next(err); }
-          if (!user) { return res.json("Error! Please go back to http://54.187.92.64:8000 to try and sign in again."); }
+          if (!user) { return res.json("Error! Please go back to http://"+ IP + ":8000 to try and sign in again."); }
           req.logIn(user, function(err) {
             if (err) { return next(err); }
             req.session.save(function(){
-              res.redirect("http://54.187.92.64:8000/");
+              res.redirect("http://"+ IP + ":8000/");
            });
           });
         })(req, res);
@@ -146,7 +146,7 @@ let AuthController =
           req.logIn(user, function(err) {
             if (err) { return next(err); }
             req.session.save(function(){
-             return res.redirect("http://54.187.92.64:8000/");
+             return res.redirect("http://"+ IP + ":8000/");
            });
           });
         })(req, res);
@@ -270,7 +270,7 @@ let AuthController =
     	}
   		], function(err) {
     	if (err) return next(err);
-    	return res.redirect('http://54.187.92.64:8000');
+    	return res.redirect('http://'+ IP + ':8000');
   	  });
 	}
 },
@@ -419,7 +419,7 @@ let AuthController =
       });
     }
   ], function(err) {
-    res.redirect('http://54.187.92.64:8000/');
+    res.redirect('http://'+ IP + ':8000/');
   });
 },
 

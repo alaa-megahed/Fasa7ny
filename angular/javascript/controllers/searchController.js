@@ -1,5 +1,6 @@
 angular.module('fasa7ny')
-    .controller('SearchController', function ($scope, Search, $routeParams) {
+    .controller('SearchController', function ($scope, Search, $routeParams, IP) {
+        $scope.ip = IP.address; 
         if ($routeParams.keyword == 'undefined')
             $scope.keyword = '';
         else

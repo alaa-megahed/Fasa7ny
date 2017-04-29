@@ -23,6 +23,7 @@ var mongoose = require('./config/mongoose'),
 
 //  var Admin = require('./app/models/WebAdmin');
 //  var webAdmin = new Admin();
+
 //  webAdmin.local.username = "WebAdmin";
 //   webAdmin.local.password = webAdmin.generateHash("Password1234");
 //   webAdmin.save(function(err){
@@ -30,7 +31,7 @@ var mongoose = require('./config/mongoose'),
 // });
 
 
-// var business = new Businesses();
+// var business = new Business();
 // business.local.username = "Naaame";
 // business.description = "Business Descriptions";
 // business.area = "New Cairo";

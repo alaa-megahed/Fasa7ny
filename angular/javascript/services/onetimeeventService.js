@@ -1,6 +1,6 @@
 var app = angular.module('fasa7ny');
 
-app.factory('OneTimeEvent', ['$http', function($http) {
+app.factory('OneTimeEvent', ['$http', 'IP', function($http, IP) {
     return {
         create : function(formData) {
 
@@ -21,12 +21,12 @@ app.factory('OneTimeEvent', ['$http', function($http) {
           console.log("!!" + formData.timing);
           formData.repeat = "Once";
           console.log(formData);
-            return $http.post('http://54.187.92.64:3000/event/create', formData);
+            return $http.post('http://'+ IP.address + ':3000/event/create', formData);
         },
 
         getOnceEvents : function(businessId)
         {
-        	return $http.get('http://54.187.92.64:3000/event/getOnceEvents/'+businessId);
+        	return $http.get('http://'+ IP.address + ':3000/event/getOnceEvents/'+businessId);
         }
   }
 }]);

@@ -1,46 +1,47 @@
-var Business = require('../models/Business');
+var mongoose = require('mongoose');
+var Business = mongoose.model('Business');
 
 SearchController = {
 
-  showAll: function (req, res) {
-     Business.find({ public: 1 }).
-         exec(function (err, result) {
-             if (err) {
-                 res.status(500).json('Oops..something went wrong.'); 
-             }
-             else {
-                 res.status(200).json(result);
-             }
+    showAll: function (req, res) {
+        Business.find({ public: 1 }).
+            exec(function (err, result) {
+                if (err) {
+                    res.status(500).json('Oops..something went wrong.');
+                }
+                else {
+                    res.status(200).json(result);
+                }
 
-        });
- },
-    search: function (req, res) {
-        var formData = req.body;
-        var sortBy = formData.sortBy;
-        console.log(formData);
-        var queryBody = helper.makeQuery(formData); // retrieve query body
-
-        var query = Business.find(queryBody);
-
-        if (typeof sortBy !== 'undefined' && sortBy.length > 0) { //apply sort filter only if not empty
-            var sortObj = {};
-            sortObj[sortBy] = -1;
-            query.sort(sortObj);
-
-        }
-
-
-        query.exec(function (err, result) {
-            if (err)
-                res.send(err);
-            else {
-                console.log(result);
-                res.render('search.ejs', {result: result});
-                // res.json(result);
-            }
-        });
-
+            });
     }
+    // search: function (req, res) {
+    //     var formData = req.body;
+    //     var sortBy = formData.sortBy;
+    //     console.log(formData);
+    //     var queryBody = helper.makeQuery(formData); // retrieve query body
+
+    //     var query = Business.find(queryBody);
+
+    //     if (typeof sortBy !== 'undefined' && sortBy.length > 0) { //apply sort filter only if not empty
+    //         var sortObj = {};
+    //         sortObj[sortBy] = -1;
+    //         query.sort(sortObj);
+
+    //     }
+
+
+    //     query.exec(function (err, result) {
+    //         if (err)
+    //             res.send(err);
+    //         else {
+    //             console.log(result);
+    //             res.render('search.ejs', {result: result});
+    //             // res.json(result);
+    //         }
+    //     });
+
+    // }
 }
 
 //module that contains helper methods to the SearchController

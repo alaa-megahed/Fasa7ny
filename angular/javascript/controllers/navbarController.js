@@ -1,6 +1,6 @@
 angular.module('fasa7ny')
 
-  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global, $route) {
+  .controller('navbarController' , function($q, $scope, $http, $location, $window, $modal, $modalStack, $log, Homepage, status,Global, $route, IP) {
 
     $scope.user = {};
     $scope.err = "";
@@ -50,7 +50,6 @@ angular.module('fasa7ny')
 
                if($scope.user.data)
                {
-                 console.log("Data is " + JSON.stringify(result));
                   $scope.type = 0;
                   if($scope.user.data.notifications)
                   {
@@ -78,7 +77,6 @@ angular.module('fasa7ny')
                      }
 
                     deferred.resolve(result);
-                   console.log("response is " + JSON.stringify(deferred.promise));
                   },function(response){
                     deferred.reject();
                     $location.path('/');
@@ -97,6 +95,7 @@ angular.module('fasa7ny')
     $scope.getAdvertisements = function()
     {
       Homepage.getAds().then(function successfulCallback(result){
+
         $scope.advertisements = result.data;
 
       });
@@ -154,7 +153,7 @@ angular.module('fasa7ny')
     }
 
     $scope.search = function(){
-      console.log($scope.form.search);
+
       $location.url('/search/'+$scope.form.search);
     }
 
@@ -166,21 +165,21 @@ angular.module('fasa7ny')
     }
 
     $scope.searchCategory = function(category){
-      console.log("category issss" + category);
     }
 
     $scope.facebook = function(){
-     $window.location = $window.location.protocol + "//" + "54.187.92.64:3000/auth/facebook";
+     $window.location = $window.location.protocol + "//" +  IP.address + ":3000/auth/facebook";
 
     }
 
-    $scope.google = function() {
-       $window.location = $window.location.protocol + "//" + "54.187.92.64:3000/auth/google";
+
+    $scope.google = function(){
+       $window.location = $window.location.protocol + "//" + IP.address + ":3000/auth/google";
+
     }
 
     $scope.logout = function() {
 
-      console.log($scope.type);
       if(!$scope.type)
       {
         Homepage.logoutLocal().then(function(result){
@@ -191,7 +190,6 @@ angular.module('fasa7ny')
       else {
         Homepage.logout().then(function(result)
         {
-            console.log(result);
             $location.path('/');
             $scope.updateUser();
         })
@@ -202,20 +200,19 @@ angular.module('fasa7ny')
         $location.path("/");// get back to this after ads
       }
 
-      $scope.getSearch = function() {
-        console.log("hiii");
+
+      $scope.getSearch = function()
+      {
+
         $scope.searchAppear = 1;
       }
 
 
     $scope.goToBusinessPage = function(id) {
-      console.log("yellehwiii");
-      console.log(id);
       $location.path('/business/'+id);
     }
 
     $scope.getNotifications = function(){
-      console.log("hiii");
       $location.path('/user/notifications');
     }
 
@@ -342,10 +339,8 @@ angular.module('fasa7ny')
 
       $scope.submitForm = function () {
           if ($scope.form.userForm.$valid) {
-            console.log("signin");
-            console.log($scope.formData);
               Homepage.signIn($scope.formData).then(function(data){
-                console.log("Return data "  + JSON.stringify(data));
+                // console.log("Return data "  + JSON.stringify(data));
                 if(data.data === "success")
                 {
                   $modalInstance.close("closed");
@@ -393,13 +388,11 @@ angular.module('fasa7ny')
   .controller('ModalInstanceCtrl2', function ($scope, $timeout, $window, $modalStack, $http,$modalInstance, Homepage) {
         $scope.form = {};
         $scope.submitForm = function (formData) {
-            console.log(formData);
                 Homepage.forgotPassword(formData).then(function(data)
                   {
                     $scope.err = "";
                     $scope.success = "";
 
-                    console.log(JSON.stringify(data));
                     if(data.data.startsWith("An e-mail has been sent to "))
                     {
                         console.log("hello");

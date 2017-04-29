@@ -1,5 +1,5 @@
 var app = angular.module('fasa7ny');
-app.service('Global', ['$http' , '$q', function($http, $q) 
+app.service('Global', ['$http' , '$q', 'IP', function($http, $q) 
 {
   
   // this.currentBusinessPage;

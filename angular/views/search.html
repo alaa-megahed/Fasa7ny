@@ -88,8 +88,8 @@
             <div class="flip-container">
                 <div class="flipper">
                     <div class="front img-container">
-                        <img ng-if="business.profilePicture" ng-src="http://54.187.92.64:3000/photo/{{business.profilePicture}}"
-                        <img ng-if="!business.profilePicture" ng-src="http://54.187.92.64:3000/photo/avatar.png"
+                        <img ng-if="business.profilePicture" ng-src="http://{{ip}}:3000/photo/{{business.profilePicture}}"
+                        <img ng-if="!business.profilePicture" ng-src="http://{{ip}}:3000/photo/avatar.png"
 
                         class="centered-and-cropped">
                         <footer style="width: inherit" class="w3-container w3-display-bottommiddle w3-green">
@@ -98,7 +98,7 @@
                     </div>
                     <div class="back" style="overflow: hidden">
 
-                        <img ng-src="http://54.187.92.64:3000/photo/{{business.profilePicture}}" class="centered-and-cropped img-flipped">
+                        <img ng-src="http://{{ip}}:3000/photo/{{business.profilePicture}}" class="centered-and-cropped img-flipped">
                         <div class="dark-text w3-display-left w3-container">
                             <b class="color">Description: </b>
                             <p> {{business.description}} </p> <br>

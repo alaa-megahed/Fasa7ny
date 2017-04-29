@@ -1,121 +1,136 @@
 // angular.module('businessService', [])
 var app = angular.module('fasa7ny');
-    app.factory('Business', ['$http', function($http) {
-        return {
-            get : function(id) {
-              console.log("service");
-                return $http.get('http://54.187.92.64:3000/business/b/' + id);
-            },
-            getUnloggedBusiness : function(id) {
-                return $http.get('http://54.187.92.64:3000/business/getUnloggedBusiness/' + id);
-            },
-            edit : function(data) {
+app.factory('Business', ['$http', 'IP', function ($http, IP) {
+  return {
+    get: function (id) {
+      console.log("service");
+      return $http.get('http://' + IP.address + ':3000/business/b/' + id);
+    },
 
-              var fd = new FormData();
-              for(var key in data)
-              fd.append(key, data[key]);
+    edit: function (data) {
 
-              console.log(fd);
-              return $http.post('http://54.187.92.64:3000/business/editInformation', fd, {
-              transformRequest: angular.identity,
-              headers: { 'Content-Type': undefined }
-              });
-            },
-            editLocation :function(data) {
-              return $http.post('http://54.187.92.64:3000/business/editInformation', data);
-            },
+      var fd = new FormData();
+      for (var key in data)
+        fd.append(key, data[key]);
 
-            subscribe : function(id) {
-            	console.log("sub service");
-            	return $http.get('http://54.187.92.64:3000/user/subscribe/' + id);
-            },
+      console.log(fd);
+      return $http.post('http://' + IP.address + ':3000/business/editInformation', fd, {
+        transformRequest: angular.identity,
+        headers: { 'Content-Type': undefined }
+      });
+    },
+    editLocation: function (data) {
+      return $http.post('http://' + IP.address + ':3000/business/editInformation', data);
+    },
 
-            unsubscribe : function(id) {
-            	console.log("unsub service");
-            	return $http.get('http://54.187.92.64:3000/user/unsubscribe/' + id);
-            },
+    subscribe: function (id) {
+      console.log("sub service");
+      return $http.get('http://' + IP.address + ':3000/user/subscribe/' + id);
+    },
 
-             rate : function(star, bid) {
-              console.log("rate service");
-              return $http.get('http://54.187.92.64:3000/user/rate/' + star+"/" + bid);
-            },
+    unsubscribe: function (id) {
+      console.log("unsub service");
+      return $http.get('http://' + IP.address + ':3000/user/unsubscribe/' + id);
+    },
 
-            public : function(){
-            	console.log('public service');
-            	return $http.get('http://54.187.92.64:3000/business/publicPage');
-            },
+    rate: function (star, bid) {
+      console.log("rate service");
+      return $http.get('http://' + IP.address + ':3000/user/rate/' + star + "/" + bid);
+    },
 
-            remove : function(){
-            	console.log('remove service');
-            	return $http.get('http://54.187.92.64:3000/business/requestRemoval');
-            },
+    public: function () {
+      console.log('public service');
+      return $http.get('http://' + IP.address + ':3000/business/publicPage');
+    },
 
-            hasBookings : function(){
-              return $http.get('http://54.187.92.64:3000/business/hasBookings');
-            },
+    remove: function () {
+      console.log('remove service');
+      return $http.get('http://' + IP.address + ':3000/business/requestRemoval');
+    },
 
-            deleteImage : function(image) {
-              console.log('delete image service');
-              return $http.get('http://54.187.92.64:3000/business/deleteImage/' + image);
-            },
+    hasBookings: function () {
+      return $http.get('http://' + IP.address + ':3000/business/hasBookings');
+    },
 
-            addImage : function(data) { //for slider
-              console.log('add image service');
-              var fd = new FormData();
-              for(var key in data)
-                fd.append(key, data[key]);
+    deleteImage: function (image) {
+      console.log('delete image service');
+      return $http.get('http://' + IP.address + ':3000/business/deleteImage/' + image);
+    },
 
-              console.log(fd);
-              return $http.post('http://54.187.92.64:3000/business/changeImage', fd, {
-                transformRequest: angular.identity,
-                headers: { 'Content-Type': undefined }
-              });
-            },
+    addImage: function (data) { //for slider
+      console.log('add image service');
+      var fd = new FormData();
+      for (var key in data)
+        fd.append(key, data[key]);
 
-            deletePhone : function(phone) {
-              console.log('delete phone service');
-              console.log(phone);
-              return $http.get('http://54.187.92.64:3000/business/deletePhone/' + phone);
-            },
+      console.log(fd);
+      return $http.post('http://' + IP.address + ':3000/business/changeImage', fd, {
+        transformRequest: angular.identity,
+        headers: { 'Content-Type': undefined }
+      });
+    },
 
-            deletePaymentMethod : function(method) {
-              console.log('delete payment method service');
-              console.log(method);
-              return $http.get('http://54.187.92.64:3000/business/deletePaymentMethod/' + method);
-            },
+    deletePhone: function (phone) {
+      console.log('delete phone service');
+      console.log(phone);
+      return $http.get('http://' + IP.address + ':3000/business/deletePhone/' + phone);
+    },
 
-            changeImage : function(formData) {
-              var fd = new FormData();
-              for(var key in formData)
-                fd.append(key, formData[key]);
+    deletePaymentMethod: function (method) {
+      console.log('delete payment method service');
+      console.log(method);
+      return $http.get('http://' + IP.address + ':3000/business/deletePaymentMethod/' + method);
+    },
 
-              console.log(fd);
-              return $http.post('http://54.187.92.64:3000/business/changeProfilePicture', fd, {
-                transformRequest: angular.identity,
-                headers: { 'Content-Type': undefined }
-              });
-            },
+    changeImage: function (formData) {
+      var fd = new FormData();
+      for (var key in formData)
+        fd.append(key, formData[key]);
 
-            getFacilityOccs: function(facility_id){
-              return $http.get('http://54.187.92.64:3000/business/getFacilityOccs/' + facility_id);
-            },
+      console.log(fd);
+      return $http.post('http://' + IP.address + ':3000/business/changeProfilePicture', fd, {
+        transformRequest: angular.identity,
+        headers: { 'Content-Type': undefined }
+      });
+    },
 
-            getEventOccs: function(event_id){
-              return $http.get('http://54.187.92.64:3000/business/getEventOccs/' + event_id);
-            },
+    getFacilityOccs: function (facility_id) {
+      return $http.get('http://' + IP.address + ':3000/business/getFacilityOccs/' + facility_id);
+    },
 
-            getBooking: function(booking_id){
-              return $http.get('http://54.187.92.64:3000/business/getBooking/' + booking_id);
-            },
+    getEventOccs: function (event_id) {
+      return $http.get('http://' + IP.address + ':3000/business/getEventOccs/' + event_id);
+    },
 
-            // checkSession : function(id) {
-            //   console.log('check session service');
-            //   return $http.get('http://54.187.92.64:3000/business/checkSession')
-            // }
-    	}
-    }]);
+    getBooking: function (booking_id) {
+      return $http.get('http://' + IP.address + ':3000/business/getBooking/' + booking_id);
+    },
+
+    // start reviews services
+    addReview: function (params) {
+      return $http.post('http://' + IP.address + ':3000/reviews/writeReview', params);
+    },
+    deleteReview: function (params) {
+      return $http.post('http://' + IP.address + ':3000/reviews/deleteReview', params);
+    },
+    addReply: function (params) {
+      return $http.post('http://' + IP.address + ':3000/reviews/replyReview', params);
+    },
+    deleteReply: function (params) {
+      return $http.post('http://' + IP.address + ':3000/reviews/deleteReply', params);
+    },
+    upvote: function (params) {
+      return $http.post('http://' + IP.address + ':3000/reviews/upvoteReview', params);
+
+    },
+    downvote: function (params) {
+      return $http.post('http://' + IP.address + ':3000/reviews/downvoteReview', params);
+    }
+  }
+}]);
 
 
-    app.factory('business', function() {
-      return {};
-    });
+app.factory('business', function () {
+  return {};
+});
+
