@@ -71,15 +71,13 @@ if the business added an expiration_date that is before the start_date(which if
  he did not enter it will be by default the current date when he created the offer)
  he will be notified that he entered a wrong expiration_date */
 
-exports.createOffer = function(req, res,notify_on_create) {
+exports.createOffer = function(req, res) {
 
   if(req.user && req.user instanceof Business) 
   {
     var businessId = req.user.id;  //get _id from session
     var body = req.body;
     var file = req.file;
-    console.log(file);
-    console.log(body);
     // expiration date not required in case of count dependent offer
     if(!body.name || !body.type || !body.value || !body.details ) 
     {
@@ -122,7 +120,6 @@ exports.createOffer = function(req, res,notify_on_create) {
 
       var now = new Date();
     
-      console.log("expiration date : "+ body.expiration_date);
        if( (!body.expiration_date  || !body.start_date) && body.type === "duration")
       {
         return res.status(400).json("Please add a valid start/end date. [1]");
@@ -132,28 +129,21 @@ exports.createOffer = function(req, res,notify_on_create) {
         var expirationdate = body.expiration_date;
         if(new Date(body.start_date).getTime() >= new Date(expirationdate).getTime() || new Date(body.start_date).getTime() < new Date(now).getTime()) 
         {
-          console.log("please add a valid start_date/ expiration_date");
           return res.status(400).json("Please add a valid start/end date.[2]");
         }
         else
         {
-           console.log("last else before saving");
            newOffer.expirationdate = expirationdate;
            newOffer.startdate = body.start_date;
         }
       
       } 
-      console.log("offer:");
-      console.log(newOffer);
         newOffer.save(function(err, offer) 
         {
           if(err) {
             res.status(500).json("error in creating offer "+ err);
           } else 
-          {
-          // notify_on_create(body.name,req.user.subscribers,req.user.name);
-               // var rightNow = new Date();
-               // var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");    
+          {   
                var notification = {content:req.user.name + " added " + req.body.name, date:new Date()}; 
 
                   async.each(req.user.subscribers, function(subscriber, callback){
@@ -165,7 +155,6 @@ exports.createOffer = function(req, res,notify_on_create) {
                       {
                         user.unread_notifications = user.unread_notifications + 1;
                         user.save();
-                        console.log(user);
                       }
                     });
                   }); 
@@ -284,46 +273,12 @@ exports.deleteOffer = function(req, res) {
             }
           })
         } else {
-          if(!offer) rres.status(500).json("offer does not exist");
-          else res.status(403).json("you must delete only your offers");
+          if(!offer) rres.status(500).json("Oops, something went wrong, please try again with the correct information.");
+          else res.status(403).json("YOU ARE NOT AUTHORIZED TO ACCESS THID PAGE");
         }
       }
     })
   } else {
-    res.status(401).json("NOT AUTHORIZED");
+    res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THID PAGE");
    }
 };
-
-//==================================== Notifications =================================================
-
-function notify_on_create(offer_name,subscribers,business)
-{
-  //Notification:  "Business name" just added "event name".
-  var content = business+ "added" + offer_name;
-  var notification = new Notification(
-  {
-    date: new Date(),
-    content: content
-  });
-
-  notification.save(function(err,notification1)
-  {
-    if(err)
-      console.log("error saving notification");
-    else
-    {
-
-      for(var i = 0; i < subscribers.length; i++)
-      {
-        User.findByIdAndUpdate({_id:subscribers[i]},{$push:{"notifications": notification}},function(err,user)
-        {
-          if(err)
-            console.log("error updating user notifications");
-          else
-            console.log(user);
-        });
-      }
-    }
-  });
-
-}

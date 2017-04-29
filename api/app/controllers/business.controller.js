@@ -11,7 +11,6 @@ var async = require('async');
 var BusinessController = {
 
   getBusiness: function (req, res) {
-   console.log("get business " + req.user );
    if(req.params.name && req.user && req.user instanceof User) {
       var name = req.params.name;
        Business.findOne({name: name }).
@@ -19,7 +18,6 @@ var BusinessController = {
                if (err)
                    return res.status(500).json("Something went wrong");
                else {
-                 console.log("result");
                  if(!result) return res.status(500).json("Business does not exist");
                    Rating.findOne({user_ID: req.user.id , business_ID: result._id}, function(err, rate) {
                      if(err) res.status(500).json("Something went wrong");
@@ -34,7 +32,6 @@ var BusinessController = {
                                    if(!onceevents) res.status(200).json({result:result,
                                            rate:r, facilities:facilities, events:[]});
                                    else {
-                                     console.log("done!!");
                                        res.status(200).json({result:result,
                                            rate:r, facilities:facilities, events:onceevents});
                                    }
@@ -52,7 +49,6 @@ var BusinessController = {
              if (err)
                  return res.status(500).json("Something went wrong");
              else {
-               console.log("??");
                if(!result) return res.status(500).json("Business does not exist");
                      Facility.find({business_id:result._id}, function(err, facilities) {
                          if(err) res.status(500).json("Something went wrong");
@@ -81,8 +77,6 @@ var BusinessController = {
 requestRemoval: function(req,res) {
         if(req.user && req.user instanceof Business){
         var id = req.user.id;
-        console.log('removal');
-
         Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
             if(err) res.status(500).json("error in request removal");
             else res.status(200).json("Requested!");
@@ -101,8 +95,6 @@ requestRemoval: function(req,res) {
     makePagePublic: function (req, res) {
         if (req.user && req.user instanceof Business) {
             var businessId = req.user.id;
-            console.log('public');
-
             Business.findByIdAndUpdate(businessId, { $set: { public: 1 } },
                 function (err) {
                     if (err) {
@@ -118,11 +110,8 @@ requestRemoval: function(req,res) {
 
 
     editInformation: function (req, res) {
-      console.log(req.body);
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
-            console.log("ana fl backend");
-            console.log(req.file);
             Business.findById(id, function (err, business) {
                 if (err) res.status(500).json("Something went wrong");
                 else if (!business) res.status(500).json("Business not found");
@@ -130,11 +119,8 @@ requestRemoval: function(req,res) {
                     if (typeof req.body.description != "undefined" && req.body.description.length > 0) {
                         business.description = req.body.description;
                     }
-
                     if (typeof req.body.location != "undefined") {
                         business.location = req.body.location;
-                        console.log("ahlan we sahlan");
-                        console.log(JSON.stringify(req.body.location));
                     }
                     if (typeof req.body.email != "undefined" && req.body.email.length > 0) {
                         business.email = req.body.email;
@@ -179,7 +165,6 @@ requestRemoval: function(req,res) {
                     }
 
                     if(req.body.facebookURL) {
-                      console.log(req.body.facebookURL);
                       business.facebookURL = req.body.facebookURL;
                     }
 
@@ -190,12 +175,9 @@ requestRemoval: function(req,res) {
                     if(req.body.youtubeURL) {
                       business.youtubeURL = req.body.youtubeURL;
                     }
-                    console.log("BUSINESSSS");
-                    console.log(business);
                     business.save(function(err, newbusiness) {
                       if(err) res.status(500).json("something went wrong");
                       else {
-                        console.log("SAVE");
                         res.status(200).json({business:newbusiness});
                       }
                     });
@@ -220,7 +202,6 @@ requestRemoval: function(req,res) {
         if (req.user && req.user instanceof Business) {
             if (typeof req.params.phone != "undefined") {
                 var id = req.user.id;
-                console.log("ana fl backend delete phone");
                 var phone = req.params.phone;
                 Business.findOne({ _id: id }, function (err, business) {
                     if (err) res.status(500).json("Something went wrong");
@@ -240,7 +221,8 @@ requestRemoval: function(req,res) {
                                 Business.findByIdAndUpdate(id, {$pull:{ phones: phone }}, {safe:true, upsert: true, new:true},function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
                                     if (!business) res.status(500).json("Something went wrong");
-                                    else{ res.status(200).json({business:updatedbusiness}); console.log("2222222!!!!"+updatedbusiness);}
+                                    else{ res.status(200).json({business:updatedbusiness}); 
+                                }
                                 });
                             }
                             else {
@@ -272,7 +254,6 @@ requestRemoval: function(req,res) {
             if (typeof req.params.method != "undefined") {
                 var id = req.user.id;
                 var payment = req.params.method;
-                console.log("ana fl backend delete method");
                 Business.findOne({ _id: id }, function (err, business) {
                     if (err) res.status(500).json("Something went wrong");
                     else if (!business) res.status(500).json("Something went wrong");
@@ -292,7 +273,8 @@ requestRemoval: function(req,res) {
                                 Business.findByIdAndUpdate(id, { $pull: {payment_methods: payment }}, {safe:true, upsert: true, new:true},function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
                                     if (!business) res.status(500).json("Something went wrong");
-                                    else {res.status(200).json({business:updatedbusiness}); console.log("payment method deleted");}
+                                    else {res.status(200).json({business:updatedbusiness}); 
+                                }
                                 });
 
                             }
@@ -320,17 +302,13 @@ requestRemoval: function(req,res) {
         var id = req.user.id;
         // var id = "58f8b9fdf3e7ca15c2ca2c1f";
         // var id = "58f879e533a8465ada041bd1";
-        console.log("ana fl backend delete image");
         var image = req.params.image;
 
         Business.findByIdAndUpdate(id, {$pull: {"images" : image}},{safe:true, upsert: true, new:true},
         function(err, newBusiness) {
           if(err) {
-            console.log("error in deleting image");
             res.status(500).json("Something went wrong");
           } else {
-            console.log("image deleted");
-            console.log(newBusiness);
             res.status(200).json({business:newBusiness});
           }
         });
@@ -343,7 +321,6 @@ requestRemoval: function(req,res) {
       if(req.user && req.user instanceof Business) {
         var id = req.user.id;
 
-        console.log("ana fl backend changeProfilePicture");
         var file = req.file;
         Business.findByIdAndUpdate(id, {$push:{images:file.filename}}, {safe:true, upsert: true, new:true}, function(err, updatedBusiness) {
             if(err) res.status(500).json("error in changing the profile picture");
@@ -384,7 +361,6 @@ getFacilityOccs: function(req, res)
             var facility_id = req.params.facility;
             EventOccurrences.find({"facility_id": facility_id}, function(err, occs)
             {
-                console.log(occs);
                 if(err) return res.status(500).json(err.message);
                 return res.status(200).json(occs);
             });
@@ -402,7 +378,6 @@ getEventOccs: function(req, res)
             EventOccurrences.find({"event": event_id}, function(err, occs)
             {
                 if(err) return res.status(500).json(err.message);
-                console.log("event occs in node");
                 return res.status(200).json(occs);
             });
 
@@ -418,7 +393,6 @@ getBooking: function(req, res)
             var booking_id = req.params.booking;
             Booking.findOne({"_id": booking_id}, function(err, booking)
             {
-                console.log(booking);
                 if(err) return res.status(500).json(err.message);
                 return res.status(200).json(booking);
             });
