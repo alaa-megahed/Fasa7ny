@@ -22,11 +22,6 @@ app.controller('userController', function($scope, status,$http, User, $location,
 					$scope.subscribed_businesses.push(d.data);
 				});
 			}
-
-
-
-				//$scope.bookings = d.data.user.bookings;
-				// $scope.bookings = ["58f758db36646333e9fd6ec0", "58f758f236646333e9fd6ec1"];
 				$scope.all_info = [];
 			for(i = 0; i < $scope.user.bookings.length; i++) {
 				User.getBookingDetails($scope.user.bookings[i]).then(function successCallback(d) {

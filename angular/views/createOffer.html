@@ -52,7 +52,8 @@
                     <h3> Apply on Facility (Optional) </h3>
                     <div class="styled-select">
                       <select  class="selectpicker"  style="width: 400px;height: 34px; color:#000;" re data-style="btn-primary" ng-model="formData.facility_id">
-                      <option disabled selected value>Choose One</option>                      <option ng-repeat="facility in facilities" value="{{facility._id}}">{{facility.name}}</option>
+                      <option disabled selected >Choose One</option>                      
+                      <option ng-repeat="facility in facilities" value="{{facility._id}}">{{facility.name}}</option>
                       </select>
                     </div>
 

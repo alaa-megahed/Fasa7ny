@@ -350,7 +350,15 @@ exports.regUserAddBooking = function (req, res, next) {
                 else {
                   user.bookings.push(booking);
                   user.save();
-                  res.status(200).json(booking);
+
+                  var now = new Date();
+                  now.setHours(0, 0, 0, 0);
+
+                   //add stats records to count number of attendees and amount of money
+                   statsController.addStat(now, req.body.business_id, 'attendees', req.body.count);
+                   statsController.addStat(now, req.body.business_id, 'sales', req.body.charge);
+
+                   res.status(200).json(booking);
                   return;
                 }
 
@@ -442,6 +450,8 @@ exports.regUserDeleteBookings = function (req, res, next) {
                         res.status(500).json(err.message);
                       }
                       else {
+                        statsController.addStat(booking.booking_date, booking.business_id, 'attendees', -1 * booking.count);
+                        statsController.addStat(booking.booking_date, booking.business_id, 'sales', -1 * booking.charge);
                         res.status(200).json("refund successfully completed");
                       }
                     });

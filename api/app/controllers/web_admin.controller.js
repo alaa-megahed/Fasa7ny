@@ -333,14 +333,20 @@ exports.viewAvailableAdvertisements = function(req,res)
 
 exports.updateAdvertisements = function(req,res)
 {
-  Advertisement.findByIdAndUpdate(req.body.ad, {available:0}, function(err, ad)
+  if(req.user && req.user instanceof WebAdmin)
   {
-    if(err)
-      return res.status(500).json("something went wrong");
-      else {
-        return res.status(200).json("success");
-      }
-  })
+    Advertisement.findByIdAndUpdate(req.body.ad, {available:0}, function(err, ad)
+    {
+      if(err)
+        return res.status(500).json("something went wrong");
+        else {
+          return res.status(200).json("success");
+        }
+    });
+   }
+  else {
+    return res.status(401).json("Unauthorized access. Please log in.");
+  }
 }
 
 

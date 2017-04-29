@@ -40,7 +40,7 @@
                      <h3><u style="color: #6CB670;">Special Offers:</u></h3> <br>
                      <div style = "margin: auto; max-width: 100%; ">
                         <div style="text-align: left width: 800px; margin:0 auto;" ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
-                          <input type="radio"  ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer._id}}">
+                          <input type="radio"  ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
                            <label><h4>{{"Offer: "+offer.name }} <br>{{ "  details: "+offer.details +" discount: "+ offer.value +"%"}} </h4></label>
                               <br>
                           <br>
