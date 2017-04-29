@@ -23,7 +23,9 @@ app.controller('viewOccurencesController', function($scope, $http, status,viewOc
 	.then(function(d) {
     $scope.eventocc = d.data.eventocc;
     $scope.time = d.data.eventocc[0].time;
-  });
+  }, function errorCallback(response){
+       $location.path("/error/"+response.status);
+    });
 
   $scope.viewBookings = function(occId)
   {

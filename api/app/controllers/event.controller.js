@@ -675,6 +675,7 @@ exports.editEvent = function (req, res) {
 									// 	{
 									// 		User.findByIdAndUpdate({ _id: booker_id }, { $push: { "notifications": { content: content, date: now } } }, function(err, user){
 									// 			if (err)
+
          							//            	return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
 									// 		});
 									// 	});

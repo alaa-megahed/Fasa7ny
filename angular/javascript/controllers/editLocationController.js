@@ -34,10 +34,6 @@ app.controller('editLocationController',  function($scope, $routeParams, Busines
     },function errorCallback(d){
       $scope.error = d.data;
     })
-
-
-
-
   }
 
   google.maps.event.addDomListener(window, 'load', $scope.initMap);

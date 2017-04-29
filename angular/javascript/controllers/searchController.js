@@ -4,7 +4,7 @@ angular.module('fasa7ny')
         if ($routeParams.keyword == 'undefined')
             $scope.keyword = '';
         else
-            $scope.keyword = $routeParams.keyword;
+        $scope.keyword = $routeParams.keyword;
         $scope.minRating = 0; //default min rating is zero 
         $scope.direction = true; //default sorting is descending
         $scope.cat = 'all'; //default category is all 

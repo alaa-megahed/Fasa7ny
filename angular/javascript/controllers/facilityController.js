@@ -153,15 +153,17 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 
 												.then(function successCallback(response){
 											     }, function errorCallback(response){
-												});
+										            $location.path("/error/"+response.status);
+										          });
 
 										}, function errorCallback(response){
-									});
+								            $location.path("/error/"+response.status);
+								         });
 								}
 							}
-						}, function errorCallback(response)
-						{
-						});
+						}, function errorCallback(response){
+				            $location.path("/error/"+response.status);
+				          });
 
 						Facility.deleteFacility(facilityId)
 						.then(function successCallback(d) {
@@ -202,7 +204,7 @@ var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacit
         $modalInstance.close('closed');
      },
       function errorCallback(d){
-			$scope.error = d.data;
+		 $scope.error = d.data;
 	  });
     };
 

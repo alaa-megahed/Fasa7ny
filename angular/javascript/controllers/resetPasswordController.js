@@ -17,7 +17,9 @@ angular.module('fasa7ny')
         else {
           $scope.err = data.data;
         }
-      });
+      }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
     }
 

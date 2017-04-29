@@ -142,7 +142,9 @@ app.controller('businessController', function ($scope, status, $http, Business, 
       $scope.slides = $scope.business.images;
       $scope.imagelength = $scope.business.images.length;
       $scope.location = d.data.result.location;
-    });
+    },function errorCallback(response){
+            $location.path("/error/"+response.status);
+       });
 
 
   $scope.initMap = function () {
@@ -208,7 +210,9 @@ app.controller('businessController', function ($scope, status, $http, Business, 
           $scope.selected = selectedItem;
         });
       }
-    });
+    }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
   };
 
@@ -227,9 +231,6 @@ app.controller('businessController', function ($scope, status, $http, Business, 
     });
 
   }
-
-
-
 
 
 
@@ -260,7 +261,9 @@ app.controller('businessController', function ($scope, status, $http, Business, 
       .then(function (d) {
         $scope.avgRate = d.data.average_rating;
         $scope.ratedBy = star;
-      });
+      }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
   };
 
 
@@ -276,7 +279,9 @@ app.controller('businessController', function ($scope, status, $http, Business, 
     modalInstance.result.then(function (selectedItem) {
       $scope.selected = selectedItem;
       $scope.business.public = selectedItem.public;
-    });
+    }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+       });
   };
 
   $scope.businessEdit = function () {
@@ -302,7 +307,9 @@ app.controller('businessController', function ($scope, status, $http, Business, 
     modalInstance.result.then(function (selectedItem) {
       $scope.selected = selectedItem;
       $scope.business.delete = selectedItem.delete;
-    });
+    }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
   };
 
   $scope.bookFacility = function () {
@@ -311,7 +318,9 @@ app.controller('businessController', function ($scope, status, $http, Business, 
       function (response) {
         $scope.business_id = response.data._id;
         $location.path('/book_facility/' + $scope.business_id);
-      });
+      }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
   };
 
   $scope.getEvent = function (eventId) {
@@ -647,8 +656,4 @@ var deletePaymentMethodCtrl = function ($scope, $modalInstance, business, Busine
   };
 
   //check if user is logged in
-
-
-
-
 }

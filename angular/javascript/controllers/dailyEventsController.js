@@ -56,7 +56,9 @@ status.local()
 		}
     }
 
-	});
+	}, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
   	$scope.deleteEvent = function (eventId) {
           $scope.message = "Show Daily Delete Button Clicked";
@@ -119,7 +121,8 @@ var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents
                 $http.post('http://'+ IP.address + ':3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
                         .then(function successCallback(response){
                         }, function errorCallback(response){
-                        });
+                            $location.path("/error/"+response.status);
+                          });
 
 
                 }
@@ -133,8 +136,6 @@ var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents
               $scope.error = d.data;
             });
             // $route.reload();
-        }, function errorCallback(response)
-        {
         });
 
     };
