@@ -4,10 +4,12 @@ angular.module('fasa7ny')
             if (typeof input == 'undefined' || input.length == 0) { return input }
 
             var out = [];
-            if (typeof filterCategory != 'undefined') {
+            if (filterCategory != null && typeof filterCategory != 'undefined') {
                 filterCategory = filterCategory.toLowerCase();
 
             }
+            console.log(input);
+            
             for (var i = 0; i < input.length && typeof input[i] != 'undefined'; i++) {
                 var categoryF = true;
                 var ratingF = true;
@@ -20,14 +22,14 @@ angular.module('fasa7ny')
                 if (filterCategory == 'all' || filterCategory == '' || typeof filterCategory == 'undefined') { //selected categories is all 
                     categoryF = true; // display all
                 } else {
-                    if (categories == 'undefined') { // business has no categories 
+                    if (typeof categories == 'undefined') { // business has no categories 
 
                         categoryF = false; //don't display it 
                     } else {
                         categoryF = false; //check if business has filter category
                         for (var j = 0; typeof categories[j] != 'undefined' && j < categories.length; j++) {
                             if (categories[j].toLowerCase() == filterCategory) {
-                               
+
                                 categoryF = true;
                             }
                         }
