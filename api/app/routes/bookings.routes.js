@@ -21,7 +21,6 @@ var payment    = require('../controllers/payment.controller');
 
     router.post('/book_event', booking.book_event);
 
-    router.post('/edit_booking',booking.edit_booking);
 
     router.post('/cancel_booking',booking.cancel_booking);
 
@@ -46,6 +45,5 @@ var payment    = require('../controllers/payment.controller');
 
     router.post('/deleteRegUserBookings', booking.regUserDeleteBookings);
 
-    router.post('/editRegUserBookings', booking.regUserEditBookings);
 
 module.exports = router;

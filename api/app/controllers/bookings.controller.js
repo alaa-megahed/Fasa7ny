@@ -19,13 +19,13 @@ exports.getBooking = function (req, res) {
       if (err || !booking)
         return res.status(500).json("Oops, Something went wrong");
       if (booking.booker != req.user.id) {
-        return res.status(401).json("Not authorized to view content[1]");
+        return res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
       }
       return res.status(200).json(booking);
     });
   }
   else
-    return res.status(401).json("Not authorized to view content[2]");
+    return res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 }
 
 
@@ -35,27 +35,25 @@ exports.book_event = function (req, res) {
     var form = req.body;
 
     //exception handling
-    if (!form.count || form.count < 1) res.send("please enter count > 1");
+    if (!form.count || form.count < 1) res.status(500).JSON("Please enter count greater than 1");
     else count = form.count;
     if (form.count < 1) return;
 
     var event_id = req.body.event_id;
-    console.log(event_id);
-
     //get event occurrence being booked
     EventOccurrences.findById(event_id, function (err, eventocc) {
       if (err || !eventocc)
-        res.send("Oops, something went wrong, please try again with the correct information[1] ");
+        res.status(500).json("Oops, something went wrong, please try again with the correct information.");
       else {
         Events.findById(eventocc.event, function (err, event) {
           if (err || !event)
-            res.send("Oops, something went wrong, please try again with the correct information[2] ");
+            res.send("Oops, something went wrong, please try again with the correct information.");
           else {
             //check if this event belongs to business currently booking it
             if (event.business_id == req.user.id) {
               //cannot book more than available number
               if (eventocc.available < count) {
-                res.send("capacity doesn't allow more than " + eventocc.available);
+                res.status(500).json("Capacity doesn't allow more than " + eventocc.available);
               }
               else {//Create booking instance
                 var booking = new Booking
@@ -85,10 +83,7 @@ exports.book_event = function (req, res) {
                         if (err || !eventoccur)
                           res.status(500).json("Oops, something went wrong, please try again with the correct information ");
                         else {
-                          console.log("booking in node " + booking);
-                          console.log("booking in node " + booking);
-                          console.log("booking in node " + booking);
-                          console.log("booking in node " + booking);
+                         
                           var now = new Date();
                           now.setHours(0, 0, 0, 0);
 
@@ -105,7 +100,7 @@ exports.book_event = function (req, res) {
 
             }
             else {
-              res.status(403).json("You do not have authority to access this page");
+              res.status(403).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
             }
           }
         });
@@ -114,77 +109,10 @@ exports.book_event = function (req, res) {
 
   }
   else {
-    res.send("Business not logged in");
+    res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
   }
 }
 
-exports.edit_booking = function (req, res) {
-  //checking active session
-  if (req.user && req.user instanceof Business) {
-
-    //exception handling
-    if (!req.body.count1 || req.body.count1 < 1) res.send("please enter count > 1");
-    else newCount = req.body.count1;
-    if (req.body.count1 < 1) return;
-
-
-    var bookingID = req.body.booking_id;  //booking to be edited
-    var new_date = new Date();
-    var newCount = req.body.count1;
-
-    // get booking
-    Booking.findById(bookingID, function (err, booking) {
-      if (err || !booking)
-        res.send("Oops, something went wrong, please try again with the correct information ");
-      else {
-        // get event occurrence of this booking
-        EventOccurrences.findById(booking.event_id, function (err, eventocc) {
-          if (err || !eventocc)
-            res.send("Oops, something went wrong, please try again with the correct information ");
-          else {
-            //get event of event occurrence
-            Events.findById(eventocc.event, function (err, event) {
-              if (err || !event)
-                res.send("Oops, something went wrong, please try again with the correct information ");
-              else {
-                var business = event.business_id;
-
-                //check if this booking belongs to business currently manipulating it
-                if (business != req.user.id)
-                  res.send("You do not have authority to access this page");
-                else {
-                  var old = booking.count;
-                  //cannot book more than available number
-                  if (eventocc.available - newCount - (-old) < 0)
-                    res.send("capacity doesn't allow more than " + eventocc.available);
-                  else {
-                    Booking.findByIdAndUpdate(bookingID, { $set: { 'booking_date': new_date, 'count': newCount } },
-                      function (err, booking2) {
-                        if (err || !booking2)
-                          res.send("Oops, something went wrong, please try again with the correct information ");
-                        else {
-                          //update available
-                          eventocc.available = eventocc.available - newCount - (-old);
-                          eventocc.save();
-                          res.send("Edited booking successfully");
-                        }
-                      });
-                  }
-                }
-              }
-            });
-          }
-        });
-      }
-    });
-
-  }
-  else {
-    res.send("Business not logged in");
-  }
-
-
-}
 
 exports.cancel_booking = function (req, res) {
 
@@ -192,8 +120,6 @@ exports.cancel_booking = function (req, res) {
 
     var bookingID = req.body.booking_id;       //id of booking to be cancelled
     var event_id = req.body.event_id;         //event_id of booking to be cancelled
-
-    console.log("in node .... bookingID  " + bookingID + "  event_id   " + event_id);
 
     // get booking
     Booking.findById(bookingID, function (err, booking) {
@@ -214,7 +140,7 @@ exports.cancel_booking = function (req, res) {
 
                 // check if this booking belongs to business currently manipulating it
                 if (business != req.user.id)
-                  return res.status(403).json("You do not have authority to access this page");
+                  return res.status(403).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
                 else {
 
                   Booking.findByIdAndRemove(bookingID, function (err, booking) {
@@ -275,7 +201,7 @@ exports.cancel_booking = function (req, res) {
     });
   }
   else {
-    res.status(401).json("You do not have authority to access this page");
+    res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
   }
 
 }
@@ -284,20 +210,15 @@ exports.cancel_booking = function (req, res) {
 exports.cancel_booking_after_delete = function (req, res) {
   var bookingID = req.body.booking_id;       //id of booking to be cancelled
   var business_id = req.user._id;
-  // var event_occ = req.body.event_occ;
-  console.log("bookingID ahooo " + bookingID);
-  // console.log("event occ yallaaaaaaaa "+ event_occ);
   // TODO add business name in notification after query
   Booking.findByIdAndRemove(bookingID, function (err, booking) {
     if (err || !booking)
       return res.status(500).json("Oops, something went wrong, please try again with the correct information ");
     else {
 
-      console.log("req.user._id " + req.user._id);
-      console.log("booking.business_id " + booking.business_id);
       if (req.user.id == booking.business_id) {
 
-        var content = req.user.name + " have cancelled your booking ";
+        var content = req.user.name + "cancelled your booking ";
         // var content = "Nourhan" + " cancelled your booking in "  + "     " ;
         var now = Date.now();
         RegisteredUser.findByIdAndUpdate({ _id: booking.booker }, { $push: { "notifications": { content: content, date: now } } }, function (err, user) {
@@ -328,7 +249,7 @@ exports.cancel_booking_after_delete = function (req, res) {
         }
       }
       else {
-        return res.status(401).json("YOU ARE NOT AUTHORIZED");
+        return res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
       }
     }
   });
@@ -338,29 +259,22 @@ exports.cancel_booking_after_delete = function (req, res) {
 exports.view_event_bookings = function (req, res) {
   if (req.user && req.user instanceof Business) {
     var event_id = req.params.event_id;
-    console.log("eventocc  id in node event_id " + event_id);
 
     EventOccurrences.findById(event_id, function (err, eventocc) {
       if (err || !eventocc)
-        res.status(500).json("Oops, something went wrong, please try again with the correct information[1] ");
+        res.status(500).json("Oops, something went wrong, please try again with the correct information");
       else {
         Events.findById(eventocc.event, function (err, event) {
 
           if (err || !event)
-            res.status(500).json("Oops, something went wrong, please try again with the correct information ");
+            res.status(500).json("Oops, something went wrong, please try again with the correct information");
           else {
             //check if this event belongs to business currently viewing its bookings
             if (event.business_id == req.user.id) {
-              // EventOccurrences.find({_id:event_id}).populate('bookings').exec(function(err,bookings)
-              // {
-              //     if(err || !bookings)
-              //        res.status(500).json("Oops, something went wrong, please try again with the correct information ");
-              //      else
-              //       res.status(200).json(bookings);
-              // });
+              
               Booking.find({ event_id: event_id }, function (err, bookings) {
                 if (err || !bookings)
-                  res.status(500).json("Oops, something went wrong, please try again with the correct information ");
+                  res.status(500).json("Oops, something went wrong, please try again with the correct information");
                 else
                   res.status(200).json(bookings);
 
@@ -368,7 +282,7 @@ exports.view_event_bookings = function (req, res) {
 
             }
             else {
-              res.send("You do not have authority to access this page");
+              res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
             }
           }
         });
@@ -377,7 +291,7 @@ exports.view_event_bookings = function (req, res) {
 
   }
   else {
-    res.status(401).json("Business not logged in");
+    res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
   }
 };
 
@@ -393,7 +307,7 @@ exports.regUserAddBooking = function (req, res, next) {
 
 
       if (req.body.count <= 0)
-        return res.status(400).json("Can't have negative or zero count.");
+        return res.status(400).json("Please enter valid count.");
 
       var date = new Date();
       var booking = new Booking(
@@ -429,8 +343,6 @@ exports.regUserAddBooking = function (req, res, next) {
               }
 
               //finds registered user and adds this event to his/her list of bookings
-              // RegisteredUser.findOne({_id:req.user.id}, function(err, user)
-
               RegisteredUser.findOne({ _id: req.user.id }, function (err, user) {
                 if (err || !user) {
                   booking.remove();
@@ -449,7 +361,7 @@ exports.regUserAddBooking = function (req, res, next) {
           });
         }
         else {
-          return res.status(500).json("Error. Please try again. hena1");
+          return res.status(500).json("Oops!! Something went wrong, please try again.");
         }
       });
 
@@ -458,7 +370,7 @@ exports.regUserAddBooking = function (req, res, next) {
   }
 
   else {
-    res.status(401).json("Please log in to book events");
+    res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
     return;
   }
 
@@ -473,7 +385,7 @@ exports.regUserViewBookings = function (req, res, next) {
     if (req.user instanceof RegisteredUser) {
       RegisteredUser.findOne({ _id: req.user.id }).populate('bookings').exec(function (err, bookings) {
         if (err || !bookings) {
-          res.send("Error finding bookings or possibly no bookings");
+          res.status(500).json("Error finding bookings or possibly no bookings");
           return;
         }
         else {
@@ -497,54 +409,12 @@ exports.regUserViewBookings = function (req, res, next) {
 
 
 
-//Registered user can edit his/her bookings
-exports.regUserEditBookings = function (req, res, next) {
-
-  if (req.user) {
-    if (req.user instanceof RegisteredUser) {
-      Booking.findById(req.body.bookingE, function (err, booking) {
-        if (err || !booking)
-          res.send("Error editing booking");
-        else {
-          if (booking.booker == req.user.id) {
-            //updates available places
-            EventOccurrences.findOne(booking.event_id, function (err, eve) {
-              if (err || !eve)
-                return res.send("Error!");
-              eve.available = eve.available + booking.count - req.body.count;
-              if (eve.available < 0 || req.body.count == 0)
-                res.send("Invalid amount. Please try again.");
-              else {
-                eve.save();
-                booking.count = req.body.count;
-                booking.save();
-                res.send("successful edit");
-              }
-            });
-          }
-          else {
-            res.send("Not one of your bookings.");
-          }
-        }
-      });
-    }
-    else {
-      res.send("You are not a registered user.");
-    }
-  }
-  else {
-    res.send("Please log in to edit bookings");
-  }
-}
-
-
 
 
 
 //Registered User deletes bookings
 exports.regUserDeleteBookings = function (req, res, next) {
 
-  console.log("in node bookingD is   " + req.body.bookingD);
   if (req.user) {
     if (req.user instanceof RegisteredUser) {
       Booking.findById(req.body.bookingD, function (err, booking) {
@@ -589,7 +459,7 @@ exports.regUserDeleteBookings = function (req, res, next) {
 
           }
           else {
-            res.send("Not one of your bookings.");
+            res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
             return;
           }
         }
@@ -597,13 +467,13 @@ exports.regUserDeleteBookings = function (req, res, next) {
       });
     }
     else {
-      res.send("Not a registered user.");
+      res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
     }
 
   }
   else {
-    res.send("Please log in to delete bookings");
-  }
+    res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 
+}
 }
 
