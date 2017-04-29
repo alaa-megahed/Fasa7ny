@@ -47,7 +47,7 @@ app.controller('viewBookingsController',function($scope,$routeParams,status,$htt
 });
 
 
-app.controller('viewEventBookings',function($scope,status,$http,$location,occurrenceBookings)
+app.controller('viewEventBookings',function($scope,status,$http,$location,occurrenceBookings, IP)
 {
    status.local().then(function(res){
    if(res.data)

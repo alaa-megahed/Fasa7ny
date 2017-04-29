@@ -1,7 +1,7 @@
 
 angular.module('fasa7ny').controller('webAdminController', function($scope,$http,$modal,$route ,status, IP)
-	{  
-    $scope.ip = IP.address; 
+	{
+    $scope.ip = IP.address;
      status.local()
      .then(function(res){
        if(res.data){
@@ -15,7 +15,7 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
 
 
     $http.get('http://'+ IP.address + ':3000/admin/viewRequestedDelete').then(function successCallback(response){
-   
+
 
             $scope.requests = response.data;
             });
@@ -33,7 +33,7 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
 
        $scope.addBusiness = function()
          {
-       
+
              $http.post('http://'+ IP.address + ':3000/admin/add_business', $scope.business)
 
              .then(function(response)
@@ -51,7 +51,7 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
           var fd = new FormData();
       for(var key in $scope.advertisement)
         fd.append(key, $scope.advertisement[key]);
-      
+
               $http.post('http://'+ IP.address + ':3000/admin/createAdvertisement',fd, {
 
                 transformRequest: angular.identity,
