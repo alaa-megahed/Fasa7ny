@@ -96,7 +96,11 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
 
 //========== Edit ============
 
+<<<<<<< HEAD
 app.controller('EditOffersController', function($scope, $http, $route,$location, Offers, $modal, $window,$routeParams,IP) {
+=======
+app.controller('EditOffersController', function($scope, $http, $route,$location, Offers, $modal, $window,$routeParams, IP) {
+>>>>>>> ae68cb68b20c8cf5ad3400d991cc48c3a1c2d8ca
 
        // $scope.business_id = "58f0f3faaa02d151aa4c987c";
         $scope.name = $routeParams.name;
@@ -137,7 +141,7 @@ app.controller('EditOffersController', function($scope, $http, $route,$location,
 
 });
 
-app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerType, $modalInstance, $route, Offers,$routeParams)
+app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerType, $modalInstance, $route, Offers,$routeParams, IP)
 {
 	$scope.offerType = offerType;
     $scope.submitForm = function (formData, facilityId) {
@@ -186,7 +190,7 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerTy
 
 
 // =========== Delete ============
-app.controller('DeleteOffersController', function($scope, $http, $modal, $location, Offers,$routeParams) {
+app.controller('DeleteOffersController', function($scope, $http, $modal, $location, Offers,$routeParams, IP) {
 
       $scope.business_id = $routeParams.id;
 	  $scope.deleteOffer = function (offerId) {
@@ -210,7 +214,7 @@ app.controller('DeleteOffersController', function($scope, $http, $modal, $locati
 
 });
 
-app.controller('DeleteOfferCtrl',function($http, $scope, $modalInstance, offerId, $route,$routeParams){
+app.controller('DeleteOfferCtrl',function($http, $scope, $modalInstance, offerId, $route,$routeParams, IP){
 	$scope.yes = function () {
             console.log("offerId to be deleted :"+offerId);
 			$http.get('http://'+ IP.address + ':3000/offers/deleteOffer/'+offerId)

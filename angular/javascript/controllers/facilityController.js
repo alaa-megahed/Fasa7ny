@@ -142,7 +142,7 @@ var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
 
 
 
-var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route, Business, $http) {
+var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route, Business, $http, IP) {
     $scope.form = {};
     $scope.error = "";
     $scope.yes = function (facilityId) {
@@ -161,7 +161,7 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 									{
 										var cur_booking = response.data;
 										console.log("cur booking zat nafso :"+cur_booking);
-			
+
 										$http.post('http://'+ IP.address + ':3000/bookings/cancel_booking_after_delete', {booking_id: cur_booking._id})
 
 												.then(function successCallback(response){
