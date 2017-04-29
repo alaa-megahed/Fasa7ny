@@ -56,7 +56,7 @@ helper = {
         if (anding.length > 0) {
             query["$and"] = anding;
         }
-        return query;
+        return status(200).json(query);
     }
 }
 module.exports = SearchController;

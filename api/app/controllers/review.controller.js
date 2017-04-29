@@ -17,11 +17,11 @@ exports.writeReview = function (req, res) {
     var id = req.user._id;
 
     Business.findOne({ _id: businessID }, function (err, business) {
-      if (err) console.log(err);
+      if (err) return res.status(500).json(err.message);
       else if (business) {
         RegisteredUser.findById(id, function (err, user) {
           if (err)
-            console.log(err);
+            return res.status(500).json(err.message);
           else {
             var newReview = new Review({
               review: req.body.review,
@@ -36,7 +36,7 @@ exports.writeReview = function (req, res) {
               if (err) {
                 res.status(500).json('Oops.. something went wrong.');
               } else {
-                res.json(updatedBusiness);
+                res.status(200).json(updatedBusiness);
               }
             });
           }
@@ -86,17 +86,17 @@ exports.upvoteReview = function (req, res) {
           if (err) {
             res.status(500).json('Oops.. something went wrong.');
           } else {
-            res.json(updatedBusiness);
+            res.status(200).json(updatedBusiness);
           }
         });
 
       } else {
-        res.status(500);
-        res.send('Error');
+        return res.status(500).json("ERROR");
+        
       }
     });
   } else {
-    res.status(500).json('You are not authorized to perform this action.');
+    res.status(401).json('You are not authorized to perform this action.');
   }
 
 
@@ -139,17 +139,17 @@ exports.downvoteReview = function (req, res) {
           if (err) {
             res.status(500).json('Oops.. something went wrong.');
           } else {
-            res.json(updatedBusiness);
+            res.status(200).json(updatedBusiness);
           }
         });
       } else {
-        res.status(500).json('You are not authorized to perform this action.');
+        res.status(401).json('You are not authorized to perform this action.');
       }
     });
 
 
   } else {
-    res.status(500).json('You are not authorized to perform this action.');
+    res.status(401).json('You are not authorized to perform this action.');
   }
 
 
@@ -173,14 +173,14 @@ exports.replyReview = function (req, res) {
 
     Business.findById(businessID, function (err, business) {
       if (err)
-        console.log(err);
+        return res.status(500).json(err.message);
       else {
         if (business.reviews.id(reviewID) != null) {
           //if review belongs to this business 
           if (userID != businessID) { //if user is replying to user review
             RegisteredUser.findById(userID, function (err, user) {
               if (err)
-                console.log(err);
+                return res.status(500).json(err.message);
               else {
                 var newReply = new Reply();
                 newReply.user.id = user._id;
@@ -194,7 +194,7 @@ exports.replyReview = function (req, res) {
                     res.status(500).json('Oops.. something went wrong');
                   }
                   else {
-                    res.json(updatedBusiness);
+                    res.status(200).json(updatedBusiness);
                   }
                 })
               }
@@ -209,21 +209,21 @@ exports.replyReview = function (req, res) {
                 res.status(500).json('Oops.. something went wrong');
 
               } else {
-                res.json(updatedBusiness);
+                res.status(200).json(updatedBusiness);
               }
             });
 
           } else {
-            res.status(500).json('You are not allowed to perform this action.');
+            res.status(401).json('You are not allowed to perform this action.');
           }
         } else {
-          res.status(500).json('You are not allowed to perform this action.');
+          res.status(401).json('You are not allowed to perform this action.');
         }
       }
     })
 
   } else {
-    res.status(500).json('You are not allowed to perform this action.');
+    res.status(401).json('You are not allowed to perform this action.');
   }
 }
 /**
@@ -246,7 +246,7 @@ exports.deleteReply = function (req, res) {
     var replyID = req.body.reply._id;
     Business.findById(businessID, function (err, business) {
       if (err)
-      console.log(err);
+      return res.status(500).json(err.message);
       
         // res.status(500).json('Oops.. something went wrong');
       //if business both the review and the reply exist within this business object
@@ -254,20 +254,17 @@ exports.deleteReply = function (req, res) {
         business.reviews.id(reviewID).replies.id(replyID).remove();
         business.save(function (err, updatedBusiness) {
           if (err)
-          console.log(err);
-            // res.status(500).json('Oops.. something went wrong');
+          return res.status(500).json(err.message);
           else {
-            res.json(updatedBusiness);
+            return res.status(200).json(updatedBusiness);
           }
         });
-      } else {
-        
-        // res.status(500).json('Oops.. something went wrong');
+      } else {   
+        return res.status(500).json('Oops.. something went wrong');
       }
     });
   } else {
-    console.log(err);
-    // res.status(500).json('Oops.. something went wrong');
+    return res.status(500).json('Oops.. something went wrong');
   }
 
 }
@@ -293,17 +290,17 @@ exports.deleteReview = function (req, res) {
         business.reviews.id(reviewID).remove();
         business.save(function (err, updatedBusiness) {
           if (err)
-            console.log(err);
+            return res.status(500).json(err.message);
           else
-            res.json(updatedBusiness);
+            return res.status(200).json(updatedBusiness);
         });
       } else {
-        res.status(500).json('Oops.. something went wrong');
+        return res.status(500).json('Oops.. something went wrong');
       }
 
     });
   } else {
-    res.status(500).json('Oops.. something went wrong');
+    return res.status(500).json('Oops.. something went wrong');
   }
 
 }

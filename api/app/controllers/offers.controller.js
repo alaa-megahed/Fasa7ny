@@ -229,13 +229,13 @@ exports.updateOffer = function(req, res) {
 
               offer.save(function(err, updatedoffer) {
                 if(err) res.status(500).json("error saving offer");
-                else res.json(updatedoffer);
+                else res.status(200).json(updatedoffer);
               })
 
           } else res.status(403).json("you must update only your offers");
         }
       }
-    })
+    });
   } 
   else res.status(401).json("NOT AUTHORIZED");
 };
@@ -267,13 +267,13 @@ exports.deleteOffer = function(req, res) {
                   res.res.status(500).json("cannot get my offers");
                  else
                 {
-                  if(myoffers) res.send("done")
+                  if(myoffers) res.status(200).json("done");
                 }
               });
             }
           })
         } else {
-          if(!offer) rres.status(500).json("Oops, something went wrong, please try again with the correct information.");
+          if(!offer) res.status(500).json("Oops, something went wrong, please try again with the correct information.");
           else res.status(403).json("YOU ARE NOT AUTHORIZED TO ACCESS THID PAGE");
         }
       }

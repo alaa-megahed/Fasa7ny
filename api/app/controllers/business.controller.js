@@ -85,7 +85,7 @@ requestRemoval: function(req,res) {
         }
 
         else{
-         res.status(500).json('You are not a logged in busiess');
+         res.status(401).json('You are not a logged in busiess');
      }
 
     },
@@ -103,7 +103,7 @@ requestRemoval: function(req,res) {
                         res.status(200).json("done");
                     }
                 });
-        } else res.status(500).json("you must be a logged in business");
+        } else res.status(401).json("you must be a logged in business");
     },
 
     /* A business can edit its personal infromation.*/
@@ -190,7 +190,7 @@ requestRemoval: function(req,res) {
         }
 
         else {
-            res.status(500).json('You are not a logged in business');
+            res.status(401).json('You are not a logged in business');
         }
     },
 
@@ -239,7 +239,7 @@ requestRemoval: function(req,res) {
         }
 
         else {
-          res.status(500).json('You are not a logged in business');
+          res.status(401).json('You are not a logged in business');
         }
 
     },
@@ -292,7 +292,7 @@ requestRemoval: function(req,res) {
             }
         }
         else {
-          res.status(500).json('You are not a logged in business');
+          res.status(401).json('You are not a logged in business');
         }
 
     },
@@ -312,7 +312,7 @@ requestRemoval: function(req,res) {
             res.status(200).json({business:newBusiness});
           }
         });
-      } else res.status(500).json("You are not a logged in business");
+      } else res.status(401).json("You are not a logged in business");
     },
 
 
@@ -425,8 +425,6 @@ getBusinessById : function(req,res)
   });
 
 }
-
-
 }
 
 

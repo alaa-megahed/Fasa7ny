@@ -47,13 +47,13 @@ exports.book_event = function (req, res) {
       else {
         Events.findById(eventocc.event, function (err, event) {
           if (err || !event)
-            res.send("Oops, something went wrong, please try again with the correct information.");
+            res.status(500).json("Oops, something went wrong, please try again with the correct information.");
           else {
             //check if this event belongs to business currently booking it
             if (event.business_id == req.user.id) {
               //cannot book more than available number
               if (eventocc.available < count) {
-                res.status(500).json("Capacity doesn't allow more than " + eventocc.available);
+                res.status(400).json("Capacity doesn't allow more than " + eventocc.available);
               }
               else {//Create booking instance
                 var booking = new Booking
@@ -210,7 +210,6 @@ exports.cancel_booking = function (req, res) {
 exports.cancel_booking_after_delete = function (req, res) {
   var bookingID = req.body.booking_id;       //id of booking to be cancelled
   var business_id = req.user._id;
-  // TODO add business name in notification after query
   Booking.findByIdAndRemove(bookingID, function (err, booking) {
     if (err || !booking)
       return res.status(500).json("Oops, something went wrong, please try again with the correct information ");
@@ -219,7 +218,6 @@ exports.cancel_booking_after_delete = function (req, res) {
       if (req.user.id == booking.business_id) {
 
         var content = req.user.name + "cancelled your booking ";
-        // var content = "Nourhan" + " cancelled your booking in "  + "     " ;
         var now = Date.now();
         RegisteredUser.findByIdAndUpdate({ _id: booking.booker }, { $push: { "notifications": { content: content, date: now } } }, function (err, user) {
           if (err)
@@ -307,7 +305,7 @@ exports.regUserAddBooking = function (req, res, next) {
 
 
       if (req.body.count <= 0)
-        return res.status(400).json("Please enter valid count.");
+        return res.status(500).json("Please enter valid count.");
 
       var date = new Date();
       var booking = new Booking(
@@ -385,23 +383,19 @@ exports.regUserViewBookings = function (req, res, next) {
     if (req.user instanceof RegisteredUser) {
       RegisteredUser.findOne({ _id: req.user.id }).populate('bookings').exec(function (err, bookings) {
         if (err || !bookings) {
-          res.status(500).json("Error finding bookings or possibly no bookings");
-          return;
+           return res.status(500).json("Error finding bookings or possibly no bookings");
         }
         else {
-          res.send(bookings.bookings);
-          return;
+          return res.status(200).json(bookings.bookings);
         }
       });
     }
     else {
-      res.send("You are not a registered user.");
-      return;
+      return res.status(401).json("You are not a registered user.");
     }
   }
   else {
-    res.send("Please log in to view upcoming bookings.");
-    return;
+   return res.status(401).json("Please log in to view upcoming bookings.");
   }
 
 };
@@ -419,13 +413,13 @@ exports.regUserDeleteBookings = function (req, res, next) {
     if (req.user instanceof RegisteredUser) {
       Booking.findById(req.body.bookingD, function (err, booking) {
         if (err || !booking) {
-          res.send("Error deleting booking. Please recheck information and try again.");
-          return;
+          return res.status(500).json("Error deleting booking. Please recheck information and try again.");
+         
         }
         else {
           if (booking.booker == req.user.id) {
             RegisteredUser.findByIdAndUpdate(req.user.id, { "$pull": { bookings: req.body.bookingD } }, function (err, user) {
-              if (err || !user) return res.send("Error");
+              if (err || !user) return res.status(500).json("Error");
             });
             EventOccurrences.findByIdAndUpdate(booking.event_id, { "$pull": { bookings: req.body.bookingD } }, function (err, eve) {
               if (err || !eve) return res.status(500).json("Error.");
@@ -445,7 +439,7 @@ exports.regUserDeleteBookings = function (req, res, next) {
                       amount: amount
                     }, function (err, refund) {
                       if (err) {
-                        res.status(400).json(err.message);
+                        res.status(500).json(err.message);
                       }
                       else {
                         res.status(200).json("refund successfully completed");

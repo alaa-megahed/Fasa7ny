@@ -70,7 +70,7 @@ exports.AddBusiness = function (req, res) {
                                         business.save(function (err) {
 
                                             if (err)
-                                                throw err;
+                                                res.status(500).json("ERROR");
                                             else { //send confirmation email
                                                 var smtpTransport = nodemailer.createTransport({
                                                     service: 'Gmail',
@@ -91,8 +91,8 @@ exports.AddBusiness = function (req, res) {
 
                                                 };
                                                 smtpTransport.sendMail(mailOptions, function (err) {
-                                                    if (err)
-                                                    req.flash('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
+                                                    if (err) return res.status(500).json("something went wrong");
+                                                    // req.flash('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
 
                                                 });
                                                 //res.render("admin_profile", { user: req.user });
@@ -103,25 +103,25 @@ exports.AddBusiness = function (req, res) {
                                     } //end of web admin check
                                     else {
                                         //res.render("admin_profile", { user: req.user });
-                                        res.status(200).json("There is another webAdmin with the same username");
+                                        res.status(500).json("There is another webAdmin with the same username");
                                     }
                                 });
                         }//end of user check
                         else {
-                               res.status(200).json("There is another User with the same username");
+                               res.status(500).json("There is another User with the same username");
                         }
                     }
                 );
             }//end of business check
             else {
-                    res.status(200).json("There is another business with the same username");
+                    res.status(500).json("There is another business with the same username");
             }
 
         });
 }
 }
  else {
-    return res.status(200).json("Unauthorized access. Please log in.");
+    return res.status(401).json("Unauthorized access. Please log in.");
 
   }
 }
@@ -139,12 +139,12 @@ if(req.user && req.user instanceof WebAdmin){
         //remove offers
         Offer.remove({ business: business._id }, function (err) {
 
-           if(err) res.status(500).json(err.message);
+           if(err) return res.status(500).json(err.message);
         });
         // remove events
         Events.remove({ business_id: business._id }, function (err) {
             if (err)
-                if(err) res.status(500).json(err.message);
+                if(err) return res.status(500).json(err.message);
         });
         // remove facilities
         Facility.remove({business_id: business._id}, function(err){
@@ -152,7 +152,7 @@ if(req.user && req.user instanceof WebAdmin){
         });
         // remove event occuerrences
         EventOcc.remove({business_id: business._id}, function(err){
-            if(err) res.status(500).json(err.message);
+            if(err) return res.status(500).json(err.message);
         });
 
 
@@ -161,7 +161,7 @@ if(req.user && req.user instanceof WebAdmin){
         async.each(business.subscribers, function(subscriber, callback){
             User.findById(subscriber, function (err, user) {
                 if (err)
-                        res.status(500).json(err.message);
+                        return res.status(500).json(err.message);
                 else {
                     var subs = user.subscriptions;
                     var index = subs.indexOf(business._id);
@@ -169,7 +169,7 @@ if(req.user && req.user instanceof WebAdmin){
                         subs.splice(index, 1);
                         User.findByIdAndUpdate(subscriber, { $set: { subscriptions: subs } }, function (err, userResult) {
                             if (err)
-                                res.status(500).json(err.message);
+                                return res.status(500).json(err.message);
 
                         });
                     }
@@ -179,8 +179,8 @@ if(req.user && req.user instanceof WebAdmin){
 
         Business.findByIdAndRemove(req.params.id, function (err, business) {
             if (err)
-                throw err;
-            res.status(200).json("Succefully deleted");
+                return res.status(500).json("something went wrong");
+            return res.status(200).json("Succefully deleted");
         });
 
 
@@ -188,7 +188,7 @@ if(req.user && req.user instanceof WebAdmin){
 
 }
  else {
-    return res.status(200).json("Unauthorized access. Please log in.");
+    return res.status(401).json("Unauthorized access. Please log in.");
 
   }
 
@@ -202,12 +202,12 @@ if(req.user && req.user instanceof WebAdmin)
   {
 
     Business.find({ delete: 1 }, function (err, requests) {
-
-        res.status(200).json(requests);
+      if(err) return res.status(500).json("something went wrong");
+        return res.status(200).json(requests);
     });
   }
   else {
-    return res.status(200).json("Unauthorized access. Please log in.");
+    return res.status(401).json("Unauthorized access. Please log in.");
 
   }
 
@@ -234,7 +234,7 @@ exports.addAdvertisement = function(req,res)
 
     if(!req.file.filename || !req.body.text || !req.body.sdate || !req.body.edate)
     {
-      return res.status(200).json("Please fill in all necessary components");
+      return res.status(500).json("Please fill in all necessary components");
     }
     else
     {
@@ -321,7 +321,7 @@ exports.viewAvailableAdvertisements = function(req,res)
           }
         }
 
-        return res.json(send);
+        return res.status(200).json(send);
 
       }
 
@@ -336,9 +336,9 @@ exports.updateAdvertisements = function(req,res)
   Advertisement.findByIdAndUpdate(req.body.ad, {available:0}, function(err, ad)
   {
     if(err)
-      return res.json("error");
+      return res.status(500).json("something went wrong");
       else {
-        return res.json("success");
+        return res.status(200).json("success");
       }
   })
 }
@@ -352,7 +352,7 @@ exports.viewAllAdvertisements = function(req,res)
 
     Advertisement.find({},function(err, ads)
     {
-
+      if(err) return res.status(500).json("something went wrong");
       res.status(200).json(ads);
     });
   }

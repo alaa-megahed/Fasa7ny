@@ -118,7 +118,7 @@ exports.editFacility = function(req,res)
 							Events.update({facility_id:facility_id},{ $set: { name: req.body.name }},{multi: true},function(err)
 							{
 								if(err)
-									return res.json({err:"error updating event"});
+									return res.status(500).json({err:"error updating event"});
 							});
 						}
 						if(req.body.description)
@@ -126,7 +126,7 @@ exports.editFacility = function(req,res)
 							Events.update({facility_id:facility_id},{ $set: { description: req.body.description }},{multi: true},function(err)
 							{
 								if(err)
-									return res.json({err:"error updating event"});
+									return res.status(500).json({err:"error updating event"});
 							});
 						}
 
@@ -136,7 +136,7 @@ exports.editFacility = function(req,res)
 
 					}
 					else
-						return res.status(500).json({err:"You are not authorized to perform this action"});
+						return res.status(401).json({err:"You are not authorized to perform this action"});
 				}
 
 			});
@@ -280,7 +280,6 @@ exports.createEvent = function (req, res) {
 								event.image = req.file.filename;
 							}
 
-
 							event.save(function (err, event) {
 								if (err) res.send(err.message);
 
@@ -334,7 +333,7 @@ exports.createEvent = function (req, res) {
 
 									});
 								}, function (error) {
-									if (error) res.json(500, { error: error });
+									if (error) res.status(500).json({ error: error });
 								});
 
 								var rule = new schedule.RecurrenceRule();
@@ -595,9 +594,9 @@ exports.getAllFacilities = function(req,res)
 	Facility.find({},function(err,facilities)
 	{
 		if(err)
-			res.send("error in get facilities");
+			res.status(500).json("error in get facilities");
 		else
-			res.json(facilities);
+			res.status(200).json(facilities);
 	});
 }
 
@@ -767,9 +766,8 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 										{
 											one_occ.remove(function(err)
 										    {
-												//if(err)
-										  	  	// res.send("Something went wrong");
-
+												if(err)
+										  	  	return res.status(500).json("Something went wrong");
 										    });
 										});
 									 }
@@ -794,7 +792,8 @@ exports.removeAllOccurrences = function (event_id) {
 	EventOccurrences.remove({ event: event_id }, function (err) {
 		if (err)
 			res.status(500).json("Something went wrong");
-	})
+		res.status(200).json("Done removing");
+	});
 }
 
 /* Abusiness can cancel an event occurrence.*/

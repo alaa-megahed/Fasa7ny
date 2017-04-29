@@ -14,9 +14,9 @@ exports.getUserDetails = function (req, res) {
 
 	User.findById(user_id, function (err, user) {
 		if (err)
-			console.log("error in finding user");
+			res.status(500).json("ERROR");
 		else {
-			res.json({ user: user });
+			res.status(200).json({ user: user });
 		}
 	});
 }
@@ -28,7 +28,7 @@ exports.getBookingDetails = function (req, res) {
 		var booking_id = req.params.booking;
 		Booking.findById(booking_id, function (err, booking) {
 			if (err)
-				console.log("error in finding booking");
+				res.status(500).json("ERROR");
 			else {
 				if (booking) {
 					EventOccurrence.findById(booking.event_id, function (err, eventocc) {
@@ -62,7 +62,7 @@ exports.getBookingDetails = function (req, res) {
 		});
 	}
 	else {
-		return res.status(500).json("You are not a logged in user");
+		return res.status(401).json("You are not a logged in user");
 	}
 }
 
@@ -82,7 +82,7 @@ exports.getSubscribedBusiness = function (req, res) {
 		});
 	}
 	else {
-		return res.status(500).json("You are not a logged in user");
+		return res.status(401).json("You are not a logged in user");
 	}
 }
 
@@ -131,7 +131,7 @@ exports.subscribe = function (req, res) {
 		});
 
 	}
-	else res.status(500).json("You are not logged in");
+	else res.status(401).json("You are not logged in");
 }
 
 exports.unsubscribe = function (req, res) {
@@ -181,14 +181,10 @@ exports.unsubscribe = function (req, res) {
 			else {
 				return res.status(500).json("Not subscribed");
 			}
-
-
-
-
 		});
 	}
 	else {
-		res.status(500).json("You are not logged in");
+		res.status(401).json("You are not logged in");
 	}
 
 }
@@ -214,7 +210,6 @@ exports.addRating = function(req, res)
 				previous_rating.rating = rating2;
 				previous_rating.save();
 			}
-
 			else {
 				var rating1 = new Rating(
 					{
@@ -225,14 +220,11 @@ exports.addRating = function(req, res)
 
 				rating1.save();
 			}
-
 			module.exports.average_rating(req, res);
-
-
 		});
 	}
 	else {
-		res.status(500).json("You are not logged in");
+		res.status(401).json("You are not logged in");
 	}
 };
 
@@ -253,7 +245,7 @@ exports.average_rating = function (req, res) {
 						}
 						else {
 							Business.findOne({ _id: businessID }, function (err, updatedBusiness) {
-								if (err) console.log("error");
+								if (err) res.status(500).json("Error. Please return to previous page.");
 								else {
 									var now = new Date();
 									now.setHours(0, 0, 0, 0);
@@ -311,7 +303,7 @@ exports.editInformation = function (req, res) {
 				}
 			}
 		});
-	} else return res.status(500).json("you are not authorized to view this page");
+	} else return res.status(401).json("you are not authorized to view this page");
 }
 
 
@@ -321,10 +313,11 @@ exports.resetUnread = function (req, res) {
 	if (req.user && req.user instanceof User) {
 		User.findByIdAndUpdate(req.user.id, { unread_notifications: 0 }, function (err, user) {
 			if (err)
-				return res.status(500).send(err);
+				return res.status(500).json(err);
+			else return res.status(200).json("OK");
 		});
 	}
 	else {
-		return res.status(200).json("Unauthorized access.");
+		return res.status(401).json("Unauthorized access.");
 	}
 }

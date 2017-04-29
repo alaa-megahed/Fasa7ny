@@ -34,7 +34,7 @@ var StatsController = {
         var query = helper.updateQuery(stat, statType, amount);
         stat.update(query).exec(function (err, result) {
           if (err)
-            throw err;
+            return res.status(500).json(err.message);
           
         });
       } else { //if there is no entry for this business for this week -> create one
@@ -44,7 +44,7 @@ var StatsController = {
         newWeekStat.endDate = week.endDate;
         newWeekStat.business = businessID;
         newWeekStat[statType] = amount;
-        newWeekStat.save(function (err) { if (err) { throw err; } });
+        newWeekStat.save(function (err) { if (err) { return res.status(500).json(err.message); } });
       }
     });
 
@@ -54,13 +54,13 @@ var StatsController = {
       month: now.getMonth(),
       year: now.getFullYear()
     }).exec(function (err, stat) {
-      if (err) throw err;
+      if (err) return res.status(500).json(err.message);
       else {
         if (stat != null) {
           var query = helper.updateQuery(stat, statType, amount);
           stat.update(query).exec(function (err, result) {
             if (err)
-              throw err;
+              return res.status(500).json(err.message);
           });
         } else {
           var newMonthStat = new MonthStat();
@@ -68,7 +68,7 @@ var StatsController = {
           newMonthStat.year = now.getFullYear();
           newMonthStat.business = businessID;
           newMonthStat[statType] = amount;
-          newMonthStat.save(function (err) { if (err) throw err; });
+          newMonthStat.save(function (err) { if (err) return res.status(500).json(err.message);});
         }
       }
     });
@@ -83,14 +83,14 @@ var StatsController = {
           var query = helper.updateQuery(stat, statType, amount);
           stat.update(query).exec(function (err, result) {
             if (err)
-              throw err;
+              return res.status(500).json(err.message);
           });
         } else {
           var newYearStat = new YearStat();
           newYearStat.year = now.getFullYear();
           newYearStat.business = businessID;
           newYearStat[statType] = amount;
-          newYearStat.save(function (err) { if (err) throw err; });
+          newYearStat.save(function (err) { if (err) return res.status(500).json(err.message);});
         }
       }
     });
@@ -99,13 +99,13 @@ var StatsController = {
         var query = helper.updateQuery(stat, statType, amount);
         stat.update(query).exec(function (err, result) {
           if (err)
-            throw err;
+            return res.status(500).json(err.message);
         });
       } else {
         var newAllStat = new AllStat();
         newAllStat.business = businessID;
         newAllStat[statType] = amount; 
-        newAllStat.save(function (err) { if (err) throw err; });
+        newAllStat.save(function (err) { if (err) return res.status(500).json(err.message); });
       }
     });
   },
@@ -146,7 +146,6 @@ var StatsController = {
           return res.status(500).json('Oops.. something went wrong.');
         }
         else {
-
           res.status(200).json(result);
         }
       });
@@ -227,7 +226,7 @@ var StatsController = {
 
             res.status(500).json('Oops.. something went wrong.');
           } else {
-            res.json(result);
+            res.status(200).json(result);
           }
         });
     }
@@ -242,11 +241,10 @@ var StatsController = {
     
       AllStat.findOne({ business: businessID }, function (err, result) {
         if (err) {
-          res.status(500);
-          res.json('Oops..something went wrong.');
+          res.status(500).json('Oops..something went wrong.');
         } else {
           
-          res.json(result);
+          res.status(200).json(result);
         }
       });
     }
