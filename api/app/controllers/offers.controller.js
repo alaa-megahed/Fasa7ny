@@ -47,6 +47,19 @@ exports.viewOffersByName = function(req, res) {
   }
 }
 
+exports.offerDetails = function(req, res) {
+  if(typeof req.params.id != "undefined") {
+    var id = req.params.id;
+
+    Offer.findOne({_id:id}, function(err, offer) {
+      if(err || !offer) return res.status(500).json("error in finding the offer");
+      else {
+        res.status(200).json({offer:offer});
+      }
+    })
+  }
+}
+
 exports.businessViewOffers = function(){
  if(req.user && req.user instanceof Business)
    {
