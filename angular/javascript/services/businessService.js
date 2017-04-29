@@ -7,6 +7,10 @@ app.factory('Business', ['$http', 'IP', function ($http, IP) {
       return $http.get('http://' + IP.address + ':3000/business/b/' + id);
     },
 
+    getById: function(id){
+      return $http.get('http://'+IP.address + ':3000/business/getBusinessById/' + id);
+    },
+
     edit: function (data) {
 
       var fd = new FormData();

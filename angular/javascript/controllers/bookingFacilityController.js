@@ -1,6 +1,6 @@
 var app = angular.module('fasa7ny');
 
-app.controller('bookFacilityController', function($scope, $http, $location,$routeParams, Offers,status,Occurrences,Global,Facilities, IP) {
+app.controller('bookFacilityController', function($scope, $http, $location,$routeParams,Business, Offers,status,Occurrences,Global,Facilities, IP) {
 
     $scope.business_id = $routeParams.id;
       $scope.user = {};
@@ -25,7 +25,6 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
          }
        });
 
-      console.log("in facility "+ $scope.business_id);
       $scope.business_id = $routeParams.id;
       Facilities.get().then(function(response){
            $scope.facilities = response.data;
@@ -37,17 +36,20 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
       Occurrences.get().then(function(response){
            $scope.timings = response.data;
       });
-      // Business.get($scope.business_id).then(function(response){
-      //       $scope.business = response.data.result;
-      // });
-      $scope.cash = false;
+      Business.getById($scope.business_id).then(function(response){
+            $scope.business = response.data;
+            console.log("business aho "+$scope.business);
+            console.log("id" +$scope.business_id);
+            $scope.cash = false;
       $scope.stripe = false;
-    //  for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
-      //  if($scope.business.payment_methods[i] === "Cash")
-          $scope.cash = true;
-      //  if($scope.business.payment_methods[i] == "Stripe")
-            $scope.stripe = true;
-    //  }
+     for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
+         if($scope.business.payment_methods[i] === "Cash")
+            $scope.cash = true;
+         if($scope.business.payment_methods[i] == "Stripe")
+              $scope.stripe = true;
+       }
+      });
+      
       $scope.choose_date = function(date)
       {
         $scope.date  = date.getDate();
@@ -70,44 +72,33 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
       {
         $scope.max_count = timing.available;
         $scope.event = timing.event;
-        console.log("this is $scope.event in choose occ "+$scope.event);
         $scope.occ_id = timing._id;
 
         Facilities.getEvent($scope.event).then(function(response)
         {
             $scope.chosen_event = response.data;
-            console.log("this is response.data in choose_occ "+response.data);
         });
 
       }
 
-      console.log("chosen facility "+$scope.chosen_facility);
 
       $scope.minDate = new Date();
       var today = new Date();
       today.setMonth(today.getMonth()+1);
       $scope.maxDate = new Date(today.getFullYear(),today.getMonth() , today.getDate());
+      $scope.error_message="";
 
       $scope.book_cash = function()
       {
-        // console.log($scope.chosen_facility);
-        // console.log($scope.formData.chosen_time.event);
-        // console.log($scope.event);
-        // console.log("This is scope.event: "+$scope.event);
-
+        
         $scope.event_price = $scope.chosen_event.price;
-        console.log("chosen eventprice in book cash is "+$scope.event_price);
         $scope.min_charge = apply_best_offer_facility($scope.chosen_facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
-        $scope.error_message="";
-        console.log("This is count :"+ $scope.formData.count);
          if($scope.type == 1)
         {
         $http.post('http://'+ IP.address + ':3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.min_charge, business_id: $scope.business_id})
                     .then(function successCallback(response){
-                      console.log(response.data);
                       $location.path('/success/'+response.data._id);
                     }, function errorCallback(response){
-                      console.log(response.data);
                       //redirect to not authorized page
                        $scope.error_message = response.data;
                     });
@@ -120,7 +111,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
                       $location.path('/success/'+responce.data._id);
 
                     }, function errorCallback(responce){
-                      //redirect to not authorized page
+                      $scope.error_message = responce.data;
                       console.log(responce.data);
                     });
           }
@@ -133,16 +124,11 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
           currency : "egp",
           token: function(token)
           {
-            console.log("token   "+ token);
-            console.log("token.id   "+ token.id);
             $http.post('http://'+ IP.address + ':3000/bookings/charge', {stripeToken: token.id, amount: $scope.stripe_charge})
                     .then(function successCallback(responce){
-                      console.log("success  charge in responce  "+ responce.data);
-                      console.log("success  charge in responce  "+ responce.data.id);
-
+                      
                       $http.post('http://'+ IP.address + ':3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:responce.data.id, charge: $scope.charge, user_id: "58ed22fcbfe67363f0c3a41d", business_id: $scope.business_id})
                             .then(function successCallback(responce){
-                              console.log(responce.data);
                               $location.path('/success/'+responce.data._id);
 
                             }, function errorCallback(responce){
@@ -177,7 +163,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
 });
 
 
-app.controller('successfulBookingController', function($scope, $http, $location,$routeParams, status)
+app.controller('successfulBookingController', function($scope, $http, $location,$routeParams, status,IP)
 {
   $scope.booking_id = $routeParams.bookingId;
   console.log("booking id in controller "+ $scope.booking_id);

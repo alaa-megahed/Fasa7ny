@@ -1,5 +1,5 @@
 var app = angular.module('fasa7ny');
-app.controller('bookingEventController', function($scope, $http,$routeParams, $location,Global,Event,status, Offers,viewOccurences, IP)
+app.controller('bookingEventController', function($scope, $http,$routeParams,Business,$location,Global,Event,status, Offers,viewOccurences, IP)
 
 {
 
@@ -38,27 +38,22 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
 
                      });
 
+                   Business.getById($scope.business_id).then(function(response){
+                  $scope.business = response.data;
+                  $scope.cash = false;
+                  $scope.stripe = false;
+                 for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
+                   if($scope.business.payment_methods[i] === "Cash")
+                      $scope.cash = true;
+                    if($scope.business.payment_methods[i] == "Stripe")
+                      $scope.stripe = true;
+                 }
+             });
+
+
 
           });
 
-
-
-      //   Business.get($scope.business_id).then(function(response){
-      //       $scope.business = response.data.result;
-      //  });
-
-        $scope.cash = false;
-        $scope.stripe = false;
-      //  for (var i = $scope.business.payment_methods.length - 1; i >= 0; i--) {
-        //  if($scope.business.payment_methods[i] === "Cash")
-            $scope.cash = true;
-          //if($scope.business.payment_methods[i] == "Stripe")
-              $scope.stripe = true;
-      //  }
-        // $scope.current_event = Global.getOnceEvent();
-
-
-        console.log($scope.current_event);
 
         viewOccurences.get($scope.current_event).then(function (response) {
           console.log(JSON.stringify(response));
@@ -71,9 +66,12 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
         console.log("business id "+$scope.business_id);
 
         $scope.min = 1;
+        $scope.error_message="";
+
 
         $scope.book_cash = function()
         {
+          $scope.error_message="";
           var chosen_offer = $scope.formData.chosen_offer;
           console.log("count   "+$scope.formData.count+" offer   "+$scope.formData.chosen_offer); //why  undefined?
           var min_charge = apply_best_offer_once_event($scope.event, $scope.event_occ, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
@@ -88,6 +86,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
                      $location.path('/success/'+responce.data._id);
 
                     }, function errorCallback(responce){
+                      $scope.error_message = responce.data;
                       console.log(responce.data);
                     });
            }
@@ -99,6 +98,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
                       $location.path('/success/'+responce.data._id);
 
                     }, function errorCallback(responce){
+                      $scope.error_message = responce.data;
                       console.log(responce.data);
                     });
           }
@@ -123,9 +123,12 @@ app.controller('bookingEventController', function($scope, $http,$routeParams, $l
 
                             }, function errorCallback(responce){
                               console.log(responce.data);
+                              $scope.error_message = responce.data;
+
                             });
 
                     }, function errorCallback(responce){
+                       $scope.error_message = responce.data;
                       console.log(responce.data);
                     });
           }

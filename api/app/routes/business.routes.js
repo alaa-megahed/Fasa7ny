@@ -27,8 +27,8 @@ business.get('/getFacilityOccs/:facility', businessController.getFacilityOccs);
 business.get('/getBooking/:booking', businessController.getBooking);
 business.post('/getBusinessId',businessController.getBusinessId);
 business.post('/changeImage', upload.single('img'), businessController.changeImage);
+business.get('/getBusinessById/:id',businessController.getBusinessById);
 
-business.get('/getUnloggedBusiness/:id', businessController.getUnloggedBusiness);
 
 // business.get('/checkSession', businessController.checkSession);
 

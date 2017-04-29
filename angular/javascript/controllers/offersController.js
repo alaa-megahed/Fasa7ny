@@ -18,7 +18,7 @@ app.controller('ViewOffersController', function($scope, $http, $location, Offers
 });
 
 
-app.controller('createOffersController',function($scope,$http,Facilities,OneTimeEvent,status,$location,$routeParams)
+app.controller('createOffersController',function($scope,$http,Facilities,OneTimeEvent,status,$location,$routeParams,IP)
 {
           $scope.formData = {};
           $scope.user = {};
@@ -96,7 +96,7 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
 
 //========== Edit ============
 
-app.controller('EditOffersController', function($scope, $http, $route,$location, Offers, $modal, $window,$routeParams) {
+app.controller('EditOffersController', function($scope, $http, $route,$location, Offers, $modal, $window,$routeParams,IP) {
 
        // $scope.business_id = "58f0f3faaa02d151aa4c987c";
         $scope.name = $routeParams.name;

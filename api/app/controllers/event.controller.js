@@ -33,7 +33,6 @@ exports.createFacility = function(req,res)
 	{
 		var id = req.user.id;
 		console.log(req.body);
-		console.log(req.file.filename);
 		if(!req.body.name || !req.body.description || !req.body.capacity)
 		{
 			console.log("!");
