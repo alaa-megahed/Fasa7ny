@@ -1,0 +1,37 @@
+<div class="modal-header" ng-if = "!forgot">
+    <h3>Sign In!</h3>
+</div>
+<form name="form.userForm" ng-submit="submitForm(formData)" ng-if = "!forgot" novalidate>
+    <div class="modal-body" ng-if = "!forgot">
+
+    		<div class="alert alert-danger" ng-if = "err">{{err}}</div>
+
+        <!-- USERNAME -->
+        <div class="form-group" ng-if = "!forgot">
+            <label style = "color : #000">Username</label>
+            <input type="text" name="username" class="form-control" ng-model="formData.username" required>
+        </div>
+
+        <!-- PASSWORD-->
+        <div class="form-group" ng-if = "!forgot" >
+            <label style = "color : #000">Password</label>
+            <input type="password" name="password" class="form-control" ng-model="formData.password" required>
+        </div>
+
+        <div>
+        <center>
+        <a href="" ng-click = "facebook()" class="btn btn-primary" style = "color : #000"><span class="fa fa-facebook"></span> Facebook</a>
+    		<a href="http://localhost:3000/auth/google" class="btn btn-danger" style = "color : #000"><span class="fa fa-google-plus"></span> Google</a>
+        <a class="btn btn-warning" ng-click = "forgotPassword()" data-dismiss="modal" style = "color : #000">Forgot Password?</a>
+
+
+        </center>
+      </div>
+
+
+    </div>
+    <div class="modal-footer" ng-if = "!forgot">
+        <button type="submit" class="btn btn-primary" ng-disabled="form.userForm.$invalid" style = "color : #000">OK</button>
+        <a class="btn btn-warning" ng-click="cancel()" style = "color : #000">Cancel</a>
+    </div>
+</form>

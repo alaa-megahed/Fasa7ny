@@ -1,0 +1,96 @@
+
+<div ng-if ="type != 4 && type != 1">
+           <center>
+           <h3>Please log in to view this page.{{type}}</h3> 
+           </center>
+</div>
+
+  <div ng-show="type == 4 || type == 1">
+       <section id="about" class="text-center" >
+            <div ng-controller="bookingEventController" class="container">
+                <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
+                        <h2>Book<span class="color">ING</span></h2>
+                        <div class="border"></div>
+                </div>
+                      <form ng-model="formData">
+                        <h3>Number of people  :  <input type="Number" style="color:#000;" ng-model="formData.count" min = {{min}} max = {{max}}><br></h3>
+                        <h4>Available places: {{max}}</h4>
+                       
+                        <!-- <div >
+                            <h3> Special Offers:</h3> <br>
+
+                            <div  ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
+
+                              <input type="radio" ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
+
+                              <label>{{"Offer: "+offer.name + "  details: "+offer.details +" value: "+ offer.value}}</label>
+                              <br>
+
+                            </div> <br>
+                        </div> -->
+
+                        <div>
+                          <div class="container2">
+                            <ul>
+                             <h3 style="padding-bottom: 0px"> Special Offers: </h3><hr>
+                              <li ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
+                                <input type="radio" id = {{$index}} ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
+                                <label for = {{$index}}> <h4>{{"Offer: "+offer.name}} {{"value:" + offer.value}} <br>{{"details:" +offer.details}}</h4> </label>
+                                <div class="check"></div>
+                              </li>
+                            </ul>
+                         
+                        </div>
+                        </div>
+                        
+                        <div ng-show="cash">
+                        <button type="submit" ng-if="type == 1|| type == 4" class="btn btn-transparent" ng-disabled="!formData.count" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
+                        </div>
+                        <button type="submit" ng-if="type == 1" class="btn btn-transparent" ng-disabled="!formData.count" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
+
+                       </form>
+                       <br><br>
+                    
+                </div>
+                </section>
+        </div>
+       
+
+        
+        <!--
+        Start Main Features
+        ==================================== -->
+        <section id="main-features">
+            <div class="container">
+                <div class="row">
+                    
+                    <!-- features item -->
+                    <div id="features">
+                        <div class="item">
+                            
+                            <div class="features-item">
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="item">
+                            <div class="features-item">
+                                                            
+                                <!-- features content -->
+                                <div class="col-md-6 feature-desc wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
+                                    <h3>Details:</h3>
+                                    <p>Details of facility/event to be booked goes here</p>
+                                  
+                                    <a href="#" class="btn btn-transparent">Learn More</a>
+                                    <a href="#" class="btn btn-transparent">Purchase Theme</a>
+                                </div>
+                                <!-- /features content -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /features item -->
+                    
+                </div>      <!-- End row -->
+            </div>      <!-- End container -->
+        </section>   <!-- End section -->

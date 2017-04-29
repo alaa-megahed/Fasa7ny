@@ -1,11 +1,9 @@
 var app = angular.module('fasa7ny');
 app.controller('bookingEventController', function($scope, $http,$routeParams,Business,$location,Event,status, Offers,viewOccurences, IP)
-
 {
-
     $scope.current_event = $routeParams.id;
       Event.get($scope.current_event).then(
-          function(response)
+          function successCallback(response)
           {
             $scope.event = response.data.event;
             $scope.business_id = $scope.event.business_id;
@@ -50,6 +48,9 @@ app.controller('bookingEventController', function($scope, $http,$routeParams,Bus
 
 
 
+          }, function errorCallback(response){
+            console.log("status  "+response.status);
+            $location.path("/error/"+response.status);
           });
 
 
