@@ -60,7 +60,7 @@
     <!--charts-->
     <script src="bower_components/chart.js/dist/Chart.min.js"></script>
     <script src="bower_components/angular-chart.js/dist/angular-chart.min.js"></script>
-    
+
 
     <!-- DIRECTIVES -->
     <script src="javascript/directives/app.scheduler.js"></script>
@@ -87,7 +87,7 @@
     <script src="javascript/services/scheduleService.js"></script>
     <script src="javascript/services/onetimeeventService.js"></script>
     <script src="javascript/services/statsService.js"></script>
-    
+
     <!-- CONTROLLERS -->
     <script src="https://checkout.stripe.com/checkout.js"></script>
     <script src="./javascript/controllers/homepageController.js"></script>
@@ -239,7 +239,7 @@
               <li><a href="#search">Search</a></li>
 
               <li class="dropdown" ng-if = "user.data.user_type == 1" >
-                <a href=""  ng-mouseover = "decreaseCount()" class="dropbtn" ng-style = notifcolor>Notifications ({{user.data.unread_notifications}})</a>
+                <a href=""  ng-mouseover = "decreaseCount()" class="dropbtn" ng-style = notifcolor>Notifications</a>
                 <div class="dropdown-content" style = "background-color: #2B2C30; padding: 12px 16px; border-radius: 25px;" ng-if = "user.data.notifications.length != 0">
                   <center>
                     <a class = "notif" style = "color : #6cb670; text-align:center" href = "" ng-repeat = "notification in user.data.notifications track by $index"> {{    notification.content  }} </a>

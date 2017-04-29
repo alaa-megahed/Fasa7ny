@@ -120,15 +120,6 @@ app.controller('editBusinessController', function($scope, status,$http, Business
   $scope.formData.location.Lng = $scope.Lng;
 
   console.log("controller"+ JSON.stringify($scope.formData));
-  var payment = [];
-  var i = 0;
-  if($scope.formData.pay0 == true){
-    payment[i] =  "Cash";
-    i++;
-  }
-   if($scope.formData.pay1 == true) payment[i] =  "Stripe";
-
-   $scope.formData.payment_methods = payment;
 
     Business.editLocation($scope.formData)
     .then(function successCallback(d) {

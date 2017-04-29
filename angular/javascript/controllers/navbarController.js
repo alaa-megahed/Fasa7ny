@@ -59,7 +59,7 @@ angular.module('fasa7ny')
 
                   if($scope.user.data.unread_notifications)
                       $scope.notifcolor = {'color' : 'red'};
-                  $scope.type = 0;
+
                 }
 
                 if(!$scope.user.data)
@@ -69,11 +69,19 @@ angular.module('fasa7ny')
                     $scope.user = result;
                     if($scope.user.data)
                     {
+
                        $scope.type = 1;
-                       $scope.user.data.notifications.reverse();
-                       $scope.notifications =  $scope.user.data.notifications.slice(1,11);
+                       if($scope.user.data.notifications)
+                         {
+                           $scope.user.data.notifications.reverse();
+                           $scope.notifications =  $scope.user.data.notifications.slice(1,11);
+                         }
                        if($scope.user.data.unread_notifications)
-                           $scope.notifcolor = {'color' : 'red'};
+                       {
+                         $scope.notifcolor = {'color' : 'red'};
+                         $scope.unread =  $scope.user.data.unread_notifications;
+                       }
+
                      }
 
                     deferred.resolve(result);
@@ -119,6 +127,9 @@ angular.module('fasa7ny')
                 $scope.err1 = selectedItem.err;
                 if($scope.err1 === "The username or email provided is already taken."|| $scope.err1 === "Please enter all the required information in a vaild form." )
                   $scope.signUp();
+                else {
+                    $scope.updateUser();
+                  }
                 }, function () {
                   $log.info('Modal dismissed at: ' + new Date());
                 });
@@ -160,7 +171,13 @@ angular.module('fasa7ny')
     $scope.decreaseCount = function(){
 
       $scope.notifcolor = {'color' : 'white'} ;
-      Homepage.resetUnread();
+      Homepage.resetUnread()
+              .then(function()
+              {
+                $scope.updateUser();
+              }
+
+      )
 
     }
 
@@ -271,23 +288,21 @@ angular.module('fasa7ny')
               $scope.check = 1;
             }
 
-            if($scope.formData.gender != "Male" && $scope.formData.gender != "Female" && $scope.formData.gender != "Other" && $scope.formData.gender != null)
-            {
-              $scope.err.gender = "Please enter either Male, Female, Other or leave gender field empty.";
-              $scope.check = 1;
-            }
+            // if($scope.formData.gender != "Male" && $scope.formData.gender != "Female" && $scope.formData.gender != null)
+            // {
+            //   $scope.err.gender = "Not to sound morally pompous, but invalid gender.";
+            //   $scope.check = 1;
+            // }
 
             for(var i = 0; i < $scope.formData.phone.length; i++)
               {
-                if(isNaN($scope.formData.phone[i]))
+                if(isNaN($scope.formData.phone[i]) || $scope.formData.phone.length!=11 )
                 {
                   $scope.err.phone = "Please enter a valid phone number.";
                   $scope.check = 1;
                 }
 
               }
-
-
 
 
 
@@ -299,8 +314,8 @@ angular.module('fasa7ny')
                 if(data.data === "success")
                 {
                   // $window.location.reload();
-                  $route.reload();
                   $modalInstance.close("closed");
+                  $route.reload();
                 }
 
                 else
@@ -395,7 +410,6 @@ angular.module('fasa7ny')
 
                     if(data.data.startsWith("An e-mail has been sent to "))
                     {
-                        console.log("hello");
                         $scope.success = data.data;
                         $timeout(function() {
                             $modalStack.dismissAll();

@@ -243,6 +243,11 @@
 
                   </div>
 
+
+
+                </div>
+                <div ng-controller = "businessController">
+                  <div id="googleMap2" style="height: 200px; padding: 12px 16px" ng-init = "initMap()"></div>
                 </div>
               </article>
             </div>
@@ -485,7 +490,7 @@
                                 <div class="comment-head">
                                     <h6 class="comment-name">{{review.user.name}}</h6>
 
-                                    <span style="margin-top: 10px">{{review.timestamp | date: 'd MMM, yy h:mm a '}} 
+                                    <span style="margin-top: 10px">{{review.timestamp | date: 'd MMM, yy h:mm a '}}
 
                                         <i ng-if="type == 3 || (type == 1 && review.user.id == user._id)" ng-click="deleteReview(review)" class="delete glyphicon glyphicon-trash"></i></span>
 
@@ -499,10 +504,10 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <ul class="comments-list reply-list">
                             <li ng-repeat="reply in review.replies">
-                              
+
                                 <div ng-if="reply.authorType == 'user' " class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{reply.user.image}}" alt=""></div>
                                 <div ng-if="reply.authorType == 'business'" class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{business.profilePicture}}" alt=""></div>
 
@@ -510,7 +515,7 @@
                                     <div class="comment-head">
                                         <h6 ng-if="reply.authorType == 'user'" class="comment-name">{{reply.user.name}}</h6>
                                         <h6 ng-if="reply.authorType == 'business'" class="comment-name by-author"> {{business.name}}</h6>
-                                        <span style="margin-top: 10px">{{reply.timestamp | date: 'd MMM, yy h:mm a ' }} 
+                                        <span style="margin-top: 10px">{{reply.timestamp | date: 'd MMM, yy h:mm a ' }}
                                             <i ng-if="type == 3 || (type == 1 && reply.user.id == user._id) || (type == 4 && reply.authorType == 'business') " ng-click="deleteReply(review, reply)" class="delete glyphicon glyphicon-trash"></i></span>
 
 
@@ -551,13 +556,13 @@
                     <li ng-show="type == 1">
                         <div class="comment-main-level">
                             <!-- Avatar -->
-                           
+
                             <div class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{user.profilePic}}" alt=""></div>
                             <!-- Contenedor del Comentario -->
                             <div class="comment-box">
                                 <div class="comment-head">
                                     <h6 ng-if="type == 1" class="comment-name"> {{user.name}}: </h6>
-                                    <h6 ng-if="type == 4" class="comment-name"> {{business.name}}: </h6> 
+                                    <h6 ng-if="type == 4" class="comment-name"> {{business.name}}: </h6>
 
                                 </div>
                                 <div class="comment-content">
