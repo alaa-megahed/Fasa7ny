@@ -18,9 +18,7 @@ app.factory('OneTimeEvent', ['$http', 'IP', function($http, IP) {
 
           formData.timing = starthour+":"+startminute+"-"+endhour+":"+endminute;
 
-          console.log("!!" + formData.timing);
           formData.repeat = "Once";
-          console.log(formData);
             return $http.post('http://'+ IP.address + ':3000/event/create', formData);
         },
 

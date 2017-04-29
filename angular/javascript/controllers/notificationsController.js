@@ -27,7 +27,6 @@ angular.module('fasa7ny')
                    $scope.notifications =  result.data.notifications;
                   }
                   else {
-                    console.log("waddap");
                     $scope.err = "No notifications to show.";
                   }
 

@@ -1,5 +1,5 @@
 
-app.controller('eventController', function($scope, $http, status, Event, $location, $routeParams, $modal, $log, Global,viewOccurences,$window, IP) {
+app.controller('eventController', function($scope, $http, status, Event, $location, $routeParams, $modal, $log,viewOccurences,$window, IP) {
 	$scope.ip = IP.address;
 	$scope.imageEventlength = 0;
 	$scope.slides = [];
@@ -27,11 +27,7 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 		     });
 		   }
 		 });
-          Global.setBusiness(Global.getBusiness());
-          console.log("business in event "+Global.getBusiness());
-          Global.setOnceEvent($routeParams.eventId);
 
-		console.log("event eventController");
 		$scope.error = "";
 		Event.get($routeParams.eventId)
 		.then(function successCallback(d){
@@ -40,8 +36,6 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 			$scope.eventocc = d.data.eventocc;
 			$scope.slides = $scope.event.image;
 			$scope.imageEventlength = $scope.event.image.length;
-
-			console.log(d.data.eventocc);
 			$scope.date = new Date(d.data.eventocc.day);
 			$scope.day = $scope.date.getDate();
 			$scope.month = "";
@@ -68,8 +62,6 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 
 	$scope.showDelete = function (id) {
     $scope.message = "Show Delete Button Clicked";
-    console.log($scope.message);
-    console.log("Delete");
     var modalInstance = $modal.open({
         templateUrl: 'views/deletePopUp.html',
         controller: DeletePopUp2,
@@ -93,8 +85,6 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 
   $scope.showForm = function (id) {
       $scope.message = "Show Form Button Clicked";
-      console.log($scope.message);
-      console.log("1"+$scope.formData);
       var modalInstance = $modal.open({
         templateUrl: 'views/editEvent.html',
         controller: ModalInstanceCtrl,
@@ -109,14 +99,11 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
         	$scope.selected = selectedItem;
 			$scope.event = selectedItem.event;
 			$scope.eventocc = selectedItem.eventocc;
-			console.log($scope.eventocc);
       });
   };
 
 	$scope.deleteImageEvent = function(eventId, image) {
 		$scope.message = "Show delete Form Button Clicked";
-		console.log($scope.message);
-		console.log(image);
 		$scope.image = image;
 		$scope.eId = eventId;
 		var modalInstance = $modal.open({
@@ -126,11 +113,8 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 		});
 
 	modalInstance.result.then(function (selectedItem) {
-		console.log("??");
 		$scope.selected = selectedItem;
-		console.log("BEFORE:"+$scope.event.image);
 		$scope.event = selectedItem.event;
-		console.log("AFTEEERRR:"+$scope.event.image);
 		$scope.slides = $scope.event.image;
 		$scope.imageEventlength = $scope.event.image.length;
 	}, function () {
@@ -141,8 +125,6 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 	$scope.addImageEvent = function (eventId) {
 		$scope.message = "Show image Form Button Clicked";
 		$scope.eId = eventId;
-		console.log($scope.message);
-		console.log($scope.eId);
 		var modalInstance = $modal.open({
 				templateUrl: 'views/addImageEvent.html',
 				controller: addImageEventCtrl,
@@ -162,7 +144,6 @@ app.controller('eventController', function($scope, $http, status, Event, $locati
 
 
     $scope.bookEvent = function(event_id){
-            // Global.setBusiness(Global.getBusiness()); //get business from event, id in url
             $location.path('/book-event/'+event_id);
           };
 
@@ -192,9 +173,7 @@ var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Ev
                 {
                 $http.post('http://'+ IP.address + ':3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
                         .then(function successCallback(response){
-                            console.log(response.data);
                         }, function errorCallback(response){
-                            console.log(response.data);
                         });
 
 
@@ -203,19 +182,16 @@ var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Ev
 
             Event.delete(id)
                     .then(function successCallback(d) {
-             		 console.log("done deleting event");
 						status.local()
 						 .then(function(res){
 							 $location.path('/business/' + res.data.name)
 						 });
             },
             function errorCallback(d){
-                        console.log("??");
                         $scope.error = d.data;
             });
         }, function errorCallback(response)
         {
-            console.log(response.data);
         });
 
     };
@@ -243,10 +219,8 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event,id, $rou
         	$scope.error = "Enter a valid price";
         }
         else {
-        	console.log('Submit Form'+$scope.formData);
             Event.edit($scope.formData,id)
             .then(function successCallback(d){
-            	console.log('done editing the event');
 
 				$modalInstance.close({
 	            event:d.data.event,
@@ -272,12 +246,8 @@ var deleteImageEventCtrl = function ($scope, $modalInstance, Event, $route) {
 		$scope.error = "";
 		$scope.yes = function (eventId, image) {
 				// if ($scope.form.editForm.$valid) {
-						console.log('user form is in scope');
-						console.log(image);
 						Event.deleteImage(eventId, image)
 						.then(function successCallback(d) {
-							console.log("done deleting image event");
-							console.log(d.data.event);
 							$modalInstance.close({
 	              event:d.data.event
 	            });
@@ -295,23 +265,15 @@ var deleteImageEventCtrl = function ($scope, $modalInstance, Event, $route) {
 var addImageEventCtrl = function ($scope, $modalInstance, Event, $route) {
 	$scope.error = "";
 		$scope.addImageEvent = function (eventId, formData) {
-			console.log('add image is in scope');
-			console.log(eventId);
-			console.log(formData);
 			Event.addImage(eventId, formData)
 			.then(function successCallback(d) {
-        console.log("changeImage done");
-				console.log(d.data.event);
 				$modalInstance.close({
 					event : d.data.event
 				});
       },
       function errorCallback(d){
-				console.log("error");
         $scope.error = d.data;
       });
-			// console.log("eh yasta?");
-			// $route.reload();
 			// $route.reload();
 		};
 
