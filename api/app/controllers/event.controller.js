@@ -7,7 +7,8 @@ var Facility = require('mongoose').model('Facility');
 var User = require('mongoose').model('RegisteredUser');
 var async = require("async");
 var schedule = require('node-schedule');
-
+var fs = require('fs');
+var path = require('path');
 
 exports.getEvent = function (req, res) {
 	if (req.params.id != "undefined") {
