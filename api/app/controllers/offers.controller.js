@@ -40,7 +40,7 @@ exports.viewOffersByName = function(req, res) {
       else {
         Offer.find({business:id}, function(err, offers) {
           if(err) res.status(500).json("error in viewOffersByName");
-          else res.status(200).json(offers);
+          else res.status(200).json({offers:offers});
         })
       }
     })
