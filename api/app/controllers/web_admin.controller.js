@@ -44,7 +44,7 @@ exports.AddBusiness = function (req, res) {
                     ]
                 },
                     function (err, resultUser) {
-                        if (err)
+                        if (err) return res.status(500).json("something went wrong");
                         else if (resultUser.length == 0) {
 
                             WebAdmin.find({ $or: [
@@ -53,7 +53,7 @@ exports.AddBusiness = function (req, res) {
                                 ]},
                                     function (err, resultAdmin) {
 
-                                    if (err)
+                                    if (err)return res.status(500).json("something went wrong");
                                     else if (resultAdmin.length == 0) {
                                         var business = new Business();
                                         var generatedPassword = generator.generate({
