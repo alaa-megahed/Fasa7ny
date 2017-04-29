@@ -111,7 +111,7 @@
         <div id="right-sidebar" class="col-md-4 col-sm-4">
 
           <div style="background-color:#2B2C30;">
-            <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()" ng-if = "type == 4">&#9776;</button>
+            <button class="w3-button w3-xlarge w3-right" style="background-color:#2B2C30;" onclick="openRightMenu()" ng-if = "type == 4">Options &#9776;</button>
             <div class="w3-container">
             </div>
            <!-- Single Widget -->
@@ -180,7 +180,7 @@
 
                               	<!-- <img src="../img/user_profile/phone-icon-3.png" alt="phone_icon_profile" class="image2" align="left" style = "padding-top: 6px"> -->
                   	<div style="padding-left: 25px;">
-                      <div ng-if = "phones.length>0">
+                      <div ng-if = "phones && phones.length>0">
                         <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
                           <i class = "fa fa-phone" aria-hidder="true" style="color: #6cb670"></i>
                         </a>
@@ -205,7 +205,7 @@
                   	</div>
 
                   	<div style="padding-left: 25px;">
-                      <div ng-if = "methods">
+                      <div ng-if = "methods && methods.length>0">
                         <a style="font-size: 20px; color:white; margin-top: 4px; margin-bottom: 4px;">
                           <i class = "fa fa-money" aria-hidder="true" style="color: #6cb670"></i>
                         </a>
@@ -316,7 +316,7 @@
                                   <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "goToEditFacility(facility._id)"> Edit Facility </button>
                                  <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "deleteFacility(facility._id)"> Delete Facility </button>
                                  <button ng-if = "type == 4" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "addDaily(facility._id,facility.description,facility.capacity, facility.name)">&nbsp;&nbsp; Add Event </button>
-                                 <button ng-if = "type == 4 || type == 1" ng-controller = "facilityController" class="btn btn-transparent" ng-click = "viewEvents(facility._id)">&nbsp;&nbsp;View Events &nbsp;</button>
+                                 <button ng-controller = "facilityController" class="btn btn-transparent" ng-click = "viewEvents(facility._id)">&nbsp;&nbsp;View Events &nbsp;</button>
                                  <hr style="border: 0.5px solid #90EE90">
                                </center>
                             </div>
@@ -585,8 +585,6 @@
 </section>
 
 
-        <div id="googleMap" style="height: 400px; display: none" ></div>
-        <div id="googleMap2" style="height: 400px;" ></div>
 
 
         <div class="social-icon">
