@@ -13,13 +13,13 @@ var async = require("async");
 exports.viewOffers = function(req, res) {
  if(typeof req.params.id != "undefined") {
     var id = req.params.id;
-   Business.findOne({_id:id}, function(err, business) 
+   Business.findOne({_id:id}, function(err, business)
    {
       if(err || !business)
         return res.status(500).json("error in finding the business to view the offers");
       else
-      { 
-        Offer.find({business:id}, function(err, offers) 
+      {
+        Offer.find({business:id}, function(err, offers)
          {
             if(err)
               res.status(500).json("error in viewOffers");
@@ -31,8 +31,24 @@ exports.viewOffers = function(req, res) {
   }
 }
 
+exports.viewOffersByName = function(req, res) {
+  if(typeof req.params.name != "undefined") {
+    var name = req.params.name;
+
+    Business.findOne({name:name}, function(err, business) {
+      if(err || !business) return res.status(500).json("error in finding the business to view the offers");
+      else {
+        Offer.find({business:id}, function(err, offers) {
+          if(err) res.status(500).json("error in viewOffersByName");
+          else res.status(200).json(offers);
+        })
+      }
+    })
+  }
+}
+
 exports.businessViewOffers = function(){
- if(req.user && req.user instanceof Business) 
+ if(req.user && req.user instanceof Business)
    {
       var id = req.user.id;
       Offer.find({business:id}, function(err, offers) {
@@ -42,9 +58,9 @@ exports.businessViewOffers = function(){
             res.status(200).json({offers:offers, id:req.user.id});
         }
     })
-  } 
+  }
   else {
-    res.status(401).json("YOU ARE NOT AUTHORIZED"); 
+    res.status(401).json("YOU ARE NOT AUTHORIZED");
 }
 }
 
@@ -73,7 +89,7 @@ if the business added an expiration_date that is before the start_date(which if
 
 exports.createOffer = function(req, res,notify_on_create) {
 
-  if(req.user && req.user instanceof Business) 
+  if(req.user && req.user instanceof Business)
   {
     var businessId = req.user.id;  //get _id from session
     var body = req.body;
@@ -81,18 +97,18 @@ exports.createOffer = function(req, res,notify_on_create) {
     console.log(file);
     console.log(body);
     // expiration date not required in case of count dependent offer
-    if(!body.name || !body.type || !body.value || !body.details ) 
+    if(!body.name || !body.type || !body.value || !body.details )
     {
       res.send("please add all information");
-    } 
-    else 
+    }
+    else
     {
       var newOffer = new Offer({
         name:body.name,
         type:body.type,
         value:body.value,
         details:body.details
-       
+
       });
       newOffer.business = businessId;
 
@@ -121,16 +137,16 @@ exports.createOffer = function(req, res,notify_on_create) {
       }
 
       var now = new Date();
-    
+
       console.log("expiration date : "+ body.expiration_date);
        if( (!body.expiration_date  || !body.start_date) && body.type === "duration")
       {
         return res.status(400).json("Please add a valid start/end date. [1]");
-      } 
+      }
       if(body.type === "duration") //checking undefined was not working even though it was undefined
       {
         var expirationdate = body.expiration_date;
-        if(new Date(body.start_date).getTime() >= new Date(expirationdate).getTime() || new Date(body.start_date).getTime() < new Date(now).getTime()) 
+        if(new Date(body.start_date).getTime() >= new Date(expirationdate).getTime() || new Date(body.start_date).getTime() < new Date(now).getTime())
         {
           console.log("please add a valid start_date/ expiration_date");
           return res.status(400).json("Please add a valid start/end date.[2]");
@@ -141,20 +157,20 @@ exports.createOffer = function(req, res,notify_on_create) {
            newOffer.expirationdate = expirationdate;
            newOffer.startdate = body.start_date;
         }
-      
-      } 
+
+      }
       console.log("offer:");
       console.log(newOffer);
-        newOffer.save(function(err, offer) 
+        newOffer.save(function(err, offer)
         {
           if(err) {
             res.status(500).json("error in creating offer "+ err);
-          } else 
+          } else
           {
           // notify_on_create(body.name,req.user.subscribers,req.user.name);
                // var rightNow = new Date();
-               // var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");    
-               var notification = {content:req.user.name + " added " + req.body.name, date:new Date()}; 
+               // var date = rightNow.toISOString().slice(0,10).replace(/-/g,"");
+               var notification = {content:req.user.name + " added " + req.body.name, date:new Date()};
 
                   async.each(req.user.subscribers, function(subscriber, callback){
                     User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": notification}},function(err,user)
@@ -168,11 +184,11 @@ exports.createOffer = function(req, res,notify_on_create) {
                         console.log(user);
                       }
                     });
-                  }); 
+                  });
             res.status(200).json(offer);
           }
         });
-      
+
     } //
   } else //
   {
@@ -247,7 +263,7 @@ exports.updateOffer = function(req, res) {
         }
       }
     })
-  } 
+  }
   else res.status(401).json("NOT AUTHORIZED");
 };
 
