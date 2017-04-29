@@ -19,7 +19,6 @@ app.factory('Occurrences',['$http', 'IP',function($http, IP)
         }
 }]);
 
-
 app.factory('occurrenceBookings',['$http', 'IP',function($http, IP)
 {
     return{
