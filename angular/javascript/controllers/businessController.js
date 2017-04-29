@@ -164,6 +164,7 @@ app.controller('businessController', function ($scope, status, $http, Business, 
     });
 
 
+  google.maps.event.addDomListener(window, 'load', $scope.initMap);
   $scope.initMap = function () {
 
 
@@ -194,7 +195,6 @@ app.controller('businessController', function ($scope, status, $http, Business, 
 
   };
 
-  google.maps.event.addDomListener(window, 'scroll', $scope.initMap);
 
 
   $scope.remove = function () {

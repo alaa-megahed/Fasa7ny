@@ -474,12 +474,12 @@ exports.getFacilities = function (req, res) {
 }
 
 exports.getEvents = function (req, res) {
-	if (req.user && req.user instanceof Business) {
-		var id = req.user.id;
-		Events.find({ business_id: id }, function (err, events) {
-			if (err) res.status(500).json(err.message);
-			else if (!events) res.status(500).json("Something went wrong");
-			else {
+	if (req.params.name) {
+	// 	var id = req.user.id;
+	// 	Events.find({ business_id: id }, function (err, events) {
+	// 		if (err) res.status(500).json(err.message);
+	// 		else if (!events) res.status(500).json("Something went wrong");
+	// 		else {
 
 				var name = req.params.name;
 
@@ -506,10 +506,10 @@ exports.getEvents = function (req, res) {
 					}
 
 				});
-			}
-		});
+	// 		}
+	// 	});
 	} else {
-		res.status(401).json('You are not a logged in business');
+		res.status(401).json('enter a valid business');
 	}
 }
 
