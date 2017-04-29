@@ -38,7 +38,7 @@ exports.viewOffersByName = function(req, res) {
     Business.findOne({name:name}, function(err, business) {
       if(err || !business) return res.status(500).json("error in finding the business to view the offers");
       else {
-        Offer.find({business:id}, function(err, offers) {
+        Offer.find({business:business._id}, function(err, offers) {
           if(err) res.status(500).json("error in viewOffersByName");
           else res.status(200).json({offers:offers});
         })
