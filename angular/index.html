@@ -178,7 +178,7 @@
         });
     </script>
 
-    
+
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="description" content="Where the fun begins..">
@@ -229,10 +229,10 @@
 
         <div ng-controller = "navbarController">
           <nav class="collapse navbar-collapse navbar-right" role="Navigation" style = “padding-top:15px; float: right”>
-            <ul id="nav" class="nav navbar-nav">
+            <ul id="nav" class="nav navbar-nav">              
+              <li ng-if="1" ><a ng-click = "getHome()" href=""> Home </a></li>
               <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signUp()">Sign Up</a></li>
               <li ng-if = "!user.data.user_type"><a href = "" ng-click = "signIn()">Sign In</a></li>
-              <li ng-if="1" ><a ng-click = "getHome()" href=""> Home </a></li>
               <li ng-if = "user.data.user_type == 1"><a href="" ng-click = "personalProfile()" > My Profile </a></li>
               <li ng-if = "user.data.user_type == 2"><a href="" ng-click = "goToBusinessPage(user.data.name)"> My Business Page </a></li>
               <li ng-if="1" ><a ng-click = "viewAll()" href=""> View All </a></li>
@@ -294,7 +294,7 @@
     </footer>
 
 
-   <!-- SOCIAL MEDIA SHARING --> 
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58fc163b824806fb"></script> 
+   <!-- SOCIAL MEDIA SHARING -->
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-58fc163b824806fb"></script>
   </body>
 </html>
