@@ -13,17 +13,17 @@ angular.module('fasa7ny')
                     console.log(res.data);
 
                     if (res.data.user_type == 1)
-                        $scope.type = 1;
+                        $scope.user_type = 1;
                     else if (res.data.user_type == 2)
-                        $scope.type = 4;
-                    else $scope.type = 3;
+                        $scope.user_type = 4;
+                    else $scope.user_type = 3;
                 }
                 else {
                     status.foreign()
                         .then(function (res) {
                             if (res.data.user_type)
-                                $scope.type = 1;
-                            else $scope.type = 2;
+                                $scope.user_type = 1;
+                            else $scope.user_type = 2;
                         });
                 }
             }, function (res) {
@@ -35,7 +35,6 @@ angular.module('fasa7ny')
                     alert(res.data);
                 }
             });
-        console.log('stats type ' + $scope.type);
 
 
         //the 5 metrics tracked in our stats system

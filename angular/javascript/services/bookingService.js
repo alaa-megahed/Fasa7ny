@@ -1,7 +1,7 @@
 
 var app = angular.module('fasa7ny');
 
-app.factory('Offers', ['$http', function($http, IP) {
+app.factory('Offers', ['$http', 'IP', function($http, IP) {
         return {
             get : function(id) {
                 return $http.get('http://'+ IP.address + ':3000/offers/viewOffers/'+id);
@@ -10,7 +10,7 @@ app.factory('Offers', ['$http', function($http, IP) {
         }
     }]);
 
-app.factory('Occurrences',['$http',function($http)
+app.factory('Occurrences',['$http', 'IP',function($http, IP)
 {
 	return {
          	get : function() {
@@ -20,7 +20,7 @@ app.factory('Occurrences',['$http',function($http)
 }]);
 
 
-app.factory('occurrenceBookings',['$http',function($http)
+app.factory('occurrenceBookings',['$http', 'IP',function($http, IP)
 {
     return{
         get : function(occId)
@@ -30,7 +30,7 @@ app.factory('occurrenceBookings',['$http',function($http)
     }
 }]);
 
-app.factory('Facilities',['$http',function($http)
+app.factory('Facilities',['$http', 'IP' ,function($http, IP)
 {
     return {
             get : function() {

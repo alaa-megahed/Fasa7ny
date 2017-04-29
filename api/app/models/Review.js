@@ -10,7 +10,8 @@ var ReplySchema = new Schema({
   },
   user: {
     id: mongoose.Schema.Types.ObjectId, 
-    name: String
+    name: String, 
+    image: String 
   },
   review: { type: mongoose.Schema.Types.ObjectId, ref: 'Review' }
 });
@@ -24,7 +25,8 @@ var ReviewSchema = new Schema({
   business: { type: mongoose.Schema.Types.ObjectId, ref: 'Business' },
   user: {
     id: mongoose.Schema.Types.ObjectId, 
-    name: String
+    name: String, 
+    image: String 
   },
   upvotes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'RegisteredUser', default: [] }],
   downvotes: [{ type: mongoose.Schema.Types.ObjectId, ref: 'RegisteredUser', default: [] }]

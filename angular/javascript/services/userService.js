@@ -1,4 +1,4 @@
-app.factory('User', ['$http', function($http, IP) {
+app.factory('User', ['$http', 'IP', function($http, IP) {
     return {
 	    getUserDetails : function(id) {
 	        return $http.get('http://'+ IP.address + ':3000/user/u/' + id);

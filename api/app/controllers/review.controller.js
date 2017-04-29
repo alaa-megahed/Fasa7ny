@@ -29,7 +29,8 @@ exports.writeReview = function (req, res) {
             });
             newReview.business = businessID;
             newReview.user.id = user._id;
-            newReview.user.id = user.name;
+            newReview.user.name = user.name;
+            newReview.user.image = user.profilePic; 
             business.reviews.push(newReview);
             business.save(function (err, updatedBusiness) {
               if (err) {
@@ -160,10 +161,11 @@ First, we must check if the user who is replying a business or a RegisteredUser
 then add the reply to the replies array in the review */
 exports.replyReview = function (req, res) {
   //only a signed in user or a business replying to its own reviews can reply to reviews 
-
+  console.log(req.user);
+  
   if (req.user && typeof req.body.reviewID != "undefined"
     && typeof req.body.businessID != "undefined" && typeof req.body.reply != 'undefined' && 
-    ((req.use.user_type == 1) || (req.user.user_type == 2 && req.body.businessID) )
+    ((req.user.user_type == 1) || (req.user.user_type == 2 && req.body.businessID) )
   ) {
 
 
@@ -186,6 +188,7 @@ exports.replyReview = function (req, res) {
                 var newReply = new Reply();
                 newReply.user.id = user._id;
                 newReply.user.name = user.name;
+                newReply.user.image = user.profilePic; 
                 newReply.authorType = 'user';
                 newReply.reply = reply;
                 business.reviews.id(reviewID).replies.push(newReply);
@@ -236,7 +239,7 @@ exports.deleteReply = function (req, res) {
     && typeof req.body.reply != 'undefined'
     && ((req.user.user_type == 1
       && req.body.reply.authorType == 'user' &&
-      req.user._id == req.body.reply.user._id)
+      req.user._id == req.body.reply.user.id)
       || (req.user.user_type == 3))
     || (req.user._id == req.body.businessID && req.body.reply.authorType == 'business')) {
 
@@ -246,23 +249,30 @@ exports.deleteReply = function (req, res) {
     var replyID = req.body.reply._id;
     Business.findById(businessID, function (err, business) {
       if (err)
-        res.status(500).json('Oops.. something went wrong');
+      console.log(err);
+      
+        // res.status(500).json('Oops.. something went wrong');
       //if business both the review and the reply exist within this business object
       else if (business.reviews.id(reviewID) != null && business.reviews.id(reviewID).replies.id(replyID) != null) {
         business.reviews.id(reviewID).replies.id(replyID).remove();
         business.save(function (err, updatedBusiness) {
           if (err)
-            res.status(500).json('Oops.. something went wrong');
+          console.log(err);
+            // res.status(500).json('Oops.. something went wrong');
           else {
             res.json(updatedBusiness);
           }
         });
       } else {
-        res.status(500).json('Oops.. something went wrong');
+        console.log(business.reviews.id(reviewID));
+        console.log(business.reviews.id(reviewID).replies.id(replyID));
+        
+        // res.status(500).json('Oops.. something went wrong');
       }
     });
   } else {
-    res.status(500).json('Oops.. something went wrong');
+    console.log(err);
+    // res.status(500).json('Oops.. something went wrong');
   }
 
 }

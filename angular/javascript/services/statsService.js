@@ -63,11 +63,11 @@ angular.module('fasa7ny')
 
             //if logged in user, or not logged in user, or another business, then count page views
             if (userType != 4 && userType != 3) {
-                var cookieKey = 'fasa7ny.' + businessID + '.' + userType;
+                var cookieKey = 'fasa7ny.' + businessID;
                 var cookie = $cookies.get(cookieKey);
                 console.log(cookie);
 
-                if (typeof cookie == 'undefined' || cookies == null) {
+                if (typeof cookie == 'undefined' || cookie == null) {
                     console.log('here');
 
                     var date = new Date();

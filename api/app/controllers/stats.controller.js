@@ -120,6 +120,7 @@ var StatsController = {
       } else {
         var newAllStat = new AllStat();
         newAllStat.business = businessID;
+        newAllStat[statType] = amount; 
         newAllStat.save(function (err) { if (err) throw err; });
       }
     });
@@ -132,7 +133,7 @@ var StatsController = {
     rule.second = 50;
     schedule.scheduleJob(rule, function () {
       that = this;
-      that.addStat(new Date(), businessID, 'views', 1);
+      that.addStat(new Date(), businessID, 'views', 0);
     });
   },
   getWeekStats: function (req, res) {
