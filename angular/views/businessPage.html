@@ -503,8 +503,8 @@
                         <ul class="comments-list reply-list">
                             <li ng-repeat="reply in review.replies">
                               
-                                <div ng-if="reply.authorType == 'user' " class="comment-avatar"><img ng-src="http://localhost:3000/photo/{{reply.user.image}}" alt=""></div>
-                                <div ng-if="reply.authorType == 'business'" class="comment-avatar"><img ng-src="http://localhost:3000/photo/{{business.profilePicture}}" alt=""></div>
+                                <div ng-if="reply.authorType == 'user' " class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{reply.user.image}}" alt=""></div>
+                                <div ng-if="reply.authorType == 'business'" class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{business.profilePicture}}" alt=""></div>
 
                                 <div class="comment-box">
                                     <div class="comment-head">
@@ -523,8 +523,8 @@
                             <!--add reply form -->
                             <li ng-show="type == 1 || type == 4">
 
-                                <div ng-if="type == 1" class="comment-avatar"><img ng-src="http://localhost:3000/photo/{{user.profilePic}}" alt=""></div>
-                                <div ng-if="type == 4" class="comment-avatar"><img ng-src="http://localhost:3000/photo/{{business.profilePicture}}" alt=""></div>
+                                <div ng-if="type == 1" class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{user.profilePic}}" alt=""></div>
+                                <div ng-if="type == 4" class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{business.profilePicture}}" alt=""></div>
 
                                 <div class="comment-box">
                                     <div class="comment-head">
@@ -552,7 +552,7 @@
                         <div class="comment-main-level">
                             <!-- Avatar -->
                            
-                            <div class="comment-avatar"><img ng-src="http://localhost:3000/photo/{{user.profilePic}}" alt=""></div>
+                            <div class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{user.profilePic}}" alt=""></div>
                             <!-- Contenedor del Comentario -->
                             <div class="comment-box">
                                 <div class="comment-head">
