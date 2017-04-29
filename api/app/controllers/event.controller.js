@@ -605,7 +605,6 @@ exports.getAllFacilities = function(req,res)
 
 exports.editEvent = function (req, res) {
 
-
 	if (req.user && req.user instanceof Business && typeof req.params.id != "undefined") {
 		var id = req.params.id;
 		var business_id = req.user.id;
@@ -645,7 +644,7 @@ exports.editEvent = function (req, res) {
 								return res.status(500).json("Enter a valid date");
 							}
 							else{
-							EventOccurrences.findOneAndUpdate({ event: id }, { $set: { day: req.body.date } }, function (err, occurrence) {
+							EventOccurrences.update({ event: id }, { $set: { day: req.body.date } }, { "multi": true }, function (err, occurrence) {
 								if (err) res.status(500).json("Something went wrong");
 								else if (!occurrence) res.status(500).json("Something went wrong");
 
@@ -668,36 +667,32 @@ exports.editEvent = function (req, res) {
 								else if(!occs) res.status(500).json("Something went wrong");
 								else 
 								{
-										// var bookings = one_occ.bookings;
-										// var content = req.user.name + " cancelled " + event.name + "     " + Date.now();
-
-										// async.each(bookings, function(one_booking, cb){
-										// Bookings.findById({_id:one_booking},function(err,booking)
-										// {
-										// 	User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
-										// 	{
-										// 		if(err)
-										// 			console.log("error updating user notifications");
-										// 		else
-										// 			console.log(user);
-										// 	});
-										// });
-													
-									return res.status(200).json({event:newevent, eventocc:occs});
+									// send notifications for bookers
+									var content = req.user.name + " edited " + event.name ;
+									var now = Date.now();
+									async.each(occs, function(occ, callback)
+									{
+										async.each(occ.bookings, function(booker_id, cb)
+										{
+											User.findByIdAndUpdate({ _id: booker_id }, { $push: { "notifications": { content: content, date: now } } }, function(err, user){
+												if (err)
+                      							    return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
+											});
+										});
+									});
 								}
 							})
-
 						}
 					});
 				}
 				}
-				else res.status(500).json("Can not edit this event");
+				else return res.status(500).json("Can not edit this event");
 			}
 
 		});
 	}
 	else {
-		res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
+		return res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
 	}
 
 }
@@ -771,32 +766,7 @@ exports.cancelEvent = function (req, res,notify_on_cancel) {
 										{
 											one_occ.remove(function(err)
 										    {
-										   //    if(!err)
-										   //    {
-											  //     	var bookings = one_occ.bookings;
-													// var content = req.user.name + " cancelled " + event.name + "     " + Date.now();
-
-													// async.each(bookings, function(one_booking, cb){
-													// 	Bookings.findById({_id:one_booking},function(err,booking)
-													// 	{
-													// 		User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
-													// 		{
-													// 			if(err)
-													// 				console.log("error updating user notifications");
-													// 			else
-													// 				console.log(user);
-													// 		});
-													// 	});
-													// });
-											  //     	// notify_on_cancel_occ(event.name,one_occ.id,req.user.name);
-											  //     	Business.find({_id:business_id},function(err,business){
-											  //     		if(err) res.send(err.message);
-											  //     		if(!business) console.log("No business");
-											  //     		res.json(business);
-											  //     	});
-
-										   //    }
-										  	  // else
+												//if(err)
 										  	  	// res.send("Something went wrong");
 
 										    });
@@ -828,42 +798,20 @@ exports.removeAllOccurrences = function (event_id) {
 
 /* Abusiness can cancel an event occurrence.*/
 
-exports.cancelOccurrence = function (req, res,notify_on_cancel_occ) {
+exports.cancelOccurrence = function (req, res) {
 	if (req.user && req.user instanceof Business && typeof req.params.occId != "undefined") {
 		var occurrence_id = req.params.occId;
 		var business_id = req.user.id;
-
-
 		EventOccurrences.findById(occurrence_id, function (err, occ) {
-			if (!occ) res.status(500).json("Something went wrong1");
+			if (!occ) res.status(500).json("Something went wrong");
 
 			Events.findById(occ.event, function (err, event) {
-				if (!event) res.status(500).json("Something went wrong2");
+				if (!event) res.status(500).json("Something went wrong");
 				else
 					if (event.business_id == business_id) {
 
 						EventOccurrences.remove({ _id: occurrence_id }, function (err) {
-							if (err) res.status(500).json("Something went wrong3");
-							// else
-						  //   {
-						  //   	var bookings = occ.bookings;
-							// 	var content = req.user.name + " cancelled " + event.name + "     " + Date.now();
-							//
-							// 	async.each(bookings, function(one_booking, cb){
-							// 		Bookings.findById({_id:one_booking},function(err,booking)
-							// 		{
-							// 			User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": content}},function(err,user)
-							// 			{
-							// 				if(err)
-							// 					console.log("error updating user notifications");
-							// 				else
-							// 					console.log(user);
-							// 			});
-							// 		});
-							// 	});
-							// 	// notify_on_cancel_occ(event.name,occurrence_id,req.user.name);
-							// 	//res.send('occurrence deleted');
-							// }
+							if (err) res.status(500).json("Something went wrong");
 						});
 
 						res.status(200).json("occurrence cancelled");
@@ -894,71 +842,4 @@ exports.getOccurrence = function(req, res)
 	}
 	else
 		return res.status(401).json("YOU ARE NOT AUTHORIZED TO ACCESS THIS PAGE");
-}
-
-
-
-
-//================================ Notifications =====================================
-
-function notify_on_create(event_name,subscribers,business)
-{
-	//Notification:  "Business name" just added "event name".
-	var content = business + " added " + event_name +"        "+ Date.now();
-
-	async.each(subscribers, function(subscriber, callback){
-		User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": content}},function(err,user)
-		{
-			if(err)
-				console.log("error updating user notifications");
-			else
-				console.log(user);
-		});
-	});
-}
-
-
-
-function notify_on_cancel_occ(event_name,eventocc_id,business)			    //would be exactly the same for edit event but
-{																			//different  notification content	
-	EventOccurrences.findOne({_id:eventocc_id},function(err,eventocc)
-	{
-		if(err)
-			console.log("err in notify_on_cancel");
-		else
-		{
-			var bookings = eventocc.bookings;
-			var content = business + " cancelled " + event_name;
-			var notification = new Notification(
-			{
-				date: new Date(),
-				content: content
-			});
-
-			notification.save(function(err,notification)
-			{
-				if(err)
-					console.log("error saving notification");
-				else
-				{
-
-					for(var i = 0; i < bookings.length; i++)
-					{
-						Bookings.findById({_id:bookings[i]},function(err,booking)
-						{
-							User.findByIdAndUpdate({_id:booking.booker},{$push:{"notifications": notification}},function(err,user)
-							{
-								if(err)
-									console.log("error updating user notifications");
-								else
-									console.log(user);
-							});
-						});
-
-					}
-				}
-			});
-
-		}
-	});
 }

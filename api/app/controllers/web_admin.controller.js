@@ -18,9 +18,8 @@ var configAuth = require('../../config/auth');
 exports.AddBusiness = function (req, res) {
 
   if(req.user && req.user instanceof WebAdmin){
-        if(!req.body.email || !req.body.merchant_ID || !req.body.name || !req.body.username || !req.body.category)
+    if(!req.body.email || !req.body.merchant_ID || !req.body.name || !req.body.username || !req.body.category)
     {
-         console.log("f 7aga fadya");
       return res.status(200).json("Please fill in all necessary components");
     }
     else
@@ -35,7 +34,6 @@ exports.AddBusiness = function (req, res) {
         ]
     }, //check if business is unique
         function (err, resultBusiness) {
-            console.log(resultBusiness);
             if (err) { return next(err); }
 
             if (resultBusiness.length == 0) {   //if yes then check user
@@ -47,7 +45,6 @@ exports.AddBusiness = function (req, res) {
                 },
                     function (err, resultUser) {
                         if (err)
-                            console.log(err);
                         else if (resultUser.length == 0) {
 
                             WebAdmin.find({ $or: [
@@ -57,7 +54,6 @@ exports.AddBusiness = function (req, res) {
                                     function (err, resultAdmin) {
 
                                     if (err)
-                                        console.log(err);
                                     else if (resultAdmin.length == 0) {
                                         var business = new Business();
                                         var generatedPassword = generator.generate({
@@ -84,7 +80,6 @@ exports.AddBusiness = function (req, res) {
                                                     }
 
                                                 });
-                                                console.log(1);
                                                 var mailOptions = {
                                                     to: req.body.email,
                                                     from: 'fasa7ny.team@gmail.com',
@@ -95,14 +90,11 @@ exports.AddBusiness = function (req, res) {
                                                     'Fasa7ny team'
 
                                                 };
-                                                console.log(2);
                                                 smtpTransport.sendMail(mailOptions, function (err) {
                                                     if (err)
-                                                        console.log(err);
                                                     req.flash('info', 'An e-mail has been sent to ' + req.body.email + ' with further instructions.');
 
                                                 });
-                                                console.log(3);
                                                 //res.render("admin_profile", { user: req.user });
                                                 res.status(200).json("Business is successfully added and an email has been sent");
 
@@ -110,27 +102,18 @@ exports.AddBusiness = function (req, res) {
                                         });
                                     } //end of web admin check
                                     else {
-                                        console.log(resultAdmin);
-                                        console.log("conflict with web admin");
                                         //res.render("admin_profile", { user: req.user });
                                         res.status(200).json("There is another webAdmin with the same username");
                                     }
                                 });
                         }//end of user check
                         else {
-                            console.log(resultUser)
-                            console.log("conflict with user");
-                            // res.render("admin_profile", { user: req.user });
-
                                res.status(200).json("There is another User with the same username");
                         }
                     }
                 );
             }//end of business check
             else {
-                console.log(resultBusiness);
-                console.log("conflict with business");
-                // res.render("admin_profile", { user: req.user });
                     res.status(200).json("There is another business with the same username");
             }
 
@@ -251,7 +234,6 @@ exports.addAdvertisement = function(req,res)
 
     if(!req.file.filename || !req.body.text || !req.body.sdate || !req.body.edate)
     {
-         console.log("f 7aga fadya");
       return res.status(200).json("Please fill in all necessary components");
     }
     else
@@ -314,46 +296,6 @@ exports.deleteAdvertisement = function(req,res)
 
 
 }
-
-
-
-
-// exports.updateAvailableAdvertisements = function(req,res)
-// {
-//   var rule = new schedule.RecurrenceRule();
-//   rule.dayOfWeek = [new schedule.Range(0,6)];
-//   rule.hour = 00;
-//   rule.minute = 00;
-//
-//
-//   var j = schedule.scheduleJob(rule, function()
-//   {
-//     var d = new Date();
-//     Advertisement.find({}, function(err, ads)
-//     {
-//       console.log(ads);
-//       for(var i = 0; i < ads.length; i++)
-//       {
-//         if(ads[i].end_date < d || ads[i].start_date > d)
-//         {
-//           console.log("this has expired: " + ads[i]);
-//           ads[i].available = 0;
-//           ads[i].save();
-//         }
-//         else {
-//           ads[i].available = 1;
-//           ads[i].save();
-//         }
-//       }
-//
-//
-//       res.send("successful");
-//
-//     })
-//   });
-//
-//
-// }
 
 
 exports.viewAvailableAdvertisements = function(req,res)

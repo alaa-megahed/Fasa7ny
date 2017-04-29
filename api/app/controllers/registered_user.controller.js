@@ -16,7 +16,6 @@ exports.getUserDetails = function (req, res) {
 		if (err)
 			console.log("error in finding user");
 		else {
-			//console.log(user);
 			res.json({ user: user });
 		}
 	});
@@ -27,13 +26,10 @@ exports.getBookingDetails = function (req, res) {
 	if (req.user && req.user instanceof User) {
 		var user_id = req.user.id;
 		var booking_id = req.params.booking;
-		//console.log("This is the booking id in user controller :"+ booking_id);
-
 		Booking.findById(booking_id, function (err, booking) {
 			if (err)
 				console.log("error in finding booking");
 			else {
-				//console.log("This is booking in node "+ booking);
 				if (booking) {
 					EventOccurrence.findById(booking.event_id, function (err, eventocc) {
 						if (err)
@@ -49,8 +45,6 @@ exports.getBookingDetails = function (req, res) {
 												if (err)
 													return res.status(500).json("Something went wrong");
 												else {
-													// console.log(booking);
-													// console.log(eventocc);
 													return res.status(200).json({ booking: booking, eventocc: eventocc, event: event, business: business });
 												}
 											});
@@ -83,7 +77,6 @@ exports.getSubscribedBusiness = function (req, res) {
 			if (err)
 				return res.status(500).json("error in finding business subscription");
 			else {
-				//console.log("This is business in node subscriptions "+ business);
 				return res.status(200).json({ business: business });
 			}
 		});
@@ -99,15 +92,11 @@ exports.getSubscribedBusiness = function (req, res) {
 
 
 exports.subscribe = function (req, res) {
-
-	console.log("subscribe " + req.user);
-
 	if (req.user && req.user instanceof User) {
 		var userID = req.user.id;
 
 		var businessID = req.params.id;
 		var subscribed_business;
-		console.log("business sub");
 		User.findOne({ _id: userID }, function (err, user_found) {
 			if (err) {
 				return res.status(500).json("Error in findOne() of subscribe-user");
@@ -152,7 +141,6 @@ exports.unsubscribe = function (req, res) {
 
 		var businessID = req.params.id;
 		var subscribed_business;
-		console.log("business unsub");
 		User.findOne({ _id: userID }, function (err, user_found) {
 			if (err) {
 				res.status(500).json("Error in findOne() of unsubscribe-user");
@@ -209,13 +197,11 @@ exports.unsubscribe = function (req, res) {
 
 exports.addRating = function(req, res)
 {
-	console.log(req.user);
 	 if(req.user && req.user instanceof User) {
 
 		var userID = req.user.id;              // from passport session; changed to body temporarily for testing
 		var businessID = req.params.bid;        // from url parameters; changed from param to body
 		var rating2 = req.params.rate;		   // from post body
-		console.log("entered addRating");
 		var rating_query = { user_ID: userID, business_ID: businessID };
 
 		Rating.findOne(rating_query, function (err, previous_rating) {
@@ -225,7 +211,6 @@ exports.addRating = function(req, res)
 			}
 
 			if (previous_rating) {
-				console.log("previous_rating");
 				previous_rating.rating = rating2;
 				previous_rating.save();
 			}
@@ -252,7 +237,6 @@ exports.addRating = function(req, res)
 };
 
 exports.average_rating = function (req, res) {
-	console.log("entered average_rating");
 	var businessID = req.params.bid;
 
 	Rating.find({ business_ID: businessID }, function (err, ratings) { //this exists mainly to postpone the function
@@ -271,7 +255,6 @@ exports.average_rating = function (req, res) {
 							Business.findOne({ _id: businessID }, function (err, updatedBusiness) {
 								if (err) console.log("error");
 								else {
-									console.log(updatedBusiness.average_rating);
 									var now = new Date();
 									now.setHours(0, 0, 0, 0);
 									statsController.addStat(now, updatedBusiness._id, 'rating', updatedBusiness.average_rating);
@@ -286,34 +269,13 @@ exports.average_rating = function (req, res) {
 }
 
 
-// exports.customize = function(req,res)
-// {
-// 	if(req.user && req.user instanceof User)
-// 	{
-// 		// return res.send("Bookings: " +  user_found.bookings + "\n Subscriptions: "  + user_found.subscriptions);
-// 		return res.render('user_profile.ejs', {
-//         user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });
-
-// 	}
-// 	else {
-// 		res.status(403).json("Please log in.");
-// 		return;
-// 	}
-
-// }
-
-
-
 /* A user can edit his personal information. He can edit name, birthdate,
 phone, gender, address, email or profilePic.*/
 exports.editInformation = function (req, res) {
 	if (req.user && req.user instanceof User) {
-		console.log("inside editInfo");
 		var id = req.params.userID;
 		var body = req.body;
-		console.log("This is the body name: " + body.name);
 		var file = req.file;
-		console.log("hifile" + file);
 		User.findOne({ _id: id }, function (err, user) {
 			if (err)
 				return res.status(500).json("error");
@@ -321,24 +283,17 @@ exports.editInformation = function (req, res) {
 				if (!user)
 					return res.status(500).json("user not found");
 				else {
-					console.log("OLDD:::");
-					console.log(user);
-					// console.log("This is the old birthdate:" + user.birthdate);
 
-					// console.log("starting findOne");
 					if (body.name) {
-						console.log("Name in body: " + body.name);
 						user.name = body.name;
 					}
 					if (body.birthdate && body.birthdate !== 'null') {
-						console.log("Birthdate in body: " + body.birthdate);
 						user.birthdate = new Date(body.birthdate);
 						if (isNaN(user.birthdate.getTime())) {
 							return res.status(500).json('error');
 						}
 					}
 					if (typeof body.phone != "undefined" && body.phone.length > 0) {
-						console.log("Phone in body: " + body.phone);
 						user.phone = body.phone;
 					}
 					if (typeof body.gender != "undefined" && body.gender.length > 0)
@@ -349,10 +304,7 @@ exports.editInformation = function (req, res) {
 						user.email = body.email;
 					if (typeof file != "undefined")
 						user.profilePic = file.filename;
-					console.log("This is the 'unsaved' user" + user);
 					user.save(function (err, updatedUser) {
-						console.log("UPDATED:::");
-						console.log(updatedUser);
 						if (err) return res.status(500).json('error');
 						return res.status(200).json({ user: updatedUser });
 					});

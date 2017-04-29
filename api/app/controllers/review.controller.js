@@ -123,7 +123,6 @@ exports.downvoteReview = function (req, res) {
       if (review != null) { //if review belongs to this business 
         var downIndex = business.reviews.id(reviewID).downvotes.indexOf(userID);
         if (downIndex > -1) { //if user has downvoted before 
-          console.log('undo downvote');
           business.reviews.id(reviewID).downvotes.splice(downIndex, 1); //undo downvote
           business.reviews.id(reviewID).votes++;
         } else {
@@ -160,9 +159,7 @@ exports.downvoteReview = function (req, res) {
 First, we must check if the user who is replying a business or a RegisteredUser
 then add the reply to the replies array in the review */
 exports.replyReview = function (req, res) {
-  //only a signed in user or a business replying to its own reviews can reply to reviews 
-  console.log(req.user);
-  
+  //only a signed in user or a business replying to its own reviews can reply to reviews   
   if (req.user && typeof req.body.reviewID != "undefined"
     && typeof req.body.businessID != "undefined" && typeof req.body.reply != 'undefined' && 
     ((req.user.user_type == 1) || (req.user.user_type == 2 && req.body.businessID) )
@@ -264,8 +261,6 @@ exports.deleteReply = function (req, res) {
           }
         });
       } else {
-        console.log(business.reviews.id(reviewID));
-        console.log(business.reviews.id(reviewID).replies.id(replyID));
         
         // res.status(500).json('Oops.. something went wrong');
       }
