@@ -42,11 +42,8 @@ exports.createFacility = function (req, res) {
 					capacity: req.body.capacity,
 					business_id: id
 				});
-			console.log("!!!!!!!");
-			console.log(facility.image);
-			console.log(facility);
+
 			if (typeof req.file != "undefined") {
-				console.log("msh undefined");
 				facility.image = req.file.filename;
 			}
 
@@ -116,19 +113,7 @@ exports.editFacility = function (req, res) {
 								if (err)
 									return res.status(500).json({ err: "error updating eventocc" });
 
-								//To check if old occurrences have bookings>new capacity. I think it should
-								// be applicable on the new occurrences and those that have not been exceeded.
-								// or tell the business in the popup changes in capacity won't change past ones.
-								// Bookings.find({event_id: eventocc.id},function(err,bookings)
-								// {
-								// 	if(err)
-								// 		res.send("error");
-								// 	else
-								// 	{
-								// 		if(bookings.length > req.body.capacity)
-								// 			return res.status(500).json("You already have bookings more than new capacity");
-								// 	}
-								// });
+
 
 							});
 
@@ -475,41 +460,41 @@ exports.getFacilities = function (req, res) {
 
 exports.getEvents = function (req, res) {
 	if (req.params.name) {
-	// 	var id = req.user.id;
-	// 	Events.find({ business_id: id }, function (err, events) {
-	// 		if (err) res.status(500).json(err.message);
-	// 		else if (!events) res.status(500).json("Something went wrong");
-	// 		else {
+		// 	var id = req.user.id;
+		// 	Events.find({ business_id: id }, function (err, events) {
+		// 		if (err) res.status(500).json(err.message);
+		// 		else if (!events) res.status(500).json("Something went wrong");
+		// 		else {
 
-				var name = req.params.name;
+		var name = req.params.name;
 
-				Business.findOne({ name: name }, function (err, business) {
+		Business.findOne({ name: name }, function (err, business) {
+			if (err) res.status(500).json(err.message);
+			else if (!business) res.status(500).json("Business not found");
+			else {
+				var id = business._id;
+				console.log(id);
+				Events.find({ business_id: id }, function (err, events) {
 					if (err) res.status(500).json(err.message);
-					else if (!business) res.status(500).json("Business not found");
+					else if (!events) res.status(500).json("Something went wrong");
 					else {
-						var id = business._id;
-						console.log(id);
-						Events.find({ business_id: id }, function (err, events) {
-							if (err) res.status(500).json(err.message);
-							else if (!events) res.status(500).json("Something went wrong");
-							else {
 
-								EventOccurrences.find({ business_id: id }, function (err, eventocc) {
-									if (err) res.status(500).json(err.message);
-									else if (!eventocc) res.status(500).json("Something went wrong");
-									else {
-										res.status(200).json({ events: events, eventocc: eventocc });
-									}
-								});
+						EventOccurrences.find({ business_id: id }, function (err, eventocc) {
+							if (err) res.status(500).json(err.message);
+							else if (!eventocc) res.status(500).json("Something went wrong");
+							else {
+								res.status(200).json({ events: events, eventocc: eventocc });
 							}
 						});
 					}
-
 				});
-	// 		}
-	// 	});
+			}
+
+		});
+		// 		}
+		// 	});
 	} else {
-		res.status(401).json('enter a valid business');
+		res.status(500).json('enter a valid business');
 	}
 }
 
@@ -547,11 +532,6 @@ exports.getOccurrences = function (req, res) {
 	EventOccurrences.find({ event: req.params.eventId }, function (err, events) {
 		if (err || !events) res.status(500).json("Something went wrong");
 		else {
-			console.log(events);
-			console.log(events);
-			console.log(events);
-			console.log(events);
-			console.log(events);
 
 			res.status(200).json({ eventocc: events });
 		}
