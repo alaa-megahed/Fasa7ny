@@ -676,16 +676,14 @@ exports.editEvent = function (req, res) {
 									// 	{
 									// 		User.findByIdAndUpdate({ _id: booker_id }, { $push: { "notifications": { content: content, date: now } } }, function(err, user){
 									// 			if (err)
-         //              							    return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
+
+         							//            	return res.status(500).json("Oops, Something went wrong, please try again with the correct information");
 									// 		});
 									// 	});
-
 									// });
-									res.status(200).json("edited successfully");
-
-
+									return res.status(200).json("Done editing");
 								}
-							})
+							});
 						}
 					});
 				}
