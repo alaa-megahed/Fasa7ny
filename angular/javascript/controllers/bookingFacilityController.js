@@ -99,7 +99,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
       {
         
         $scope.event_price = $scope.chosen_event.price;
-        $scope.min_charge = apply_best_offer_facility($scope.chosen_facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
+        $scope.min_charge = apply_best_offer_facility($scope.chosen_facility, $scope.max_count, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
          if($scope.type == 1)
         {
         $http.post('http://'+ IP.address + ':3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, charge: $scope.min_charge, business_id: $scope.business_id})
@@ -149,7 +149,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
         $scope.open_stripe = function()
         {
           $scope.event_price = $scope.chosen_event.price;
-          var basic_charge = apply_best_offer_facility($scope.facility, $scope.formData.chosen_time, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
+          var basic_charge = apply_best_offer_facility($scope.chosen_facility, $scope.max_count, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
           var new_charge = basic_charge * 103;
           $scope.stripe_charge = Math.round(new_charge);
           $scope.charge  = $scope.stripe_charge / 100;
@@ -174,7 +174,7 @@ app.controller('successfulBookingController', function($scope, $http, $location,
           });
 });
 
-var apply_best_offer_facility = function(facility, event_occ, price, capacity, count, chosen_offer, offers)
+var apply_best_offer_facility = function(facility, max_count, price, capacity, count, chosen_offer, offers)
 {
                 var original_charge = price * count;
                 var min_charge = original_charge;
@@ -199,13 +199,17 @@ var apply_best_offer_facility = function(facility, event_occ, price, capacity, c
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;
                             }
-                            if(offers[i].type === "first_lucky" && (capacity - event_occ.available) < offers[i].lucky_first)
+
+                            if(offers[i].type === "lucky_first" && (capacity -  max_count) < offers[i].lucky_first)
                             {
 
-                                var lucky = offers[i].lucky_first - (capacity - event_occ.available);
+                                var lucky = offers[i].lucky_first - (capacity - max_count);
                                 var apply_on = (lucky < count) ? lucky : count;
-                                var newcharge = ((apply_on * event.price) - offers[i].value / 100 * apply_on * event.price) + (count - apply_on) * event.price;
+                                var newcharge = ((apply_on * price) - offers[i].value / 100 * apply_on * price) + (count - apply_on) * price;
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;
+                                console.log("lucky_first " + offers[i].lucky_first);
+                                console.log("min_charge "+min_charge);
+                                console.log("newcharge "+newcharge);
                             }
                         }
                     }
