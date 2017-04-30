@@ -102,11 +102,11 @@
 		</div>
 		
 
-			<div style="display: inline;">
+			<div class="row">
 
 				<!-- business -->
 
-				<div ng-repeat="business in businesses | searchFilter: cat:minRating:area | filter: keyword"
+				<div ng-repeat="business in businesses | searchFilter: cat:minRating:area | filter: keyword track by $index"
 				 class="col-md-3 col-sm-6 wow fadeInDown" data-wow-duration="500ms" style="padding-bottom: 30px">
 					<article class="team-mate">
 						<div class="member-photo">
