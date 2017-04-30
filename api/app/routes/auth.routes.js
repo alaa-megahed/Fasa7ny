@@ -8,6 +8,9 @@ var app = express();
 
 router.get('/', AuthController.home);
 
+/**
+ * 
+ */
 router.get('/failLogIn', AuthController.getLoginFail);
 
 router.get('/successLogIn', AuthController.getLoginSuccess);
