@@ -71,16 +71,13 @@ var DeletePopUp = function ($scope, $http, $modalInstance,viewOccurences,occId,$
 
          viewOccurences.delete(occId)
         .then(function successCallback(d){
-            // $route.reload();
+            $route.reload();
         $modalInstance.close('closed');
         },
         function errorCallback(d){
             $scope.error = d.data;
         });
       });
-
-
-
     };
 
     $scope.cancel = function () {
