@@ -360,7 +360,7 @@ requestRemoval: function(req,res) {
     },
 
 
-
+    
     hasBookings: function (req, res) {
         if (req.user && req.user instanceof Business) {
             var id = req.user._id;
