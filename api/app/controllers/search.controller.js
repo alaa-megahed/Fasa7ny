@@ -21,7 +21,7 @@ SearchController = {
         var order = parseInt(formData.order);
         // var queryBody = helper.makeQuery(formData); // retrieve query body 
 
-        var query = Business.find({public: 1});
+        var query = Business.find({ public: 1 });
 
         if (typeof sortBy != 'undefined' && sortBy.length > 0) { //apply sort filter only if not empty 
             var sortObj = {};
@@ -33,13 +33,14 @@ SearchController = {
 
         query.exec(function (err, result) {
             if (err)
-                res.send(err);
+                res.status(500).send('Oops.. something went wrong.');
             else {
-                res.send(result);
+                res.json(result);
             }
         });
 
     }
+
 
 }
 
@@ -55,8 +56,8 @@ helper = {
         var category = formData.category || "";
         var area = formData.area || "";
         var minRating = formData.minRating || "";
-
         var query = { public: 1 };
+
 
         //match any substring with name, description or area to search keyword
         if (keyword.length > 0) {

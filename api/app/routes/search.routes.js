@@ -7,5 +7,6 @@ var searchController = require('../controllers/search.controller');
  */
 router.get('/', searchController.showAll); 
 router.post('/', searchController.search);
+
 module.exports = router; 
 

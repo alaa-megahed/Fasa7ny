@@ -21,7 +21,7 @@ angular.module('fasa7ny')
             } else {
                 $scope.order = -1;
             }
-            $scope.backendSort(); 
+            $scope.backendSort();
         }
         $scope.backendSort = function () {
 
@@ -37,7 +37,7 @@ angular.module('fasa7ny')
                         $scope.chunkedBusinesses = chunk($scope.businesses, 4);
 
                     }, function (res) {
-
+                        
                     });
             }
         }

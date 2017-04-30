@@ -27,6 +27,7 @@
 		display: flex;
 		flex-direction: column;
 	}
+
 </style>
 
 <section id="twitter-feed">
@@ -63,6 +64,7 @@
 
 						<br>
 						<div id="search_tools" style="visibility: hidden;">
+
 							<form ng-change="backendSort()">
 								<select ng-change="backendSort()" style="display: inline-block; width: 10%;" ng-model="sortBy">
 		                          	<option value="" selected> Sort By </option>
@@ -71,7 +73,7 @@
                     				<option value="area">Area</option>
                     				<option value="name">Name</option>
 		                    	</select> &nbsp;
-								<label  for="checkbox">Sort ascending: </label>
+								<label  for="checkbox" ng-show="sortBy != '' && sortBy != 'none'">Sort ascending: </label>
 								<input ng-change="backendSort()" ng-show="sortBy != '' && sortBy != 'none'" id="checkbox" type="checkbox" ng-click="check()" ng-model="checked">
 							</form>
 							<select style="display: inline-block; width: 10%" ng-model="cat">
@@ -98,12 +100,13 @@
 			</div>
 			<!-- /section title -->
 		</div>
-		<div class="row" ng-repeat="row in chunkedBusinesses">
+		
 
 			<div style="display: inline;">
 
 				<!-- business -->
-				<div ng-repeat="business in row | searchFilter: cat:minRating:area | filter: keyword | orderBy: average_rating : direction"
+
+				<div ng-repeat="business in businesses | searchFilter: cat:minRating:area | filter: keyword"
 				 class="col-md-3 col-sm-6 wow fadeInDown" data-wow-duration="500ms" style="padding-bottom: 30px">
 					<article class="team-mate">
 						<div class="member-photo">
@@ -143,6 +146,6 @@
 
 			</div>
 
-		</div>
+		
 	</div>
 </section>
