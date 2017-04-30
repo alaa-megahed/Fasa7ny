@@ -16,7 +16,7 @@ angular.module('fasa7ny')
           {
               $scope.success = data.data;
               $timeout(function() {
-              $window.location = $window.location.protocol + "//" + IP.address +  ":8000" + $window.location.pathname + "/";
+              $location.path("/");
             }, 2000);
           }
 
