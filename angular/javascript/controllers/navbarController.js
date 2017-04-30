@@ -94,11 +94,12 @@ angular.module('fasa7ny')
 
     $scope.updateUser();
 
-
     $scope.getAdvertisements = function()
     {
       Homepage.getAds().then(function successfulCallback(result){
         $scope.advertisements = result.data;
+        if(result.data)
+           $scope.advertisements = result.data.slice(1,7);
       }, function errorCallback(response){
             $location.path("/error/"+response.status);
           });
@@ -164,17 +165,18 @@ angular.module('fasa7ny')
     }
 
     $scope.decreaseCount = function(){
-
+      $scope.user.data.unread_notifications = 0;
       $scope.notifcolor = {'color' : 'white'} ;
       Homepage.resetUnread()
               .then(function()
               {
                 $scope.updateUser();
+                $scope.user.data.unread_notifications = 0;
               }
 
-      )
+     )
 
-    }
+   }
 
     $scope.searchCategory = function(category){
     }

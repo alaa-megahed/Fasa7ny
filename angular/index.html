@@ -6,7 +6,7 @@
 
   <title>Fasa7ny</title>
    <link rel="stylesheet" href="css/main.css">
-   
+
   <style>
     [ng\:cloak],
     [ng-cloak],
@@ -239,7 +239,7 @@
             <li><a href="#search">Search</a></li>
 
             <li class="dropdown" ng-if="user.data.user_type == 1">
-              <a href="" ng-mouseover="decreaseCount()" class="dropbtn" ng-style=n otifcolor>Notifications</a>
+            <a href=""  ng-mouseover = "decreaseCount()" class="dropbtn" ng-style = notifcolor>Notifications ({{user.data.unread_notifications}})</a>
               <div class="dropdown-content" style="background-color: #2B2C30; padding: 12px 16px; border-radius: 25px;" ng-if="user.data.notifications.length != 0">
                 <center>
                   <a class="notif" style="color : #6cb670; text-align:center" href="" ng-repeat="notification in user.data.notifications track by $index"> {{    notification.content  }} </a>
