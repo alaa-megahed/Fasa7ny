@@ -72,10 +72,6 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
 		    if($scope.formData[key] != null)
 		    fd.append(key, $scope.formData[key]);
 		  }
-            console.log("offer facility id"+ $scope.formData.facility_id);
-
-		  // if($scope.formData.facility_id == null) $scope.formData.facility_id = "";
-		  // if($scope.formData.event_id == null) $scope.formData.event_id = "";
 
       	$http.post('http://'+ IP.address + ':3000/offers/createOffer', fd,{
         transformRequest: angular.identity,
@@ -159,10 +155,6 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerTy
                       $scope.error_message = response.data;
                     });
 
-			// $http.post('http://'+ IP.address + ':3000/offers/updateOffer', {id:offerId, name:formData.name, value:formData.value , details:formData.details})
-			// .then(function successCallback(response){
-   //                  }, function errorCallback(response){
-   //                  });
 
 						$route.reload();
             $modalInstance.close('closed');

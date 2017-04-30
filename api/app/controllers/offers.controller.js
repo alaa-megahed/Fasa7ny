@@ -178,7 +178,7 @@ exports.createOffer = function(req, res) {
                     User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": notification}},function(err,user)
                     {
                       if(err)
-                        console.log("error updating user notifications");
+                        res.status(500).json('Oops..something went wrong.'); 
                       else
                       {
                         user.unread_notifications = user.unread_notifications + 1;
