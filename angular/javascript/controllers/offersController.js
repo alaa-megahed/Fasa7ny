@@ -159,10 +159,6 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerTy
                       $scope.error_message = response.data;
                     });
 
-			// $http.post('http://'+ IP.address + ':3000/offers/updateOffer', {id:offerId, name:formData.name, value:formData.value , details:formData.details})
-			// .then(function successCallback(response){
-   //                  }, function errorCallback(response){
-   //                  });
 
 						$route.reload();
             $modalInstance.close('closed');
