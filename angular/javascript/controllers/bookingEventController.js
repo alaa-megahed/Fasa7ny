@@ -155,7 +155,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams,Bus
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;
                             }
-                            if(offers[i].type === "first_lucky" && (event.capacity - event_occ.available) < offers[i].lucky_first)
+                            if(offers[i].type === "lucky_first" && (event.capacity - event_occ.available) < offers[i].lucky_first)
                             {
 
                                 var lucky = offers[i].lucky_first - (event.capacity - event_occ.available);
