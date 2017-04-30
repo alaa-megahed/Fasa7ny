@@ -14,7 +14,33 @@ SearchController = {
                 }
 
             });
+    },
+    search: function (req, res) {
+        var formData = req.body;
+        var sortBy = formData.sortBy;
+        var order = parseInt(formData.order);
+        // var queryBody = helper.makeQuery(formData); // retrieve query body 
+
+        var query = Business.find({public: 1});
+
+        if (typeof sortBy != 'undefined' && sortBy.length > 0) { //apply sort filter only if not empty 
+            var sortObj = {};
+            sortObj[sortBy] = order;
+            query.sort(sortObj);
+
+        }
+
+
+        query.exec(function (err, result) {
+            if (err)
+                res.send(err);
+            else {
+                res.send(result);
+            }
+        });
+
     }
+
 }
 
 //module that contains helper methods to the SearchController
@@ -30,7 +56,7 @@ helper = {
         var area = formData.area || "";
         var minRating = formData.minRating || "";
 
-        var query = {};
+        var query = { public: 1 };
 
         //match any substring with name, description or area to search keyword
         if (keyword.length > 0) {

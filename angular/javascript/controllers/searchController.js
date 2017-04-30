@@ -8,7 +8,7 @@ angular.module('fasa7ny')
 
             $scope.keyword = $routeParams.keyword;
         $scope.minRating; //default min rating is zero 
-        $scope.direction = true; //default sorting is descending
+        $scope.order = -1; //default sorting is descending
         $scope.cat = ''; //default category is all 
         $scope.sortBy = ''; //default is no sort 
         $scope.area = ''; //default area is all 
@@ -17,9 +17,28 @@ angular.module('fasa7ny')
         $scope.areas = ['New Cairo', 'Maadi', 'Mohandeseen', 'Zamalek'];
         $scope.check = function () {
             if ($scope.checked) {
-                $scope.direction = false;
+                $scope.order = 1;
             } else {
-                $scope.direction = true;
+                $scope.order = -1;
+            }
+            $scope.backendSort(); 
+        }
+        $scope.backendSort = function () {
+
+            if ($scope.sortBy != '' && $scope.sortBy != 'none') {
+                console.log($scope.sortBy);
+
+                Search.sort({
+                    sortBy: $scope.sortBy,
+                    order: $scope.order
+                })
+                    .then(function (res) {
+                        $scope.businesses = res.data;
+                        $scope.chunkedBusinesses = chunk($scope.businesses, 4);
+
+                    }, function (res) {
+
+                    });
             }
         }
 

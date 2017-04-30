@@ -22,10 +22,11 @@
 		display: flex;
 		flex-wrap: wrap;
 	}
-	.equal > div[class*='col-'] {  
-  display: flex;
-  flex-direction: column;
-}
+	
+	.equal>div[class*='col-'] {
+		display: flex;
+		flex-direction: column;
+	}
 </style>
 
 <section id="twitter-feed">
@@ -62,14 +63,17 @@
 
 						<br>
 						<div id="search_tools" style="visibility: hidden;">
-							<!-- <select style="display: inline-block; width: 10%;" ng-model="sortBy">
+							<form ng-change="backendSort()">
+								<select ng-change="backendSort()" style="display: inline-block; width: 10%;" ng-model="sortBy">
 		                          	<option value="" selected> Sort By </option>
-		                          	<option value="average_rating">Rating </option>
+		                          	<option value="none">None </option>		                          	
+									<option value="average_rating">Rating </option>
                     				<option value="area">Area</option>
                     				<option value="name">Name</option>
-		                    </select> &nbsp;
-							<label ng-show="sortBy != '' && sortBy != 'none'" for="checkbox">Sort ascending: </label>
-							<input ng-show="sortBy != '' && sortBy != 'none'" id="checkbox" type="checkbox" ng-click="check()" ng-model="checked"> -->
+		                    	</select> &nbsp;
+								<label  for="checkbox">Sort ascending: </label>
+								<input ng-change="backendSort()" ng-show="sortBy != '' && sortBy != 'none'" id="checkbox" type="checkbox" ng-click="check()" ng-model="checked">
+							</form>
 							<select style="display: inline-block; width: 10%" ng-model="cat">
 		                          	<option value="" selected> Category </option>
 		                          	<option value="all">All</option>
@@ -99,8 +103,8 @@
 			<div style="display: inline;">
 
 				<!-- business -->
-				<div ng-repeat="business in row | searchFilter: cat:minRating:area | filter: keyword | orderBy: average_rating : direction" class="col-md-3 col-sm-6 wow fadeInDown"
-				 data-wow-duration="500ms" style="padding-bottom: 30px">
+				<div ng-repeat="business in row | searchFilter: cat:minRating:area | filter: keyword | orderBy: average_rating : direction"
+				 class="col-md-3 col-sm-6 wow fadeInDown" data-wow-duration="500ms" style="padding-bottom: 30px">
 					<article class="team-mate">
 						<div class="member-photo">
 							<!-- business photo -->
