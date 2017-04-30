@@ -207,7 +207,7 @@ var DeletePopUp2 = function ($scope, $http, status, $location, $modalInstance,Ev
 
 
 
-var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event,id, $route) {
+var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event,id, $route, $location) {
     $scope.form = {}
     $scope.formData = {}
     $scope.submitForm = function () {
@@ -244,7 +244,7 @@ var ModalInstanceCtrl = function ($scope, $modalInstance, status, Event,id, $rou
 };
 
 
-var deleteImageEventCtrl = function ($scope, $modalInstance, Event, $route) {
+var deleteImageEventCtrl = function ($scope, $modalInstance, Event, $route, $location) {
 		$scope.form = {};
 		$scope.error = "";
 		$scope.yes = function (eventId, image) {
@@ -265,7 +265,7 @@ var deleteImageEventCtrl = function ($scope, $modalInstance, Event, $route) {
 		};
 };
 
-var addImageEventCtrl = function ($scope, $modalInstance, Event, $route) {
+var addImageEventCtrl = function ($scope, $modalInstance, Event, $route , $location) {
 	$scope.error = "";
 		$scope.addImageEvent = function (eventId, formData) {
 			Event.addImage(eventId, formData)

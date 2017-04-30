@@ -1,5 +1,5 @@
 
-app.controller('editLocationController',  function($scope, $routeParams, Business, status) {
+app.controller('editLocationController',  function($scope, $routeParams, Business, status, $location) {
 
 
   status.local()

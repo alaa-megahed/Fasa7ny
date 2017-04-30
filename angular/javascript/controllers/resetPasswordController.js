@@ -1,5 +1,5 @@
 angular.module('fasa7ny')
-.controller('resetPasswordController', function($scope, $routeParams, resetPassword, $window, $timeout, IP) {
+.controller('resetPasswordController', function($scope, $routeParams, resetPassword, $window, $timeout, IP , $location) {
 
     var token = $routeParams.token;
     $scope.form = {};

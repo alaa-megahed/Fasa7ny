@@ -110,7 +110,7 @@ $scope.user = {};
 
 });
 
-var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
+var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route , $location) {
     $scope.form = {}
     $scope.error = ""
     $scope.submitForm = function (formData, facilityId) {
@@ -133,7 +133,7 @@ var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
 
 
 
-var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route, Business, $http, IP) {
+var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route, Business, $http, IP, $location) {
     $scope.form = {};
     $scope.error = "";
     $scope.yes = function (facilityId) {
@@ -181,7 +181,7 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
     };
 };
 
-var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacity,name,$route) {
+var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacity,name,$route, $location) {
     $scope.form = {}
     $scope.formData = {}
     $scope.error = "";

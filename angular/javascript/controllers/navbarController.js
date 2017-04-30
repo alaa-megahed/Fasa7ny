@@ -238,7 +238,7 @@ angular.module('fasa7ny')
   })
 
 
-  .controller('ModalInstanceCtrl', function ($scope, $http, $window, $modalInstance, userForm, Homepage, $route) {
+  .controller('ModalInstanceCtrl', function ($scope, $http, $window, $modalInstance, userForm, Homepage, $route, $location) {
       $scope.form = {};
       $scope.check = 0;
 
@@ -344,7 +344,7 @@ angular.module('fasa7ny')
 
 
 
-  .controller('ModalInstanceCtrl1', function ($scope, $window, $http, $modal,$modalInstance, userForm, Homepage, $route) {
+  .controller('ModalInstanceCtrl1', function ($scope, $window, $http, $modal,$modalInstance, userForm, Homepage, $route, $location) {
       $scope.form = {};
       $scope.formData = {};
       $scope.forgot = 0;
@@ -397,7 +397,7 @@ angular.module('fasa7ny')
 
 
 
-  .controller('ModalInstanceCtrl2', function ($scope, $timeout, $window, $modalStack, $http,$modalInstance, Homepage) {
+  .controller('ModalInstanceCtrl2', function ($scope, $timeout, $window, $modalStack, $http,$modalInstance, Homepage, $location) {
         $scope.form = {};
         $scope.submitForm = function (formData) {
                 Homepage.forgotPassword(formData).then(function(data)

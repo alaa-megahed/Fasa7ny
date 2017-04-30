@@ -191,7 +191,7 @@ app.controller('DeleteOffersController', function($scope, $http, $modal, $locati
 
 });
 
-app.controller('DeleteOfferCtrl',function($http, $scope, $modalInstance, offerId, $route,$routeParams, IP){
+app.controller('DeleteOfferCtrl',function($http, $scope, $modalInstance, offerId, $route,$routeParams, IP, $location){
 	$scope.yes = function () {
 			$http.get('http://'+ IP.address + ':3000/offers/deleteOffer/'+offerId)
 			.then(function successCallback(response){

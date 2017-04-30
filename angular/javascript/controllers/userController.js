@@ -3,7 +3,7 @@ var app = angular.module('fasa7ny');
 
 app.controller('userController', function($scope, status,$http, User, $location, $routeParams, $modal, $window, $route, $log,  IP) {
 
-	$scope.ip = IP.address; 
+	$scope.ip = IP.address;
 	$scope.user = {};
 	$scope.error = "";
 	$scope.booking;
@@ -104,7 +104,7 @@ app.controller('userController', function($scope, status,$http, User, $location,
 
 
 
-var EditProfileCtrl = function ($scope, $modalInstance, userID, User, $route) {
+var EditProfileCtrl = function ($scope, $modalInstance, userID, User, $route, $location) {
     $scope.form = {};
     $scope.formData = {};
 		$scope.error = "";

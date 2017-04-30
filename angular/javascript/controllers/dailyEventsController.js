@@ -105,7 +105,7 @@ status.local()
 });
 
 
-var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents,eventId,$route, IP) {
+var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents,eventId,$route, IP, $location) {
     $scope.form = {};
     $scope.error = "";
     $scope.submitForm = function () {
@@ -146,7 +146,7 @@ var DeletePopUp1 = function ($scope, $http, Business, $modalInstance,dailyEvents
 };
 
 
-var editDailyEvent = function ($scope, $modalInstance,dailyEvents,eventId,$route) {
+var editDailyEvent = function ($scope, $modalInstance,dailyEvents,eventId,$route, $location) {
     $scope.form = {}
     $scope.formData = {}
     $scope.submitForm = function () {

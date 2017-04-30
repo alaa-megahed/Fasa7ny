@@ -1,4 +1,4 @@
-app.controller('calendarController', function ($scope, Schedule, $routeParams, uiCalendarConfig) {
+app.controller('calendarController', function ($scope, Schedule, $routeParams, uiCalendarConfig, $location) {
 
     $scope.events = [];
     $scope.eventSources = [$scope.events];

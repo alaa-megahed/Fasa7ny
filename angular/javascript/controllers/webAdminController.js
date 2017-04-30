@@ -1,5 +1,5 @@
 
-angular.module('fasa7ny').controller('webAdminController', function($scope,$http,$modal,$route ,status, IP)
+angular.module('fasa7ny').controller('webAdminController', function($scope,$http,$modal,$route ,status, IP, $location)
 	{
     $scope.ip = IP.address;
      status.local()

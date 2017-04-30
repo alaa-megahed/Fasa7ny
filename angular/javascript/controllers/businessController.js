@@ -532,7 +532,7 @@ app.controller('businessController', function ($scope, status, $http, Business, 
 });
 
 
-var Public = function ($scope, $modalInstance, Business, $route) {
+var Public = function ($scope, $modalInstance, Business, $route, $location) {
   $scope.form = {}
   $scope.error = "";
   $scope.submitForm = function () {
@@ -553,7 +553,7 @@ var Public = function ($scope, $modalInstance, Business, $route) {
   };
 };
 
-var Remove = function ($scope, $modalInstance, Business, $route) {
+var Remove = function ($scope, $modalInstance, Business, $route, $location) {
   $scope.form = {}
   $scope.error = "";
   $scope.submitForm = function () {
@@ -573,7 +573,7 @@ var Remove = function ($scope, $modalInstance, Business, $route) {
 };
 
 
-var NotAllowedRemove = function ($scope, $modalInstance, Business, $route) {
+var NotAllowedRemove = function ($scope, $modalInstance, Business, $route, $location) {
   $scope.form = {}
   $scope.submitForm = function () {
     $route.reload();
@@ -583,7 +583,7 @@ var NotAllowedRemove = function ($scope, $modalInstance, Business, $route) {
 
 
 
-var deleteImageCtrl = function ($scope, $modalInstance, Business, $route) {
+var deleteImageCtrl = function ($scope, $modalInstance, Business, $route,,$location) {
   $scope.form = {};
   $scope.error = "";
   $scope.yes = function (image) {
@@ -604,7 +604,7 @@ var deleteImageCtrl = function ($scope, $modalInstance, Business, $route) {
   };
 };
 
-var addImageCtrl = function ($scope, $modalInstance, Business, $route) {
+var addImageCtrl = function ($scope, $modalInstance, Business, $route, $location) {
   $scope.error = "";
   $scope.addImage = function (formData) {
     Business.addImage(formData)
@@ -625,7 +625,7 @@ var addImageCtrl = function ($scope, $modalInstance, Business, $route) {
   };
 };
 
-var deletePhoneCtrl = function ($scope, $modalInstance, Business, $route) {
+var deletePhoneCtrl = function ($scope, $modalInstance, Business, $route, $location) {
 
   $scope.error = "";
   $scope.yes = function (phone) {
@@ -646,7 +646,7 @@ var deletePhoneCtrl = function ($scope, $modalInstance, Business, $route) {
   };
 };
 
-var deletePaymentMethodCtrl = function ($scope, $modalInstance, business, Business, $route) {
+var deletePaymentMethodCtrl = function ($scope, $modalInstance, business, Business, $route, $location) {
   $scope.error = "";
   $scope.yes = function (method) {
     Business.deletePaymentMethod(method)

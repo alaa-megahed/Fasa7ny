@@ -4,7 +4,7 @@ app.controller('errorController',function($routeParams,$scope)
 {
 	$scope.status = $routeParams.status;
 	if($scope.status  == '401' || $scope.status  == '403' )
-		$scope.error_message = "Your are not authorized to view this page."
+		$scope.error_message = "You are not authorized to view this page."
 	else
 		$scope.error_message = "Whoopsie Daisy!! Something went wrong."
 });

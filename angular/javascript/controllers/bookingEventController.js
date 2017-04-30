@@ -1,5 +1,5 @@
 var app = angular.module('fasa7ny');
-app.controller('bookingEventController', function($scope, $http,$routeParams,Business,$location,Event,status, Offers,viewOccurences, IP)
+app.controller('bookingEventController', function($scope, $http,$routeParams,Business,$location,Event,status, Offers,viewOccurences, IP, $location)
 {
     $scope.current_event = $routeParams.id;
       Event.get($scope.current_event).then(

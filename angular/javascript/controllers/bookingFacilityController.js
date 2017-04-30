@@ -1,6 +1,6 @@
 var app = angular.module('fasa7ny');
 
-app.controller('bookFacilityController', function($scope, $http, $location,$routeParams,Business, Offers,status,Occurrences,Facilities, IP) {
+app.controller('bookFacilityController', function($scope, $http, $location,$routeParams,Business, Offers,status,Occurrences,Facilities, IP, $location) {
 
     $scope.business_id = $routeParams.id;
       $scope.user = {};
@@ -32,7 +32,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
             $location.path("/error/"+response.status);
           });
       Offers.get($scope.business_id).then(function(response) {
-              $scope.offers = response.data;              
+              $scope.offers = response.data;
         }, function errorCallback(response){
             $location.path("/error/"+response.status);
           });
@@ -54,7 +54,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
       }, function errorCallback(response){
             $location.path("/error/"+response.status);
           });
-      
+
       $scope.choose_date = function(date)
       {
         $scope.date  = date.getDate();
@@ -97,7 +97,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
 
       $scope.book_cash = function()
       {
-        
+
         $scope.event_price = $scope.chosen_event.price;
         $scope.min_charge = apply_best_offer_facility($scope.chosen_facility, $scope.max_count, $scope.event_price, $scope.chosen_event.capacity, $scope.formData.count, $scope.formData.chosen_offer, $scope.offers);
          if($scope.type == 1)
@@ -130,7 +130,7 @@ app.controller('bookFacilityController', function($scope, $http, $location,$rout
           {
             $http.post('http://'+ IP.address + ':3000/bookings/charge', {stripeToken: token.id, amount: $scope.stripe_charge})
                     .then(function successCallback(responce){
-                      
+
                       $http.post('http://'+ IP.address + ':3000/bookings/createRegUserBookings', {count: $scope.formData.count ,event: $scope.occ_id, stripe_charge:responce.data.id, charge: $scope.charge, user_id: "58ed22fcbfe67363f0c3a41d", business_id: $scope.business_id})
                             .then(function successCallback(responce){
                               $location.path('/success/'+responce.data._id);
@@ -174,7 +174,7 @@ app.controller('successfulBookingController', function($scope, $http, $location,
           });
 });
 
-var apply_best_offer_facility = function(facility, max_count, price, capacity, count, chosen_offer, offers)
+var apply_best_offer_facility = function(facility, max_count, price, capacity, count, chosen_offer, offers, $location)
 {
                 var original_charge = price * count;
                 var min_charge = original_charge;

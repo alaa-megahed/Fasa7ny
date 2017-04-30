@@ -1,5 +1,5 @@
 angular.module('fasa7ny')
-.controller('notificationsController', function($scope, status, $q) {
+.controller('notificationsController', function($scope, status, $q, $location) {
 
   status.local().then(
     function(result)
