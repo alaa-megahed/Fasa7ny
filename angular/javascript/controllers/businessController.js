@@ -583,7 +583,7 @@ var NotAllowedRemove = function ($scope, $modalInstance, Business, $route, $loca
 
 
 
-var deleteImageCtrl = function ($scope, $modalInstance, Business, $route,,$location) {
+var deleteImageCtrl = function ($scope, $modalInstance, Business, $route,$location) {
   $scope.form = {};
   $scope.error = "";
   $scope.yes = function (image) {
