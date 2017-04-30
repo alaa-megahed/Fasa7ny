@@ -134,11 +134,11 @@ app.config(function ($routeProvider) {
 			templateUrl: 'views/statistics.html',
 			controller: 'StatsController'
 		})
+		.when('/privacyPolicy',{
+			templateUrl: 'views/privacyPolicy.html'
+		})
 });
 
 app.config(['$httpProvider', function ($httpProvider) {
 	$httpProvider.defaults.withCredentials = true;
 }]);
-
-
-

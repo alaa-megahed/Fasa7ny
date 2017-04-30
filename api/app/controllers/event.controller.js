@@ -460,11 +460,6 @@ exports.getFacilities = function (req, res) {
 
 exports.getEvents = function (req, res) {
 	if (req.params.name) {
-		// 	var id = req.user.id;
-		// 	Events.find({ business_id: id }, function (err, events) {
-		// 		if (err) res.status(500).json(err.message);
-		// 		else if (!events) res.status(500).json("Something went wrong");
-		// 		else {
 
 		var name = req.params.name;
 
@@ -495,6 +490,7 @@ exports.getEvents = function (req, res) {
 		// 	});
 	} else {
 		res.status(500).json('enter a valid business');
+
 	}
 }
 

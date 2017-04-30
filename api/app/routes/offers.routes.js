@@ -20,4 +20,6 @@ router.post('/updateOffer', upload.single('img'), OffersController.updateOffer);
 router.get('/deleteOffer/:id', OffersController.deleteOffer);
 router.get('/viewOffersByName/:name', OffersController.viewOffersByName); //used for breakOut bot
 
+router.get('/offerDetails/:id', OffersController.offerDetails); //used fot breakOut bot
+
 module.exports = router;

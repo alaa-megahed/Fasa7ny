@@ -8,7 +8,9 @@ angular.module('fasa7ny')
                 filterCategory = filterCategory.toLowerCase();
 
             }
-            console.log(input);
+            // if(filterArea != null && typeof filterArea != 'undefined') {
+            //     filterArea = filterArea.toLowerCase(); 
+            // }
             
             for (var i = 0; i < input.length && typeof input[i] != 'undefined'; i++) {
                 var categoryF = true;
@@ -36,7 +38,7 @@ angular.module('fasa7ny')
                     }
                 }
 
-                if (filterArea == 'All' || filterArea == '' || typeof filterArea == 'undefined') {
+                if (filterArea == 'all' || filterArea == '' || typeof filterArea == 'undefined') {
                     areaF = true;
                 } else {
                     if (typeof input[i].area == 'undefined')
