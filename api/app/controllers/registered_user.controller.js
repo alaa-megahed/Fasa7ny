@@ -6,7 +6,8 @@ var EventOccurrence = mongoose.model('EventOccurrences');
 var Business = mongoose.model('Business');
 var Rating = mongoose.model('Rating');
 var statsController = require('../controllers/stats.controller');
-
+var fs = require('fs'); 
+var path = require('path'); 	
 
 
 exports.getUserDetails = function (req, res) {
@@ -195,6 +196,7 @@ exports.addRating = function(req, res)
 {
 	 if(req.user && req.user instanceof User) {
 
+
 		var userID = req.user.id;              // from passport session; changed to body temporarily for testing
 		var businessID = req.params.bid;        // from url parameters; changed from param to body
 		var rating2 = req.params.rate;		   // from post body
@@ -294,8 +296,23 @@ exports.editInformation = function (req, res) {
 						user.address = body.address;
 					if (typeof body.email != "undefined" && body.email.length > 0)
 						user.email = body.email;
-					if (typeof file != "undefined")
+					if (typeof file != 'undefined') {
+						//remove image 
+						var image = user.profilePic; 
+						if (typeof image != 'undefined' && image != '') {
+							fs.stat(path.resolve('public/uploads/' + image), function (err, stat) {
+								if (!err) {
+									fs.unlink(path.resolve('public/uploads/' + image), function (err) {
+										if (err)
+											return res.status(400).json('Could not find image');
+									});
+								}
+							});
+						}
 						user.profilePic = file.filename;
+
+					}
+
 					user.save(function (err, updatedUser) {
 						if (err) return res.status(500).json('error');
 						return res.status(200).json({ user: updatedUser });
@@ -313,8 +330,11 @@ exports.resetUnread = function (req, res) {
 	if (req.user && req.user instanceof User) {
 		User.findByIdAndUpdate(req.user.id, { unread_notifications: 0 }, function (err, user) {
 			if (err)
-				return res.status(500).json(err);
-			else return res.status(200).json("OK");
+
+				return res.status(500).send(err);
+			else {
+				return res.status(200);
+			}
 		});
 	}
 	else {

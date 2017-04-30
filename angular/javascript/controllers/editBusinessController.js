@@ -79,21 +79,36 @@ app.controller('editBusinessController', function($scope, status,$http, Business
 
   $scope.goToEdit = function() {
   $scope.error = "";
-  var payment = [];
-  var i = 0;
-  if($scope.formData.pay0 == true){
-    payment[i] =  "Cash";
-    i++;
-  }
-   if($scope.formData.pay1 == true) payment[i] =  "Stripe";
 
-   $scope.formData.payment_methods = payment;
-    Business.edit($scope.formData)
-    .then(function successCallback(d) {
-      $location.path('/business/'+ d.data.business.name);
-    },function errorCallback(d){
-      $scope.error = d.data;
-    })
+  for(var i = 0; $scope.formData.phones && i < $scope.formData.phones.length; i++)
+  {
+    if(isNaN($scope.formData.phones[i]) || ($scope.formData.phones.length != 11))
+    {
+      $scope.error = "Please enter a valid phone number.";
+    }
+  }
+
+
+  if(!$scope.error) {
+    var payment = [];
+    var i = 0;
+    
+    if($scope.formData.pay0 == true){
+      payment[i] =  "Cash";
+      i++;
+    }
+     if($scope.formData.pay1 == true) payment[i] =  "Stripe";
+
+     $scope.formData.payment_methods = payment;
+     
+      Business.edit($scope.formData)
+      .then(function successCallback(d) {
+        
+        $location.path('/business/'+ d.data.business.name);
+      },function errorCallback(d){
+        $scope.error = d.data;
+      })
+    }
   };
 
 
@@ -102,16 +117,6 @@ app.controller('editBusinessController', function($scope, status,$http, Business
   $scope.formData.location = {};
   $scope.formData.location.Lat = $scope.Lat;
   $scope.formData.location.Lng = $scope.Lng;
-
-  var payment = [];
-  var i = 0;
-  if($scope.formData.pay0 == true){
-    payment[i] =  "Cash";
-    i++;
-  }
-   if($scope.formData.pay1 == true) payment[i] =  "Stripe";
-
-   $scope.formData.payment_methods = payment;
 
     Business.editLocation($scope.formData)
     .then(function successCallback(d) {

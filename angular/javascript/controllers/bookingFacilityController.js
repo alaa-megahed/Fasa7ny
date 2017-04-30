@@ -191,7 +191,7 @@ var apply_best_offer_facility = function(facility, event_occ, price, capacity, c
                     {
                         if(typeof offers[i].facility_id == 'undefined' || offers[i].facility_id === facility)
                         {
-                            if(offers[i].type === "min_count" && count >= offers[i].count)
+                            if(offers[i].type === "min_count" && count >= offers[i].min_count)
                             {
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;

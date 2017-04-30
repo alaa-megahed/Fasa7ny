@@ -18,6 +18,7 @@
                         <!-- NAME -->
                         <div class="form-group" >
                             <label>Name</label>
+                            <label style = "color:red">*</label>
                             <input type="text" name="name" class="form-control" ng-model="formData.name" required>
                             <p ng-show="form.userForm.name.$invalid && !form.userForm.name.$pristine" class="help-block" style = "color:red">Your name is required.</p>
                             <p ng-show="err.name" class="help-block" style = "color:red">{{err.name}}</p>
@@ -26,6 +27,7 @@
                         <!-- EMAIL -->
                         <div class="form-group" >
                             <label>Email</label>
+                            <label style = "color:red">*</label>
                             <input type="email" name="email" class="form-control" ng-model="formData.email" required>
                             <p ng-show="form.userForm.email.$invalid && !form.userForm.email.$pristine" class="help-block" style = "color:red">Enter a valid email.</p>
                             <p ng-show="err.email" class="help-block" style = "color:red">{{err.email}}</p>
@@ -34,6 +36,7 @@
                         <!-- USERNAME -->
                         <div class="form-group" >
                             <label>Username</label>
+                            <label style = "color:red">*</label>
                             <input type="text" name="username" class="form-control" ng-model="formData.username" ng-minlength="3" ng-maxlength="100" required>
                             <p ng-show="form.userForm.username.$error.minlength" class="help-block" style = "color:red">Username is too short.</p>
                             <p ng-show="form.userForm.username.$error.maxlength" class="help-block" style = "color:red">Username is too long.</p>
@@ -43,6 +46,7 @@
                         <!-- PASSWORD-->
                         <div class="form-group" >
                             <label>Password</label>
+                            <label style = "color:red">*</label>
                             <input type="password" name="password" class="form-control" ng-model="formData.password" ng-minlength="8" ng-maxlength="100" required>
                             <p ng-show="form.userForm.password.$error.minlength" class="help-block" style = "color:red">Password is too short.</p>
                             <p ng-show="form.userForm.password.$error.maxlength" class="help-block" style = "color:red">Password is too long.</p>
@@ -59,7 +63,8 @@
 
                         <!-- Phone-->
                         <div class="form-group" >
-                            <label>Phone</label>
+                            <label>Mobile Number</label>
+                            <label style = "color:red">*</label>
                             <input type="text" name="phone" class="form-control" ng-model="formData.phone" required>
                             <p ng-show="form.userForm.phone.$invalid && !form.userForm.phone.$pristine" class="help-block" style = "color:red">Your phone is required.</p>
                               <p ng-show="err.phone" class="help-block" style = "color:red">{{err.phone}}</p>
@@ -68,6 +73,7 @@
                         <!-- Birthdate-->
                         <div class="form-group" >
                             <label>Birthdate</label>
+                            <label style = "color:red">*</label>
                             <input type="date" name="birthdate" class="form-control" ng-model="formData.birthdate" required>
                             <p ng-show="form.userForm.birthdate.$invalid && !form.userForm.birthdate.$pristine" class="help-block" style = "color:red">Enter a valid date</p>
                               <p ng-show="err.birthdate" class="help-block" style = "color:red">{{err.birthdate}}</p>
@@ -75,10 +81,15 @@
 
                         <!-- Gender-->
                         <div class="form-group" >
-                            <label>Gender</label>
-                            <input type="text" name="gender" class="form-control" ng-model="formData.gender">
-                            <p ng-show="form.userForm.gender.$invalid && !form.userForm.gender.$pristine" class="help-block" style = "color:red">Enter a valid gender</p>
-                              <p ng-show="err.gender" class="help-block" style = "color:red">{{err.gender}}</p>
+                           <label>Gender</label>
+                            <div class="styled-select">
+                              <select ng-model="formData.gender">
+                               <h3> <option disabled selected value>Choose One</option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                              </select>
+                             </div>
+                             <br>
                         </div>
 
 

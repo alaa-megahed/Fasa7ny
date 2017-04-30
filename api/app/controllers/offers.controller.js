@@ -13,13 +13,13 @@ var async = require("async");
 exports.viewOffers = function(req, res) {
  if(typeof req.params.id != "undefined") {
     var id = req.params.id;
-   Business.findOne({_id:id}, function(err, business) 
+   Business.findOne({_id:id}, function(err, business)
    {
       if(err || !business)
         return res.status(500).json("error in finding the business to view the offers");
       else
-      { 
-        Offer.find({business:id}, function(err, offers) 
+      {
+        Offer.find({business:id}, function(err, offers)
          {
             if(err)
               res.status(500).json("error in viewOffers");
@@ -31,8 +31,37 @@ exports.viewOffers = function(req, res) {
   }
 }
 
+exports.viewOffersByName = function(req, res) {
+  if(typeof req.params.name != "undefined") {
+    var name = req.params.name;
+
+    Business.findOne({name:name}, function(err, business) {
+      if(err || !business) return res.status(500).json("error in finding the business to view the offers");
+      else {
+        Offer.find({business:business._id}, function(err, offers) {
+          if(err) res.status(500).json("error in viewOffersByName");
+          else res.status(200).json({offers:offers});
+        })
+      }
+    })
+  }
+}
+
+exports.offerDetails = function(req, res) {
+  if(typeof req.params.id != "undefined") {
+    var id = req.params.id;
+
+    Offer.findOne({_id:id}, function(err, offer) {
+      if(err || !offer) return res.status(500).json("error in finding the offer");
+      else {
+        res.status(200).json({offer:offer});
+      }
+    })
+  }
+}
+
 exports.businessViewOffers = function(){
- if(req.user && req.user instanceof Business) 
+ if(req.user && req.user instanceof Business)
    {
       var id = req.user.id;
       Offer.find({business:id}, function(err, offers) {
@@ -42,9 +71,9 @@ exports.businessViewOffers = function(){
             res.status(200).json({offers:offers, id:req.user.id});
         }
     })
-  } 
+  }
   else {
-    res.status(401).json("YOU ARE NOT AUTHORIZED"); 
+    res.status(401).json("YOU ARE NOT AUTHORIZED");
 }
 }
 
@@ -73,24 +102,24 @@ if the business added an expiration_date that is before the start_date(which if
 
 exports.createOffer = function(req, res) {
 
-  if(req.user && req.user instanceof Business) 
+  if(req.user && req.user instanceof Business)
   {
     var businessId = req.user.id;  //get _id from session
     var body = req.body;
     var file = req.file;
     // expiration date not required in case of count dependent offer
-    if(!body.name || !body.type || !body.value || !body.details ) 
+    if(!body.name || !body.type || !body.value || !body.details )
     {
       res.send("please add all information");
-    } 
-    else 
+    }
+    else
     {
       var newOffer = new Offer({
         name:body.name,
         type:body.type,
         value:body.value,
         details:body.details
-       
+
       });
       newOffer.business = businessId;
 
@@ -119,15 +148,15 @@ exports.createOffer = function(req, res) {
       }
 
       var now = new Date();
-    
+
        if( (!body.expiration_date  || !body.start_date) && body.type === "duration")
       {
         return res.status(400).json("Please add a valid start/end date. [1]");
-      } 
+      }
       if(body.type === "duration") //checking undefined was not working even though it was undefined
       {
         var expirationdate = body.expiration_date;
-        if(new Date(body.start_date).getTime() >= new Date(expirationdate).getTime() || new Date(body.start_date).getTime() < new Date(now).getTime()) 
+        if(new Date(body.start_date).getTime() >= new Date(expirationdate).getTime() || new Date(body.start_date).getTime() < new Date(now).getTime())
         {
           return res.status(400).json("Please add a valid start/end date.[2]");
         }
@@ -145,7 +174,6 @@ exports.createOffer = function(req, res) {
           } else 
           {   
                var notification = {content:req.user.name + " added " + req.body.name, date:new Date()}; 
-
                   async.each(req.user.subscribers, function(subscriber, callback){
                     User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": notification}},function(err,user)
                     {
@@ -157,11 +185,11 @@ exports.createOffer = function(req, res) {
                         user.save();
                       }
                     });
-                  }); 
+                  });
             res.status(200).json(offer);
           }
         });
-      
+
     } //
   } else //
   {
@@ -237,6 +265,7 @@ exports.updateOffer = function(req, res) {
       }
     });
   } 
+
   else res.status(401).json("NOT AUTHORIZED");
 };
 

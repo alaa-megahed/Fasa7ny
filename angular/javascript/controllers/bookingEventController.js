@@ -145,7 +145,7 @@ app.controller('bookingEventController', function($scope, $http,$routeParams,Bus
                     {
                         if(typeof offers[i].event_id == 'undefined' || offers[i].event_id === event._id)
                         {
-                            if(offers[i].type === "min_count" && count >= offers[i].count)
+                            if(offers[i].type === "min_count" && count >= offers[i].min_count)
                             {
                                 var newcharge = original_charge -  ((offers[i].value / 100) * original_charge);
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;

@@ -1,5 +1,6 @@
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 var WebAdmin = require('./app/models/WebAdmin');
+var Business = require('./app/models/Business');
 var mongoose = require('./config/mongoose'),
     config   = require('./config/config'),
     express  = require('./config/express'),
@@ -163,12 +164,12 @@ var mongoose = require('./config/mongoose'),
 
 
 // var Business = require('./app/models/Business');
-//
+// //
 // var business = new Business();
 // business.local.username = "BreakOut";
-// business.name = "BreakOut";
-// business.merchant_ID = "111";
-// business.local.password = business.generateHash("111");
+// business.name = "BreakOutz";
+// business.merchant_ID = "11111";
+// business.local.password = business.generateHash("12345");
 // business.save(function(err){
 // if(err) throw err;
 // });
