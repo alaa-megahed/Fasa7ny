@@ -401,7 +401,7 @@
 
 
 
-<button style="width:250px" ng-show = "business.public == 1 || type == 4" onclick="myFunction('Demo3')" class="btn btn-transparent" >Check Our Offers&nbsp;&nbsp;&nbsp;&nbsp;</button>
+<button style="width:250px" ng-show = "business.public == 1 || type == 4" ng-if="offers.length > 0" onclick="myFunction('Demo3')" class="btn btn-transparent" >Check Our Offers&nbsp;&nbsp;&nbsp;&nbsp;</button>
 <div id="Demo3" ng-controller="ViewOffersController" class="w3-hide w3-container">
 <br>
   <div id="primary" class="sidebar-right">
