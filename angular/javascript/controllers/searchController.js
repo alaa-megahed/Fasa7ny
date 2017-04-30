@@ -37,7 +37,8 @@ angular.module('fasa7ny')
                         $scope.chunkedBusinesses = chunk($scope.businesses, 4);
 
                     }, function (res) {
-                        
+                        $scope.error = 'Oops.. something went wrong';
+
                     });
             }
         }
@@ -61,7 +62,8 @@ angular.module('fasa7ny')
                 $scope.businesses = res.data;
                 $scope.chunkedBusinesses = chunk($scope.businesses, 4);
             }, function (res) {
-                alert(res.data);
+                $scope.error = 'Oops.. something went wrong';
+
             });
 
 
