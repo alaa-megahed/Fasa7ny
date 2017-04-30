@@ -20,8 +20,8 @@ You can find an installation guide [here](https://github.com/abdelrahman-elkady/
 
 ## Disclaimer:
 
-This app is made only for academic purposes.
-For the payment, all payments are done in test mode, so no real cards are charged.
++ This app is made only for academic purposes.
++ For the payment, all payments are done in test mode, so no real cards are charged.
 
 ## URI
 http://54.187.92.64:8000/
