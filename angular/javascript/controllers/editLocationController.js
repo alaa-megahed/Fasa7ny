@@ -30,17 +30,10 @@ app.controller('editLocationController',  function($scope, $routeParams, Busines
 
     Business.editLocation($scope.formData)
     .then(function successCallback(d) {
-      console.log("!!!!!!!!!!!!!!!!DATTAAA!!!!!!!!!!!!!!!!!!!");
-      console.log(d.data);
-      console.log(d.data.business.name);
     //  $location.path('/business/'+ d.data.business.name);
     },function errorCallback(d){
       $scope.error = d.data;
     })
-
-
-
-
   }
 
   google.maps.event.addDomListener(window, 'load', $scope.initMap);
@@ -75,21 +68,8 @@ app.controller('editLocationController',  function($scope, $routeParams, Busines
    google.maps.event.addListener(marker3,'dragend',function(event) {
    $scope.Lat = event.latLng.lat();
    $scope.Lng = event.latLng.lng();
-   console.log("EVENT " + event.latLng.lat() + " " + event.latLng.lng());
-   console.log("In the controller changing with gmaps: " + $scope.Lat  + " " + $scope.Lng);
    });
 
+}
 
-
-
-
-
-  }
-
-
-
-
-
-
-
-  });
+});

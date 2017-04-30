@@ -1,7 +1,7 @@
 
 <div ng-if ="type != 4 && type != 1">
            <center>
-           <h3>Please log in to view this page.{{type}}</h3> 
+           <h1>Please log in to view this page.</h1><br><br><br><br><br><br><br><br>
            </center>
 </div>
 
@@ -14,40 +14,40 @@
                 </div>
                       <form ng-model="formData">
                         <h3>Number of people  :  <input type="Number" style="color:#000;" ng-model="formData.count" min = {{min}} max = {{max}}><br></h3>
-                        <h4>Available places: {{max}}</h4>
-                       
-                        <!-- <div >
-                            <h3> Special Offers:</h3> <br>
+                        <h4>Available places: {{max}}</h4><br><br>
+                                         <div class="border"></div>
+
+
+                      <div ng-show="offers.length > 0">
+                        <div>
+                            <h3> <u style="color: #6CB670;">Special Offers:</u></h3> <br>
 
                             <div  ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
 
                               <input type="radio" ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
 
-                              <label>{{"Offer: "+offer.name + "  details: "+offer.details +" value: "+ offer.value}}</label>
+                             <label><h4>{{"Offer: "+offer.name }} <br>{{ "  details: "+offer.details +" discount: "+ offer.value +"%"}} </h4></label>
                               <br>
 
                             </div> <br>
-                        </div> -->
+                        </div>
 
-                        <div>
-                          <div class="container2">
-                            <ul>
-                             <h3 style="padding-bottom: 0px"> Special Offers: </h3><hr>
-                              <li ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
-                                <input type="radio" id = {{$index}} ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
-                                <label for = {{$index}}> <h4>{{"Offer: "+offer.name}} {{"value:" + offer.value}} <br>{{"details:" +offer.details}}</h4> </label>
-                                <div class="check"></div>
-                              </li>
-                            </ul>
-                         
+                       
+                          <h3><u style="color: #6CB670;">On-going Offers:</u></h3> <br>
+                    <div style = "margin: auto; max-width: 100%; ">
+                        <div style="text-align: left width: 800px; margin:0 auto;" ng-repeat="offer in offers track by $index" ng-if="offer.type !== 'specific_audience'">
+                         <label><h4>{{"Offer: "+offer.name }} <br>{{ "  details: "+offer.details +" discount: "+ offer.value +"%"}} </h4></label>
+                         <br>
+                        </div> <br><br>
+                        </div> 
                         </div>
-                        </div>
-                        
+                        {{error_message}}
                         <div ng-show="cash">
                         <button type="submit" ng-if="type == 1|| type == 4" class="btn btn-transparent" ng-disabled="!formData.count" ng-click="book_cash()"> BOOK NOW AND PAY CASH</button>
                         </div>
+                        <div ng-show="stripe">
                         <button type="submit" ng-if="type == 1" class="btn btn-transparent" ng-disabled="!formData.count" ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button>
-
+                        </div>
                        </form>
                        <br><br>
                     
@@ -55,11 +55,6 @@
                 </section>
         </div>
        
-
-        
-        <!--
-        Start Main Features
-        ==================================== -->
         <section id="main-features">
             <div class="container">
                 <div class="row">
@@ -78,19 +73,13 @@
                                                             
                                 <!-- features content -->
                                 <div class="col-md-6 feature-desc wow fadeInUp" data-wow-duration="500ms" data-wow-delay="300ms">
-                                    <h3>Details:</h3>
-                                    <p>Details of facility/event to be booked goes here</p>
-                                  
-                                    <a href="#" class="btn btn-transparent">Learn More</a>
-                                    <a href="#" class="btn btn-transparent">Purchase Theme</a>
+                                    
                                 </div>
-                                <!-- /features content -->
                                 
                             </div>
                         </div>
                     </div>
-                    <!-- /features item -->
                     
-                </div>      <!-- End row -->
-            </div>      <!-- End container -->
-        </section>   <!-- End section -->
+                </div>     
+            </div>     
+        </section>   

@@ -58,18 +58,12 @@ angular.module('fasa7ny')
         }
 
         factory.checkCookies = function (userType, businessID) {
-            console.log('be5');
-            console.log(userType);
-
             //if logged in user, or not logged in user, or another business, then count page views
             if (userType != 4 && userType != 3) {
                 var cookieKey = 'fasa7ny.' + businessID;
                 var cookie = $cookies.get(cookieKey);
-                console.log(cookie);
 
                 if (typeof cookie == 'undefined' || cookie == null) {
-                    console.log('here');
-
                     var date = new Date();
                     $http.post('http://' + IP.address + ':3000/stats/addStat', {
                         date: date,
@@ -84,7 +78,6 @@ angular.module('fasa7ny')
                     $cookies.put(cookieKey, 'fasa7ny', {
                         expires: now
                     });
-                    console.log($cookies.get(cookieKey));
                 }
             }
         }

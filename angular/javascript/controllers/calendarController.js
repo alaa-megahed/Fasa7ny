@@ -44,12 +44,8 @@ app.controller('calendarController', function ($scope, Schedule, $routeParams, u
             }
           }
 
-          console.log($scope.events);
-
           var date = new Date();
-          console.log(date);
 		      $scope.now = date. getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
-          console.log($scope.now);
           $scope.uiConfig = {
               calendar: {
                 header: {
@@ -73,7 +69,6 @@ app.controller('calendarController', function ($scope, Schedule, $routeParams, u
                 events:$scope.events
                 // eventClick: function(event) {
                 //   if (event.url) {
-                //     console.log(event.url);
                 //     return false;
                 //   }
                 // }

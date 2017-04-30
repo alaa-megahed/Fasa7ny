@@ -1,5 +1,4 @@
 app.controller('viewOccurencesController', function($scope, $http, status,viewOccurences, $location, $routeParams, $modal, IP) {
-  console.log("view occ controller");
 
    status.local()
  .then(function(res){
@@ -24,8 +23,9 @@ app.controller('viewOccurencesController', function($scope, $http, status,viewOc
 	.then(function(d) {
     $scope.eventocc = d.data.eventocc;
     $scope.time = d.data.eventocc[0].time;
-    console.log($scope.eventocc);
-  });
+  }, function errorCallback(response){
+       $location.path("/error/"+response.status);
+    });
 
   $scope.viewBookings = function(occId)
   {
@@ -34,8 +34,6 @@ app.controller('viewOccurencesController', function($scope, $http, status,viewOc
 
   $scope.deleteEvent = function (occId) {
         $scope.message = "Show Occ Delete Button Clicked";
-        console.log($scope.message);
-        console.log("Delete occ");
         var modalInstance = $modal.open({
             templateUrl: 'views/deleteOccPopUp.html',
             controller: DeletePopUp,
@@ -60,9 +58,6 @@ var DeletePopUp = function ($scope, $http, $modalInstance,viewOccurences,occId,$
     $scope.error ="";
     $scope.submitForm = function ()
     {
-      console.log("occ id f delete popup "+ occId);
-      console.log('Delete Occ Form');
-
       $http.post('http://'+ IP.address + ':3000/event/getOccurrence', {occ_id: occId}).then(function successCallback(response)
       {
         var bookings = response.data.bookings;
@@ -70,15 +65,12 @@ var DeletePopUp = function ($scope, $http, $modalInstance,viewOccurences,occId,$
         {
           $http.post('http://'+ IP.address + ':3000/bookings/cancel_booking_after_delete', {booking_id: bookings[j]})
           .then(function successCallback(response){
-            console.log(response.data);
           }, function errorCallback(response){
-            console.log(response.data);
           });
         }
 
          viewOccurences.delete(occId)
         .then(function successCallback(d){
-          console.log('del occ');
             // $route.reload();
         $modalInstance.close('closed');
         },

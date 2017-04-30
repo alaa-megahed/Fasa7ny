@@ -10,8 +10,6 @@ angular.module('fasa7ny')
             .then(function (res) {
 
                 if (res.data) {
-                    console.log(res.data);
-
                     if (res.data.user_type == 1)
                         $scope.user_type = 1;
                     else if (res.data.user_type == 2)
@@ -27,8 +25,6 @@ angular.module('fasa7ny')
                         });
                 }
             }, function (res) {
-                console.log(res.status);
-
                 if (res.status == 401) {
                     $location.path('/not-authorized');
                 } else {
@@ -52,13 +48,9 @@ angular.module('fasa7ny')
         Stats.getAllStats({ businessID: $scope.businessID })
             .then(function (res) {
                 $scope.allStats = res.data;
-            }, function (res) {
-                if (res.status == 401) {
-                    $location.path('/not-authorized');
-                } else {
-                    $scope.errMsg = res.data;
-                }
-            });
+            }, function errorCallback(response){
+                $location.path("/error/"+response.status);
+              });
         //get stats on demand when button is clicked
         $scope.getStats = function () {
             if ($scope.type == 'year') {
@@ -136,7 +128,6 @@ angular.module('fasa7ny')
         }
 
         $scope.onClick = function (points, evt) {
-            console.log(points, evt);
         };
         $scope.datasetOverride = [
             { yAxisID: 'y-axis-1' },

@@ -9,21 +9,21 @@ app.controller('ViewOffersController', function($scope, $http, $location, Offers
       	function(response)
       	{
       		$scope.business_id = response.data._id;
-      		console.log($scope.business_id);
       		Offers.get($scope.business_id).then(function(response) {
               $scope.offers = response.data;
         });
-      	});
+      	}, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
 });
 
 
-app.controller('createOffersController',function($scope,$http,Facilities,OneTimeEvent,status,$location,$routeParams, IP)
+app.controller('createOffersController',function($scope,$http,Facilities,OneTimeEvent,status,$location,$routeParams,IP)
 {
           $scope.formData = {};
           $scope.user = {};
       		$scope.business_id = $routeParams.businessId;
-          console.log($scope.business_id);
           status.local()
              .then(function(res){
                if(res.data){
@@ -32,7 +32,6 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
                    $scope.type = 1;
                  else if(res.data.user_type == 2 && res.data._id == $scope.business_id)
                  {
-                  console.log($scope.business_id);
                    $scope.type  = 4;
 
                  }
@@ -53,40 +52,33 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
 
       Facilities.get($scope.business_id).then(function(response) {
               $scope.facilities = response.data;
-              console.log("This business facilities :"+$scope.facilities);
-        });
+        }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
       OneTimeEvent.getOnceEvents($scope.business_id).then(function(response) {
               $scope.events = response.data;
-              console.log("This business events :"+$scope.events);
-        });
+        }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
       $scope.today = new Date();
       $scope.error_message = "";
+
       $scope.createOffer = function()
       {
-      	console.log($scope.formData);
       	 var fd = new FormData();
 		  for(var key in $scope.formData)
 		  {
-		    console.log($scope.formData[key]);
 		    if($scope.formData[key] != null)
 		    fd.append(key, $scope.formData[key]);
 		  }
-		  console.log("image controller offer");
-		  // if($scope.formData.facility_id == null) $scope.formData.facility_id = "";
-		  // if($scope.formData.event_id == null) $scope.formData.event_id = "";
-
-		 // console.log($scope.formData.facility_id);
-		 // console.log($scope.formData.event_id);
 
       	$http.post('http://'+ IP.address + ':3000/offers/createOffer', fd,{
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
       }).then(function successCallback(response){
-                      console.log(response.data);
                       $location.path('/business/'+ $scope.user.name);
                     }, function errorCallback(response){
-                      console.log(response.data);
                       $scope.error_message = response.data;
                     });
       }
@@ -96,7 +88,8 @@ app.controller('createOffersController',function($scope,$http,Facilities,OneTime
 
 //========== Edit ============
 
-app.controller('EditOffersController', function($scope, $http, $route,$location, Offers, $modal, $window,$routeParams, IP) {
+app.controller('EditOffersController', function($scope, $http, $route,$location, Offers, $modal, $window,$routeParams,IP) {
+
 
        // $scope.business_id = "58f0f3faaa02d151aa4c987c";
         $scope.name = $routeParams.name;
@@ -104,15 +97,17 @@ app.controller('EditOffersController', function($scope, $http, $route,$location,
       	function(response)
       	{
       		$scope.business_id = response.data._id;
-      	});
-      console.log("business in edit offer "+$scope.business_id);
+      	}, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
       Offers.get($scope.business_id).then(function(response) {
               $scope.offers = response.data;
-        });
+        },function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
 	  $scope.editOffer = function (offerId,offerType) {
 			$scope.message = "Show edit Form Button Clicked";
-			console.log($scope.message);
 			var modalInstance = $modal.open({
 					templateUrl: 'views/editOffer.html',
 					controller: 'EditOfferCtrl',
@@ -141,38 +136,28 @@ app.controller('EditOfferCtrl',function($scope, $http, offerId,$location,offerTy
 {
 	$scope.offerType = offerType;
     $scope.submitForm = function (formData, facilityId) {
-       		console.log(formData);
        		var fd = new FormData();
 		  for(var key in formData)
 		  {
-		    console.log(formData[key]);
 		    if(formData[key] != null)
 		    fd.append(key, formData[key]);
 		  }
-		  console.log("image controller offer");
-
-
 
 		 fd.append("id",offerId);
-		 console.log(fd);
 
       	$http.post('http://'+ IP.address + ':3000/offers/updateOffer', fd,{
         transformRequest: angular.identity,
         headers: { 'Content-Type': undefined }
       }).then(function successCallback(response){
-                      console.log(response.data);
                       // $location.path('/'+$scope.business_id);
                       $route.reload();
                     }, function errorCallback(response){
-                      console.log(response.data);
                       $scope.error_message = response.data;
                     });
 
 			// $http.post('http://'+ IP.address + ':3000/offers/updateOffer', {id:offerId, name:formData.name, value:formData.value , details:formData.details})
 			// .then(function successCallback(response){
-   //                    console.log(response.data);
    //                  }, function errorCallback(response){
-   //                    console.log(response.data);
    //                  });
 
 						$route.reload();
@@ -212,14 +197,10 @@ app.controller('DeleteOffersController', function($scope, $http, $modal, $locati
 
 app.controller('DeleteOfferCtrl',function($http, $scope, $modalInstance, offerId, $route,$routeParams, IP){
 	$scope.yes = function () {
-            console.log("offerId to be deleted :"+offerId);
 			$http.get('http://'+ IP.address + ':3000/offers/deleteOffer/'+offerId)
 			.then(function successCallback(response){
-                      console.log(response.data);
                     }, function errorCallback(response){
-                      console.log(response.data);
                     });
-						console.log("delete done");
 						$route.reload();
             $modalInstance.close('closed');
     };

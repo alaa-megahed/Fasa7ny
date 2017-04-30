@@ -2,16 +2,20 @@
 	var search_arrow = document.getElementById('arrow_search');
 	var div_searchtools = document.getElementById('search_tools');
 	var search_cross = document.getElementById('cross_search');
+
 	search_arrow.addEventListener('click', function () {
 		div_searchtools.style.visibility = "visible";
 		search_arrow.style.display = "none";
 		search_cross.style.display = "inline-block";
+
 	});
+
 	search_cross.addEventListener('click', function () {
 		div_searchtools.style.visibility = "hidden";
 		search_arrow.style.display = "inline-block";
 		search_cross.style.display = "none";
 	});
+
 </script>
 <style>
 	.equal {

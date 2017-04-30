@@ -15,33 +15,6 @@ SearchController = {
 
             });
     }
-    // search: function (req, res) {
-    //     var formData = req.body;
-    //     var sortBy = formData.sortBy;
-    //     console.log(formData);
-    //     var queryBody = helper.makeQuery(formData); // retrieve query body
-
-    //     var query = Business.find(queryBody);
-
-    //     if (typeof sortBy !== 'undefined' && sortBy.length > 0) { //apply sort filter only if not empty
-    //         var sortObj = {};
-    //         sortObj[sortBy] = -1;
-    //         query.sort(sortObj);
-
-    //     }
-
-
-    //     query.exec(function (err, result) {
-    //         if (err)
-    //             res.send(err);
-    //         else {
-    //             console.log(result);
-    //             res.render('search.ejs', {result: result});
-    //             // res.json(result);
-    //         }
-    //     });
-
-    // }
 }
 
 //module that contains helper methods to the SearchController
@@ -78,14 +51,12 @@ helper = {
         }
         if (minRating.length > 0) {
             var minRatingFloat = parseFloat(minRating);
-            console.log(minRatingFloat);
             anding.push({ average_rating: { $gte: minRatingFloat } });
         }
         if (anding.length > 0) {
             query["$and"] = anding;
         }
-        console.log(query);
-        return query;
+        return status(200).json(query);
     }
 }
 module.exports = SearchController;

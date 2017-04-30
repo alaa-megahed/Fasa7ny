@@ -22,16 +22,9 @@ app.controller('userController', function($scope, status,$http, User, $location,
 					$scope.subscribed_businesses.push(d.data);
 				});
 			}
-
-
-
-				//$scope.bookings = d.data.user.bookings;
-				// $scope.bookings = ["58f758db36646333e9fd6ec0", "58f758f236646333e9fd6ec1"];
 				$scope.all_info = [];
 			for(i = 0; i < $scope.user.bookings.length; i++) {
-				//console.log("This is scope bookings[i]" + $scope.bookings[i]);
 				User.getBookingDetails($scope.user.bookings[i]).then(function successCallback(d) {
-					//console.log($scope.bookings[i])	;
 					$scope.all_info.push(d.data);
 				}, function errorCallback(d) {
 					$scope.error = d.data;
@@ -62,11 +55,9 @@ app.controller('userController', function($scope, status,$http, User, $location,
 			function success(response)
 			{
 				$route.reload();
-				console.log("successful delete");
-			},function error(response)
-			{
-				console.log("error in delete");
-			});
+			}, function errorCallback(response){
+	            $location.path("/error/"+response.status);
+	          });
 	};
 
 
@@ -90,13 +81,7 @@ app.controller('userController', function($scope, status,$http, User, $location,
 	}
 
 	$scope.changeImage = function(userID) {
-		console.log("ana fl change image controller")
-		console.log("OLD"+$scope.user.profilePic);
-		console.log("PROFILE ZEFTT:");
-		console.log($scope.formData.img);
 		User.changeImage(userID,$scope.formData).then(function successCallback(d) {
-			console.log("done changeImage");
-			console.log(d.data.user.profilePic);
 			$scope.pic = d.data.user.profilePic;
 			// $route.reload();
 
@@ -109,9 +94,7 @@ app.controller('userController', function($scope, status,$http, User, $location,
 
 	// $scope.cancelBooking = function(bookingId) {
 	// 	User.cancelBooking(bookingId).then(function successCallback(d){
-	// 		console.log("success");
 	// 	}, function errorCallback(d) {
-	// 		console.log("error");
 	// 	})
 	// }
 
@@ -127,10 +110,7 @@ var EditProfileCtrl = function ($scope, $modalInstance, userID, User, $route) {
 		$scope.error = "";
     $scope.submitForm = function () {
         // if ($scope.form.editForm.$valid) {
-            console.log('user form is in scope');
-			console.log($scope.formData);
 			User.editUserInfo(userID, $scope.formData) .then(function successCallback(d) {
-				console.log("done editing user");
 				$route.reload();
 	      $modalInstance.close('closed');
 			}, function errorCallback(d) {

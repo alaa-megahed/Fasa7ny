@@ -3,10 +3,7 @@ angular.module('fasa7ny')
         var factory = {};
         factory.get = function () {
             return $http.get('http://' + IP.address + ':3000/search');
-
-
         }
-
         return factory;
     }]);
 

@@ -11,6 +11,7 @@ angular.module('fasa7ny')
       else {
         resetPassword.reset(token, $scope.form).then(function(data)
         {
+
           if(data.data.startsWith("Success!" ))
           {
               $scope.success = data.data;
@@ -26,8 +27,6 @@ angular.module('fasa7ny')
 
       }
       }
-
-
 
 
 });

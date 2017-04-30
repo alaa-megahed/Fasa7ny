@@ -1,20 +1,15 @@
 app.factory('Event', ['$http', 'IP', function($http, IP) {
     return {
         get : function(eventId) {
-          console.log(eventId);
-          console.log("!!");
             return $http.get('http://'+ IP.address + ':3000/event/getOnceEventDetails/' + eventId);
         },
 
         delete : function(id){
-        	console.log("delete service");
         	return $http.get('http://'+ IP.address + ':3000/event/cancel/'+ id);
 
         },
 
         edit : function(formData,id){
-        	console.log("edit service"+formData);
-
           if(formData.starttime && formData.endtime) {
             var starthour = formData.starttime.getHours()+"";
             if(starthour.length == 1) starthour = "0" + starthour;
@@ -35,9 +30,6 @@ app.factory('Event', ['$http', 'IP', function($http, IP) {
         },
 
         deleteImage : function(eventId, image) {
-          console.log('delete image event service');
-          console.log(eventId);
-          console.log(image);
           return $http.get('http://'+ IP.address + ':3000/event/deleteImage/' + eventId + "/" + image);
         },
 
@@ -46,7 +38,6 @@ app.factory('Event', ['$http', 'IP', function($http, IP) {
           for(var key in formData)
             fd.append(key, formData[key]);
 
-          console.log(fd);
           return $http.post('http://'+ IP.address + ':3000/event/addImage/' + eventId, fd, {
             transformRequest: angular.identity,
             headers: { 'Content-Type': undefined }

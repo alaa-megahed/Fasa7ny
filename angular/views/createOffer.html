@@ -17,7 +17,7 @@
 
                     <h3>Type</h3>
                     <div class="styled-select">
-                      <select style="width: 400px;color:#000;" required ng-model="formData.type">
+                      <select style="width: 400px;color:#000;height: 34px;" required ng-model="formData.type">
                        <h3> <option disabled selected value>Choose One</option>
                         <option value="duration">Duration</option>
                         <option value="specific_audience">Specific Audience</option>
@@ -27,10 +27,9 @@
                     </div><br>
 
                     <div ng-if="formData.type == 'duration'">
-                      <h5>Start: <input type="date" style="color:#000;"  ng-model="formData.start_date"  required >
+                    <h5>Start: <input type="date" style="color:#000;"  ng-model="formData.start_date"  required >
                       End  :<input type="date" style="color:#000;" ng-model="formData.expiration_date" required ></h5>
                     </div>
-
 
 
                     <div ng-if="formData.type == 'lucky_first'">
@@ -52,14 +51,15 @@
 
                     <h3> Apply on Facility (Optional) </h3>
                     <div class="styled-select">
-                      <select  class="selectpicker"  style="width: 400px;" re data-style="btn-primary" ng-model="formData.facility_id">
-                      <option disabled selected value>Choose One</option>                      <option ng-repeat="facility in facilities" value="{{facility._id}}">{{facility.name}}</option>
+                      <select  class="selectpicker"  style="width: 400px;height: 34px; color:#000;" re data-style="btn-primary" ng-model="formData.facility_id">
+                      <option disabled selected >Choose One</option>                      
+                      <option ng-repeat="facility in facilities" value="{{facility._id}}">{{facility.name}}</option>
                       </select>
                     </div>
 
                     <h3> Apply on Event (Optional) </h3>
                     <div class="styled-select">
-                      <select  class="selectpicker"  style="width: 400px;" re data-style="btn-primary" ng-model="formData.event_id">
+                      <select  class="selectpicker"  style="width: 400px;height: 34px; color:#000;" re data-style="btn-primary" ng-model="formData.event_id">
                       <option disabled selected value>Choose One</option>                      <option ng-repeat="event in events track by $index" value="{{event._id}}">{{event.name}}</option>
                       </select>
                     </div> <br>

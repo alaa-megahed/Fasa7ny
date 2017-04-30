@@ -15,48 +15,45 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
 
 
     $http.get('http://'+ IP.address + ':3000/admin/viewRequestedDelete').then(function successCallback(response){
-
-
             $scope.requests = response.data;
+            }, function errorCallback(response){
+              $location.path("/error/"+response.status);
             });
 
-
-
-
     $http.get('http://'+ IP.address + ':3000/admin/viewAdvertisements').then(function successCallback(response){
-             console.log(response.data);
             $scope.ads = response.data;
-
-          console.log($scope.ads);
-      });
+      }, function errorCallback(response){
+            $location.path("/error/"+response.status);
+          });
 
 
        $scope.addBusiness = function()
          {
 
              $http.post('http://'+ IP.address + ':3000/admin/add_business', $scope.business)
-
              .then(function(response)
              {
                 $scope.msg = response.data;
                 $scope.business = {};
-             });
+             }, function errorCallback(response){
+                $location.path("/error/"+response.status);
+              });
 
 
          };
 
 
-       $scope.addAds = function()
-         {
-          var fd = new FormData();
+$scope.addAds = function()
+{
+     var fd = new FormData();
       for(var key in $scope.advertisement)
-        fd.append(key, $scope.advertisement[key]);
+      fd.append(key, $scope.advertisement[key]);
 
-              $http.post('http://'+ IP.address + ':3000/admin/createAdvertisement',fd, {
+      $http.post('http://'+ IP.address + ':3000/admin/createAdvertisement',fd, {
 
-                transformRequest: angular.identity,
-                headers: {'Content-Type':undefined }
-              }).then(function(response)
+      transformRequest: angular.identity,
+      headers: {'Content-Type':undefined }
+      }).then(function(response)
       {
             $scope.msg = response.data;
            $scope.advertisement = {};
@@ -64,12 +61,6 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
       })
 
   };
-
-
-
-
-
-
 
 
   $scope.deleteBusiness = function (request)
@@ -81,13 +72,11 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
     },
      function(response){
       $scope.msg = response.data;
-     }
-    );
+     });
 
     }
 
-  }
-
+  };
 
   $scope.deleteAd = function(ad)
   {
@@ -100,10 +89,5 @@ angular.module('fasa7ny').controller('webAdminController', function($scope,$http
      }
     )
   }
-
-  }
-
-
-
-
-    });
+ }
+});

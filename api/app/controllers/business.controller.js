@@ -11,97 +11,83 @@ var path = require('path');
 
 var BusinessController = {
 
-    getBusiness: function (req, res) {
-
-        if (req.params.name && req.user && req.user instanceof User) {
-            var name = req.params.name;
-            Business.findOne({ name: name }).
-                exec(function (err, result) {
-                    if (err)
-                        return res.status(500).json("Something went wrong");
-                    else {
-                        console.log("result");
-                        if (!result) return res.status(500).json("Business does not exist");
-                        Rating.findOne({ user_ID: req.user.id, business_ID: result._id }, function (err, rate) {
-                            if (err) res.status(500).json("Something went wrong");
-                            else {
-                                var r = 0;
-                                if (rate) r = rate.rating;
-                                Facility.find({ business_id: result._id }, function (err, facilities) {
-                                    if (err) res.status(500).json("Something went wrong");
-                                    else {
-                                        Events.find({ business_id: result._id, repeated: "Once" }, function (err, onceevents) {
-                                            if (err) res.status(500).json("Something went wrong");
-                                            if (!onceevents) res.status(200).json({
-                                                result: result,
-                                                rate: r, facilities: facilities, events: []
-                                            });
-                                            else {
-                                                console.log("done!!");
-                                                res.status(200).json({
-                                                    result: result,
-                                                    rate: r, facilities: facilities, events: onceevents
-                                                });
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        })
-                    }
-                });
-        } else if (req.params.name) {
-            var name = req.params.name;
-            Business.findOne({ name: name }).
-                exec(function (err, result) {
-                    if (err)
-                        return res.status(500).json("Something went wrong");
-                    else {
-                        console.log("??");
-                        if (!result) return res.status(500).json("Business does not exist");
-                        Facility.find({ business_id: result._id }, function (err, facilities) {
-                            if (err) res.status(500).json("Something went wrong");
-                            else {
-                                Events.find({ business_id: result._id, repeated: "Once" }, function (err, onceevents) {
-                                    if (err) res.status(500).json("Something went wrong");
-                                    if (!onceevents) res.status(200).json({
-                                        result: result,
-                                        facilities: facilities, events: []
-                                    });
-                                    else {
-                                        res.status(200).json({
-                                            result: result,
-                                            facilities: facilities, events: onceevents
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    }
-                })
-        } else res.status(500).json("Error");
-    },
+  getBusiness: function (req, res) {
+   if(req.params.name && req.user && req.user instanceof User) {
+      var name = req.params.name;
+       Business.findOne({name: name }).
+           exec(function (err, result) {
+               if (err)
+                   return res.status(500).json("Something went wrong");
+               else {
+                 if(!result) return res.status(500).json("Business does not exist");
+                   Rating.findOne({user_ID: req.user.id , business_ID: result._id}, function(err, rate) {
+                     if(err) res.status(500).json("Something went wrong");
+                     else {
+                       var r = 0;
+                       if(rate) r = rate.rating;
+                       Facility.find({business_id:result._id}, function(err, facilities) {
+                           if(err) res.status(500).json("Something went wrong");
+                           else {
+                             Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
+                                   if(err) res.status(500).json("Something went wrong");
+                                   if(!onceevents) res.status(200).json({result:result,
+                                           rate:r, facilities:facilities, events:[]});
+                                   else {
+                                       res.status(200).json({result:result,
+                                           rate:r, facilities:facilities, events:onceevents});
+                                   }
+                               });
+                           }
+                       });
+                     }
+                   })
+                 }
+           });
+   } else if(req.params.name) {
+     var name = req.params.name;
+     Business.findOne({name: name }).
+         exec(function (err, result) {
+             if (err)
+                 return res.status(500).json("Something went wrong");
+             else {
+               if(!result) return res.status(500).json("Business does not exist");
+                     Facility.find({business_id:result._id}, function(err, facilities) {
+                         if(err) res.status(500).json("Something went wrong");
+                         else {
+                           Events.find({business_id:result._id, repeated:"Once"}, function(err, onceevents) {
+                                 if(err) res.status(500).json("Something went wrong");
+                                 if(!onceevents) res.status(200).json({result:result,
+                                         facilities:facilities, events:[]});
+                                 else {
+                                     res.status(200).json({result:result,
+                                         facilities:facilities, events:onceevents});
+                                 }
+                             });
+                         }
+                     });
+                   }
+                 })
+               } else res.status(500).json("Error");
+             },
 
     /* A business can request to be removed from the website.
     If the business has any bookings the request is rejected and a message is sent to the business specifying
     that the request was cancelled and that the business should cancel its bookings first.*/
 
 
-    requestRemoval: function (req, res) {
-        if (req.user && req.user instanceof Business) {
-            var id = req.user.id;
-            console.log('removal');
-
-            Business.findByIdAndUpdate(id, { $set: { delete: 1 } }, function (err, business) {
-                if (err) res.status(500).json("error in request removal");
-                else res.status(200).json("Requested!");
-            });
+requestRemoval: function(req,res) {
+        if(req.user && req.user instanceof Business){
+        var id = req.user.id;
+        Business.findByIdAndUpdate(id,{$set:{delete:1}}, function(err,business){
+            if(err) res.status(500).json("error in request removal");
+            else res.status(200).json("Requested!");
+        });
 
         }
 
-        else {
-            res.status(500).json('You are not a logged in busiess');
-        }
+        else{
+         res.status(401).json('You are not a logged in busiess');
+     }
 
     },
 
@@ -110,8 +96,6 @@ var BusinessController = {
     makePagePublic: function (req, res) {
         if (req.user && req.user instanceof Business) {
             var businessId = req.user.id;
-            console.log('public');
-
             Business.findByIdAndUpdate(businessId, { $set: { public: 1 } },
                 function (err) {
                     if (err) {
@@ -120,18 +104,16 @@ var BusinessController = {
                         res.status(200).json("done");
                     }
                 });
-        } else res.status(500).json("you must be a logged in business");
+        } else res.status(401).json("you must be a logged in business");
     },
 
     /* A business can edit its personal infromation.*/
 
 
     editInformation: function (req, res) {
-        console.log(req.body);
+
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
-            console.log("ana fl backend");
-            console.log(req.file);
             Business.findById(id, function (err, business) {
                 if (err) res.status(500).json("Something went wrong");
                 else if (!business) res.status(500).json("Business not found");
@@ -139,11 +121,8 @@ var BusinessController = {
                     if (typeof req.body.description != "undefined" && req.body.description.length > 0) {
                         business.description = req.body.description;
                     }
-
                     if (typeof req.body.location != "undefined") {
                         business.location = req.body.location;
-                        console.log("ahlan we sahlan");
-                        console.log(JSON.stringify(req.body.location));
                     }
 
                     if (typeof req.body.address != "undefined" && req.body.address.length > 0) {
@@ -199,9 +178,9 @@ var BusinessController = {
                         business.local.password = business.generateHash(req.body.password);
                     }
 
-                    if (req.body.facebookURL) {
-                        console.log(req.body.facebookURL);
-                        business.facebookURL = req.body.facebookURL;
+                    if(req.body.facebookURL) {
+                      business.facebookURL = req.body.facebookURL;
+
                     }
 
                     if (req.body.twitterURL) {
@@ -211,14 +190,12 @@ var BusinessController = {
                     if (req.body.youtubeURL) {
                         business.youtubeURL = req.body.youtubeURL;
                     }
-                    console.log("BUSINESSSS");
-                    console.log(business);
-                    business.save(function (err, newbusiness) {
-                        if (err) res.status(500).json("something went wrong");
-                        else {
-                            console.log("SAVE");
-                            res.status(200).json({ business: newbusiness });
-                        }
+                    business.save(function(err, newbusiness) {
+                      if(err) res.status(500).json("something went wrong");
+                      else {
+                        res.status(200).json({business:newbusiness});
+                      }
+
                     });
                     // res.sendFile('/business/b');
 
@@ -229,7 +206,7 @@ var BusinessController = {
         }
 
         else {
-            res.status(500).json('You are not a logged in business');
+            res.status(401).json('You are not a logged in business');
         }
     },
 
@@ -241,7 +218,6 @@ var BusinessController = {
         if (req.user && req.user instanceof Business) {
             if (typeof req.params.phone != "undefined") {
                 var id = req.user.id;
-                console.log("ana fl backend delete phone");
                 var phone = req.params.phone;
                 Business.findOne({ _id: id }, function (err, business) {
                     if (err) res.status(500).json("Something went wrong");
@@ -261,7 +237,9 @@ var BusinessController = {
                                 Business.findByIdAndUpdate(id, { $pull: { phones: phone } }, { safe: true, upsert: true, new: true }, function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
                                     if (!business) res.status(500).json("Something went wrong");
-                                    else { res.status(200).json({ business: updatedbusiness }); console.log("2222222!!!!" + updatedbusiness); }
+                                    else{ res.status(200).json({business:updatedbusiness}); 
+                                }
+
                                 });
                             }
                             else {
@@ -278,7 +256,8 @@ var BusinessController = {
         }
 
         else {
-            res.status(500).json('You are not a logged in business');
+          res.status(401).json('You are not a logged in business');
+
         }
 
     },
@@ -293,7 +272,6 @@ var BusinessController = {
             if (typeof req.params.method != "undefined") {
                 var id = req.user.id;
                 var payment = req.params.method;
-                console.log("ana fl backend delete method");
                 Business.findOne({ _id: id }, function (err, business) {
                     if (err) res.status(500).json("Something went wrong");
                     else if (!business) res.status(500).json("Something went wrong");
@@ -313,7 +291,9 @@ var BusinessController = {
                                 Business.findByIdAndUpdate(id, { $pull: { payment_methods: payment } }, { safe: true, upsert: true, new: true }, function (err, updatedbusiness) {
                                     if (err) res.status(500).json("Something went wrong");
                                     if (!business) res.status(500).json("Something went wrong");
-                                    else { res.status(200).json({ business: updatedbusiness }); console.log("payment method deleted"); }
+                                    else {res.status(200).json({business:updatedbusiness}); 
+                                }
+
                                 });
 
                             }
@@ -331,26 +311,23 @@ var BusinessController = {
             }
         }
         else {
-            res.status(500).json('You are not a logged in business');
+          res.status(401).json('You are not a logged in business');
+
         }
 
     },
 
+
     deleteImage: function (req, res) {
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
-            // var id = "58f8b9fdf3e7ca15c2ca2c1f";
-            // var id = "58f879e533a8465ada041bd1";
-            console.log("ana fl backend delete image");
             var image = req.params.image;
 
             Business.findByIdAndUpdate(id, { $pull: { "images": image } }, { safe: true, upsert: true, new: true },
                 function (err, newBusiness) {
                     if (err) {
-                        console.log("error in deleting image");
                         res.status(500).json("Something went wrong");
                     } else {
-                        console.log("image deleted");
                         fs.stat(path.resolve('public/uploads/' + image), function (err, stat) {
                             if (err) {
                                 res.status(400).json('Could not find image');
@@ -361,7 +338,6 @@ var BusinessController = {
                                 });
                             }
                         });
-                        console.log(newBusiness);
                         res.status(200).json({ business: newBusiness });
                     }
                 });
@@ -373,8 +349,6 @@ var BusinessController = {
 
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
-
-            console.log("ana fl backend changeProfilePicture");
             var file = req.file;
             Business.findByIdAndUpdate(id, { $push: { images: file.filename } }, { safe: true, upsert: true, new: true }, function (err, updatedBusiness) {
                 if (err) res.status(500).json("error in changing the profile picture");
@@ -407,9 +381,10 @@ var BusinessController = {
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             var facility_id = req.params.facility;
-            EventOccurrences.find({ "facility_id": facility_id }, function (err, occs) {
-                console.log(occs);
-                if (err) return res.status(500).json(err.message);
+            EventOccurrences.find({"facility_id": facility_id}, function(err, occs)
+            {
+                if(err) return res.status(500).json(err.message);
+
                 return res.status(200).json(occs);
             });
         }
@@ -421,9 +396,10 @@ var BusinessController = {
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             var event_id = req.params.event;
-            EventOccurrences.find({ "event": event_id }, function (err, occs) {
-                if (err) return res.status(500).json(err.message);
-                console.log("event occs in node");
+            EventOccurrences.find({"event": event_id}, function(err, occs)
+            {
+                if(err) return res.status(500).json(err.message);
+
                 return res.status(200).json(occs);
             });
 
@@ -435,38 +411,40 @@ var BusinessController = {
         if (req.user && req.user instanceof Business) {
             var id = req.user.id;
             var booking_id = req.params.booking;
-            Booking.findOne({ "_id": booking_id }, function (err, booking) {
-                console.log(booking);
-                if (err) return res.status(500).json(err.message);
+            Booking.findOne({"_id": booking_id}, function(err, booking)
+            {
+                if(err) return res.status(500).json(err.message);
                 return res.status(200).json(booking);
             });
 
-        }
-        else res.status(401).json("YOU ARE NOT AUTHORIZED");
-    },
+     }
+    else res.status(401).json("YOU ARE NOT AUTHORIZED");
+},
 
-    getBusinessId: function (req, res) {
-        var name = req.body.name;
-        Business.findOne({ name: name }, function (err, business) {
-            if (err || !business)
-                res.status(500).json("error");
-            else
-                res.status(200).json(business);
-        });
-    },
-    getUnloggedBusiness: function (req, res) {
-        var id = req.params.id;
-        Business.findById(id, function (err, business) {
-            if (err)
-                res.status(500).json(err);
-            else {
-                res.status(200).json(business);
-            }
-        });
+getBusinessId : function(req,res)
+{
+    var name = req.body.name;
+    Business.findOne({name:name},function(err,business)
+    {
+        if(err || !business)
+            res.status(500).json("error");
+        else
+            res.status(200).json(business);
+    });
+},
+getBusinessById : function(req,res)
+{
+  var id = req.params.id;
+  Business.findById(id, function(err, business)
+  {
+    if(err)
+      res.status(500).json(err);
+      else {
+        res.status(200).json(business);
+      }
+  });
 
-    }
-
-
+}
 }
 
 

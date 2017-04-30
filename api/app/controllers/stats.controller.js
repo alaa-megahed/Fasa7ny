@@ -16,7 +16,6 @@ var StatsController = {
     var statType = req.body.statType;
     var amount = req.body.amount;
     StatsController.addStat(date, businessID, statType, amount);
-    console.log('node stats');
     res.status(200).json("Success");
   },
   addStat: function (date, businessID, statType, amount) {
@@ -35,9 +34,8 @@ var StatsController = {
         var query = helper.updateQuery(stat, statType, amount);
         stat.update(query).exec(function (err, result) {
           if (err)
-            throw err;
-          else
-            console.log(result);
+            return res.status(500).json(err.message);
+          
         });
       } else { //if there is no entry for this business for this week -> create one
         var newWeekStat = new WeekStat();
@@ -46,9 +44,7 @@ var StatsController = {
         newWeekStat.endDate = week.endDate;
         newWeekStat.business = businessID;
         newWeekStat[statType] = amount;
-        console.log(newWeekStat);
-
-        newWeekStat.save(function (err) { if (err) { throw err; } });
+        newWeekStat.save(function (err) { if (err) { return res.status(500).json(err.message); } });
       }
     });
 
@@ -58,15 +54,13 @@ var StatsController = {
       month: now.getMonth(),
       year: now.getFullYear()
     }).exec(function (err, stat) {
-      if (err) throw err;
+      if (err) return res.status(500).json(err.message);
       else {
         if (stat != null) {
           var query = helper.updateQuery(stat, statType, amount);
           stat.update(query).exec(function (err, result) {
             if (err)
-              throw err;
-            else
-              console.log(result);
+              return res.status(500).json(err.message);
           });
         } else {
           var newMonthStat = new MonthStat();
@@ -74,9 +68,7 @@ var StatsController = {
           newMonthStat.year = now.getFullYear();
           newMonthStat.business = businessID;
           newMonthStat[statType] = amount;
-          console.log(newMonthStat);
-
-          newMonthStat.save(function (err) { if (err) throw err; });
+          newMonthStat.save(function (err) { if (err) return res.status(500).json(err.message);});
         }
       }
     });
@@ -89,39 +81,31 @@ var StatsController = {
       else {
         if (stat != null) {
           var query = helper.updateQuery(stat, statType, amount);
-          console.log(query);
           stat.update(query).exec(function (err, result) {
             if (err)
-              throw err;
-            else
-              console.log(result);
+              return res.status(500).json(err.message);
           });
         } else {
           var newYearStat = new YearStat();
           newYearStat.year = now.getFullYear();
           newYearStat.business = businessID;
           newYearStat[statType] = amount;
-          console.log(newYearStat);
-
-          newYearStat.save(function (err) { if (err) throw err; });
+          newYearStat.save(function (err) { if (err) return res.status(500).json(err.message);});
         }
       }
     });
     AllStat.findOne({ business: businessID }, function (err, stat) {
       if (stat != null) {
         var query = helper.updateQuery(stat, statType, amount);
-        console.log(query);
         stat.update(query).exec(function (err, result) {
           if (err)
-            throw err;
-          else
-            console.log(result);
+            return res.status(500).json(err.message);
         });
       } else {
         var newAllStat = new AllStat();
         newAllStat.business = businessID;
         newAllStat[statType] = amount; 
-        newAllStat.save(function (err) { if (err) throw err; });
+        newAllStat.save(function (err) { if (err) return res.status(500).json(err.message); });
       }
     });
   },
@@ -162,7 +146,6 @@ var StatsController = {
           return res.status(500).json('Oops.. something went wrong.');
         }
         else {
-
           res.status(200).json(result);
         }
       });
@@ -173,7 +156,6 @@ var StatsController = {
 
   },
   getMothStats: function (req, res) {
-    console.log('stats controller ' + req.user);
     var businessID = req.body.businessID;
     var startMonth = parseInt(req.body.startMonth);
     var startYear = parseInt(req.body.startYear);
@@ -214,7 +196,6 @@ var StatsController = {
           return res.status(500).json('Oops.. something went wrong.');
 
         else {
-          console.log(result);
           res.status(200).json(result);
 
         }
@@ -225,8 +206,6 @@ var StatsController = {
 
   },
   getYearStats: function (req, res) {
-    console.log(req.body);
-
     var businessID = req.body.businessID;
     var startYear = parseInt(req.body.startYear);
     var endYear = parseInt(req.body.endYear);
@@ -247,14 +226,13 @@ var StatsController = {
 
             res.status(500).json('Oops.. something went wrong.');
           } else {
-            res.json(result);
+            res.status(200).json(result);
           }
         });
     }
 
   },
   getAllStats: function (req, res) {
-    console.log("all stats " + !req.user);
     var businessID = req.body.businessID;
     
     if (!req.user) {    
@@ -263,11 +241,10 @@ var StatsController = {
     
       AllStat.findOne({ business: businessID }, function (err, result) {
         if (err) {
-          res.status(500);
-          res.json('Oops..something went wrong.');
+          res.status(500).json('Oops..something went wrong.');
         } else {
           
-          res.json(result);
+          res.status(200).json(result);
         }
       });
     }
@@ -311,8 +288,7 @@ var helper = {
 
       }
     }
-    // console.log(startDate); 
-    // console.log(startDate.setMonth(startMonth));
+
     startDate.setMonth(startMonth);
     startDate.setDate(startDay);
     startDate.setFullYear(startYear);
@@ -322,7 +298,6 @@ var helper = {
     var endDate = new Date();
     var thisMonth = this.daysOfMonth(month);
     var endDay = (dayOfMonth + (6 - dayOfWeek)) % thisMonth;
-    console.log(endDay);
     var endMonth = month;
     var endYear = year;
     if (endDay < date.getDate()) {
@@ -339,9 +314,6 @@ var helper = {
     endDate.setMonth(endMonth);
     endDate.setFullYear(endYear);
     endDate.setHours(0, 0, 0, 0);
-    console.log(startDate);
-    console.log(endDate);
-
     return {
       startDate: startDate,
       endDate: endDate

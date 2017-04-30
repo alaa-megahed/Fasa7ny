@@ -1,10 +1,10 @@
 <div ng-if ="type != 4 && type != 1">
            <center>
-           <h3>Please log in to view this page.</h3> 
+           <h1>Please log in to view this page.</h1> <br><br><br><br><br><br><br><br>
            </center>
 </div>
   <div ng-show="type == 4 || type == 1">
-        <section id="about" class="text-center"> <!-- ng-if="type == 4 || type == 1" -->
+        <section id="about" class="text-center"> 
 
               <div class="title text-center wow fadeIn" data-wow-duration="1500ms" >
                   <h2>Book<span class="color">ING</span></h2>
@@ -14,7 +14,7 @@
                 <form ng-model="formData" >
                     <div class="styled-select ">    
                      <h3> Facility </h3>                
-                      <select  class="selectpicker" style="width: 300px;color:#000;" required re data-style="btn-primary" ng-model="chosen_facility" >
+                      <select  class="selectpicker" style="width: 300px;height: 34px;color:#000;" required re data-style="btn-primary" ng-model="chosen_facility" >
                       <h3><option disabled selected value>Choose One</option></h3>                 
                       <option ng-repeat="facility in facilities" ng-if="facility.business_id == business_id " value="{{facility._id}}">{{facility.name}}</option>
                       </select>
@@ -34,36 +34,38 @@
                       <h3>Booking for 
                            <input type="number" style="width: 70px; color:#000;" required  min="1" max={{max_count}} ng-model="formData.count"> person(s).</h3>
 
-<!--                      <h3> Special Offers:</h3> <br>
+                           <br><br> <div class="border"></div>
+
+                      <div ng-show="offers.length > 0">
+                     <h3><u style="color: #6CB670;">Special Offers:</u></h3> <br>
                      <div style = "margin: auto; max-width: 100%; ">
                         <div style="text-align: left width: 800px; margin:0 auto;" ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
-                          <input type="radio"  ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer._id}}">
-                          <label><h4>{{"Offer: "+offer.name + "  details: "+offer.details +" value: "+ offer.value}} </h4></label>
+                          <input type="radio"  ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
+                           <label><h4>{{"Offer: "+offer.name }} <br>{{ "  details: "+offer.details +" discount: "+ offer.value +"%"}} </h4></label>
+                              <br>
                           <br>
                         </div> <br><br>
                         </div>
- -->
-                        <div>
-                          <div class="container2">
-                            <ul>
-                             <h3 style="padding-bottom: 0px"> Special Offers: </h3><hr>
-                              <li ng-repeat="offer in offers track by $index" ng-if="offer.type === 'specific_audience'">
-                                <input type="radio" id = {{$index}} ng-model="formData.chosen_offer" name="chosen_offer" value="{{offer.value}}">
-                                <label for = {{$index}}> <h4>{{"Offer: "+offer.name}} {{"value:" + offer.value}} <br>{{"details:" +offer.details}}</h4> </label>
-                                <div class="check"></div>
-                              </li>
-                            </ul>
-                         
+
+                    <h3><u style="color: #6CB670;">On-going Offers:</u></h3> <br>
+                    <div style = "margin: auto; max-width: 100%; ">
+                        <div style="text-align: left width: 800px; margin:0 auto;" ng-repeat="offer in offers track by $index" ng-if="offer.type !== 'specific_audience'">
+                          <label><h4>{{"Offer: "+offer.name }} <br>{{ "  details: "+offer.details +" discount: "+ offer.value +"%"}} </h4></label>
+                              <br>
+                         <br>
+                        </div> <br><br>
                         </div>
                         </div>
-                        <!-- </div> -->
+
 
                         {{error_message}}
 
                     <div ng-show="cash">
                         <button type="submit"  class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="book_cash()"> BOOK NOW AND PAY CASH</button> <!-- ng-if="type == 1|| type == 4" -->
                     </div>
+                    <div ng-show="stripe">
                         <button type="submit"  ng-show="type != 4"class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count || minDate > formData.day " ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button> <!-- ng-if="type == 1" -->
+                        </div>
                 </form>
 
                  

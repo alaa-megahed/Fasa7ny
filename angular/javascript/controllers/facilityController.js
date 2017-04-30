@@ -26,7 +26,6 @@ $scope.user = {};
 		$scope.error = "";
 		Facility.createFacility($scope.formData)
 		.then(function successCallback(d) {
-			console.log("create facility success");
 			$location.path('/business/' + $scope.user.name);
 		},
 		function errorCallback(d){
@@ -37,7 +36,6 @@ $scope.user = {};
 
 	$scope.goToEditFacility = function (facilityId) {
 			$scope.message = "Show edit Form Button Clicked";
-			console.log($scope.message);
 			$scope.facilityId = facilityId;
 			var modalInstance = $modal.open({
 					templateUrl: 'views/editFacility.html',
@@ -59,7 +57,6 @@ $scope.user = {};
 
 	$scope.deleteFacility = function (facilityId) {
 			$scope.message = "Show edit Form Button Clicked";
-			console.log($scope.message);
 			$scope.facilityId = facilityId;
 			var modalInstance = $modal.open({
 					templateUrl: 'views/deleteFacility.html',
@@ -81,7 +78,6 @@ $scope.user = {};
 
 		$scope.addDaily = function (facilityId,description,capacity, name) {
 			$scope.message = "Show add Form Button Clicked";
-			console.log($scope.message);
 			$scope.facilityId = facilityId;
 			var modalInstance = $modal.open({
 					templateUrl: 'views/addDailyEvent.html',
@@ -109,7 +105,6 @@ $scope.user = {};
 	};
 
 	$scope.viewEvents = function(facilityId) {
-		// Global.facilityId = facilityId;
 		$location.path('/viewEvents/' + facilityId);
 	}
 
@@ -120,12 +115,8 @@ var EditCtrl = function ($scope, $modalInstance, editForm, Facility, $route) {
     $scope.error = ""
     $scope.submitForm = function (formData, facilityId) {
         // if ($scope.form.editForm.$valid) {
-            console.log('user form is in scope');
-						console.log(formData);
-						console.log(facilityId);
 						Facility.editFacility(facilityId, formData)
 						.then(function successCallback(d) {
-							console.log("done editing facility");
 								$route.reload();
             					$modalInstance.close('closed');
 						},
@@ -150,39 +141,32 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
   		Business.getFacilityOccs(facilityId).then(function succcessCallback(response)
 						{
 							var occs = response.data;
-							console.log(occs);
 							for (var i = 0; i < occs.length; i++)
 							{
 								var bookings = occs[i].bookings;
 								for (var j = 0; j < bookings.length; j++)
 								{
-									console.log("booking[j] :"+bookings[j]);
 									Business.getBooking(bookings[j]).then(function succcessCallback(response)
 									{
 										var cur_booking = response.data;
-										console.log("cur booking zat nafso :"+cur_booking);
-
 										$http.post('http://'+ IP.address + ':3000/bookings/cancel_booking_after_delete', {booking_id: cur_booking._id})
 
 												.then(function successCallback(response){
-											            console.log(response.data);
 											     }, function errorCallback(response){
-											            console.log(response.data);
-												});
+										            $location.path("/error/"+response.status);
+										          });
 
 										}, function errorCallback(response){
-										      console.log(response.data);
-									});
+								            $location.path("/error/"+response.status);
+								         });
 								}
 							}
-						}, function errorCallback(response)
-						{
-							console.log(response.data);
-						});
+						}, function errorCallback(response){
+				            $location.path("/error/"+response.status);
+				          });
 
 						Facility.deleteFacility(facilityId)
 						.then(function successCallback(d) {
-							console.log("done deleting facility");
 
 							$route.reload();
             				$modalInstance.close('closed');
@@ -190,7 +174,6 @@ var deleteCtrl = function ($scope, $modalInstance, deleteForm, Facility, $route,
 						function errorCallback(d){
 							$scope.error = d.data;
 						});
-						console.log("delete done");
 		};
 
     $scope.no = function () {
@@ -203,8 +186,6 @@ var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacit
     $scope.formData = {}
     $scope.error = "";
     $scope.submitForm = function () {
-    	console.log('Add Form');
-
 			var daysOff = [];
 			var day = 0;
     	if($scope.formData.day0 == true){daysOff[day] = 0; day++; }
@@ -219,12 +200,11 @@ var addDaily = function ($scope, $modalInstance,Facility,fid,description,capacit
 
       Facility.addDaily(fid,description,capacity,name,$scope.formData)
       .then(function successCallback(d){
-      	console.log('add daily');
       	$route.reload();
         $modalInstance.close('closed');
      },
       function errorCallback(d){
-			$scope.error = d.data;
+		 $scope.error = d.data;
 	  });
     };
 

@@ -1,11 +1,11 @@
 angular.module('fasa7ny')
     .controller('SearchController', function ($scope, Search, $routeParams, $location, IP) {
         $scope.ip = IP.address;
-        console.log($scope.ip);
 
         if ($routeParams.keyword == 'undefined')
             $scope.keyword = '';
         else
+
             $scope.keyword = $routeParams.keyword;
         $scope.minRating; //default min rating is zero 
         $scope.direction = true; //default sorting is descending
@@ -50,7 +50,6 @@ angular.module('fasa7ny')
         //REDIRECT TO BUSINESS PAGE
         //===================
         $scope.goToBusinessPage = function (business) {
-            console.log('clicked');
 
             $location.path('/business/' + business.name);
         }

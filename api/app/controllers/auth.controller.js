@@ -180,7 +180,6 @@ let AuthController =
         Business.findOne({ email: req.body.email }, function(err, business){
               if(err)
               {
-                  console.log("Sorry for inconvenience, your trial to reset the password has been denied");
                   return res.json("Sorry for inconvenience, your trial to reset the password has been denied");
               }
               if(!business)
@@ -188,7 +187,6 @@ let AuthController =
                 check++;
                 if(check == 2)    // if no user found, print error msg and redirect
                 {
-                console.log('error', 'No account with that email address exists.');
                 return res.json("No account with that email address exists.");
                 }
               }
@@ -207,14 +205,12 @@ let AuthController =
       		User.findOne({ email: req.body.email }, function(err, user) {
             if(err)
               {
-                  console.log("Sorry for inconvenience, your trial to reset the password has been denied");
                   return res.json("Sorry for inconvenience, your trial to reset the password has been denied");
               }
         	if (!user) {
             check++;
             if(check == 2)       // if no user found, print error msg and redirect
             {
-              console.log('error', 'No account with that email address exists.');
               return res.json("No account with that email address exists.");
             }
 
@@ -227,7 +223,6 @@ let AuthController =
         	   user.save(function(err) {
         		  if(err)
               {
-                  console.log("Sorry for inconvenience, your trial to reset the password has been denied");
                   return res.json("Sorry for inconvenience, your trial to reset the password has been denied");
               }
           	done(err, token, user);
@@ -261,7 +256,6 @@ let AuthController =
       	smtpTransport.sendMail(mailOptions, function(err) {
       			if(err)
             {
-      				console.log("ERROR: can not send email to the entered email, please try again");
               return res.json("ERROR: can not send email to the entered email, please try again");
             }
         	return res.json("An e-mail has been sent to " + user.email + " with further instructions.");
@@ -278,16 +272,13 @@ let AuthController =
 	getReset: function(req, res) {
         var check = 0;
 
-        console.log(req.param.token);
 
         // search the registeredusers collection
    User.findOne({ "local.resetPasswordToken": req.params.token,"local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
      if (!user) {
-       console.log("nope");
       check++;
       if(check == 2)      // if no user found, print error msg and redirect
       {
-        console.log('error', 'Password reset token is invalid or has expired.1');
       return res.json('Password reset token is invalid or has expired.');
       }
       }
@@ -309,7 +300,6 @@ let AuthController =
           if(check == 2)      // if no user found, print error msg and redirect
           {
 
-          console.log('error', 'Password reset token is invalid or has expired.2');
           return res.json( 'Password reset token is invalid or has expired.');
 
           }
@@ -326,20 +316,17 @@ let AuthController =
 	},
 
 	postReset: function(req, res) {
-  console.log("info " + JSON.stringify(req.body));
   async.waterfall([
     // recheck the validity of the token sent (it might be expired)
 
     function(done) {
       var check = 0;
           Business.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, business){
-            console.log(1);
             if(!business)
             {
               check++;
               if(check == 2)
               {
-              console.log('error', 'Password reset token is invalid or has expired.');
               return res.json('Password reset token is invalid or has expired.');
               }
             }
@@ -352,7 +339,6 @@ let AuthController =
               business.save(function(err, business){
                  if(err)
                  {
-                  console.log("error: can not update the password, please try again");
                   return res.json("error: can not update the password, please try again");
                  }
                  done(err, business);
@@ -361,14 +347,11 @@ let AuthController =
             }
           });
       User.findOne({ "local.resetPasswordToken": req.params.token, "local.resetPasswordExpires": { $gt: Date.now() } }, function(err, user) {
-          console.log(2);
         if (!user) {
 
-          console.log(req.params.token);
           check++;
               if(check == 2)
               {
-              console.log('error', 'Password reset token is invalid or has expired.');
               return res.json('Password reset token is invalid or has expired.');
               }
         }
@@ -381,10 +364,7 @@ let AuthController =
         user.save(function(err,user) {
             if(err)
             {
-
-             console.log("error: can not update the password, please try again");
              return res.json("error: can not update the password, please try again");
-
             }
             done(err, user);
         });
@@ -411,7 +391,6 @@ let AuthController =
       smtpTransport.sendMail(mailOptions, function(err) {
         if(err)
         {
-          console.log("ERROR: can not send email to the entered email, please try again");
           return res.redirect("ERROR: can not send email to the entered email, please try again");
         }
         return res.json('Success! Your password has been changed.');
