@@ -1875,6 +1875,8 @@ height: 400px;
 input[type=radio]:checked ~ label{
   color: #6CB670;
 }
+
+
 /*==========================================Farida==================================
  It will not work without the style tag, so don't remove it. (I know it doesn't make sense)	
  ===================================================================================*/
@@ -2109,11 +2111,7 @@ li.dropdown {
 .container2 input[type=radio]:checked ~ label{
 	color: #6CB670  ;
 }
-
-
-input[type=radio]:checked ~ label{
-  color: #6CB670;
-}		
+	
 .container3{
 	display: block;
 	position: relative;
