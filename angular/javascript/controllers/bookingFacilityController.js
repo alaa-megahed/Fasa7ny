@@ -185,7 +185,6 @@ var apply_best_offer_facility = function(facility, event_occ, price, capacity, c
                 }
                 for (var i = offers.length - 1; i >= 0; i--)
                 {
-                  
                     if(typeof offers[i].event_id == 'undefined')
                     {
                         if(typeof offers[i].facility_id == 'undefined' || offers[i].facility_id === facility)

@@ -178,7 +178,7 @@ exports.createOffer = function(req, res) {
                     User.findByIdAndUpdate({_id:subscriber},{$push:{"notifications": notification}},function(err,user)
                     {
                       if(err)
-                        console.log("error updating user notifications");
+                        res.status(500).json('Oops..something went wrong.'); 
                       else
                       {
                         user.unread_notifications = user.unread_notifications + 1;
@@ -211,7 +211,6 @@ exports.updateOffer = function(req, res) {
     var businessId = req.user.id;
     var id = req.body.id;
     var file = req.file;
-
     Offer.findOne({_id:id}, function(err, offer) {
       if(err) res.status(500).json("error in finding the offer");
       else

@@ -369,7 +369,7 @@ passport.use(new GoogleStrategy({
                     newUser.save(function(err) {
                         if (err)
                         {
-                          console.log("error: please try again");
+                          
                           return done(err);
                         }
                         return done(null, newUser);

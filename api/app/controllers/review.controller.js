@@ -285,7 +285,7 @@ exports.deleteReview = function (req, res) {
 
     Business.findById(businessID, function (err, business) {
       if (err)
-        console.log(err);
+        return res.status(500).json('Oops.. something went wrong'); 
       else if (business.reviews.id(reviewID) != null) { //check if review exists within given business object
         business.reviews.id(reviewID).remove();
         business.save(function (err, updatedBusiness) {

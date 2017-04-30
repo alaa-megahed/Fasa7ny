@@ -30,7 +30,6 @@ router.use('/contact', function (req, res) {
 });
 
 router.use('/photo/:photo', function (req, res) {
-    console.log(path.resolve('public/uploads/' + req.params.photo));
     res.sendFile(path.resolve('public/uploads/' + req.params.photo));
 });
 

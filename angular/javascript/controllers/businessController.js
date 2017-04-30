@@ -142,41 +142,51 @@ app.controller('businessController', function ($scope, status, $http, Business, 
       $scope.slides = $scope.business.images;
       $scope.imagelength = $scope.business.images.length;
       $scope.location = d.data.result.location;
+
+    //  google.maps.event.addDomListener(window, 'load', $scope.initMap);
+      var initMap = function () {
+
+
+        if ($scope.business.location) {
+          var myLatLng2 = new google.maps.LatLng($scope.business.location.Lat, $scope.business.location.Lng);
+          var mapProp2 =
+            {
+              center: myLatLng2,
+              zoom: 5,
+              mapTypeId: google.maps.MapTypeId.ROADMAP
+
+            };
+
+          var map2 = new google.maps.Map(document.getElementById("googleMap2"), mapProp2);
+
+
+          var marker2 = new google.maps.Marker
+            ({
+              position: myLatLng2,
+              map: map2,
+              title: 'Location',
+              draggable: false
+            });
+
+
+
+        }
+
+      };
+
+      initMap();
+
+
+
+
+
+
     },function errorCallback(response){
             $location.path("/error/"+response.status);
        });
 
 
-  google.maps.event.addDomListener(window, 'load', $scope.initMap);
-  $scope.initMap = function () {
 
-
-    if ($scope.business.location) {
-      var myLatLng2 = new google.maps.LatLng($scope.business.location.Lat, $scope.business.location.Lng);
-      var mapProp2 =
-        {
-          center: myLatLng2,
-          zoom: 5,
-          mapTypeId: google.maps.MapTypeId.ROADMAP
-
-        };
-
-      var map2 = new google.maps.Map(document.getElementById("googleMap2"), mapProp2);
-
-
-      var marker2 = new google.maps.Marker
-        ({
-          position: myLatLng2,
-          map: map2,
-          title: 'Location',
-          draggable: false
-        });
-
-
-
-    }
-
-  };
 
 
 
