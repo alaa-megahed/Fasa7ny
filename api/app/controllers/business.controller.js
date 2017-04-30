@@ -193,7 +193,7 @@ requestRemoval: function(req,res) {
                     business.save(function(err, newbusiness) {
                       if(err) res.status(500).json("something went wrong");
                       else {
-                        res.status(200).json({business:newbusiness});
+                        return res.status(200).json({business:newbusiness});
                       }
 
                     });
@@ -206,7 +206,7 @@ requestRemoval: function(req,res) {
         }
 
         else {
-            res.status(401).json('You are not a logged in business');
+            return res.status(401).json('You are not a logged in business');
         }
     },
 
@@ -330,11 +330,11 @@ requestRemoval: function(req,res) {
                     } else {
                         fs.stat(path.resolve('public/uploads/' + image), function (err, stat) {
                             if (err) {
-                                res.status(400).json('Could not find image');
+                               return res.status(400).json('Could not find image');
                             } else {
                                 fs.unlink(path.resolve('public/uploads/' + image), function (err) {
                                     if (err)
-                                        res.status(400).json('Could not find image');
+                                        return res.status(400).json('Could not find image');
                                 });
                             }
                         });

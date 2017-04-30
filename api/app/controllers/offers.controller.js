@@ -211,7 +211,6 @@ exports.updateOffer = function(req, res) {
     var businessId = req.user.id;
     var id = req.body.id;
     var file = req.file;
-
     Offer.findOne({_id:id}, function(err, offer) {
       if(err) res.status(500).json("error in finding the offer");
       else
