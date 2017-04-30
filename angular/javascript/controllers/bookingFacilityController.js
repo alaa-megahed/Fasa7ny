@@ -202,14 +202,10 @@ var apply_best_offer_facility = function(facility, max_count, price, capacity, c
 
                             if(offers[i].type === "lucky_first" && (capacity -  max_count) < offers[i].lucky_first)
                             {
-
                                 var lucky = offers[i].lucky_first - (capacity - max_count);
                                 var apply_on = (lucky < count) ? lucky : count;
                                 var newcharge = ((apply_on * price) - offers[i].value / 100 * apply_on * price) + (count - apply_on) * price;
                                 min_charge = (min_charge > newcharge) ? newcharge : min_charge;
-                                console.log("lucky_first " + offers[i].lucky_first);
-                                console.log("min_charge "+min_charge);
-                                console.log("newcharge "+newcharge);
                             }
                         }
                     }
