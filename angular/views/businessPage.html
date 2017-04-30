@@ -470,17 +470,17 @@
     <!--REVIEWS SECTION -->
 <!--=========================================-->
 
-<section>
+<section >
     <!--start reviews form -->
     <h1 class="text-center">Reviews </h1>
-
+    <h5 style="text-align: center" ng-show="!business.reviews.length">No reviews to show. </h5>
     <div class="container">
         <div class="row">
             <!-- Review section -->
             <div class="comments-container">
 
                 <ul id="comments-list" class="comments-list">
-                    <li ng-repeat="review in business.reviews track by $index">
+                    <li ng-show="business.reviews.length" ng-repeat="review in business.reviews track by $index">
                         <div class="comment-main-level">
                             <!-- Avatar -->
                             <div class="comment-avatar"><img ng-src="http://{{ip}}:3000/photo/{{review.user.image}}" alt=""></div>
