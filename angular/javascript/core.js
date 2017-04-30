@@ -142,6 +142,3 @@ app.config(function ($routeProvider) {
 app.config(['$httpProvider', function ($httpProvider) {
 	$httpProvider.defaults.withCredentials = true;
 }]);
-
-
-
