@@ -11,6 +11,7 @@ angular.module('fasa7ny')
     $scope.category1 = "thrill";
     $scope.category2 = "outlet";
     $scope.category3 = "escape";
+    $scope.ip = IP.address;
 
     $scope.getHome = function() {
       $window.location = "/";
