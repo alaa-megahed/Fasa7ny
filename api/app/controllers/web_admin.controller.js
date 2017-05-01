@@ -10,6 +10,7 @@ var Review = require('mongoose').model('Review');
 var Reply = require('mongoose').model('Reply');
 var async = require('async');
 var Advertisement = require('mongoose').model('Advertisement');
+var IP = require('../../config/address')
 
 const nodemailer = require('nodemailer');
 var configAuth = require('../../config/auth');
@@ -86,7 +87,7 @@ exports.AddBusiness = function (req, res) {
                                                     subject: 'Confirmation Mail',
                                                     text: 'Welcome to Fasa7ny' + '\n\n' + 'You have successfully joined our platform' + '\n'
                                                     + 'You can login to create your profile' + '\n\n' + 'Username: ' + req.body.username +
-                                                    '\n' + 'Password: ' + generatedPassword + '\n\n' + 'http://' + req.headers.host + '\n\n' +
+                                                    '\n' + 'Password: ' + generatedPassword + '\n\n' + "http://"+ IP + ":8000/" + '\n\n' +
                                                     'Fasa7ny team'
 
                                                 };
