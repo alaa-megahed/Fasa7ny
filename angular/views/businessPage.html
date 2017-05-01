@@ -346,7 +346,7 @@
     </div>
     <button ng-controller="businessController" ng-if="facilitylength" class="btn btn-transparent w3-green"  ng-click="bookFacility()" >Book Now!</button>
     <hr>
-</div><br>
+</div><br ng-if="eventlength">
 
 <!-- </div> -->
 <button style="width:250px" ng-if="eventlength" onclick="myFunction('Demo2')" class="btn btn-transparent" >Check Our Events&nbsp;&nbsp;&nbsp;&nbsp;</button><br>
