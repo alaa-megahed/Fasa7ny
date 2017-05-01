@@ -33,7 +33,7 @@ app.factory('Business', ['$http', 'IP', function ($http, IP) {
     },
 
     rate: function (star, bid) {
-      return $http.get('http://' + IP.address + ':3000/user/rate/' + star + "/" + bid);
+      return $http.get('http://' + IP.address + ':3000/user/rate/' + star + '/' + bid);
     },
 
     public: function () {
@@ -119,4 +119,3 @@ app.factory('Business', ['$http', 'IP', function ($http, IP) {
 app.factory('business', function () {
   return {};
 });
-
