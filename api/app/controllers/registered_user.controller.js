@@ -6,8 +6,8 @@ var EventOccurrence = mongoose.model('EventOccurrences');
 var Business = mongoose.model('Business');
 var Rating = mongoose.model('Rating');
 var statsController = require('../controllers/stats.controller');
-var fs = require('fs'); 
-var path = require('path'); 	
+var fs = require('fs');
+var path = require('path');
 
 
 exports.getUserDetails = function (req, res) {
@@ -241,7 +241,13 @@ exports.average_rating = function (req, res) {
 					return;
 				}
 				else {
-					Business.findByIdAndUpdate(businessID, { $set: { average_rating: result[0].average } }, function (err, business) {
+					var newAvg;
+	                    for(var i = 0; i < result.length; i++) {
+	                        if(result[i]._id == businessID)
+	                            newAvg = result[i].average;
+	                    }
+
+					Business.findByIdAndUpdate(businessID, { $set: { average_rating: newAvg} }, function (err, business) {
 						if (err) {
 							return res.status(500).json("Error. Please return to previous page.");
 						}
@@ -297,8 +303,8 @@ exports.editInformation = function (req, res) {
 					if (typeof body.email != "undefined" && body.email.length > 0)
 						user.email = body.email;
 					if (typeof file != 'undefined') {
-						//remove image 
-						var image = user.profilePic; 
+						//remove image
+						var image = user.profilePic;
 						if (typeof image != 'undefined' && image != '') {
 							fs.stat(path.resolve('public/uploads/' + image), function (err, stat) {
 								if (!err) {
