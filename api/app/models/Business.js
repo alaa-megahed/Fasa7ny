@@ -5,7 +5,7 @@ var mongoose      = require('mongoose'),
 require('mongoose-double')(mongoose);
 var SchemaTypes = mongoose.Schema.Types;
 var RegisteredUser = require('./RegisteredUser');
-var Review = require('./Review').ReviewSchema; 
+var Review = require('./Review').ReviewSchema;
 
 var BusinessSchema = new Schema({
     local         :
@@ -30,7 +30,11 @@ var BusinessSchema = new Schema({
         type: String,
         unique: true
     },
-    email         : String,
+    email         :
+    {
+      type:String,
+      unique : true
+    },
     phones        : [String],
     description   : String,
     merchant_ID   : {type: String, unique: true },
