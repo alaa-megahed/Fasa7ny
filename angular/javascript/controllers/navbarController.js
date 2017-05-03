@@ -100,7 +100,7 @@ angular.module('fasa7ny')
       Homepage.getAds().then(function successfulCallback(result){
         $scope.advertisements = result.data;
         if(result.data)
-           $scope.advertisements = result.data.slice(1,7);
+           $scope.advertisements = result.data.slice(0,7);
       }, function errorCallback(response){
             $location.path("/error/"+response.status);
           });
