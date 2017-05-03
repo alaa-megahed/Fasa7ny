@@ -60,10 +60,10 @@
                         {{error_message}}
 
                     <div ng-show="cash">
-                        <button type="submit"  class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count " ng-click="book_cash()"> BOOK NOW AND PAY CASH</button> <!-- ng-if="type == 1|| type == 4" -->
+                        <button type="submit"  class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count || minDate >= formData.day " ng-click="book_cash()"> BOOK NOW AND PAY CASH</button> <!-- ng-if="type == 1|| type == 4" -->
                     </div>
                     <div ng-show="stripe">
-                        <button type="submit"  ng-show="type == 1" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count || minDate > formData.day " ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button> <!-- ng-if="type == 1" -->
+                        <button type="submit"  ng-show="type == 1" class="btn btn-transparent" ng-disabled="!chosen_facility || !formData.day || !formData.chosen_time || !formData.count || minDate >= formData.day " ng-click="open_stripe()"> BOOK NOW WITH STRIPE</button> <!-- ng-if="type == 1" -->
                         </div>
                 </form>
 
