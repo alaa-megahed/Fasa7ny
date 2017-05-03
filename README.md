@@ -23,5 +23,8 @@ You can find an installation guide [here](https://github.com/abdelrahman-elkady/
 + This app is made only for academic purposes.
 + For the payment, all payments are done in test mode, so no real cards are charged.
 
+## Product Backlog:
+https://docs.google.com/spreadsheets/d/1tk-pSVAhHaSaZtjsrM0DgFmSasmf6K6yr3iT-07yA_8/edit?usp=sharing
+
 ## URI
 http://54.187.92.64:8000/
