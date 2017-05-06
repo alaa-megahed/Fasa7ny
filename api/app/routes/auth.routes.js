@@ -6,8 +6,6 @@ var express = require('express'),
 
 var app = express();
 
-router.get('/', AuthController.home);
-
 /**
  * Returns error message when login fails 
  * 
@@ -91,11 +89,6 @@ router.get('/successSignUp', AuthController.getSignupSuccess);
 router.post('/signup', AuthController.postSignup);
 
 
-
-
-router.get('/profile', AuthController.getProfile);
-
-
 /**
  * Processes a post request for a user to log out and end their session, 
  * * 
@@ -123,9 +116,6 @@ router.get('/facebook/callback', AuthController.facebookCallback);
 router.get('/google', AuthController.googleLogin);
 
 router.get('/google/callback', AuthController.googleCallback);
-
-
-router.get('/forgot', AuthController.getForgetPassword);
 
 /**
  *   

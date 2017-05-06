@@ -11,17 +11,19 @@ var passport = require('passport'),
 
 let AuthController =
 {
-	// ============================
-	// 			   HOME PAGE
-	// ============================
-	home: function(req, res) {
-		res.render('index.ejs');
-	},
+	 /** =====================================
+    *               HOME PAGE
+    *  =====================================
+    */
+	// home: function(req, res) {
+	// 	res.render('index.ejs');
+	// },
 
-	// ============================
-	// 		    	LOGIN
-	// ============================
-	getLoginFail: function(req, res) {
+	 /** =====================================
+    *               LOGIN
+    *  =====================================
+    */
+    getLoginFail: function(req, res) {
 		res.json(req.flash('loginMessage'));
 	},
 
@@ -38,9 +40,10 @@ let AuthController =
 		failureFlash : true
 	})(req, res);},
 
-	// ============================
-	//           SIGNUP
-	// ============================
+	 /** =====================================
+    *               SIGNUP
+    *  =====================================
+    */
 	getSignupFail: function(req, res) {
 		res.json(req.flash('signupMessage'));
 	},
@@ -63,38 +66,40 @@ let AuthController =
 
 
 
-	// ============================
-	// 	    PROFILE SECTION
-	// ============================
-	getProfile: function(req, res){
-		if (req.isAuthenticated())
-		{
-			if(req.user.user_type == 1)       // regular user
-			{
-        res.redirect('/');
-        // res.render('user_profile.ejs', {
-        // user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });
-			}
-			else if(req.user.user_type == 2)  // business
-			{
-        res.render('business_profile.ejs', {
-          user : req.user });
-			}
-			else if(req.user.user_type == 3)  // admin
-			{
-				res.render('admin_profile.ejs', {
-				user : req.user});
-			}
-		}
-		else
-    {
-			res.redirect('/');
-    }
-	},
+	 /** =====================================
+    *            PROFILE SECTION
+    *  =====================================
+    */
+	// getProfile: function(req, res){
+	// 	if (req.isAuthenticated())
+	// 	{
+	// 		if(req.user.user_type == 1)       // regular user
+	// 		{
+ //        res.redirect('/');
+ //        // res.render('user_profile.ejs', {
+ //        // user : req.user, bookings: req.user.bookings, subscriptions: req.user.subscriptions });
+	// 		}
+	// 		else if(req.user.user_type == 2)  // business
+	// 		{
+ //        res.render('business_profile.ejs', {
+ //          user : req.user });
+	// 		}
+	// 		else if(req.user.user_type == 3)  // admin
+	// 		{
+	// 			res.render('admin_profile.ejs', {
+	// 			user : req.user});
+	// 		}
+	// 	}
+	// 	else
+ //    {
+	// 		res.redirect('/');
+ //    }
+	// },
 
-	// =====================================
-	// 				     LOGOUT
-	// =====================================
+	 /** =====================================
+    *               LOGOUT
+    *  =====================================
+    */
 	logout: function(req, res) {
 
 		req.session.destroy(function (err) {
@@ -105,9 +110,10 @@ let AuthController =
 
   });
 	},
-	// =====================================
-	// 			     	FACEBOOK
-	// =====================================
+	 /** =====================================
+    *               FACBOOK
+    *  =====================================
+    */
 	facebookLogin   : function(req, res){
 		passport.authenticate('facebook', { scope : 'email' })(req, res);},
 
@@ -128,13 +134,10 @@ let AuthController =
 		},
 
 
-
-
-
-
-	// =====================================
-	// 			      	GOOGLE
-	// =====================================
+	 /** =====================================
+    *               GOOGLE
+    *  =====================================
+    */
 	googleLogin : function(req, res){
 		passport.authenticate('google', { scope : ['profile', 'email'] })(req, res);
 	},
@@ -155,12 +158,13 @@ let AuthController =
 		},
 
 
-	// =====================================
-	// 		     FORGOT PASSWORD
-	// =====================================
-	getForgetPassword: function(req, res){
-		res.render('frogetPassword.ejs');
-	},
+	/** =====================================
+	  *  		     FORGOT PASSWORD
+	  * =====================================
+    */
+	// getForgetPassword: function(req, res){
+	// 	res.render('frogetPassword.ejs');
+	// },
 //same email problem
 	forgotPassword: function(req, res, next) {
     if(req.body.email){
