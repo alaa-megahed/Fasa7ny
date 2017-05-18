@@ -273,7 +273,7 @@ exports.createEvent = function (req, res) {
 					}
 
 
-					var last = new Date();
+
 					async.each(arr, function (date, callback) {
 
 
@@ -291,48 +291,57 @@ exports.createEvent = function (req, res) {
 
 						occurrence.save(function (err, occurrence) {
 							if (err) res.status(500).json(err.message);
-							if(last < date) last = date;
+
 						});
 					}, function (error) {
 						if (error) res.json(500, { error: error });
 					});
 
-					var j = schedule.scheduleJob('0 0 * * *', function () {
-						now = new Date();
-						var startdate = new Date(req.body.date);
-						if(now - startdate >= 0) {
-							last.setDate(last.getDate()+1);
+					var rule = new schedule.RecurrenceRule();
+					rule.dayOfWeek = [new schedule.Range(0, 6)];
+					rule.hour = 0;
+					rule.minute = 0;
 
-							var day = last.getDay();
 
-							let occurrence = new EventOccurrences({
-								day: last,
-								time: req.body.timing,
-								available: req.body.capacity,
-								event: event._id,
-								business_id: id
-							});
+					var j = schedule.scheduleJob(rule, function () {
+						var d = new Date();
+						var n = d.getMonth();
 
-							if (req.body.facility_id) {
-								occurrence.facility_id = req.body.facility_id;
-							}
 
-							var flag = true;
+						d.setMonth((n + 1) % 12);
+						var day = d.getDay();
 
-							for (i = 0; req.body.day && i < req.body.day.length; i++) {
-								var x = Number(req.body.day[i]);
-								if (x == day) {
-									flag = false;
-								}
-							}
+						let occurrence = new EventOccurrences({
+							day: d,
+							time: req.body.timing,
+							available: req.body.capacity,
+							event: event._id,
+							business_id: id
+						});
 
-							if (flag) {
-								occurrence.save(function (err, occurrence) {
-									if (err) res.status(500).json(err.message);
-								});
+						if (req.body.facility_id) {
+							occurrence.facility_id = req.body.facility_id;
+						}
+
+						var flag = true;
+
+						for (i = 0; req.body.day && i < req.body.day.length; i++) {
+							var x = Number(req.body.day[i]);
+
+							if (x == day) {
+								flag = false;
 							}
 						}
+
+						if (flag) {
+							occurrence.save(function (err, occurrence) {
+								if (err) res.status(500).json(err.message);
+
+							});
+						}
+
 					});
+
 				}
 
 				else
